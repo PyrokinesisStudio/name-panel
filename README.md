@@ -1,4 +1,4 @@
-# item-panel
+# Item Panel
 Item panel add-on for blender, with included batch naming tools.
 
 To install click download zip on the right

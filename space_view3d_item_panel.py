@@ -27,11 +27,8 @@ bl_info = {
   'name': 'Item Panel & Batch Naming',
   'author': 'proxe',
   'version': (0, 8, 5),
-  'blender': (2, 75, 2),
+  'blender': (2, 75, 0),
   'location': '3D View → Properties Panel',
-  #'warning': 'WIP',
-  #'wiki_url': '',
-  #'tracker_url': '',
   'description': "An improved item panel for the 3D View with included batch naming tools.",
   'category': '3D View'
 }
@@ -46,10 +43,10 @@ from bpy.types import Panel, PropertyGroup
 ###############
 # rename
 def rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd):
-  '''
+  """
   Names single proper dataPath variable received from batchRename, check
   variable values from operator class.
-  '''
+  """
   if not batchName:
     targetName = dataPath.name[trimStart:]
   else:
@@ -65,16 +62,16 @@ def rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, 
     dataPath.name = targetName[:]
 # batch rename
 def batchRename(self, context, batchName, find, replace, prefix, suffix, trimStart, trimEnd, batchObjects, batchObjectConstraints, batchModifiers, batchObjectData, batchBones, batchBoneConstraints, objectType, constraintType, modifierType):
-  '''
+  """
   Send dataPath values to rename, check variable values from operator class.
-  '''
+  """
   # objects
   if batchObjects:
     for object in context.selected_objects:
       if objectType in 'ALL':
         dataPath = object
       elif objectType in object.type:
-          dataPath = object
+        dataPath = object
       try:
         rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
       except:
@@ -107,7 +104,7 @@ def batchRename(self, context, batchName, find, replace, prefix, suffix, trimSta
   if batchObjectData:
       for object in context.selected_objects:
           if objectType in 'ALL':
-              dataPath = object.data
+            dataPath = object.data
           elif objectType in object.type:
             dataPath = object.data
           try:
@@ -144,7 +141,7 @@ def batchRename(self, context, batchName, find, replace, prefix, suffix, trimSta
 ###############
 # batch naming
 class VIEW3D_OT_batch_naming(Operator):
-  ''' Invoke the batch naming operator. '''
+  """ Invoke the batch naming operator. """
   bl_idname = 'view3d.batch_naming'
   bl_label = 'Batch Naming'
   bl_options = {'REGISTER', 'UNDO'}
@@ -342,11 +339,11 @@ class VIEW3D_OT_batch_naming(Operator):
   # poll
   @classmethod
   def poll(cls, context):
-    ''' Space data type must be in 3D view. '''
+    """ Space data type must be in 3D view. """
     return context.space_data.type in 'VIEW_3D'
   # draw
   def draw(self, context):
-    ''' Draw the operator panel/menu. '''
+    """ Draw the operator panel/menu. """
     layout = self.layout
     column = layout.column()
     row = column.row(align=True)
@@ -384,12 +381,12 @@ class VIEW3D_OT_batch_naming(Operator):
     row.prop(self.properties, 'trimEnd', text='')
   # execute
   def execute(self, context):
-      ''' Execute the operator. '''
-      batchRename(self, context, self.batchName, self.find, self.replace, self.prefix, self.suffix, self.trimStart, self.trimEnd, self.batchObjects, self.batchObjectConstraints, self.batchModifiers, self.batchObjectsData, self.batchBones, self.batchBoneConstraints, self.objectType, self.constraintType, self.modifierType)
-      return {'FINISHED'}
+    """ Execute the operator. """
+    batchRename(self, context, self.batchName, self.find, self.replace, self.prefix, self.suffix, self.trimStart, self.trimEnd, self.batchObjects, self.batchObjectConstraints, self.batchModifiers, self.batchObjectsData, self.batchBones, self.batchBoneConstraints, self.objectType, self.constraintType, self.modifierType)
+    return {'FINISHED'}
   # invoke
   def invoke(self, context, event):
-    ''' Invoke the operator panel/menu, control its width. '''
+    """ Invoke the operator panel/menu, control its width. """
     context.window_manager.invoke_props_dialog(self, width=150)
     return {'RUNNING_MODAL'}
 ###############
@@ -397,36 +394,34 @@ class VIEW3D_OT_batch_naming(Operator):
 ###############
 # item UI property group
 class itemUIPropertyGroup(PropertyGroup):
-  '''
-  UI property group for the add-on "Item Panel & Batch Naming"
-  (space_view3d_item.py)
-
-  Bool Properties that effect how the panel displays the item(s) within the
-  users current selection
-
-  bpy > types > WindowManager > itemUI
-  bpy > context > window_manager > itemUI
-  '''
+  """
+  Bool Properties that effect how item panel displays the item(s) within the users current selection
+  """
+  # view options
   viewOptions = BoolProperty(
     name = 'Show/hide view options',
     description = "Toggle view options for this panel, the state that they are in is uneffected by this action.",
     default = False
   )
+  # view constraints
   viewConstraints = BoolProperty(
     name = 'View object constraints',
     description = "Display the object constraints of the active object.",
     default = True
   )
+  # view modifiers
   viewModifiers = BoolProperty(
     name = 'View object modifiers',
     description = "Display the object modifiers of the active object.",
     default = True
   )
+  # view bone constraints
   viewBoneConstraints = BoolProperty(
     name = 'View bone constraints',
     description = "Display the bone constraints of the active pose bone.",
     default = True
   )
+  # view hierarchy
   viewHierarchy = BoolProperty(
     name = 'View all selected',
     description = "Display everything within your current selection inside the item panel.",
@@ -434,27 +429,26 @@ class itemUIPropertyGroup(PropertyGroup):
   )
 # view3d PT item
 class VIEW3D_PT_item(Panel):
-  '''
-  Item panel, properties created in Item property group, stored in:
-  bpy > context > window_manager > itemUI
-  '''
+  """
+  Item panel
+  """
   bl_space_type = 'VIEW_3D'
   bl_region_type = 'UI'
   bl_label = 'Item'
   # poll
   @classmethod
   def poll(cls, context):
-    ''' Hide panel if there is not an active object. '''
+    """ Hide panel if there is not an active object. """
     return bpy.context.active_object
   # draw header
   def draw_header(self, context):
-    ''' Item panel header. '''
+    """ Item panel header. """
     layout = self.layout
     itemUI = context.window_manager.itemUI
     layout.prop(itemUI, 'viewOptions', text='')
   # draw
   def draw(self, context):
-    ''' Item panel body. '''
+    """ Item panel body. """
     layout = self.layout
     column = layout.column()
     itemUI = context.window_manager.itemUI
@@ -832,13 +826,13 @@ class VIEW3D_PT_item(Panel):
 ## REGISTER ##
 ##############
 def register():
-  ''' Register '''
+  """ Register """
   windowManager = bpy.types.WindowManager
   bpy.utils.register_module(__name__)
   windowManager.itemUI = bpy.props.PointerProperty(type=itemUIPropertyGroup)
   bpy.context.window_manager.itemUI.name = 'Item Panel Properties'
 def unregister():
-  ''' Unregister '''
+  """ Unregister """
   bpy.utils.unregister_module(__name__)
   try:
     del bpy.types.WindowManager.itemUI

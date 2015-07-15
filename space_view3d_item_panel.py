@@ -54,7 +54,7 @@ def rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, 
     targetName = targetName[trimStart:]
   if trimEnd > 0:
     targetName = targetName[:-trimEnd]
-  targetName = re.sub(find, replace, targetName)
+  targetName = re.sub(find, replace, targetName)  # XXX: Tool-shelf RE error.
   targetName = prefix + targetName + suffix
   if dataPath in {'constraint', 'modifier'}:
     dataPath.name = targetName
@@ -387,7 +387,7 @@ class VIEW3D_OT_batch_naming(Operator):
   # invoke
   def invoke(self, context, event):
     """ Invoke the operator panel/menu, control its width. """
-    context.window_manager.invoke_props_dialog(self, width=150)
+    context.window_manager.invoke_props_dialog(self, width=200)
     return {'RUNNING_MODAL'}
 ###############
 ## INTERFACE ##

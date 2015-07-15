@@ -54,7 +54,7 @@ def rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, 
     targetName = targetName[trimStart:]
   if trimEnd > 0:
     targetName = targetName[:-trimEnd]
-  targetName = re.sub(find, replace, targetName)  # XXX: Tool-shelf RE error.
+  targetName = re.sub(find, replace, targetName)
   targetName = prefix + targetName + suffix
   if dataPath in {'constraint', 'modifier'}:
     dataPath.name = targetName

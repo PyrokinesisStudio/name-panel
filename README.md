@@ -1,6 +1,8 @@
 # Item Panel
 Item panel add-on for blender, with included batch naming tools.
 
+More information <a href='http://blenderartists.org/forum/showthread.php?272086-Addon-Item-Panel-amp-Batch-Naming-0-8-5&p=2240265#post2240265'>here</a>
+
 Download link is on the right, "Download Zip"
 
 Extract space_view3d_item_panel.py into your add-ons directory.

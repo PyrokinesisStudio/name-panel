@@ -54,7 +54,7 @@ def rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, 
     targetName = targetName[trimStart:]
   if trimEnd > 0:
     targetName = targetName[:-trimEnd]
-  targetName = re.sub(find, replace, targetName)  # XXX: Tool-shelf RE error.
+  targetName = re.sub(find, replace, targetName)
   targetName = prefix + targetName + suffix
   if dataPath in {'constraint', 'modifier'}:
     dataPath.name = targetName
@@ -401,7 +401,7 @@ class itemUIPropertyGroup(PropertyGroup):
   viewOptions = BoolProperty(
     name = 'Show/hide view options',
     description = "Toggle view options for this panel, the state that they are in is uneffected by this action.",
-    default = False
+    default = True
   )
   # view constraints
   viewConstraints = BoolProperty(
@@ -432,8 +432,6 @@ class VIEW3D_PT_item(Panel):
   """
   Item panel
   """
-  bl_space_type = 'VIEW_3D'
-  bl_region_type = 'UI'
   bl_label = 'Item'
   # poll
   @classmethod
@@ -831,6 +829,8 @@ def register():
   bpy.utils.register_module(__name__)
   windowManager.itemUI = bpy.props.PointerProperty(type=itemUIPropertyGroup)
   bpy.context.window_manager.itemUI.name = 'Item Panel Properties'
+  bpy.types.VIEW3D_PT_view3d_name.remove(bpy.types.VIEW3D_PT_view3d_name.draw)
+  bpy.types.VIEW3D_PT_view3d_name.append(VIEW3D_PT_item.draw)
 def unregister():
   """ Unregister """
   bpy.utils.unregister_module(__name__)

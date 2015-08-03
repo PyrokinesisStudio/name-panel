@@ -19,14 +19,14 @@
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
 #  Contact: trentin.frederick@gmail.com, proxe.err0r@gmail.com
-#  Version: 0.8.6
+#  Version: 0.8.4
 #
 # ##### END INFO BLOCK #####
 # blender info
 bl_info = {
   'name': 'Item Panel & Batch Naming',
   'author': 'proxe',
-  'version': (0, 8, 6),
+  'version': (0, 8, 8),
   'blender': (2, 75, 0),
   'location': '3D View → Properties Panel',
   'description': "An improved item panel for the 3D View with included batch naming tools.",
@@ -397,12 +397,6 @@ class itemUIPropertyGroup(PropertyGroup):
   """
   Bool Properties that effect how item panel displays the item(s) within the users current selection
   """
-  # view options
-  viewOptions = BoolProperty(
-    name = 'Show/hide view options',
-    description = "Toggle view options for this panel, the state that they are in is uneffected by this action.",
-    default = True
-  )
   # view constraints
   viewConstraints = BoolProperty(
     name = 'View object constraints',
@@ -427,24 +421,11 @@ class itemUIPropertyGroup(PropertyGroup):
     description = "Display everything within your current selection inside the item panel.",
     default = False
   )
-# view3d PT item
-class VIEW3D_PT_item(Panel):
+# item panel
+class item_panel():
   """
   Item panel
   """
-  bl_label = 'Item'
-  # poll
-  @classmethod
-  def poll(cls, context):
-    """ Hide panel if there is not an active object. """
-    return bpy.context.active_object
-  # draw header
-  def draw_header(self, context):
-    """ Item panel header. """
-    layout = self.layout
-    itemUI = context.window_manager.itemUI
-    layout.prop(itemUI, 'viewOptions', text='')
-  # draw
   def draw(self, context):
     """ Item panel body. """
     layout = self.layout
@@ -452,13 +433,12 @@ class VIEW3D_PT_item(Panel):
     itemUI = context.window_manager.itemUI
     # view options row
     split = column.split(align=True)
-    if itemUI.viewOptions:
-      split.prop(itemUI, 'viewConstraints', text='', icon='CONSTRAINT')
-      split.prop(itemUI, 'viewModifiers', text='', icon='MODIFIER')
-      if context.object.mode in 'POSE':
-        split.prop(itemUI, 'viewBoneConstraints', text='', icon='CONSTRAINT_BONE')
-      split.prop(itemUI, 'viewHierarchy', text='', icon='OOPS')
-      split.operator('view3d.batch_naming', text='', icon='AUTO')
+    split.prop(itemUI, 'viewConstraints', text='', icon='CONSTRAINT')
+    split.prop(itemUI, 'viewModifiers', text='', icon='MODIFIER')
+    if context.object.mode in 'POSE':
+      split.prop(itemUI, 'viewBoneConstraints', text='', icon='CONSTRAINT_BONE')
+    split.prop(itemUI, 'viewHierarchy', text='', icon='OOPS')
+    split.operator('view3d.batch_naming', text='', icon='AUTO')
     # data block list
     row = column.row(align = True)
     row.template_ID(context.scene.objects, 'active')
@@ -583,153 +563,154 @@ class VIEW3D_PT_item(Panel):
     # view hierarchy
     if itemUI.viewHierarchy:
       # object
-      for object in context.selected_objects:
-        if object != context.active_object:
-          row = column.row(align=True)
-          sub = row.row()
-          sub.scale_x = 1.6
-          if object.type in 'MESH':
-            iconObject = 'OUTLINER_OB_MESH'
-          elif object.type in 'CURVE':
-            iconObject = 'OUTLINER_OB_CURVE'
-          elif object.type in 'SURFACE':
-            iconObject = 'OUTLINER_OB_SURFACE'
-          elif object.type in 'META':
-            iconObject = 'OUTLINER_OB_META'
-          elif object.type in 'FONT':
-            iconObject = 'OUTLINER_OB_FONT'
-          elif object.type in 'ARMATURE':
-            iconObject = 'OUTLINER_OB_ARMATURE'
-          elif object.type in 'LATTICE':
-            iconObject = 'OUTLINER_OB_LATTICE'
-          elif object.type in 'EMPTY':
-            iconObject = 'OUTLINER_OB_EMPTY'
-          elif object.type in 'SPEAKER':
-            iconObject = 'OUTLINER_OB_SPEAKER'
-          elif object.type in 'CAMERA':
-            iconObject = 'OUTLINER_OB_CAMERA'
-          elif object.type in 'LAMP':
-            iconObject = 'OUTLINER_OB_LAMP'
-          else:
-            iconObject = 'OUTLINER_OB_MESH'
-          sub.label(text='', icon=iconObject)
-          row.prop(object, 'name', text='')
-          # constraints
-          if itemUI.viewConstraints:
-            for constraint in object.constraints[:]:
-              row = column.row(align=True)
-              sub = row.row()
-              sub.scale_x = 1.6
-              sub.label(text='', icon='CONSTRAINT')
-              if constraint.mute:
-                iconView = 'RESTRICT_VIEW_ON'
-              else:
-                iconView = 'RESTRICT_VIEW_OFF'
-              row.prop(constraint, 'mute', text='', icon=iconView)
-              row.prop(constraint, 'name', text='')
-          # modifiers
-          if itemUI.viewModifiers:
-            for modifier in object.modifiers[:]:
-              row = column.row(align=True)
-              sub = row.row()
-              sub.scale_x = 1.6
-              if modifier.type in 'MESH_CACHE':
-                iconMod = 'MOD_MESHDEFORM'
-              elif modifier.type in 'UV_PROJECT':
-                iconMod = 'MOD_UVPROJECT'
-              elif modifier.type in 'UV_WARP':
-                iconMod = 'MOD_UVPROJECT'
-              elif modifier.type in 'VERTEX_WEIGHT_EDIT':
-                iconMod = 'MOD_VERTEX_WEIGHT'
-              elif modifier.type in 'VERTEX_WEIGHT_MIX':
-                iconMod = 'MOD_VERTEX_WEIGHT'
-              elif modifier.type in 'VERTEX_WEIGHT_PROXIMITY':
-                iconMod = 'MOD_VERTEX_WEIGHT'
-              elif modifier.type in 'ARRAY':
-                iconMod = 'MOD_ARRAY'
-              elif modifier.type in 'BEVEL':
-                iconMod = 'MOD_BEVEL'
-              elif modifier.type in 'BOOLEAN':
-                iconMod = 'MOD_BOOLEAN'
-              elif modifier.type in 'BUILD':
-                iconMod = 'MOD_BUILD'
-              elif modifier.type in 'DECIMATE':
-                iconMod = 'MOD_DECIM'
-              elif modifier.type in 'EDGE_SPLIT':
-                iconMod = 'MOD_EDGESPLIT'
-              elif modifier.type in 'MASK':
-                iconMod = 'MOD_MASK'
-              elif modifier.type in 'MIRROR':
-                iconMod = 'MOD_MIRROR'
-              elif modifier.type in 'MULTIRES':
-                iconMod = 'MOD_MULTIRES'
-              elif modifier.type in 'REMESH':
-                iconMod = 'MOD_REMESH'
-              elif modifier.type in 'SCREW':
-                iconMod = 'MOD_SCREW'
-              elif modifier.type in 'SKIN':
-                iconMod = 'MOD_SKIN'
-              elif modifier.type in 'SOLIDIFY':
-                iconMod = 'MOD_SOLIDIFY'
-              elif modifier.type in 'SUBSURF':
-                iconMod = 'MOD_SUBSURF'
-              elif modifier.type in 'TRIANGULATE':
-                iconMod = 'MOD_TRIANGULATE'
-              elif modifier.type in 'ARMATURE':
-                iconMod = 'MOD_ARMATURE'
-              elif modifier.type in 'CAST':
-                iconMod = 'MOD_CAST'
-              elif modifier.type in 'CURVE':
-                iconMod = 'MOD_CURVE'
-              elif modifier.type in 'DISPLACE':
-                iconMod = 'MOD_DISPLACE'
-              elif modifier.type in 'HOOK':
-                iconMod = 'HOOK'
-              elif modifier.type in 'LAPLACIANSMOOTH':
-                iconMod = 'MOD_SMOOTH'
-              elif modifier.type in 'LATTICE':
-                iconMod = 'MOD_LATTICE'
-              elif modifier.type in 'MESH_DEFORM':
-                iconMod = 'MOD_MESHDEFORM'
-              elif modifier.type in 'SHRINKWRAP':
-                iconMod = 'MOD_SHRINKWRAP'
-              elif modifier.type in 'SIMPLE_DEFORM':
-                iconMod = 'MOD_SIMPLEDEFORM'
-              elif modifier.type in 'SMOOTH':
-                iconMod = 'MOD_SMOOTH'
-              elif modifier.type in 'WARP':
-                iconMod = 'MOD_WARP'
-              elif modifier.type in 'WAVE':
-                iconMod = 'MOD_WAVE'
-              elif modifier.type in 'CLOTH':
-                iconMod = 'MOD_CLOTH'
-              elif modifier.type in 'COLLISION':
-                iconMod = 'MOD_PHYSICS'
-              elif modifier.type in 'DYNAMIC_PAINT':
-                iconMod = 'MOD_DYNAMICPAINT'
-              elif modifier.type in 'EXPLODE':
-                iconMod = 'MOD_EXPLODE'
-              elif modifier.type in 'FLUID_SIMULATION':
-                iconMod = 'MOD_FLUIDSIM'
-              elif modifier.type in 'OCEAN':
-                iconMod = 'MOD_OCEAN'
-              elif modifier.type in 'PARTICLE_INSTANCE':
-                iconMod = 'MOD_PARTICLES'
-              elif modifier.type in 'PARTICLE_SYSTEM':
-                iconMod = 'MOD_PARTICLES'
-              elif modifier.type in 'SMOKE':
-                iconMod = 'MOD_SMOKE'
-              elif modifier.type in 'SOFT_BODY':
-                iconMod = 'MOD_SOFT'
-              else:
-                iconMod = 'MODIFIER'
-              sub.label(text='', icon=iconMod)
-              if modifier.show_viewport:
-                iconView = 'RESTRICT_VIEW_OFF'
-              else:
-                iconView = 'RESTRICT_VIEW_ON'
-              row.prop(modifier, 'show_viewport', text='', icon=iconView)
-              row.prop(modifier, 'name', text='')
+      for object in bpy.data.objects:
+        if object in context.selected_objects:
+          if object != context.active_object:
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            if object.type in 'MESH':
+              iconObject = 'OUTLINER_OB_MESH'
+            elif object.type in 'CURVE':
+              iconObject = 'OUTLINER_OB_CURVE'
+            elif object.type in 'SURFACE':
+              iconObject = 'OUTLINER_OB_SURFACE'
+            elif object.type in 'META':
+              iconObject = 'OUTLINER_OB_META'
+            elif object.type in 'FONT':
+              iconObject = 'OUTLINER_OB_FONT'
+            elif object.type in 'ARMATURE':
+              iconObject = 'OUTLINER_OB_ARMATURE'
+            elif object.type in 'LATTICE':
+              iconObject = 'OUTLINER_OB_LATTICE'
+            elif object.type in 'EMPTY':
+              iconObject = 'OUTLINER_OB_EMPTY'
+            elif object.type in 'SPEAKER':
+              iconObject = 'OUTLINER_OB_SPEAKER'
+            elif object.type in 'CAMERA':
+              iconObject = 'OUTLINER_OB_CAMERA'
+            elif object.type in 'LAMP':
+              iconObject = 'OUTLINER_OB_LAMP'
+            else:
+              iconObject = 'OUTLINER_OB_MESH'
+            sub.label(text='', icon=iconObject)
+            row.prop(object, 'name', text='')
+            # constraints
+            if itemUI.viewConstraints:
+              for constraint in object.constraints[:]:
+                row = column.row(align=True)
+                sub = row.row()
+                sub.scale_x = 1.6
+                sub.label(text='', icon='CONSTRAINT')
+                if constraint.mute:
+                  iconView = 'RESTRICT_VIEW_ON'
+                else:
+                  iconView = 'RESTRICT_VIEW_OFF'
+                row.prop(constraint, 'mute', text='', icon=iconView)
+                row.prop(constraint, 'name', text='')
+            # modifiers
+            if itemUI.viewModifiers:
+              for modifier in object.modifiers[:]:
+                row = column.row(align=True)
+                sub = row.row()
+                sub.scale_x = 1.6
+                if modifier.type in 'MESH_CACHE':
+                  iconMod = 'MOD_MESHDEFORM'
+                elif modifier.type in 'UV_PROJECT':
+                  iconMod = 'MOD_UVPROJECT'
+                elif modifier.type in 'UV_WARP':
+                  iconMod = 'MOD_UVPROJECT'
+                elif modifier.type in 'VERTEX_WEIGHT_EDIT':
+                  iconMod = 'MOD_VERTEX_WEIGHT'
+                elif modifier.type in 'VERTEX_WEIGHT_MIX':
+                  iconMod = 'MOD_VERTEX_WEIGHT'
+                elif modifier.type in 'VERTEX_WEIGHT_PROXIMITY':
+                  iconMod = 'MOD_VERTEX_WEIGHT'
+                elif modifier.type in 'ARRAY':
+                  iconMod = 'MOD_ARRAY'
+                elif modifier.type in 'BEVEL':
+                  iconMod = 'MOD_BEVEL'
+                elif modifier.type in 'BOOLEAN':
+                  iconMod = 'MOD_BOOLEAN'
+                elif modifier.type in 'BUILD':
+                  iconMod = 'MOD_BUILD'
+                elif modifier.type in 'DECIMATE':
+                  iconMod = 'MOD_DECIM'
+                elif modifier.type in 'EDGE_SPLIT':
+                  iconMod = 'MOD_EDGESPLIT'
+                elif modifier.type in 'MASK':
+                  iconMod = 'MOD_MASK'
+                elif modifier.type in 'MIRROR':
+                  iconMod = 'MOD_MIRROR'
+                elif modifier.type in 'MULTIRES':
+                  iconMod = 'MOD_MULTIRES'
+                elif modifier.type in 'REMESH':
+                  iconMod = 'MOD_REMESH'
+                elif modifier.type in 'SCREW':
+                  iconMod = 'MOD_SCREW'
+                elif modifier.type in 'SKIN':
+                  iconMod = 'MOD_SKIN'
+                elif modifier.type in 'SOLIDIFY':
+                  iconMod = 'MOD_SOLIDIFY'
+                elif modifier.type in 'SUBSURF':
+                  iconMod = 'MOD_SUBSURF'
+                elif modifier.type in 'TRIANGULATE':
+                  iconMod = 'MOD_TRIANGULATE'
+                elif modifier.type in 'ARMATURE':
+                  iconMod = 'MOD_ARMATURE'
+                elif modifier.type in 'CAST':
+                  iconMod = 'MOD_CAST'
+                elif modifier.type in 'CURVE':
+                  iconMod = 'MOD_CURVE'
+                elif modifier.type in 'DISPLACE':
+                  iconMod = 'MOD_DISPLACE'
+                elif modifier.type in 'HOOK':
+                  iconMod = 'HOOK'
+                elif modifier.type in 'LAPLACIANSMOOTH':
+                  iconMod = 'MOD_SMOOTH'
+                elif modifier.type in 'LATTICE':
+                  iconMod = 'MOD_LATTICE'
+                elif modifier.type in 'MESH_DEFORM':
+                  iconMod = 'MOD_MESHDEFORM'
+                elif modifier.type in 'SHRINKWRAP':
+                  iconMod = 'MOD_SHRINKWRAP'
+                elif modifier.type in 'SIMPLE_DEFORM':
+                  iconMod = 'MOD_SIMPLEDEFORM'
+                elif modifier.type in 'SMOOTH':
+                  iconMod = 'MOD_SMOOTH'
+                elif modifier.type in 'WARP':
+                  iconMod = 'MOD_WARP'
+                elif modifier.type in 'WAVE':
+                  iconMod = 'MOD_WAVE'
+                elif modifier.type in 'CLOTH':
+                  iconMod = 'MOD_CLOTH'
+                elif modifier.type in 'COLLISION':
+                  iconMod = 'MOD_PHYSICS'
+                elif modifier.type in 'DYNAMIC_PAINT':
+                  iconMod = 'MOD_DYNAMICPAINT'
+                elif modifier.type in 'EXPLODE':
+                  iconMod = 'MOD_EXPLODE'
+                elif modifier.type in 'FLUID_SIMULATION':
+                  iconMod = 'MOD_FLUIDSIM'
+                elif modifier.type in 'OCEAN':
+                  iconMod = 'MOD_OCEAN'
+                elif modifier.type in 'PARTICLE_INSTANCE':
+                  iconMod = 'MOD_PARTICLES'
+                elif modifier.type in 'PARTICLE_SYSTEM':
+                  iconMod = 'MOD_PARTICLES'
+                elif modifier.type in 'SMOKE':
+                  iconMod = 'MOD_SMOKE'
+                elif modifier.type in 'SOFT_BODY':
+                  iconMod = 'MOD_SOFT'
+                else:
+                  iconMod = 'MODIFIER'
+                sub.label(text='', icon=iconMod)
+                if modifier.show_viewport:
+                  iconView = 'RESTRICT_VIEW_OFF'
+                else:
+                  iconView = 'RESTRICT_VIEW_ON'
+                row.prop(modifier, 'show_viewport', text='', icon=iconView)
+                row.prop(modifier, 'name', text='')
     # empty
     if context.object.type in 'EMPTY':
       if context.object.empty_draw_type in 'IMAGE':
@@ -741,36 +722,37 @@ class VIEW3D_PT_item(Panel):
       row.template_ID(context.active_object, 'data')
     # view hierarchy
     if itemUI.viewHierarchy:
-      for object in context.selected_objects:
-        if object != context.active_object:
-          if object.type != 'EMPTY':
-            row = column.row(align=True)
-            sub = row.row()
-            sub.scale_x = 1.6
-            if object.type in 'MESH':
-              iconData = 'MESH_DATA'
-            elif object.type in 'CURVE':
-              iconData = 'CURVE_DATA'
-            elif object.type in 'SURFACE':
-              iconData = 'SURFACE_DATA'
-            elif object.type in 'META':
-              iconData = 'META_DATA'
-            elif object.type in 'FONT':
-              iconData = 'FONT_DATA'
-            elif object.type in 'ARMATURE':
-              iconData = 'ARMATURE_DATA'
-            elif object.type in 'LATTICE':
-              iconData = 'LATTICE_DATA'
-            elif object.type in 'SPEAKER':
-              iconData = 'SPEAKER'
-            elif object.type in 'CAMERA':
-              iconData = 'CAMERA_DATA'
-            elif object.type in 'LAMP':
-              iconData = 'LAMP_DATA'
-            else:
-              iconData = 'MESH_DATA'
-            sub.label(text='', icon=iconData)
-            row.prop(object.data, 'name', text='')
+      for object in bpy.data.objects:
+        if object in context.selected_objects:
+          if object != context.active_object:
+            if object.type != 'EMPTY':
+              row = column.row(align=True)
+              sub = row.row()
+              sub.scale_x = 1.6
+              if object.type in 'MESH':
+                iconData = 'MESH_DATA'
+              elif object.type in 'CURVE':
+                iconData = 'CURVE_DATA'
+              elif object.type in 'SURFACE':
+                iconData = 'SURFACE_DATA'
+              elif object.type in 'META':
+                iconData = 'META_DATA'
+              elif object.type in 'FONT':
+                iconData = 'FONT_DATA'
+              elif object.type in 'ARMATURE':
+                iconData = 'ARMATURE_DATA'
+              elif object.type in 'LATTICE':
+                iconData = 'LATTICE_DATA'
+              elif object.type in 'SPEAKER':
+                iconData = 'SPEAKER'
+              elif object.type in 'CAMERA':
+                iconData = 'CAMERA_DATA'
+              elif object.type in 'LAMP':
+                iconData = 'LAMP_DATA'
+              else:
+                iconData = 'MESH_DATA'
+              sub.label(text='', icon=iconData)
+              row.prop(object.data, 'name', text='')
     # bones
     if (context.object.type in 'ARMATURE' and
       context.object.mode in {'POSE', 'EDIT'}):
@@ -792,34 +774,31 @@ class VIEW3D_PT_item(Panel):
               iconView = 'RESTRICT_VIEW_OFF'
             row.prop(constraint, 'mute', text='', icon=iconView)
             row.prop(constraint, 'name', text='')
-        if itemUI.viewHierarchy:
-          if context.selected_editable_bones:
-            selected_bones = context.selected_editable_bones
-          else:
-            selected_bones = context.selected_pose_bones
-          try:
-            for bone in selected_bones:
-              if bone != (context.active_pose_bone or context.active_bone):
-                row = column.row(align=True)
-                sub = row.row()
-                sub.scale_x = 1.6
-                sub.label(text='', icon='BONE_DATA')
-                row.prop(bone, 'name', text='')
-                if context.object.mode in 'POSE':
-                  if itemUI.viewBoneConstraints:
-                    for constraint in bone.constraints[:]:
-                      row = column.row(align=True)
-                      sub = row.row()
-                      sub.scale_x = 1.6
-                      sub.label(text='', icon='CONSTRAINT_BONE')
-                      if constraint.mute:
-                        iconView = 'RESTRICT_VIEW_ON'
-                      else:
-                        iconView = 'RESTRICT_VIEW_OFF'
-                      row.prop(constraint, 'mute', text='', icon=iconView)
-                      row.prop(constraint, 'name', text='')
-          except TypeError:
-              pass
+      if itemUI.viewHierarchy:
+        if context.selected_editable_bones:
+          selected_bones = context.selected_editable_bones
+        else:
+          selected_bones = context.selected_pose_bones
+        for bone in selected_bones:
+          if bone != (context.active_pose_bone or context.active_bone):
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='BONE_DATA')
+            row.prop(bone, 'name', text='')
+            if context.object.mode in 'POSE':
+              if itemUI.viewBoneConstraints:
+                for constraint in bone.constraints[:]:
+                  row = column.row(align=True)
+                  sub = row.row()
+                  sub.scale_x = 1.6
+                  sub.label(text='', icon='CONSTRAINT_BONE')
+                  if constraint.mute:
+                    iconView = 'RESTRICT_VIEW_ON'
+                  else:
+                    iconView = 'RESTRICT_VIEW_OFF'
+                  row.prop(constraint, 'mute', text='', icon=iconView)
+                  row.prop(constraint, 'name', text='')
 ##############
 ## REGISTER ##
 ##############
@@ -830,7 +809,7 @@ def register():
   windowManager.itemUI = bpy.props.PointerProperty(type=itemUIPropertyGroup)
   bpy.context.window_manager.itemUI.name = 'Item Panel Properties'
   bpy.types.VIEW3D_PT_view3d_name.remove(bpy.types.VIEW3D_PT_view3d_name.draw)
-  bpy.types.VIEW3D_PT_view3d_name.append(VIEW3D_PT_item.draw)
+  bpy.types.VIEW3D_PT_view3d_name.append(item_panel.draw)
 def unregister():
   """ Unregister """
   bpy.utils.unregister_module(__name__)

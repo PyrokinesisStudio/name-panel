@@ -15,32 +15,37 @@
 #  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 # ##### END GPL LICENSE BLOCK #####
+
 # ##### BEGIN INFO BLOCK #####
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
-#  Contact: trentin.frederick@gmail.com, proxe.err0r@gmail.com
-#  Version: 0.8.4
+#  Contact: trentin.shaun.frederick@gmail.com
+#  Version: 0.8.9
 #
 # ##### END INFO BLOCK #####
+
 # blender info
 bl_info = {
   'name': 'Item Panel & Batch Naming',
   'author': 'proxe',
-  'version': (0, 8, 8),
+  'version': (0, 8, 9),
   'blender': (2, 75, 0),
   'location': '3D View → Properties Panel',
   'description': "An improved item panel for the 3D View with included batch naming tools.",
   'category': '3D View'
 }
+
 # imports
 import bpy
 import re
 from bpy.props import *
 from bpy.types import Operator
 from bpy.types import Panel, PropertyGroup
+
 ###############
 ## FUNCTIONS ##
 ###############
+
 # rename
 def rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd):
   """
@@ -60,6 +65,7 @@ def rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, 
     dataPath.name = targetName
   else:
     dataPath.name = targetName[:]
+
 # batch rename
 def batchRename(self, context, batchName, find, replace, prefix, suffix, trimStart, trimEnd, batchObjects, batchObjectConstraints, batchModifiers, batchObjectData, batchBones, batchBoneConstraints, objectType, constraintType, modifierType):
   """
@@ -136,9 +142,13 @@ def batchRename(self, context, batchName, find, replace, prefix, suffix, trimSta
           rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
         except:
             pass
+  # materials
+  # textures
+
 ###############
 ## OPERATORS ##
 ###############
+
 # batch naming
 class VIEW3D_OT_batch_naming(Operator):
   """ Invoke the batch naming operator. """
@@ -303,7 +313,7 @@ class VIEW3D_OT_batch_naming(Operator):
   # find
   find = StringProperty(
     name = 'Find',
-    description = "Find this text and remove it from the names. Evaluated as a python regular expression, be sure to escape any RE metacharacters when applicable with \\ before character, ie; \\."
+    description = "Find this text and remove it from the names. Evaluated as a python regular expression, must escape any RE metacharacters when applicable with \\ before character, ie; \\."
   )
   # replace
   replace = StringProperty(
@@ -336,11 +346,13 @@ class VIEW3D_OT_batch_naming(Operator):
     max = 50,
     default = 0
   )
+
   # poll
   @classmethod
   def poll(cls, context):
     """ Space data type must be in 3D view. """
     return context.space_data.type in 'VIEW_3D'
+
   # draw
   def draw(self, context):
     """ Draw the operator panel/menu. """
@@ -379,19 +391,23 @@ class VIEW3D_OT_batch_naming(Operator):
     row = column.row()
     row.label(text="Trim End:")
     row.prop(self.properties, 'trimEnd', text='')
+
   # execute
   def execute(self, context):
     """ Execute the operator. """
     batchRename(self, context, self.batchName, self.find, self.replace, self.prefix, self.suffix, self.trimStart, self.trimEnd, self.batchObjects, self.batchObjectConstraints, self.batchModifiers, self.batchObjectsData, self.batchBones, self.batchBoneConstraints, self.objectType, self.constraintType, self.modifierType)
     return {'FINISHED'}
+
   # invoke
   def invoke(self, context, event):
     """ Invoke the operator panel/menu, control its width. """
     context.window_manager.invoke_props_dialog(self, width=200)
     return {'RUNNING_MODAL'}
+
 ###############
 ## INTERFACE ##
 ###############
+
 # item UI property group
 class itemUIPropertyGroup(PropertyGroup):
   """
@@ -400,19 +416,31 @@ class itemUIPropertyGroup(PropertyGroup):
   # view constraints
   viewConstraints = BoolProperty(
     name = 'View object constraints',
-    description = "Display the object constraints of the active object.",
+    description = "Display the object constraints.",
     default = True
   )
   # view modifiers
   viewModifiers = BoolProperty(
     name = 'View object modifiers',
-    description = "Display the object modifiers of the active object.",
+    description = "Display the object modifiers.",
     default = True
   )
   # view bone constraints
   viewBoneConstraints = BoolProperty(
     name = 'View bone constraints',
-    description = "Display the bone constraints of the active pose bone.",
+    description = "Display the bone constraints.",
+    default = True
+  )
+  # view materials
+  viewMaterials = BoolProperty(
+    name = 'View object materials',
+    description = "Display the object materials",
+    default = True
+  )
+  # view textures
+  viewTextures = BoolProperty(
+    name = 'View material textures.',
+    description = "Display the textures of the object's material(s)",
     default = True
   )
   # view hierarchy
@@ -421,11 +449,14 @@ class itemUIPropertyGroup(PropertyGroup):
     description = "Display everything within your current selection inside the item panel.",
     default = False
   )
+
 # item panel
 class item_panel():
   """
   Item panel
   """
+
+  # draw
   def draw(self, context):
     """ Item panel body. """
     layout = self.layout
@@ -437,6 +468,8 @@ class item_panel():
     split.prop(itemUI, 'viewModifiers', text='', icon='MODIFIER')
     if context.object.mode in 'POSE':
       split.prop(itemUI, 'viewBoneConstraints', text='', icon='CONSTRAINT_BONE')
+    split.prop(itemUI, 'viewMaterials', text='', icon='MATERIAL')
+    split.prop(itemUI, 'viewTextures', text='', icon='TEXTURE')
     split.prop(itemUI, 'viewHierarchy', text='', icon='OOPS')
     split.operator('view3d.batch_naming', text='', icon='AUTO')
     # data block list
@@ -560,6 +593,33 @@ class item_panel():
           iconView = 'RESTRICT_VIEW_ON'
         row.prop(modifier, 'show_viewport', text='', icon=iconView)
         row.prop(modifier, 'name', text='')
+    # materials
+    if itemUI.viewMaterials:
+      for materialSlot in bpy.data.objects[context.active_object.name].material_slots[:]:
+        if materialSlot.material != None:
+          if materialSlot.link == 'OBJECT':
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='MATERIAL')
+            row.prop(materialSlot.material, 'name', text='')
+            # textures
+            if itemUI.viewTextures:
+              if context.scene.render.engine != 'CYCLES':
+                for textureSlot in materialSlot.material.texture_slots[:]:
+                  if textureSlot != None:
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='TEXTURE')
+                    if textureSlot.use:
+                      iconToggle = 'RADIOBUT_ON'
+                    else:
+                      iconToggle = 'RADIOBUT_OFF'
+                    row.prop(textureSlot, 'use', text='', icon=iconToggle)
+                    row.prop(textureSlot.texture, 'name', text='')
+    else:
+      itemUI.viewTextures = False
     # view hierarchy
     if itemUI.viewHierarchy:
       # object
@@ -711,6 +771,33 @@ class item_panel():
                   iconView = 'RESTRICT_VIEW_ON'
                 row.prop(modifier, 'show_viewport', text='', icon=iconView)
                 row.prop(modifier, 'name', text='')
+            # materials
+            if itemUI.viewMaterials:
+              for materialSlot in bpy.data.objects[object.name].material_slots[:]:
+                if materialSlot.material != None:
+                  if materialSlot.link == 'OBJECT':
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='MATERIAL')
+                    row.prop(materialSlot.material, 'name', text='')
+                    # textures
+                    if itemUI.viewTextures:
+                      if context.scene.render.engine != 'CYCLES':
+                        for textureSlot in materialSlot.material.texture_slots[:]:
+                          if textureSlot != None:
+                            row = column.row(align=True)
+                            sub = row.row()
+                            sub.scale_x = 1.6
+                            sub.label(text='', icon='TEXTURE')
+                            if textureSlot.use:
+                              iconToggle = 'RADIOBUT_ON'
+                            else:
+                              iconToggle = 'RADIOBUT_OFF'
+                            row.prop(textureSlot, 'use', text='', icon=iconToggle)
+                            row.prop(textureSlot.texture, 'name', text='')
+            else:
+              itemUI.viewTextures = False
     # empty
     if context.object.type in 'EMPTY':
       if context.object.empty_draw_type in 'IMAGE':
@@ -720,6 +807,80 @@ class item_panel():
     else:
       row = column.row(align=True)
       row.template_ID(context.active_object, 'data')
+    # bones
+    if (context.object.type in 'ARMATURE' and
+      context.object.mode in {'POSE', 'EDIT'}):
+      row = column.row(align=True)
+      sub = row.row()
+      sub.scale_x = 1.6
+      sub.label(text='', icon='BONE_DATA')
+      row.prop(context.active_bone, 'name', text='')
+      if context.object.mode in 'POSE':
+        if itemUI.viewBoneConstraints:
+          for constraint in context.active_pose_bone.constraints:
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='CONSTRAINT_BONE')
+            if constraint.mute:
+              iconView = 'RESTRICT_VIEW_ON'
+            else:
+              iconView = 'RESTRICT_VIEW_OFF'
+            row.prop(constraint, 'mute', text='', icon=iconView)
+            row.prop(constraint, 'name', text='')
+      if itemUI.viewHierarchy:
+        if context.selected_editable_bones:
+          selectedBones = context.selected_editable_bones
+        else:
+          selectedBones = context.selected_pose_bones
+        for bone in selectedBones:
+          if bone in (context.selected_editable_bones or context.selected_pose_bones):
+            if bone != (context.active_pose_bone or context.active_bone):
+              row = column.row(align=True)
+              sub = row.row()
+              sub.scale_x = 1.6
+              sub.label(text='', icon='BONE_DATA')
+              row.prop(bone, 'name', text='')
+              if context.object.mode in 'POSE':
+                if itemUI.viewBoneConstraints:
+                  for constraint in bone.constraints[:]:
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='CONSTRAINT_BONE')
+                    if constraint.mute:
+                      iconView = 'RESTRICT_VIEW_ON'
+                    else:
+                      iconView = 'RESTRICT_VIEW_OFF'
+                    row.prop(constraint, 'mute', text='', icon=iconView)
+                    row.prop(constraint, 'name', text='')
+    # materials
+    if itemUI.viewMaterials:
+      for materialSlot in bpy.data.objects[context.active_object.name].material_slots[:]:
+        if materialSlot.material != None:
+          if materialSlot.link == 'DATA':
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='MATERIAL')
+            row.prop(materialSlot.material, 'name', text='')
+            # textures
+            if itemUI.viewTextures:
+              if context.scene.render.engine != 'CYCLES':
+                for textureSlot in materialSlot.material.texture_slots[:]:
+                  if textureSlot != None:
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='TEXTURE')
+                    if textureSlot.use:
+                      iconToggle = 'RADIOBUT_ON'
+                    else:
+                      iconToggle = 'RADIOBUT_OFF'
+                    row.prop(textureSlot, 'use', text='', icon=iconToggle)
+                    row.prop(textureSlot.texture, 'name', text='')
+    else:
+      itemUI.viewTextures = False
     # view hierarchy
     if itemUI.viewHierarchy:
       for object in bpy.data.objects:
@@ -753,55 +914,39 @@ class item_panel():
                 iconData = 'MESH_DATA'
               sub.label(text='', icon=iconData)
               row.prop(object.data, 'name', text='')
-    # bones
-    if (context.object.type in 'ARMATURE' and
-      context.object.mode in {'POSE', 'EDIT'}):
-      row = column.row(align=True)
-      sub = row.row()
-      sub.scale_x = 1.6
-      sub.label(text='', icon='BONE_DATA')
-      row.prop(context.active_bone, 'name', text='')
-      if context.object.mode in 'POSE':
-        if itemUI.viewBoneConstraints:
-          for constraint in context.active_pose_bone.constraints:
-            row = column.row(align=True)
-            sub = row.row()
-            sub.scale_x = 1.6
-            sub.label(text='', icon='CONSTRAINT_BONE')
-            if constraint.mute:
-              iconView = 'RESTRICT_VIEW_ON'
-            else:
-              iconView = 'RESTRICT_VIEW_OFF'
-            row.prop(constraint, 'mute', text='', icon=iconView)
-            row.prop(constraint, 'name', text='')
-      if itemUI.viewHierarchy:
-        if context.selected_editable_bones:
-          selected_bones = context.selected_editable_bones
-        else:
-          selected_bones = context.selected_pose_bones
-        for bone in selected_bones:
-          if bone != (context.active_pose_bone or context.active_bone):
-            row = column.row(align=True)
-            sub = row.row()
-            sub.scale_x = 1.6
-            sub.label(text='', icon='BONE_DATA')
-            row.prop(bone, 'name', text='')
-            if context.object.mode in 'POSE':
-              if itemUI.viewBoneConstraints:
-                for constraint in bone.constraints[:]:
-                  row = column.row(align=True)
-                  sub = row.row()
-                  sub.scale_x = 1.6
-                  sub.label(text='', icon='CONSTRAINT_BONE')
-                  if constraint.mute:
-                    iconView = 'RESTRICT_VIEW_ON'
-                  else:
-                    iconView = 'RESTRICT_VIEW_OFF'
-                  row.prop(constraint, 'mute', text='', icon=iconView)
-                  row.prop(constraint, 'name', text='')
+              # materials
+              if itemUI.viewMaterials:
+                for materialSlot in bpy.data.objects[object.name].material_slots[:]:
+                  if materialSlot.material != None:
+                    if materialSlot.link == 'DATA':
+                      row = column.row(align=True)
+                      sub = row.row()
+                      sub.scale_x = 1.6
+                      sub.label(text='', icon='MATERIAL')
+                      row.prop(materialSlot.material, 'name', text='')
+                      # textures
+                      if itemUI.viewTextures:
+                        if context.scene.render.engine != 'CYCLES':
+                          for textureSlot in materialSlot.material.texture_slots[:]:
+                            if textureSlot != None:
+                              row = column.row(align=True)
+                              sub = row.row()
+                              sub.scale_x = 1.6
+                              sub.label(text='', icon='TEXTURE')
+                              if textureSlot.use:
+                                iconToggle = 'RADIOBUT_ON'
+                              else:
+                                iconToggle = 'RADIOBUT_OFF'
+                              row.prop(textureSlot, 'use', text='', icon=iconToggle)
+                              row.prop(textureSlot.texture, 'name', text='')
+              else:
+                itemUI.viewTextures = False
+
 ##############
 ## REGISTER ##
 ##############
+
+# register
 def register():
   """ Register """
   windowManager = bpy.types.WindowManager
@@ -810,6 +955,8 @@ def register():
   bpy.context.window_manager.itemUI.name = 'Item Panel Properties'
   bpy.types.VIEW3D_PT_view3d_name.remove(bpy.types.VIEW3D_PT_view3d_name.draw)
   bpy.types.VIEW3D_PT_view3d_name.append(item_panel.draw)
+
+# unregister
 def unregister():
   """ Unregister """
   bpy.utils.unregister_module(__name__)

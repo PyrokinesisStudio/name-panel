@@ -20,7 +20,7 @@
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
 #  Contact: trentin.shaun.frederick@gmail.com
-#  Version: 0.9.5
+#  Version: 0.9.8
 #
 # ##### END INFO BLOCK #####
 
@@ -28,7 +28,7 @@
 bl_info = {
   'name': 'Item Panel & Batch Naming',
   'author': 'proxe',
-  'version': (0, 9, 5),
+  'version': (0, 9, 8),
   'blender': (2, 75, 0),
   'location': '3D View → Properties Panel',
   'description': "An improved item panel for the 3D View with included batch naming tools.",
@@ -1079,17 +1079,20 @@ class itemPanel():
           selectedBones = context.selected_editable_bones
         else:
           selectedBones = context.selected_pose_bones
+        sorted_bone = []
         for bone in selectedBones:
-          if bone in (context.selected_editable_bones or context.selected_pose_bones):
-            if bone != (context.active_pose_bone or context.active_bone):
+          sorted_bone.append((bone.name, bone))
+        for bone in sorted(sorted_bone):
+          if bone[1] in (context.selected_editable_bones or context.selected_pose_bones):
+            if bone[1] != (context.active_pose_bone or context.active_bone):
               row = column.row(align=True)
               sub = row.row()
               sub.scale_x = 1.6
               sub.label(text='', icon='BONE_DATA')
-              row.prop(bone, 'name', text='')
+              row.prop(bone[1], 'name', text='')
               if context.object.mode in 'POSE':
                 if itemUI.viewBoneConstraints:
-                  for constraint in bone.constraints[:]:
+                  for constraint in bone[1].constraints[:]:
                     row = column.row(align=True)
                     sub = row.row()
                     sub.scale_x = 1.6

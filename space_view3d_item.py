@@ -306,15 +306,16 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
   if batchGroups:
     for group in bpy.data.groups[:]:
       if batchType in 'SELECTED':
-        for object in group.objects[:]:
-          if objectType in 'ALL':
-            dataPath = group
-          elif objectType in object.type:
-            dataPath = group
-          try:
-            rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
-          except:
-            pass
+        if object.select:
+          for object in group.objects[:]:
+            if objectType in 'ALL':
+              dataPath = group
+            elif objectType in object.type:
+              dataPath = group
+            try:
+              rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+            except:
+              pass
       else:
         for object in group.objects[:]:
           if objectType in 'ALL':

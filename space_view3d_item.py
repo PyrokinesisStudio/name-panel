@@ -20,7 +20,7 @@
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
 #  Contact: trentin.shaun.frederick@gmail.com
-#  Version: 0.9.8
+#  Version: 0.9
 #
 # ##### END INFO BLOCK #####
 
@@ -28,7 +28,7 @@
 bl_info = {
   'name': 'Item Panel & Batch Naming',
   'author': 'proxe',
-  'version': (0, 9, 8),
+  'version': (0, 9),
   'blender': (2, 75, 0),
   'location': '3D View → Properties Panel',
   'description': "An improved item panel for the 3D View with included batch naming tools.",
@@ -64,7 +64,7 @@ def rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, 
   dataPath.name = targetName
 
 # batch rename
-def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, batchModifiers, batchObjectData, batchBones, batchBoneConstraints, batchMaterials, batchTextures, batchParticleSystems, batchParticleSettings, objectType, constraintType, modifierType, batchName, find, replace, prefix, suffix, trimStart, trimEnd):
+def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, batchModifiers, batchObjectData, batchBones, batchBoneConstraints, batchMaterials, batchTextures, batchParticleSystems, batchParticleSettings, batchGroups, batchVertexGroups, batchShapeKeys, batchUVS, batchVertexColors, batchBoneGroups, objectType, constraintType, modifierType, batchName, find, replace, prefix, suffix, trimStart, trimEnd):
   """
   Send dataPath values to rename, check variable values from operator class.
   """
@@ -255,8 +255,19 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
   # particle system
   if batchParticleSystems:
     for object in bpy.data.objects[:]:
-      if batchType in 'SELECTED':
-        if object.select:
+      if object.type in 'MESH':
+        if batchType in 'SELECTED':
+          if object.select:
+            for system in object.particle_systems[:]:
+              if objectType in 'ALL':
+                dataPath = system
+              elif objectType in object.type:
+                dataPath = system
+              try:
+                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+              except:
+                pass
+        else:
           for system in object.particle_systems[:]:
             if objectType in 'ALL':
               dataPath = system
@@ -266,21 +277,22 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
               rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
             except:
               pass
-      else:
-        for system in object.particle_systems[:]:
-          if objectType in 'ALL':
-            dataPath = system
-          elif objectType in object.type:
-            dataPath = system
-          try:
-            rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
-          except:
-            pass
   # particle settings
   if batchParticleSettings:
     for object in bpy.data.objects[:]:
-      if batchType in 'SELECTED':
-        if object.select:
+      if object.type in 'MESH':
+        if batchType in 'SELECTED':
+          if object.select:
+            for system in object.particle_systems[:]:
+              if objectType in 'ALL':
+                dataPath = system.settings
+              elif objectType in object.type:
+                dataPath = system.settings
+              try:
+                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+              except:
+                pass
+        else:
           for system in object.particle_systems[:]:
             if objectType in 'ALL':
               dataPath = system.settings
@@ -290,16 +302,153 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
               rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
             except:
               pass
-      else:
-        for system in object.particle_systems[:]:
+  # groups
+  if batchGroups:
+    for group in bpy.data.groups[:]:
+      if batchType in 'SELECTED':
+        for object in group.objects[:]:
           if objectType in 'ALL':
-            dataPath = system.settings
+            dataPath = group
           elif objectType in object.type:
-            dataPath = system.settings
+            dataPath = group
           try:
             rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
           except:
             pass
+      else:
+        for object in group.objects[:]:
+          if objectType in 'ALL':
+            dataPath = group
+          elif objectType in object.type:
+            dataPath = group
+          try:
+            rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+          except:
+            pass
+  # vertex groups
+  if batchVertexGroups:
+    for object in bpy.data.objects[:]:
+      if object.type in {'MESH', 'LATTICE'}:
+        if batchType in 'SELECTED':
+          if object.select:
+            for group in object.vertex_groups[:]:
+              if objectType in 'ALL':
+                dataPath = group
+              elif objectType in object.type:
+                dataPath = group
+              try:
+                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+              except:
+                pass
+        else:
+          for group in object.vertex_groups[:]:
+            if objectType in 'ALL':
+              dataPath = group
+            elif objectType in object.type:
+              dataPath = group
+            try:
+              rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+            except:
+              pass
+
+  # shape keys
+  if batchShapeKeys:
+    for object in bpy.data.objects[:]:
+      if object.type in {'MESH', 'CURVE', 'SURFACE', 'LATTICE'}:
+        if object.data.shape_keys:
+          if batchType in 'SELECTED':
+            if object.select:
+              for key in object.data.shape_keys.key_blocks[:]:
+                if objectType in 'ALL':
+                  dataPath = key
+                elif objectType in object.type:
+                  dataPath = key
+                try:
+                  rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+                except:
+                  pass
+          else:
+            for key in object.data.shape_keys.key_blocks[:]:
+              if objectType in 'ALL':
+                dataPath = key
+              elif objectType in object.type:
+                dataPath = key
+              try:
+                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+              except:
+                pass
+  # uv maps
+  if batchUVS:
+    for object in bpy.data.objects[:]:
+      if object.type in 'MESH':
+        if batchType in 'SELECTED':
+          if object.select:
+            for uv in object.data.uv_textures[:]:
+              if objectType in 'ALL':
+                dataPath = uv
+              elif objectType in object.type:
+                dataPath = uv
+              try:
+                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+              except:
+                pass
+        else:
+         for uv in object.data.uv_textures[:]:
+            if objectType in 'ALL':
+              dataPath = uv
+            elif objectType in object.type:
+              dataPath = uv
+            try:
+              rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+            except:
+              pass
+  # vertex colors
+  if batchVertexColors:
+    for object in bpy.data.objects[:]:
+      if object.type in 'MESH':
+        if batchType in 'SELECTED':
+          if object.select:
+            for vertexColor in object.data.vertex_colors[:]:
+              if objectType in 'ALL':
+                dataPath = vertexColor
+              elif objectType in object.type:
+                dataPath = vertexColor
+              try:
+                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+              except:
+                pass
+        else:
+          for vertexColor in object.data.vertex_colors[:]:
+            if objectType in 'ALL':
+              dataPath = vertexColor
+            elif objectType in object.type:
+              dataPath = vertexColor
+            try:
+              rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+            except:
+              pass
+  # bone groups
+  if batchBoneGroups:
+    for object in bpy.data.objects[:]:
+      if batchType in 'SELECTED':
+        if object.select:
+          if object.type in 'ARMATURE':
+            for group in object.pose.bone_groups[:]:
+              if object.bone.select:
+                dataPath = group
+                try:
+                  rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+                except:
+                  pass
+      else:
+        if object.type in 'ARMATURE':
+          for group in object.pose.bone_groups[:]:
+            dataPath = group
+            try:
+              rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+            except:
+              pass
+
 
 ###############
 ## OPERATORS ##
@@ -307,7 +456,7 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
 
 # batch naming
 class VIEW3D_OT_batch_naming(Operator):
-  """ Invoke the batch naming operator. """
+  """ Batch rename data blocks. """
   bl_idname = 'view3d.batch_naming'
   bl_label = 'Batch Naming'
   bl_options = {'REGISTER', 'UNDO'}
@@ -379,6 +528,42 @@ class VIEW3D_OT_batch_naming(Operator):
   batchParticleSettings = BoolProperty(
     name = 'Particle Settings',
     description = "Apply batch naming to the settings of the particle systems.",
+    default = False
+  )
+  # batch groups
+  batchGroups = BoolProperty(
+    name = 'Groups',
+    description = "Apply batch naming to the groups the objects are within.",
+    default = False
+  )
+  # batch vertex groups
+  batchVertexGroups = BoolProperty(
+    name = 'Vertex Groups',
+    description = "Apply batch naming to the vertex groups of the objects.",
+    default = False
+  )
+  # batch shape keys
+  batchShapeKeys = BoolProperty(
+    name = 'Shape Keys',
+    description = "Apply batch naming to the shape keys of the objects.",
+    default = False
+  )
+  # batch uv maps
+  batchUVS = BoolProperty(
+    name = 'UV Maps',
+    description = "Apply batch naming to the UV maps of the the objects.",
+    default = False
+  )
+  # batch vertex colors
+  batchVertexColors = BoolProperty(
+    name = 'Vertex Colors',
+    description = "Apply batch naming to the vertex colors of the objects.",
+    default = False
+  )
+  # batch bone groups
+  batchBoneGroups = BoolProperty(
+    name = 'Bone Groups',
+    description = "Apply batch naming to the bone groups the armature bones are apart of.",
     default = False
   )
   # object type
@@ -536,7 +721,6 @@ class VIEW3D_OT_batch_naming(Operator):
     max = 50,
     default = 0
   )
-
   # poll
   @classmethod
   def poll(cls, context):
@@ -548,9 +732,8 @@ class VIEW3D_OT_batch_naming(Operator):
     """ Draw the operator panel/menu. """
     layout = self.layout
     layout.prop(self.properties, 'batchType', expand=True)
-    # type row
-    column = layout.column()
-    row = column.row(align=True)
+    # type rows
+    column = layout.column(align=True)
     split = column.split(align=True)
     split.prop(self.properties, 'batchObjects', text='', icon='OBJECT_DATA')
     split.prop(self.properties, 'batchObjectConstraints', text='', icon='CONSTRAINT')
@@ -565,7 +748,15 @@ class VIEW3D_OT_batch_naming(Operator):
       split.prop(self.properties, 'batchTextures', text='', icon='TEXTURE')
     split.prop(self.properties, 'batchParticleSystems', text='', icon='PARTICLES')
     split.prop(self.properties, 'batchParticleSettings', text='', icon='MOD_PARTICLES')
+    split = column.split(align=True)
+    split.prop(self.properties, 'batchGroups', text='', icon='GROUP')
+    split.prop(self.properties, 'batchVertexGroups', text='', icon='GROUP_VERTEX')
+    split.prop(self.properties, 'batchShapeKeys', text='', icon='SHAPEKEY_DATA')
+    split.prop(self.properties, 'batchUVS', text='', icon='GROUP_UVS')
+    split.prop(self.properties, 'batchVertexColors', text='', icon='GROUP_VCOL')
+    split.prop(self.properties, 'batchBoneGroups', text="", icon='GROUP_BONE')
     # type filters
+    column = layout.column()
     column.prop(self.properties, 'objectType', text='')
     column.prop(self.properties, 'constraintType', text='')
     column.prop(self.properties, 'modifierType', text='')
@@ -591,7 +782,7 @@ class VIEW3D_OT_batch_naming(Operator):
   # execute
   def execute(self, context):
     """ Execute the operator. """
-    batchRename(self, context, self.batchType, self.batchObjects, self.batchObjectConstraints, self.batchModifiers, self.batchObjectData, self.batchBones, self.batchBoneConstraints, self.batchMaterials, self.batchTextures, self.batchParticleSystems, self.batchParticleSettings, self.objectType, self.constraintType, self.modifierType, self.batchName, self.find, self.replace, self.prefix, self.suffix, self.trimStart, self.trimEnd)
+    batchRename(self, context, self.batchType, self.batchObjects, self.batchObjectConstraints, self.batchModifiers, self.batchObjectData, self.batchBones, self.batchBoneConstraints, self.batchMaterials, self.batchTextures, self.batchParticleSystems, self.batchParticleSettings, self.batchGroups, self.batchVertexGroups, self.batchShapeKeys, self.batchUVS, self.batchVertexColors, self.batchBoneGroups, self.objectType, self.constraintType, self.modifierType, self.batchName, self.find, self.replace, self.prefix, self.suffix, self.trimStart, self.trimEnd)
     return {'FINISHED'}
 
   # invoke
@@ -609,40 +800,100 @@ class itemUIPropertyGroup(PropertyGroup):
   """
   Bool Properties that effect how item panel displays the item(s) within the users current selection
   """
+  # view hierarchy
+  viewHierarchy = BoolProperty(
+    name = 'View all selected',
+    description = "Display everything within your current selection inside the item panel.",
+    default = False
+  )
+  # view filters
+  viewFilters = BoolProperty(
+    name = 'Data block filters',
+    description = "Display filters for the item panel.",
+    default = False
+  )
   # view constraints
   viewConstraints = BoolProperty(
     name = 'View object constraints',
     description = "Display the object constraints.",
-    default = True
+    default = False
   )
   # view modifiers
   viewModifiers = BoolProperty(
     name = 'View object modifiers',
     description = "Display the object modifiers.",
-    default = True
+    default = False
   )
   # view bone constraints
   viewBoneConstraints = BoolProperty(
     name = 'View bone constraints',
     description = "Display the bone constraints.",
-    default = True
+    default = False
   )
   # view materials
   viewMaterials = BoolProperty(
     name = 'View object materials',
     description = "Display the object materials.",
-    default = True
+    default = False
   )
   # view textures
   viewTextures = BoolProperty(
     name = 'View material textures.',
     description = "Display the textures of the object's material(s).",
-    default = True
+    default = False
   )
-  # view hierarchy
-  viewHierarchy = BoolProperty(
-    name = 'View all selected',
-    description = "Display everything within your current selection inside the item panel.",
+  # view particle systems
+  viewParticleSystems = BoolProperty(
+    name = 'View particle systems',
+    description = "Display the particle systems for the object.",
+    default = False
+  )
+  # view particle settings
+  viewParticleSettings = BoolProperty(
+    name = 'View particle settings',
+    description = "Display the particle system settings for the object.",
+    default = False
+  )
+  # group
+  viewGroups = BoolProperty(
+    name = 'View groups',
+    description = "Display the groups the selected object is apart of.",
+    default = False
+  )
+  # view vertex groups
+  viewVertexGroups = BoolProperty(
+    name = 'View vertex groups',
+    description = "Display the objects vertex groups.",
+    default = False
+  )
+  # view shape keys
+  viewShapeKeys = BoolProperty(
+    name = 'View shapekeys',
+    description = "Display the objects shapekeys.",
+    default = False
+  )
+  # view uvs
+  viewUVS = BoolProperty(
+    name = 'View UV\'s',
+    description = "Display the mesh objects UV's.",
+    default = False
+  )
+  # view vertex colors
+  viewVertexColors = BoolProperty(
+    name = 'View vertex colors',
+    description = "Display the vertex colors.",
+    default = False
+  )
+  # view bone groups
+  viewBoneGroups = BoolProperty(
+    name = 'View bone groups',
+    description = "Display bone groups.",
+    default = False
+  )
+  # view selected bones
+  viewSelectedBones = BoolProperty(
+    name = 'View selected bones',
+    description = "Display selected bones.",
     default = False
   )
 
@@ -656,21 +907,49 @@ class itemPanel():
   def draw(self, context):
     """ Item panel body. """
     layout = self.layout
-    column = layout.column()
+    column = layout.column(align=True)
     itemUI = context.window_manager.itemUI
     # view options row
-    split = column.split(align=True)
-    split.prop(itemUI, 'viewConstraints', text='', icon='CONSTRAINT')
-    split.prop(itemUI, 'viewModifiers', text='', icon='MODIFIER')
-    if context.object.mode in 'POSE':
+    if itemUI.viewFilters:
+      row = column.row(align=True)
+      row.scale_y = 1.25
+      row.prop(itemUI, 'viewHierarchy', text='', icon='OOPS')
+      row.prop(itemUI, 'viewFilters', toggle=True)
+      row.operator('view3d.batch_naming', text='', icon='AUTO')
+      split = column.split(align=True)
+      split.prop(itemUI, 'viewConstraints', text='', icon='CONSTRAINT')
+      split.prop(itemUI, 'viewModifiers', text='', icon='MODIFIER')
       split.prop(itemUI, 'viewBoneConstraints', text='', icon='CONSTRAINT_BONE')
-    split.prop(itemUI, 'viewMaterials', text='', icon='MATERIAL')
-    split.prop(itemUI, 'viewTextures', text='', icon='TEXTURE')
-    split.prop(itemUI, 'viewHierarchy', text='', icon='OOPS')
-    split.operator('view3d.batch_naming', text='', icon='AUTO')
+      split.prop(itemUI, 'viewMaterials', text='', icon='MATERIAL')
+      split.prop(itemUI, 'viewTextures', text='', icon='TEXTURE')
+      split.prop(itemUI, 'viewParticleSystems', text='', icon='PARTICLES')
+      split = column.split(align=True)
+      split.prop(itemUI, 'viewGroups', text='', icon='GROUP')
+      split.prop(itemUI, 'viewVertexGroups', text='', icon='GROUP_VERTEX')
+      split.prop(itemUI, 'viewShapeKeys', text='', icon='SHAPEKEY_DATA')
+      split.prop(itemUI, 'viewUVS', text='', icon='GROUP_UVS')
+      split.prop(itemUI, 'viewVertexColors', text='', icon='GROUP_VCOL')
+      split.prop(itemUI, 'viewBoneGroups', text='', icon='GROUP_BONE')
+    else:
+      row = column.row(align=True)
+      row.scale_y = 1.25
+      row.prop(itemUI, 'viewHierarchy', text='', icon='OOPS')
+      row.prop(itemUI, 'viewFilters', toggle=True)
+      row.operator('view3d.batch_naming', text='', icon='AUTO')
+    column = layout.column()
     # data block list
-    row = column.row(align = True)
+    row = column.row(align=True)
     row.template_ID(context.scene.objects, 'active')
+    # groups
+    if itemUI.viewGroups:
+      for group in bpy.data.groups[:]:
+        for object in group.objects[:]:
+          if object == context.active_object:
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='GROUP')
+            row.prop(group, 'name', text='')
     # constraints
     if itemUI.viewConstraints:
       for constraint in context.active_object.constraints:
@@ -678,13 +957,17 @@ class itemPanel():
         sub = row.row()
         sub.scale_x = 1.6
         sub.label(text='', icon='CONSTRAINT')
+        row.prop(constraint, 'name', text='')
         if constraint.mute:
           iconView = 'RESTRICT_VIEW_ON'
         else:
           iconView = 'RESTRICT_VIEW_OFF'
         row.prop(constraint, 'mute', text='', icon=iconView)
-        row.prop(constraint, 'name', text='')
     # modifiers
+    if not itemUI.viewModifiers:
+      itemUI.viewParticleSystems = False
+    if not itemUI.viewParticleSystems:
+      itemUI.viewParticleSettings = False
     if itemUI.viewModifiers:
       for modifier in context.active_object.modifiers:
         row = column.row(align=True)
@@ -791,28 +1074,31 @@ class itemPanel():
         else:
           iconMod = 'MODIFIER'
         sub.label(text='', icon=iconMod)
+        row.prop(modifier, 'name', text='')
         if modifier.show_viewport:
           iconView = 'RESTRICT_VIEW_OFF'
         else:
           iconView = 'RESTRICT_VIEW_ON'
         row.prop(modifier, 'show_viewport', text='', icon=iconView)
-        row.prop(modifier, 'name', text='')
-        if modifier.type in {'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM'}:
-          row = column.row(align=True)
-          sub = row.row()
-          sub.scale_x = 1.6
-          sub.label(text='', icon='PARTICLES')
-          if modifier.show_render:
-            iconRender = 'RESTRICT_RENDER_OFF'
-          else:
-            iconRender = 'RESTRICT_RENDER_ON'
-          row.prop(modifier, 'show_render', text='', icon=iconRender)
-          row.prop(modifier.particle_system, 'name', text='')
-          row = column.row(align=True)
-          sub = row.row()
-          sub.scale_x = 1.6
-          sub.label(text='', icon='DOT')
-          row.prop(modifier.particle_system.settings, 'name', text='')
+        # particle system
+        if itemUI.viewParticleSystems:
+          if modifier.type in {'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM'}:
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='PARTICLES')
+            row.prop(modifier.particle_system, 'name', text='')
+            if modifier.show_render:
+              iconRender = 'RESTRICT_RENDER_OFF'
+            else:
+              iconRender = 'RESTRICT_RENDER_ON'
+            row.prop(modifier, 'show_render', text='', icon=iconRender)
+            # particle settings
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='DOT')
+            row.prop(modifier.particle_system.settings, 'name', text='')
     # materials
     if itemUI.viewMaterials:
       for materialSlot in bpy.data.objects[context.active_object.name].material_slots[:]:
@@ -832,12 +1118,12 @@ class itemPanel():
                     sub = row.row()
                     sub.scale_x = 1.6
                     sub.label(text='', icon='TEXTURE')
+                    row.prop(textureSlot.texture, 'name', text='')
                     if textureSlot.use:
                       iconToggle = 'RADIOBUT_ON'
                     else:
                       iconToggle = 'RADIOBUT_OFF'
                     row.prop(textureSlot, 'use', text='', icon=iconToggle)
-                    row.prop(textureSlot.texture, 'name', text='')
     else:
       itemUI.viewTextures = False
     # view hierarchy
@@ -875,6 +1161,16 @@ class itemPanel():
               iconObject = 'OUTLINER_OB_MESH'
             sub.label(text='', icon=iconObject)
             row.prop(object, 'name', text='')
+            # group
+            if itemUI.viewGroups:
+              for group in bpy.data.groups[:]:
+                for groupObject in group.objects[:]:
+                  if groupObject == object:
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='GROUP')
+                    row.prop(group, 'name', text='')
             # constraints
             if itemUI.viewConstraints:
               for constraint in object.constraints[:]:
@@ -882,12 +1178,12 @@ class itemPanel():
                 sub = row.row()
                 sub.scale_x = 1.6
                 sub.label(text='', icon='CONSTRAINT')
+                row.prop(constraint, 'name', text='')
                 if constraint.mute:
                   iconView = 'RESTRICT_VIEW_ON'
                 else:
                   iconView = 'RESTRICT_VIEW_OFF'
                 row.prop(constraint, 'mute', text='', icon=iconView)
-                row.prop(constraint, 'name', text='')
             # modifiers
             if itemUI.viewModifiers:
               for modifier in object.modifiers[:]:
@@ -995,28 +1291,31 @@ class itemPanel():
                 else:
                   iconMod = 'MODIFIER'
                 sub.label(text='', icon=iconMod)
+                row.prop(modifier, 'name', text='')
                 if modifier.show_viewport:
                   iconView = 'RESTRICT_VIEW_OFF'
                 else:
                   iconView = 'RESTRICT_VIEW_ON'
                 row.prop(modifier, 'show_viewport', text='', icon=iconView)
-                row.prop(modifier, 'name', text='')
-                if modifier.type in {'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM'}:
-                  row = column.row(align=True)
-                  sub = row.row()
-                  sub.scale_x = 1.6
-                  sub.label(text='', icon='PARTICLES')
-                  if modifier.show_render:
-                    iconRender = 'RESTRICT_RENDER_OFF'
-                  else:
-                    iconRender = 'RESTRICT_RENDER_ON'
-                  row.prop(modifier, 'show_render', text='', icon=iconRender)
-                  row.prop(modifier.particle_system, 'name', text='')
-                  row = column.row(align=True)
-                  sub = row.row()
-                  sub.scale_x = 1.6
-                  sub.label(text='', icon='DOT')
-                  row.prop(modifier.particle_system.settings, 'name', text='')
+                # particle system
+                if itemUI.viewParticleSystems:
+                  if modifier.type in {'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM'}:
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='PARTICLES')
+                    row.prop(modifier.particle_system, 'name', text='')
+                    if modifier.show_render:
+                      iconRender = 'RESTRICT_RENDER_OFF'
+                    else:
+                      iconRender = 'RESTRICT_RENDER_ON'
+                    row.prop(modifier, 'show_render', text='', icon=iconRender)
+                    # particle settings
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='DOT')
+                    row.prop(modifier.particle_system.settings, 'name', text='')
             # materials
             if itemUI.viewMaterials:
               for materialSlot in bpy.data.objects[object.name].material_slots[:]:
@@ -1036,12 +1335,12 @@ class itemPanel():
                             sub = row.row()
                             sub.scale_x = 1.6
                             sub.label(text='', icon='TEXTURE')
+                            row.prop(textureSlot.texture, 'name', text='')
                             if textureSlot.use:
                               iconToggle = 'RADIOBUT_ON'
                             else:
                               iconToggle = 'RADIOBUT_OFF'
                             row.prop(textureSlot, 'use', text='', icon=iconToggle)
-                            row.prop(textureSlot.texture, 'name', text='')
             else:
               itemUI.viewTextures = False
     # empty
@@ -1053,56 +1352,124 @@ class itemPanel():
     else:
       row = column.row(align=True)
       row.template_ID(context.active_object, 'data')
-    # bones
-    if (context.object.type in 'ARMATURE' and
-      context.object.mode in {'POSE', 'EDIT'}):
-      row = column.row(align=True)
-      sub = row.row()
-      sub.scale_x = 1.6
-      sub.label(text='', icon='BONE_DATA')
-      row.prop(context.active_bone, 'name', text='')
-      if context.object.mode in 'POSE':
-        if itemUI.viewBoneConstraints:
-          for constraint in context.active_pose_bone.constraints:
+      # vertex groups
+      if itemUI.viewVertexGroups:
+        if bpy.data.objects[context.active_object.name].type in {'LATTICE', 'MESH'}:
+          for group in bpy.data.objects[context.active_object.name].vertex_groups[:]:
             row = column.row(align=True)
             sub = row.row()
             sub.scale_x = 1.6
-            sub.label(text='', icon='CONSTRAINT_BONE')
-            if constraint.mute:
-              iconView = 'RESTRICT_VIEW_ON'
+            sub.label(text='', icon='GROUP_VERTEX')
+            row.prop(group, 'name', text='')
+            if group.lock_weight:
+              iconLock = 'LOCKED'
             else:
-              iconView = 'RESTRICT_VIEW_OFF'
-            row.prop(constraint, 'mute', text='', icon=iconView)
-            row.prop(constraint, 'name', text='')
-      if itemUI.viewHierarchy:
-        if context.selected_editable_bones:
-          selectedBones = context.selected_editable_bones
-        else:
-          selectedBones = context.selected_pose_bones
-        sorted_bone = []
-        for bone in selectedBones:
-          sorted_bone.append((bone.name, bone))
-        for bone in sorted(sorted_bone):
-          if bone[1] in (context.selected_editable_bones or context.selected_pose_bones):
-            if bone[1] != (context.active_pose_bone or context.active_bone):
+              iconLock = 'UNLOCKED'
+            row.prop(group, 'lock_weight', text='', icon=iconLock)
+      # shape keys
+      if itemUI.viewShapeKeys:
+        if bpy.data.objects[context.active_object.name].type in {'MESH', 'CURVE', 'SURFACE', 'LATTICE'}:
+          if bpy.data.objects[context.active_object.name].data.shape_keys:
+            for key in bpy.data.objects[context.active_object.name].data.shape_keys.key_blocks[:]:
               row = column.row(align=True)
               sub = row.row()
               sub.scale_x = 1.6
-              sub.label(text='', icon='BONE_DATA')
-              row.prop(bone[1], 'name', text='')
-              if context.object.mode in 'POSE':
-                if itemUI.viewBoneConstraints:
-                  for constraint in bone[1].constraints[:]:
-                    row = column.row(align=True)
-                    sub = row.row()
-                    sub.scale_x = 1.6
-                    sub.label(text='', icon='CONSTRAINT_BONE')
-                    if constraint.mute:
-                      iconView = 'RESTRICT_VIEW_ON'
-                    else:
-                      iconView = 'RESTRICT_VIEW_OFF'
-                    row.prop(constraint, 'mute', text='', icon=iconView)
-                    row.prop(constraint, 'name', text='')
+              sub.label(text='', icon='SHAPEKEY_DATA')
+              row.prop(key, 'name', text='')
+              if key != bpy.data.objects[context.active_object.name].data.shape_keys.key_blocks[0]:
+                sub = row.row(align=True)
+                sub.scale_x = 0.5
+                sub.prop(key, 'value', text='')
+              row.prop(key, 'mute', text='', icon='RESTRICT_VIEW_OFF')
+      # uv's
+      if itemUI.viewUVS:
+        if bpy.data.objects[context.active_object.name].type in 'MESH':
+          for uv in bpy.data.objects[context.active_object.name].data.uv_textures[:]:
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='GROUP_UVS')
+            row.prop(uv, 'name', text='')
+            if uv.active_render:
+              iconActive = 'RESTRICT_RENDER_OFF'
+            else:
+              iconActive = 'RESTRICT_RENDER_ON'
+            row.prop(uv, 'active_render', text='', icon=iconActive)
+      # vertex colors
+      if itemUI.viewVertexColors:
+        if bpy.data.objects[context.active_object.name].type in 'MESH':
+          for vertexColor in bpy.data.objects[context.active_object.name].data.vertex_colors[:]:
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='GROUP_VCOL')
+            row.prop(vertexColor, 'name', text='')
+            if vertexColor.active_render:
+              iconActive = 'RESTRICT_RENDER_OFF'
+            else:
+              iconActive = 'RESTRICT_RENDER_ON'
+            row.prop(vertexColor, 'active_render', text='', icon=iconActive)
+      # bone groups
+      if itemUI.viewBoneGroups:
+        if bpy.data.objects[context.active_object.name].type in 'ARMATURE':
+          for group in bpy.data.objects[context.active_object.name].pose.bone_groups[:]:
+            row = column.row(align=True)
+            sub = row.row()
+            sub.scale_x = 1.6
+            sub.label(text='', icon='GROUP_BONE')
+            row.prop(group, 'name', text='')
+      # bones
+      if (bpy.data.objects[context.active_object.name].type in 'ARMATURE' and
+        context.object.mode in {'POSE', 'EDIT'}):
+        row = column.row(align=True)
+        sub = row.row(align=True)
+        sub.scale_x = 1.6
+        sub.prop(itemUI, 'viewSelectedBones', text='', icon='BONE_DATA')
+        row.prop(context.active_bone, 'name', text='')
+        # bone constraints
+        if itemUI.viewBoneConstraints:
+          if context.object.mode in 'POSE':
+            for constraint in context.active_pose_bone.constraints:
+              row = column.row(align=True)
+              sub = row.row()
+              sub.scale_x = 1.6
+              sub.label(text='', icon='CONSTRAINT_BONE')
+              row.prop(constraint, 'name', text='')
+              if constraint.mute:
+                iconView = 'RESTRICT_VIEW_ON'
+              else:
+                iconView = 'RESTRICT_VIEW_OFF'
+              row.prop(constraint, 'mute', text='', icon=iconView)
+        # selected bones
+        if itemUI.viewSelectedBones:
+          if context.selected_editable_bones:
+            selectedBones = context.selected_editable_bones
+          else:
+            selectedBones = context.selected_pose_bones
+          sortedBones = []
+          for bone in selectedBones:
+            sortedBones.append((bone.name, bone))
+          for bone in sorted(sortedBones):
+            if bone[1] in (context.selected_editable_bones or context.selected_pose_bones):
+              if bone[1] != (context.active_pose_bone or context.active_bone):
+                row = column.row(align=True)
+                sub = row.row()
+                sub.scale_x = 1.6
+                sub.label(text='', icon='BONE_DATA')
+                row.prop(bone[1], 'name', text='')
+                if context.object.mode in 'POSE':
+                  if itemUI.viewBoneConstraints:
+                    for constraint in bone[1].constraints[:]:
+                      row = column.row(align=True)
+                      sub = row.row()
+                      sub.scale_x = 1.6
+                      sub.label(text='', icon='CONSTRAINT_BONE')
+                      row.prop(constraint, 'name', text='')
+                      if constraint.mute:
+                        iconView = 'RESTRICT_VIEW_ON'
+                      else:
+                        iconView = 'RESTRICT_VIEW_OFF'
+                      row.prop(constraint, 'mute', text='', icon=iconView)
     # materials
     if itemUI.viewMaterials:
       for materialSlot in bpy.data.objects[context.active_object.name].material_slots[:]:
@@ -1122,12 +1489,12 @@ class itemPanel():
                     sub = row.row()
                     sub.scale_x = 1.6
                     sub.label(text='', icon='TEXTURE')
+                    row.prop(textureSlot.texture, 'name', text='')
                     if textureSlot.use:
                       iconToggle = 'RADIOBUT_ON'
                     else:
                       iconToggle = 'RADIOBUT_OFF'
                     row.prop(textureSlot, 'use', text='', icon=iconToggle)
-                    row.prop(textureSlot.texture, 'name', text='')
     else:
       itemUI.viewTextures = False
     # view hierarchy
@@ -1163,6 +1530,72 @@ class itemPanel():
                 iconData = 'MESH_DATA'
               sub.label(text='', icon=iconData)
               row.prop(object.data, 'name', text='')
+              # vertex groups
+              if itemUI.viewVertexGroups:
+                if bpy.data.objects[object.name].type in {'LATTICE', 'MESH'}:
+                  for group in bpy.data.objects[object.name].vertex_groups[:]:
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='GROUP_VERTEX')
+                    row.prop(group, 'name', text='')
+                    if group.lock_weight:
+                      iconLock = 'LOCKED'
+                    else:
+                      iconLock = 'UNLOCKED'
+                    row.prop(group, 'lock_weight', text='', icon=iconLock)
+              # shape keys
+              if itemUI.viewShapeKeys:
+                if bpy.data.objects[object.name].type in {'MESH', 'CURVE', 'SURFACE', 'LATTICE'}:
+                  if bpy.data.objects[object.name].data.shape_keys:
+                    for key in bpy.data.objects[object.name].data.shape_keys.key_blocks[:]:
+                      row = column.row(align=True)
+                      sub = row.row()
+                      sub.scale_x = 1.6
+                      sub.label(text='', icon='SHAPEKEY_DATA')
+                      row.prop(key, 'name', text='')
+                      if key != bpy.data.objects[object.name].data.shape_keys.key_blocks[0]:
+                        sub = row.row(align=True)
+                        sub.scale_x = 0.5
+                        sub.prop(key, 'value', text='')
+                      row.prop(key, 'mute', text='', icon='RESTRICT_VIEW_OFF')
+              # uv's
+              if itemUI.viewUVS:
+                if bpy.data.objects[object.name].type in 'MESH':
+                  for uv in bpy.data.objects[object.name].data.uv_textures[:]:
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='GROUP_UVS')
+                    row.prop(uv, 'name', text='')
+                    if uv.active_render:
+                      iconActive = 'RESTRICT_RENDER_OFF'
+                    else:
+                      iconActive = 'RESTRICT_RENDER_ON'
+                    row.prop(uv, 'active_render', text='', icon=iconActive)
+              # vertex colors
+              if itemUI.viewVertexColors:
+                if bpy.data.objects[object.name].type in 'MESH':
+                  for vertexColor in bpy.data.objects[object.name].data.vertex_colors[:]:
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='GROUP_VCOL')
+                    row.prop(vertexColor, 'name', text='')
+                    if vertexColor.active_render:
+                      iconActive = 'RESTRICT_RENDER_OFF'
+                    else:
+                      iconActive = 'RESTRICT_RENDER_ON'
+                    row.prop(vertexColor, 'active_render', text='', icon=iconActive)
+              # bone groups
+              if itemUI.viewBoneGroups:
+                if bpy.data.objects[object.name].type in 'ARMATURE':
+                  for group in bpy.data.objects[object.name].pose.bone_groups[:]:
+                    row = column.row(align=True)
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='GROUP_BONE')
+                    row.prop(group, 'name', text='')
               # materials
               if itemUI.viewMaterials:
                 for materialSlot in bpy.data.objects[object.name].material_slots[:]:
@@ -1182,12 +1615,12 @@ class itemPanel():
                               sub = row.row()
                               sub.scale_x = 1.6
                               sub.label(text='', icon='TEXTURE')
+                              row.prop(textureSlot.texture, 'name', text='')
                               if textureSlot.use:
                                 iconToggle = 'RADIOBUT_ON'
                               else:
                                 iconToggle = 'RADIOBUT_OFF'
                               row.prop(textureSlot, 'use', text='', icon=iconToggle)
-                              row.prop(textureSlot.texture, 'name', text='')
               else:
                 itemUI.viewTextures = False
 

@@ -24,6 +24,22 @@
 #
 # ##### END INFO BLOCK #####
 
+# TODO:
+# -- PANEL
+# - object icons → select that object
+# - group icons → select items in group
+# - constraint icons → change properties windows to appropiate context
+# - modifier icons → do the same
+# - object data icons → do the same
+# - vertex groups icons (if in edit mode) → select that group
+# - material icons → do the same (node editor?)
+# - texture icons → do the same (node editor?)
+# - particle icons → do the same
+# -- BATCH RENAME
+# - object name → object data name
+# - material name → texture name
+# - particle system name → particle settings name
+
 # blender info
 bl_info = {
   'name': 'Item Panel & Batch Naming',
@@ -77,15 +93,19 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
             dataPath = object
           elif objectType in object.type:
             dataPath = object
+          try:
+            rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+          except:
+            pass
       else:
         if objectType in 'ALL':
           dataPath = object
         elif objectType in object.type:
           dataPath = object
-      try:
-        rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
-      except:
-        pass
+          try:
+            rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+          except:
+            pass
   # object constraints
   if batchObjectConstraints:
     for object in bpy.data.objects[:]:
@@ -143,15 +163,19 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
             dataPath = object.data
           elif objectType in object.type:
             dataPath = object.data
+          try:
+            rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+          except:
+            pass
       else:
         if objectType in 'ALL':
           dataPath = object.data
         elif objectType in object.type:
           dataPath = object.data
-      try:
-        rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
-      except:
-        pass
+        try:
+          rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+        except:
+          pass
   # bones
   if batchBones:
     for object in bpy.data.objects[:]:
@@ -306,16 +330,15 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
   if batchGroups:
     for group in bpy.data.groups[:]:
       if batchType in 'SELECTED':
-        if object.select:
-          for object in group.objects[:]:
-            if objectType in 'ALL':
-              dataPath = group
-            elif objectType in object.type:
-              dataPath = group
-            try:
-              rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
-            except:
-              pass
+        for object in group.objects[:]:
+          if objectType in 'ALL':
+            dataPath = group
+          elif objectType in object.type:
+            dataPath = group
+          try:
+            rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+          except:
+            pass
       else:
         for object in group.objects[:]:
           if objectType in 'ALL':
@@ -722,6 +745,9 @@ class VIEW3D_OT_batch_naming(Operator):
     max = 50,
     default = 0
   )
+  # object → object data
+  # material → textures
+  # particle system → particle settings
   # poll
   @classmethod
   def poll(cls, context):
@@ -789,7 +815,7 @@ class VIEW3D_OT_batch_naming(Operator):
   # invoke
   def invoke(self, context, event):
     """ Invoke the operator panel/menu, control its width. """
-    context.window_manager.invoke_props_dialog(self, width=200)
+    context.window_manager.invoke_props_dialog(self, width=201)
     return {'RUNNING_MODAL'}
 
 ###############
@@ -817,85 +843,85 @@ class itemUIPropertyGroup(PropertyGroup):
   viewConstraints = BoolProperty(
     name = 'View object constraints',
     description = "Display the object constraints.",
-    default = False
+    default = True
   )
   # view modifiers
   viewModifiers = BoolProperty(
     name = 'View object modifiers',
     description = "Display the object modifiers.",
-    default = False
+    default = True
   )
   # view bone constraints
   viewBoneConstraints = BoolProperty(
     name = 'View bone constraints',
     description = "Display the bone constraints.",
-    default = False
+    default = True
   )
   # view materials
   viewMaterials = BoolProperty(
     name = 'View object materials',
     description = "Display the object materials.",
-    default = False
+    default = True
   )
   # view textures
   viewTextures = BoolProperty(
     name = 'View material textures.',
     description = "Display the textures of the object's material(s).",
-    default = False
+    default = True
   )
   # view particle systems
   viewParticleSystems = BoolProperty(
     name = 'View particle systems',
     description = "Display the particle systems for the object.",
-    default = False
+    default = True
   )
   # view particle settings
   viewParticleSettings = BoolProperty(
     name = 'View particle settings',
     description = "Display the particle system settings for the object.",
-    default = False
+    default = True
   )
   # group
   viewGroups = BoolProperty(
     name = 'View groups',
     description = "Display the groups the selected object is apart of.",
-    default = False
+    default = True
   )
   # view vertex groups
   viewVertexGroups = BoolProperty(
     name = 'View vertex groups',
     description = "Display the objects vertex groups.",
-    default = False
+    default = True
   )
   # view shape keys
   viewShapeKeys = BoolProperty(
     name = 'View shapekeys',
     description = "Display the objects shapekeys.",
-    default = False
+    default = True
   )
   # view uvs
   viewUVS = BoolProperty(
     name = 'View UV\'s',
     description = "Display the mesh objects UV's.",
-    default = False
+    default = True
   )
   # view vertex colors
   viewVertexColors = BoolProperty(
     name = 'View vertex colors',
     description = "Display the vertex colors.",
-    default = False
+    default = True
   )
   # view bone groups
   viewBoneGroups = BoolProperty(
     name = 'View bone groups',
     description = "Display bone groups.",
-    default = False
+    default = True
   )
   # view selected bones
   viewSelectedBones = BoolProperty(
     name = 'View selected bones',
     description = "Display selected bones.",
-    default = False
+    default = True
   )
 
 # item panel

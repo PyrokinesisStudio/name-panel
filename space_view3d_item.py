@@ -2927,7 +2927,7 @@ class itemPanel():
               row.prop(key, 'name', text='')
               if key != bpy.data.objects[context.active_object.name].data.shape_keys.key_blocks[0]:
                 sub = row.row(align=True)
-                sub.scale_x = 0.75
+                sub.scale_x = 0.18
                 sub.prop(key, 'value', text='')
               row.prop(key, 'mute', text='', icon='RESTRICT_VIEW_OFF')
 
@@ -3094,7 +3094,7 @@ class itemPanel():
                       row.prop(key, 'name', text='')
                       if key != bpy.data.objects[object.name].data.shape_keys.key_blocks[0]:
                         sub = row.row(align=True)
-                        sub.scale_x = 0.75
+                        sub.scale_x = 0.18
                         sub.prop(key, 'value', text='')
                       row.prop(key, 'mute', text='', icon='RESTRICT_VIEW_OFF')
 

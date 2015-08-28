@@ -484,11 +484,12 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
               # object type
               if objectType in 'ALL':
                 dataPath = key
+                
+                # rename
+                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
               elif objectType in object.type:
+                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
                 dataPath = key
-
-              # rename
-              rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
 
   # batch uv maps
   if batchUVS:

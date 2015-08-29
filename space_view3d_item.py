@@ -484,12 +484,13 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
               # object type
               if objectType in 'ALL':
                 dataPath = key
-                
+
                 # rename
                 rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
               elif objectType in object.type:
-                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
                 dataPath = key
+                rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
+
 
   # batch uv maps
   if batchUVS:
@@ -578,8 +579,8 @@ def batchRename(self, context, batchType, batchObjects, batchObjectConstraints, 
             rename(self, dataPath, batchName, find, replace, prefix, suffix, trimStart, trimEnd)
 
 # batch copy
-def batchCopy(batchType, source, objects, objectData, material, texture, particleSystem, particleSettings, useActiveObject):
-  ''' Assign name values according to the source type and final destination. '''
+def batchNameCopy(self, context, batchType, source, objects, objectData, material, texture, particleSystem, particleSettings, useActiveObject):
+  ''' Assign name values from source type to destination data block. '''
 
   # source object
   if source in 'OBJECT':
@@ -1559,123 +1560,119 @@ def batchCopy(batchType, source, objects, objectData, material, texture, particl
         except:
           pass
 
-# reset properties
-def resetBatchProperties(self, context, batchUI, batchCopyUI):
+# reset options
+def resetBatchProperties(self, context):
   ''' Resets the window manager property values for item panel add-on. '''
 
-  # batch ui
-  if batchUI:
+  # batch naming
+  # batch type
+  context.window_manager.batchNamingUI.batchType = 'GLOBAL'
 
-    # batch type
-    context.window_manager.batchUI.batchType = 'GLOBAL'
+  # batch objects
+  context.window_manager.batchNamingUI.batchObjects = False
 
-    # batch objects
-    context.window_manager.batchUI.batchObjects = False
+  # batch object constraints
+  context.window_manager.batchNamingUI.batchObjectConstraints = False
 
-    # batch object constraints
-    context.window_manager.batchUI.batchObjectConstraints = False
+  # batch modifiers
+  context.window_manager.batchNamingUI.batchModifiers = False
 
-    # batch modifiers
-    context.window_manager.batchUI.batchModifiers = False
+  # batch object data
+  context.window_manager.batchNamingUI.batchObjectData = False
 
-    # batch object data
-    context.window_manager.batchUI.batchObjectData = False
+  # batch bones
+  context.window_manager.batchNamingUI.batchBones = False
 
-    # batch bones
-    context.window_manager.batchUI.batchBones = False
+  # batch bone constraints
+  context.window_manager.batchNamingUI.batchBoneConstraints = False
 
-    # batch bone constraints
-    context.window_manager.batchUI.batchBoneConstraints = False
+  # batch materials
+  context.window_manager.batchNamingUI.batchMaterials = False
 
-    # batch materials
-    context.window_manager.batchUI.batchMaterials = False
+  # batch textures
+  context.window_manager.batchNamingUI.batchTextures = False
 
-    # batch textures
-    context.window_manager.batchUI.batchTextures = False
+  # batch particle systems
+  context.window_manager.batchNamingUI.batchParticleSystems = False
 
-    # batch particle systems
-    context.window_manager.batchUI.batchParticleSystems = False
+  # batch particle settings
+  context.window_manager.batchNamingUI.batchParticleSettings = False
 
-    # batch particle settings
-    context.window_manager.batchUI.batchParticleSettings = False
+  # batch groups
+  context.window_manager.batchNamingUI.batchGroups = False
 
-    # batch groups
-    context.window_manager.batchUI.batchGroups = False
+  # batch vertex groups
+  context.window_manager.batchNamingUI.batchVertexGroups = False
 
-    # batch vertex groups
-    context.window_manager.batchUI.batchVertexGroups = False
+  # batch shape keys
+  context.window_manager.batchNamingUI.batchShapeKeys = False
 
-    # batch shape keys
-    context.window_manager.batchUI.batchShapeKeys = False
+  # batch uvs
+  context.window_manager.batchNamingUI.batchUVS = False
 
-    # batch uvs
-    context.window_manager.batchUI.batchUVS = False
+  # batch vertex colors
+  context.window_manager.batchNamingUI.batchVertexColors = False
 
-    # batch vertex colors
-    context.window_manager.batchUI.batchVertexColors = False
+  # batch bone groups
+  context.window_manager.batchNamingUI.batchBoneGroups = False
 
-    # batch bone groups
-    context.window_manager.batchUI.batchBoneGroups = False
+  # object type
+  context.window_manager.batchNamingUI.objectType = 'ALL'
 
-    # object type
-    context.window_manager.batchUI.objectType = 'ALL'
+  # constraint type
+  context.window_manager.batchNamingUI.constraintType = 'ALL'
 
-    # constraint type
-    context.window_manager.batchUI.constraintType = 'ALL'
+  # modifier type
+  context.window_manager.batchNamingUI.modifierType = 'ALL'
 
-    # modifier type
-    context.window_manager.batchUI.modifierType = 'ALL'
+  # name
+  context.window_manager.batchNamingUI.batchName = ''
 
-    # name
-    context.window_manager.batchUI.batchName = ''
+  # find
+  context.window_manager.batchNamingUI.find = ''
 
-    # find
-    context.window_manager.batchUI.find = ''
+  # replace
+  context.window_manager.batchNamingUI.replace = ''
 
-    # replace
-    context.window_manager.batchUI.replace = ''
+  # prefix
+  context.window_manager.batchNamingUI.prefix = ''
 
-    # prefix
-    context.window_manager.batchUI.prefix = ''
+  # suffix
+  context.window_manager.batchNamingUI.suffix = ''
 
-    # suffix
-    context.window_manager.batchUI.suffix = ''
+  # trim start
+  context.window_manager.batchNamingUI.trimStart = 0
 
-    # trim start
-    context.window_manager.batchUI.trimStart = 0
+  # trim end
+  context.window_manager.batchNamingUI.trimEnd = 0
 
-    # trim end
-    context.window_manager.batchUI.trimEnd = 0
+  # batch name copy
+  # batch type
+  context.window_manager.batchNameCopyUI.batchType = 'GLOBAL'
 
-  # batch copy ui
-  if batchCopyUI:
+  # source
+  context.window_manager.batchNameCopyUI.source = 'OBJECT'
 
-    # batch type
-    context.window_manager.batchCopyUI.batchType = 'GLOBAL'
+  # objects
+  context.window_manager.batchNameCopyUI.objects = False
 
-    # source
-    context.window_manager.batchCopyUI.source = 'OBJECT'
+  # object data
+  context.window_manager.batchNameCopyUI.objectData = False
 
-    # objects
-    context.window_manager.batchCopyUI.objects = False
+  # material
+  context.window_manager.batchNameCopyUI.material = False
 
-    # object data
-    context.window_manager.batchCopyUI.objectData = False
+  # texture
+  context.window_manager.batchNameCopyUI.texture = False
 
-    # material
-    context.window_manager.batchCopyUI.material = False
+  # particle system
+  context.window_manager.batchNameCopyUI.particleSystem = False
 
-    # texture
-    context.window_manager.batchCopyUI.texture = False
+  # particle settings
+  context.window_manager.batchNameCopyUI.particleSettings = False
 
-    # particle system
-    context.window_manager.batchCopyUI.particleSystem = False
-
-    # particle settings
-    context.window_manager.batchCopyUI.particleSettings = False
-
-    # use active object
-    context.window_manager.batchCopyUI.useActiveObject = False
+  # use active object
+  context.window_manager.batchNameCopyUI.useActiveObject = False
 
 # modifier icon
 def modifierIcon(modifier):
@@ -1989,7 +1986,7 @@ def objectDataIcon(object):
 #####################
 
 # batch UI
-class batchUI(PropertyGroup):
+class batchNamingUI(PropertyGroup):
   ''' Properties that effect how the batch naming operation is performed. '''
 
   # batch type
@@ -2281,7 +2278,7 @@ class batchUI(PropertyGroup):
   )
 
 # batch copy UI
-class batchCopyUI(PropertyGroup):
+class batchNameCopyUI(PropertyGroup):
   ''' Properties that effect how the batch copy operation is performed. '''
 
   # batch type
@@ -2360,7 +2357,7 @@ class batchCopyUI(PropertyGroup):
   )
 
 # item UI
-class itemUI(PropertyGroup):
+class itemPanelUI(PropertyGroup):
   ''' Properties that effect how item panel displays the item(s) within the users current selection. '''
 
   # view hierarchy
@@ -2472,26 +2469,12 @@ class itemUI(PropertyGroup):
 ## OPERATORS ##
 ###############
 
-# reset batch properties
-class VIEW3D_OT_reset_batch_properties(Operator):
+# reset batch options
+class VIEW3D_OT_reset_batch_options(Operator):
   ''' Reset batch operators. '''
-  bl_idname = 'view3d.reset_batch_properties'
+  bl_idname = 'view3d.reset_batch_options'
   bl_label = 'Reset Batch Properties'
   bl_option = {'REGISTER', 'UNDO'}
-
-  # batch ui
-  batchUI = BoolProperty(
-    name = 'Batch Naming',
-    description = 'Reset batch naming operator property values.',
-    default = True
-  )
-
-  # batch copy ui
-  batchCopyUI = BoolProperty(
-    name = 'Batch Copy',
-    description = 'Reset the batch copy operator property values.',
-    default = True
-  )
 
   # poll
   @classmethod
@@ -2502,7 +2485,7 @@ class VIEW3D_OT_reset_batch_properties(Operator):
   # execute
   def execute(self, context):
     ''' Execute the operator. '''
-    resetBatchProperties(self, context, self.batchUI, self.batchCopyUI)
+    resetBatchProperties(self, context)
     return {'FINISHED'}
 
 # batch naming
@@ -2524,58 +2507,58 @@ class VIEW3D_OT_batch_naming(Operator):
     layout = self.layout
 
     # batch type
-    layout.prop(context.window_manager.batchUI, 'batchType', expand=True)
+    layout.prop(context.window_manager.batchNamingUI, 'batchType', expand=True)
     column = layout.column(align=True)
     split = column.split(align=True)
 
     # type rows
-    split.prop(context.window_manager.batchUI, 'batchObjects', text='', icon='OBJECT_DATA')
-    split.prop(context.window_manager.batchUI, 'batchObjectConstraints', text='', icon='CONSTRAINT')
-    split.prop(context.window_manager.batchUI, 'batchModifiers', text='', icon='MODIFIER')
-    split.prop(context.window_manager.batchUI, 'batchObjectData', text='', icon='MESH_DATA')
-    split.prop(context.window_manager.batchUI, 'batchBones', text='', icon='BONE_DATA')
-    split.prop(context.window_manager.batchUI, 'batchBoneConstraints', text='', icon='CONSTRAINT_BONE')
-    split.prop(context.window_manager.batchUI, 'batchMaterials', text='', icon='MATERIAL')
-    split.prop(context.window_manager.batchUI, 'batchTextures', text='', icon='TEXTURE')
-    split.prop(context.window_manager.batchUI, 'batchParticleSystems', text='', icon='PARTICLES')
-    split.prop(context.window_manager.batchUI, 'batchParticleSettings', text='', icon='MOD_PARTICLES')
+    split.prop(context.window_manager.batchNamingUI, 'batchObjects', text='', icon='OBJECT_DATA')
+    split.prop(context.window_manager.batchNamingUI, 'batchObjectConstraints', text='', icon='CONSTRAINT')
+    split.prop(context.window_manager.batchNamingUI, 'batchModifiers', text='', icon='MODIFIER')
+    split.prop(context.window_manager.batchNamingUI, 'batchObjectData', text='', icon='MESH_DATA')
+    split.prop(context.window_manager.batchNamingUI, 'batchBones', text='', icon='BONE_DATA')
+    split.prop(context.window_manager.batchNamingUI, 'batchBoneConstraints', text='', icon='CONSTRAINT_BONE')
+    split.prop(context.window_manager.batchNamingUI, 'batchMaterials', text='', icon='MATERIAL')
+    split.prop(context.window_manager.batchNamingUI, 'batchTextures', text='', icon='TEXTURE')
+    split.prop(context.window_manager.batchNamingUI, 'batchParticleSystems', text='', icon='PARTICLES')
+    split.prop(context.window_manager.batchNamingUI, 'batchParticleSettings', text='', icon='MOD_PARTICLES')
     split = column.split(align=True)
-    split.prop(context.window_manager.batchUI, 'batchGroups', text='', icon='GROUP')
-    split.prop(context.window_manager.batchUI, 'batchVertexGroups', text='', icon='GROUP_VERTEX')
-    split.prop(context.window_manager.batchUI, 'batchShapeKeys', text='', icon='SHAPEKEY_DATA')
-    split.prop(context.window_manager.batchUI, 'batchUVS', text='', icon='GROUP_UVS')
-    split.prop(context.window_manager.batchUI, 'batchVertexColors', text='', icon='GROUP_VCOL')
-    split.prop(context.window_manager.batchUI, 'batchBoneGroups', text='', icon='GROUP_BONE')
+    split.prop(context.window_manager.batchNamingUI, 'batchGroups', text='', icon='GROUP')
+    split.prop(context.window_manager.batchNamingUI, 'batchVertexGroups', text='', icon='GROUP_VERTEX')
+    split.prop(context.window_manager.batchNamingUI, 'batchShapeKeys', text='', icon='SHAPEKEY_DATA')
+    split.prop(context.window_manager.batchNamingUI, 'batchUVS', text='', icon='GROUP_UVS')
+    split.prop(context.window_manager.batchNamingUI, 'batchVertexColors', text='', icon='GROUP_VCOL')
+    split.prop(context.window_manager.batchNamingUI, 'batchBoneGroups', text='', icon='GROUP_BONE')
     column = layout.column()
 
     # type filters
-    column.prop(context.window_manager.batchUI, 'objectType', text='')
-    column.prop(context.window_manager.batchUI, 'constraintType', text='')
-    column.prop(context.window_manager.batchUI, 'modifierType', text='')
+    column.prop(context.window_manager.batchNamingUI, 'objectType', text='')
+    column.prop(context.window_manager.batchNamingUI, 'constraintType', text='')
+    column.prop(context.window_manager.batchNamingUI, 'modifierType', text='')
     column.separator()
 
     # input fields
-    column.prop(context.window_manager.batchUI, 'batchName')
+    column.prop(context.window_manager.batchNamingUI, 'batchName')
     column.separator()
-    column.prop(context.window_manager.batchUI, 'find', icon='VIEWZOOM')
+    column.prop(context.window_manager.batchNamingUI, 'find', icon='VIEWZOOM')
     column.separator()
-    column.prop(context.window_manager.batchUI, 'replace', icon='FILE_REFRESH')
+    column.prop(context.window_manager.batchNamingUI, 'replace', icon='FILE_REFRESH')
     column.separator()
-    column.prop(context.window_manager.batchUI, 'prefix', icon='LOOP_BACK')
+    column.prop(context.window_manager.batchNamingUI, 'prefix', icon='LOOP_BACK')
     column.separator()
-    column.prop(context.window_manager.batchUI, 'suffix', icon='LOOP_FORWARDS')
+    column.prop(context.window_manager.batchNamingUI, 'suffix', icon='LOOP_FORWARDS')
     column.separator()
     row = column.row()
     row.label(text='Trim Start:')
-    row.prop(context.window_manager.batchUI, 'trimStart', text='')
+    row.prop(context.window_manager.batchNamingUI, 'trimStart', text='')
     row = column.row()
     row.label(text='Trim End:')
-    row.prop(context.window_manager.batchUI, 'trimEnd', text='')
+    row.prop(context.window_manager.batchNamingUI, 'trimEnd', text='')
 
   # execute
   def execute(self, context):
     ''' Execute the operator. '''
-    batchRename(self, context, context.window_manager.batchUI.batchType, context.window_manager.batchUI.batchObjects, context.window_manager.batchUI.batchObjectConstraints, context.window_manager.batchUI.batchModifiers, context.window_manager.batchUI.batchObjectData, context.window_manager.batchUI.batchBones, context.window_manager.batchUI.batchBoneConstraints, context.window_manager.batchUI.batchMaterials, context.window_manager.batchUI.batchTextures, context.window_manager.batchUI.batchParticleSystems, context.window_manager.batchUI.batchParticleSettings, context.window_manager.batchUI.batchGroups, context.window_manager.batchUI.batchVertexGroups, context.window_manager.batchUI.batchShapeKeys, context.window_manager.batchUI.batchUVS, context.window_manager.batchUI.batchVertexColors, context.window_manager.batchUI.batchBoneGroups, context.window_manager.batchUI.objectType, context.window_manager.batchUI.constraintType, context.window_manager.batchUI.modifierType, context.window_manager.batchUI.batchName, context.window_manager.batchUI.find, context.window_manager.batchUI.replace, context.window_manager.batchUI.prefix, context.window_manager.batchUI.suffix, context.window_manager.batchUI.trimStart, context.window_manager.batchUI.trimEnd)
+    batchRename(self, context, context.window_manager.batchNamingUI.batchType, context.window_manager.batchNamingUI.batchObjects, context.window_manager.batchNamingUI.batchObjectConstraints, context.window_manager.batchNamingUI.batchModifiers, context.window_manager.batchNamingUI.batchObjectData, context.window_manager.batchNamingUI.batchBones, context.window_manager.batchNamingUI.batchBoneConstraints, context.window_manager.batchNamingUI.batchMaterials, context.window_manager.batchNamingUI.batchTextures, context.window_manager.batchNamingUI.batchParticleSystems, context.window_manager.batchNamingUI.batchParticleSettings, context.window_manager.batchNamingUI.batchGroups, context.window_manager.batchNamingUI.batchVertexGroups, context.window_manager.batchNamingUI.batchShapeKeys, context.window_manager.batchNamingUI.batchUVS, context.window_manager.batchNamingUI.batchVertexColors, context.window_manager.batchNamingUI.batchBoneGroups, context.window_manager.batchNamingUI.objectType, context.window_manager.batchNamingUI.constraintType, context.window_manager.batchNamingUI.modifierType, context.window_manager.batchNamingUI.batchName, context.window_manager.batchNamingUI.find, context.window_manager.batchNamingUI.replace, context.window_manager.batchNamingUI.prefix, context.window_manager.batchNamingUI.suffix, context.window_manager.batchNamingUI.trimStart, context.window_manager.batchNamingUI.trimEnd)
     return {'FINISHED'}
 
   # invoke
@@ -2585,10 +2568,10 @@ class VIEW3D_OT_batch_naming(Operator):
     return {'RUNNING_MODAL'}
 
 # batch copy
-class VIEW3D_OT_batch_copy(Operator):
+class VIEW3D_OT_batch_name_copy(Operator):
   ''' Copy names from some types of data blocks to others. '''
-  bl_idname = 'view3d.batch_copy'
-  bl_label = 'Batch Copy'
+  bl_idname = 'view3d.batch_name_copy'
+  bl_label = 'Batch Name Copy'
   bl_options = {'REGISTER', 'UNDO'}
 
   # poll
@@ -2603,32 +2586,34 @@ class VIEW3D_OT_batch_copy(Operator):
     layout = self.layout
 
     # batch type
-    layout.prop(context.window_manager.batchCopyUI, 'batchType', expand=True)
+    layout.prop(context.window_manager.batchNameCopyUI, 'batchType', expand=True)
     column = layout.column(align=True)
-    column.label(text='Copy:')
+    column.label(text='Copy:', icon='COPYDOWN')
+    column = layout.column(align=True)
 
     # source
-    column.prop(context.window_manager.batchCopyUI, 'source', expand=True)
-    column.label(text='Paste:')
+    column.prop(context.window_manager.batchNameCopyUI, 'source', expand=True)
+    column = layout.column(align=True)
+    column.label(text='Paste:', icon='PASTEDOWN')
     column = layout.column(align=True)
     split = column.split(align=True)
 
     # targets
-    split.prop(context.window_manager.batchCopyUI, 'objects', text='', icon='OBJECT_DATA')
-    split.prop(context.window_manager.batchCopyUI, 'objectData', text='', icon='MESH_DATA')
-    split.prop(context.window_manager.batchCopyUI, 'material', text='', icon='MATERIAL')
-    split.prop(context.window_manager.batchCopyUI, 'texture', text='', icon='TEXTURE')
-    split.prop(context.window_manager.batchCopyUI, 'particleSystem', text='', icon='PARTICLES')
-    split.prop(context.window_manager.batchCopyUI, 'particleSettings', text='', icon='MOD_PARTICLES')
+    split.prop(context.window_manager.batchNameCopyUI, 'objects', text='', icon='OBJECT_DATA')
+    split.prop(context.window_manager.batchNameCopyUI, 'objectData', text='', icon='MESH_DATA')
+    split.prop(context.window_manager.batchNameCopyUI, 'material', text='', icon='MATERIAL')
+    split.prop(context.window_manager.batchNameCopyUI, 'texture', text='', icon='TEXTURE')
+    split.prop(context.window_manager.batchNameCopyUI, 'particleSystem', text='', icon='PARTICLES')
+    split.prop(context.window_manager.batchNameCopyUI, 'particleSettings', text='', icon='MOD_PARTICLES')
     column = layout.column()
 
     # use active object
-    # column.prop(context.window_manager.batchCopyUI, 'useActiveObject')
+    column.prop(context.window_manager.batchNameCopyUI, 'useActiveObject')
 
   # execute
   def execute(self, context):
     ''' Execute the operator. '''
-    batchCopy(context.window_manager.batchCopyUI.batchType, context.window_manager.batchCopyUI.source, context.window_manager.batchCopyUI.objects, context.window_manager.batchCopyUI.objectData, context.window_manager.batchCopyUI.material, context.window_manager.batchCopyUI.texture, context.window_manager.batchCopyUI.particleSystem, context.window_manager.batchCopyUI.particleSettings, context.window_manager.batchCopyUI.useActiveObject)
+    batchNameCopy(self, context, context.window_manager.batchNameCopyUI.batchType, context.window_manager.batchNameCopyUI.source, context.window_manager.batchNameCopyUI.objects, context.window_manager.batchNameCopyUI.objectData, context.window_manager.batchNameCopyUI.material, context.window_manager.batchNameCopyUI.texture, context.window_manager.batchNameCopyUI.particleSystem, context.window_manager.batchNameCopyUI.particleSettings, context.window_manager.batchNameCopyUI.useActiveObject)
     return {'FINISHED'}
 
   # invoke
@@ -2649,54 +2634,54 @@ class itemPanel():
     ''' Item panel body. '''
     layout = self.layout
     column = layout.column(align=True)
-    itemUI = context.window_manager.itemUI
+    itemPanelUI = context.window_manager.itemPanelUI
 
     row = column.row(align=True)
     row.scale_y = 1.25
 
-    if context.window_manager.itemUI.viewFilters:
+    if context.window_manager.itemPanelUI.viewFilters:
       iconToggle = 'RADIOBUT_ON'
     else:
       iconToggle = 'RADIOBUT_OFF'
 
     # view filters
-    row.prop(context.window_manager.itemUI, 'viewFilters', text='Filters', icon=iconToggle, toggle=True)
+    row.prop(context.window_manager.itemPanelUI, 'viewFilters', text='Filters', icon=iconToggle, toggle=True)
 
     # view hierarchy
-    row.prop(context.window_manager.itemUI, 'viewHierarchy', text='', icon='OOPS')
+    row.prop(context.window_manager.itemPanelUI, 'viewHierarchy', text='', icon='OOPS')
 
     # item panel reset
-    row.operator('view3d.reset_batch_properties', text='', icon='RECOVER_AUTO')
+    row.operator('view3d.reset_batch_options', text='', icon='RECOVER_AUTO')
 
     # batch naming
     row.operator('view3d.batch_naming', text='', icon='SORTALPHA')
 
     # batch copy
-    row.operator('view3d.batch_copy', text='', icon='PASTEDOWN')
-    if context.window_manager.itemUI.viewFilters:
+    row.operator('view3d.batch_name_copy', text='', icon='COPYDOWN')
+    if context.window_manager.itemPanelUI.viewFilters:
       split = column.split(align=True)
 
       # data block filters
-      split.prop(context.window_manager.itemUI, 'viewConstraints', text='', icon='CONSTRAINT')
-      split.prop(context.window_manager.itemUI, 'viewModifiers', text='', icon='MODIFIER')
-      split.prop(context.window_manager.itemUI, 'viewBoneConstraints', text='', icon='CONSTRAINT_BONE')
-      split.prop(context.window_manager.itemUI, 'viewMaterials', text='', icon='MATERIAL')
-      split.prop(context.window_manager.itemUI, 'viewTextures', text='', icon='TEXTURE')
-      split.prop(context.window_manager.itemUI, 'viewParticleSystems', text='', icon='PARTICLES')
+      split.prop(context.window_manager.itemPanelUI, 'viewConstraints', text='', icon='CONSTRAINT')
+      split.prop(context.window_manager.itemPanelUI, 'viewModifiers', text='', icon='MODIFIER')
+      split.prop(context.window_manager.itemPanelUI, 'viewBoneConstraints', text='', icon='CONSTRAINT_BONE')
+      split.prop(context.window_manager.itemPanelUI, 'viewMaterials', text='', icon='MATERIAL')
+      split.prop(context.window_manager.itemPanelUI, 'viewTextures', text='', icon='TEXTURE')
+      split.prop(context.window_manager.itemPanelUI, 'viewParticleSystems', text='', icon='PARTICLES')
       split = column.split(align=True)
-      split.prop(context.window_manager.itemUI, 'viewGroups', text='', icon='GROUP')
-      split.prop(context.window_manager.itemUI, 'viewVertexGroups', text='', icon='GROUP_VERTEX')
-      split.prop(context.window_manager.itemUI, 'viewShapeKeys', text='', icon='SHAPEKEY_DATA')
-      split.prop(context.window_manager.itemUI, 'viewUVS', text='', icon='GROUP_UVS')
-      split.prop(context.window_manager.itemUI, 'viewVertexColors', text='', icon='GROUP_VCOL')
-      split.prop(context.window_manager.itemUI, 'viewBoneGroups', text='', icon='GROUP_BONE')
+      split.prop(context.window_manager.itemPanelUI, 'viewGroups', text='', icon='GROUP')
+      split.prop(context.window_manager.itemPanelUI, 'viewVertexGroups', text='', icon='GROUP_VERTEX')
+      split.prop(context.window_manager.itemPanelUI, 'viewShapeKeys', text='', icon='SHAPEKEY_DATA')
+      split.prop(context.window_manager.itemPanelUI, 'viewUVS', text='', icon='GROUP_UVS')
+      split.prop(context.window_manager.itemPanelUI, 'viewVertexColors', text='', icon='GROUP_VCOL')
+      split.prop(context.window_manager.itemPanelUI, 'viewBoneGroups', text='', icon='GROUP_BONE')
     column = layout.column()
 
     # data block list
     row = column.row(align=True)
     row.template_ID(context.scene.objects, 'active')
     # groups
-    if context.window_manager.itemUI.viewGroups:
+    if context.window_manager.itemPanelUI.viewGroups:
       for group in bpy.data.groups[:]:
         for object in group.objects[:]:
           if object == context.active_object:
@@ -2707,7 +2692,7 @@ class itemPanel():
             row.prop(group, 'name', text='')
 
     # constraint
-    if context.window_manager.itemUI.viewConstraints:
+    if context.window_manager.itemPanelUI.viewConstraints:
       for constraint in context.active_object.constraints:
         row = column.row(align=True)
         sub = row.row()
@@ -2721,11 +2706,11 @@ class itemPanel():
         row.prop(constraint, 'mute', text='', icon=iconView)
 
     # modifier
-    if not context.window_manager.itemUI.viewModifiers:
-      context.window_manager.itemUI.viewParticleSystems = False
-    if not context.window_manager.itemUI.viewParticleSystems:
-      context.window_manager.itemUI.viewParticleSettings = False
-    if context.window_manager.itemUI.viewModifiers:
+    if not context.window_manager.itemPanelUI.viewModifiers:
+      context.window_manager.itemPanelUI.viewParticleSystems = False
+    if not context.window_manager.itemPanelUI.viewParticleSystems:
+      context.window_manager.itemPanelUI.viewParticleSettings = False
+    if context.window_manager.itemPanelUI.viewModifiers:
       for modifier in context.active_object.modifiers:
         row = column.row(align=True)
         sub = row.row()
@@ -2739,7 +2724,7 @@ class itemPanel():
         row.prop(modifier, 'show_viewport', text='', icon=iconView)
 
         # particle system
-        if context.window_manager.itemUI.viewParticleSystems:
+        if context.window_manager.itemPanelUI.viewParticleSystems:
           if modifier.type in {'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM'}:
             row = column.row(align=True)
             sub = row.row()
@@ -2760,7 +2745,7 @@ class itemPanel():
             row.prop(modifier.particle_system.settings, 'name', text='')
 
     # material
-    if context.window_manager.itemUI.viewMaterials:
+    if context.window_manager.itemPanelUI.viewMaterials:
       for material in bpy.data.objects[context.active_object.name].material_slots[:]:
         if material.material != None:
           if material.link == 'OBJECT':
@@ -2771,7 +2756,7 @@ class itemPanel():
             row.prop(material.material, 'name', text='')
 
             # texture
-            if context.window_manager.itemUI.viewTextures:
+            if context.window_manager.itemPanelUI.viewTextures:
               if context.scene.render.engine != 'CYCLES':
                 for texture in material.material.texture_slots[:]:
                   if texture != None:
@@ -2786,10 +2771,10 @@ class itemPanel():
                       iconToggle = 'RADIOBUT_OFF'
                     row.prop(texture, 'use', text='', icon=iconToggle)
     else:
-      context.window_manager.itemUI.viewTextures = False
+      context.window_manager.itemPanelUI.viewTextures = False
 
     # view hierarchy
-    if context.window_manager.itemUI.viewHierarchy:
+    if context.window_manager.itemPanelUI.viewHierarchy:
 
       # object
       for object in bpy.data.objects:
@@ -2802,7 +2787,7 @@ class itemPanel():
             row.prop(object, 'name', text='')
 
             # group
-            if context.window_manager.itemUI.viewGroups:
+            if context.window_manager.itemPanelUI.viewGroups:
               for group in bpy.data.groups[:]:
                 for groupObject in group.objects[:]:
                   if groupObject == object:
@@ -2813,7 +2798,7 @@ class itemPanel():
                     row.prop(group, 'name', text='')
 
             # constraint
-            if context.window_manager.itemUI.viewConstraints:
+            if context.window_manager.itemPanelUI.viewConstraints:
               for constraint in object.constraints[:]:
                 row = column.row(align=True)
                 sub = row.row()
@@ -2827,7 +2812,7 @@ class itemPanel():
                 row.prop(constraint, 'mute', text='', icon=iconView)
 
             # modifier
-            if context.window_manager.itemUI.viewModifiers:
+            if context.window_manager.itemPanelUI.viewModifiers:
               for modifier in object.modifiers[:]:
                 row = column.row(align=True)
                 sub = row.row()
@@ -2841,7 +2826,7 @@ class itemPanel():
                 row.prop(modifier, 'show_viewport', text='', icon=iconView)
 
                 # particle system
-                if context.window_manager.itemUI.viewParticleSystems:
+                if context.window_manager.itemPanelUI.viewParticleSystems:
                   if modifier.type in {'PARTICLE_INSTANCE', 'PARTICLE_SYSTEM'}:
                     row = column.row(align=True)
                     sub = row.row()
@@ -2862,7 +2847,7 @@ class itemPanel():
                     row.prop(modifier.particle_system.settings, 'name', text='')
 
             # material
-            if context.window_manager.itemUI.viewMaterials:
+            if context.window_manager.itemPanelUI.viewMaterials:
               for material in bpy.data.objects[object.name].material_slots[:]:
                 if material.material != None:
                   if material.link == 'OBJECT':
@@ -2873,7 +2858,7 @@ class itemPanel():
                     row.prop(material.material, 'name', text='')
 
                     # texture
-                    if context.window_manager.itemUI.viewTextures:
+                    if context.window_manager.itemPanelUI.viewTextures:
                       if context.scene.render.engine != 'CYCLES':
                         for texture in material.material.texture_slots[:]:
                           if texture != None:
@@ -2888,7 +2873,7 @@ class itemPanel():
                               iconToggle = 'RADIOBUT_OFF'
                             row.prop(texture, 'use', text='', icon=iconToggle)
             else:
-              context.window_manager.itemUI.viewTextures = False
+              context.window_manager.itemPanelUI.viewTextures = False
 
     # empty
     if context.object.type in 'EMPTY':
@@ -2902,7 +2887,7 @@ class itemPanel():
       row.template_ID(context.active_object, 'data')
 
       # vertex group
-      if context.window_manager.itemUI.viewVertexGroups:
+      if context.window_manager.itemPanelUI.viewVertexGroups:
         if bpy.data.objects[context.active_object.name].type in {'LATTICE', 'MESH'}:
           for group in bpy.data.objects[context.active_object.name].vertex_groups[:]:
             row = column.row(align=True)
@@ -2917,7 +2902,7 @@ class itemPanel():
             row.prop(group, 'lock_weight', text='', icon=iconLock)
 
       # shape key
-      if context.window_manager.itemUI.viewShapeKeys:
+      if context.window_manager.itemPanelUI.viewShapeKeys:
         if bpy.data.objects[context.active_object.name].type in {'MESH', 'CURVE', 'SURFACE', 'LATTICE'}:
           if bpy.data.objects[context.active_object.name].data.shape_keys:
             for key in bpy.data.objects[context.active_object.name].data.shape_keys.key_blocks[:]:
@@ -2928,12 +2913,12 @@ class itemPanel():
               row.prop(key, 'name', text='')
               if key != bpy.data.objects[context.active_object.name].data.shape_keys.key_blocks[0]:
                 sub = row.row(align=True)
-                sub.scale_x = 0.18
+                sub.scale_x = 0.17
                 sub.prop(key, 'value', text='')
               row.prop(key, 'mute', text='', icon='RESTRICT_VIEW_OFF')
 
       # uv
-      if context.window_manager.itemUI.viewUVS:
+      if context.window_manager.itemPanelUI.viewUVS:
         if bpy.data.objects[context.active_object.name].type in 'MESH':
           for uv in bpy.data.objects[context.active_object.name].data.uv_textures[:]:
             row = column.row(align=True)
@@ -2948,7 +2933,7 @@ class itemPanel():
             row.prop(uv, 'active_render', text='', icon=iconActive)
 
       # vertex color
-      if context.window_manager.itemUI.viewVertexColors:
+      if context.window_manager.itemPanelUI.viewVertexColors:
         if bpy.data.objects[context.active_object.name].type in 'MESH':
           for vertexColor in bpy.data.objects[context.active_object.name].data.vertex_colors[:]:
             row = column.row(align=True)
@@ -2963,7 +2948,7 @@ class itemPanel():
             row.prop(vertexColor, 'active_render', text='', icon=iconActive)
 
       # bone group
-      if context.window_manager.itemUI.viewBoneGroups:
+      if context.window_manager.itemPanelUI.viewBoneGroups:
         if bpy.data.objects[context.active_object.name].type in 'ARMATURE':
           for group in bpy.data.objects[context.active_object.name].pose.bone_groups[:]:
             row = column.row(align=True)
@@ -2978,11 +2963,11 @@ class itemPanel():
         row = column.row(align=True)
         sub = row.row(align=True)
         sub.scale_x = 1.6
-        sub.prop(context.window_manager.itemUI, 'viewSelectedBones', text='', icon='BONE_DATA')
+        sub.prop(context.window_manager.itemPanelUI, 'viewSelectedBones', text='', icon='BONE_DATA')
         row.prop(context.active_bone, 'name', text='')
 
         # bone constraint
-        if context.window_manager.itemUI.viewBoneConstraints:
+        if context.window_manager.itemPanelUI.viewBoneConstraints:
           if context.object.mode in 'POSE':
             for constraint in context.active_pose_bone.constraints:
               row = column.row(align=True)
@@ -2997,7 +2982,7 @@ class itemPanel():
               row.prop(constraint, 'mute', text='', icon=iconView)
 
         # selected bone
-        if context.window_manager.itemUI.viewSelectedBones:
+        if context.window_manager.itemPanelUI.viewSelectedBones:
           if context.selected_editable_bones:
             selectedBones = context.selected_editable_bones
           else:
@@ -3014,7 +2999,7 @@ class itemPanel():
                 sub.label(text='', icon='BONE_DATA')
                 row.prop(bone[1], 'name', text='')
                 if context.object.mode in 'POSE':
-                  if context.window_manager.itemUI.viewBoneConstraints:
+                  if context.window_manager.itemPanelUI.viewBoneConstraints:
                     for constraint in bone[1].constraints[:]:
                       row = column.row(align=True)
                       sub = row.row()
@@ -3028,7 +3013,7 @@ class itemPanel():
                       row.prop(constraint, 'mute', text='', icon=iconView)
 
     # material
-    if context.window_manager.itemUI.viewMaterials:
+    if context.window_manager.itemPanelUI.viewMaterials:
       for material in bpy.data.objects[context.active_object.name].material_slots[:]:
         if material.material != None:
           if material.link == 'DATA':
@@ -3039,7 +3024,7 @@ class itemPanel():
             row.prop(material.material, 'name', text='')
 
             # texture
-            if context.window_manager.itemUI.viewTextures:
+            if context.window_manager.itemPanelUI.viewTextures:
               if context.scene.render.engine != 'CYCLES':
                 for texture in material.material.texture_slots[:]:
                   if texture != None:
@@ -3054,10 +3039,10 @@ class itemPanel():
                       iconToggle = 'RADIOBUT_OFF'
                     row.prop(texture, 'use', text='', icon=iconToggle)
     else:
-      context.window_manager.itemUI.viewTextures = False
+      context.window_manager.itemPanelUI.viewTextures = False
 
     # view hierarchy
-    if context.window_manager.itemUI.viewHierarchy:
+    if context.window_manager.itemPanelUI.viewHierarchy:
       for object in bpy.data.objects:
         if object in context.selected_objects:
           if object != context.active_object:
@@ -3069,7 +3054,7 @@ class itemPanel():
               row.prop(object.data, 'name', text='')
 
               # vertex group
-              if context.window_manager.itemUI.viewVertexGroups:
+              if context.window_manager.itemPanelUI.viewVertexGroups:
                 if bpy.data.objects[object.name].type in {'LATTICE', 'MESH'}:
                   for group in bpy.data.objects[object.name].vertex_groups[:]:
                     row = column.row(align=True)
@@ -3084,7 +3069,7 @@ class itemPanel():
                     row.prop(group, 'lock_weight', text='', icon=iconLock)
 
               # shape key
-              if context.window_manager.itemUI.viewShapeKeys:
+              if context.window_manager.itemPanelUI.viewShapeKeys:
                 if bpy.data.objects[object.name].type in {'MESH', 'CURVE', 'SURFACE', 'LATTICE'}:
                   if bpy.data.objects[object.name].data.shape_keys:
                     for key in bpy.data.objects[object.name].data.shape_keys.key_blocks[:]:
@@ -3095,12 +3080,12 @@ class itemPanel():
                       row.prop(key, 'name', text='')
                       if key != bpy.data.objects[object.name].data.shape_keys.key_blocks[0]:
                         sub = row.row(align=True)
-                        sub.scale_x = 0.18
+                        sub.scale_x = 0.17
                         sub.prop(key, 'value', text='')
                       row.prop(key, 'mute', text='', icon='RESTRICT_VIEW_OFF')
 
               # uv
-              if context.window_manager.itemUI.viewUVS:
+              if context.window_manager.itemPanelUI.viewUVS:
                 if bpy.data.objects[object.name].type in 'MESH':
                   for uv in bpy.data.objects[object.name].data.uv_textures[:]:
                     row = column.row(align=True)
@@ -3115,7 +3100,7 @@ class itemPanel():
                     row.prop(uv, 'active_render', text='', icon=iconActive)
 
               # vertex color
-              if context.window_manager.itemUI.viewVertexColors:
+              if context.window_manager.itemPanelUI.viewVertexColors:
                 if bpy.data.objects[object.name].type in 'MESH':
                   for vertexColor in bpy.data.objects[object.name].data.vertex_colors[:]:
                     row = column.row(align=True)
@@ -3130,7 +3115,7 @@ class itemPanel():
                     row.prop(vertexColor, 'active_render', text='', icon=iconActive)
 
               # bone group
-              if context.window_manager.itemUI.viewBoneGroups:
+              if context.window_manager.itemPanelUI.viewBoneGroups:
                 if bpy.data.objects[object.name].type in 'ARMATURE':
                   for group in bpy.data.objects[object.name].pose.bone_groups[:]:
                     row = column.row(align=True)
@@ -3140,7 +3125,7 @@ class itemPanel():
                     row.prop(group, 'name', text='')
 
               # material
-              if context.window_manager.itemUI.viewMaterials:
+              if context.window_manager.itemPanelUI.viewMaterials:
                 for material in bpy.data.objects[object.name].material_slots[:]:
                   if material.material != None:
                     if material.link == 'DATA':
@@ -3151,7 +3136,7 @@ class itemPanel():
                       row.prop(material.material, 'name', text='')
 
                       # texture
-                      if context.window_manager.itemUI.viewTextures:
+                      if context.window_manager.itemPanelUI.viewTextures:
                         if context.scene.render.engine != 'CYCLES':
                           for texture in material.material.texture_slots[:]:
                             if texture != None:
@@ -3166,7 +3151,7 @@ class itemPanel():
                                 iconToggle = 'RADIOBUT_OFF'
                               row.prop(texture, 'use', text='', icon=iconToggle)
               else:
-                context.window_manager.itemUI.viewTextures = False
+                context.window_manager.itemPanelUI.viewTextures = False
 
 # name
 class name():
@@ -3192,30 +3177,30 @@ def register():
   ''' Register '''
   bpy.types.VIEW3D_PT_view3d_name.remove(bpy.types.VIEW3D_PT_view3d_name.draw)
   bpy.types.VIEW3D_PT_view3d_name.remove(name.draw)
-  bpy.utils.register_class(batchUI)
-  bpy.utils.register_class(batchCopyUI)
-  bpy.utils.register_class(itemUI)
-  bpy.utils.register_class(VIEW3D_OT_reset_batch_properties)
+  bpy.utils.register_class(batchNamingUI)
+  bpy.utils.register_class(batchNameCopyUI)
+  bpy.utils.register_class(itemPanelUI)
+  bpy.utils.register_class(VIEW3D_OT_reset_batch_options)
   bpy.utils.register_class(VIEW3D_OT_batch_naming)
-  bpy.utils.register_class(VIEW3D_OT_batch_copy)
-  bpy.types.WindowManager.itemUI = bpy.props.PointerProperty(type=itemUI)
-  bpy.types.WindowManager.batchUI = bpy.props.PointerProperty(type=batchUI)
-  bpy.types.WindowManager.batchCopyUI = bpy.props.PointerProperty(type=batchCopyUI)
+  bpy.utils.register_class(VIEW3D_OT_batch_name_copy)
+  bpy.types.WindowManager.itemPanelUI = bpy.props.PointerProperty(type=itemPanelUI)
+  bpy.types.WindowManager.batchNamingUI = bpy.props.PointerProperty(type=batchNamingUI)
+  bpy.types.WindowManager.batchNameCopyUI = bpy.props.PointerProperty(type=batchNameCopyUI)
   bpy.types.VIEW3D_PT_view3d_name.append(itemPanel.draw)
 
 # unregister
 def unregister():
   ''' Unregister '''
   bpy.types.VIEW3D_PT_view3d_name.remove(itemPanel.draw)
-  bpy.utils.unregister_class(batchUI)
-  bpy.utils.unregister_class(batchCopyUI)
-  bpy.utils.unregister_class(itemUI)
-  bpy.utils.unregister_class(VIEW3D_OT_reset_batch_properties)
+  bpy.utils.unregister_class(batchNamingUI)
+  bpy.utils.unregister_class(batchNameCopyUI)
+  bpy.utils.unregister_class(itemPanelUI)
+  bpy.utils.unregister_class(VIEW3D_OT_reset_batch_options)
   bpy.utils.unregister_class(VIEW3D_OT_batch_naming)
   bpy.utils.unregister_class(VIEW3D_OT_batch_copy)
-  del bpy.types.WindowManager.itemUI
-  del bpy.types.WindowManager.batchUI
-  del bpy.types.WindowManager.batchCopyUI
+  del bpy.types.WindowManager.itemPanelUI
+  del bpy.types.WindowManager.batchNamingUI
+  del bpy.types.WindowManager.batchNameCopyUI
   bpy.types.VIEW3D_PT_view3d_name.append(name.draw)
 
 if __name__ in '__main__':

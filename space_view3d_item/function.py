@@ -570,6 +570,7 @@ class batch():
         if datablock.type in 'SOFT_BODY':
           datablock.name = modifierName.softBody
 
+      # object data
       if objectData:
 
         # mesh
@@ -616,7 +617,7 @@ class batch():
         if datablock.type in 'LAMP':
           datablock.data.name = objectDataName.lamp
 
-  # name
+  # main
   def main(context):
     '''
       Send datablock values to name.
@@ -628,87 +629,409 @@ class batch():
     # name
     name = batch.name
 
-    for object in bpy.data.objects[:]:
+    # batch type
+    if option.batchType in 'GLOBAL':
+
+      # scenes
+      if option.scenes:
+        for scene in bpy.data.scenes[:]:
+
+          # name
+          name(context, scene)
+
+      # render layers
+      if option.renderLayers:
+        for scene in bpy.data.scenes[:]:
+          for layer in scene.render.layers[:]:
+
+            # name
+            name(context, layer)
+
+      # worlds
+      if option.worlds:
+        for world in bpy.data.worlds[:]:
+
+          # name
+          name(context, world)
+
+      # libraries
+      if option.libraries:
+        for library in bpy.data.libraries[:]:
+
+          # name
+          name(context, library)
+
+      # images
+      if option.images:
+        for image in bpy.data.images[:]:
+
+          # name
+          name(context, image)
+
+      # masks
+      if option.masks:
+        for mask in bpy.data.masks[:]:
+
+          # name
+          name(context, mask)
+
+      # sequences
+      if option.sequences:
+        for scene in bpy.data.scenes[:]:
+          if hasattr(scene.sequence_editor, 'sequence_all'):
+            for sequence in scene.sequence_editor.sequences_all[:]:
+
+              # name
+              name(context, sequence)
+
+      # movie clips
+      if option.movieClips:
+        for clip in bpy.data.movieclips[:]:
+
+          # name
+          name(context, clip)
+
+      # sounds
+      if option.sounds:
+        for sound in bpy.data.sounds[:]:
+
+          # name
+          name(context, sound)
+
+      # screens
+      if option.screens:
+        for screen in bpy.data.screens[:]:
+
+          # name
+          name(context, screen)
+
+      # keying sets
+      if option.keyingSets:
+        for scene in bpy.data.scenes[:]:
+          for keyingSet in scene.keying_sets[:]:
+
+            # name
+            name(context, keyingSet)
+
+      # palettes
+      if option.palettes:
+        for palette in bpy.data.palettes[:]:
+
+          # name
+          name(context, palette)
+
+      # brushes
+      if option.brushes:
+        for brush in bpy.data.brushes[:]:
+
+          # name
+          name(context, brush)
+
+      # line styles
+      if option.linestyles:
+        for style in bpy.data.linestyles[:]:
+
+          # name
+          name(context, style)
+
+      # nodes
+      if option.nodes:
+
+        # shader
+        for material in bpy.data.materials[:]:
+          if hasattr(material.node_tree, 'nodes'):
+            for node in material.node_tree.nodes[:]:
+
+              # name
+              name(context, node)
+
+        # compositing
+        for scene in bpy.data.scenes[:]:
+          if hasattr(scene.node_tree, 'nodes'):
+            for node in scene.node_tree.nodes[:]:
+
+              # name
+              name(context, node)
+
+        # texture
+        for texture in bpy.data.textures[:]:
+          if hasattr(texture.node_tree, 'nodes'):
+            for node in texture.node_tree.nodes[:]:
+
+              # name
+              name(context, node)
+
+        # groups
+        for group in bpy.data.node_groups[:]:
+          for node in group.nodes[:]:
+
+            # name
+            name(context, node)
+
+      # node labels
+      if option.nodeLabels:
+
+        # tag
+        option.tag = True
+
+        # shader
+        for material in bpy.data.materials[:]:
+          if hasattr(material.node_tree, 'nodes'):
+            for node in material.node_tree.nodes[:]:
+
+              # name
+              name(context, node)
+
+        # compositing
+        for scene in bpy.data.scenes[:]:
+          if hasattr(scene.node_tree, 'nodes'):
+            for node in scene.node_tree.nodes[:]:
+
+              # name
+              name(context, node)
+
+        # texture
+        for texture in bpy.data.textures[:]:
+          if hasattr(texture.node_tree, 'nodes'):
+            for node in texture.node_tree.nodes[:]:
+
+              # name
+              name(context, node)
+
+
+        # groups
+        for group in bpy.data.node_groups[:]:
+          for node in group.nodes[:]:
+
+            # name
+            name(context, node)
+
+        # tag
+        option.tag = False
+
+      # node groups
+      if option.nodeGroups:
+        for group in bpy.data.node_groups[:]:
+
+          # name
+          name(context, group)
+
+      # texts
+      if option.texts:
+        for text in bpy.data.texts[:]:
+
+          # name
+          name(context, text)
 
       # objects
       if option.objects:
+        for object in bpy.data.objects[:]:
 
-        # batch type
-        if option.batchType in 'SELECTED':
-          if object.select:
+          # name
+          name(context, object)
 
-            # object type
-            if option.objectType in 'ALL':
+      # groups
+      if option.groups:
+        for group in bpy.data.groups[:]:
 
-              # name
-              name(context, object)
-            elif option.objectType in object.type:
-              name(context, object)
-        else:
+          # name
+          name(context, group)
 
-          # object type
-          if option.objectType in 'ALL':
+      # actions
+      if option.actions:
+        for action in bpy.data.actions[:]:
+
+          # name
+          name(context, action)
+
+      # grease pencil
+      if option.greasePencil:
+        for pencil in bpy.data.grease_pencil[:]:
+
+          # name
+          name(context, pencil)
+
+          # layers
+          for layer in pencil.layers[:]:
 
             # name
-            name(context, object)
-          elif option.objectType in object.type:
-            name(context, object)
+            name(context, layer)
 
       # constraints
       if option.constraints:
-
-        # batch type
-        if option.batchType in 'SELECTED':
-          if object.select:
-            for constraint in object.constraints[:]:
-
-              # constraint type
-              if option.constraintType in 'ALL':
-
-                # name
-                name(context, constraint)
-              elif option.constraintType in constraint.type:
-                name(context, constraint)
-        else:
+        for object in bpy.data.objects[:]:
           for constraint in object.constraints[:]:
 
-            # constraint type
-            if option.constraintType in 'ALL':
-
-              # name
-              name(context, constraint)
-            elif option.constraintType in constraint.type:
-              name(context, constraint)
+            # name
+            name(context, constraint)
 
       # modifiers
       if option.modifiers:
-
-        # batch type
-        if option.batchType in 'SELECTED':
-          if object.select:
-            for modifier in object.modifiers[:]:
-
-              # modifier type
-              if option.modifierType in 'ALL':
-
-                # name
-                name(context, modifier)
-              elif option.modifierType in modifier.type:
-                name(context, modifier)
-        else:
+        for object in bpy.data.objects[:]:
           for modifier in object.modifiers[:]:
 
-            # modifier type
-            if option.modifierType in 'ALL':
-
-              # name
-              name(context, modifier)
-            elif option.modifierType in modifier.type:
-              name(context, modifier)
+            # name
+            name(context, modifier)
 
       # object data
       if option.objectData:
-        if object.type not in 'EMPTY':
+
+        # cameras
+        for camera in bpy.data.cameras[:]:
+
+          # name
+          name(context, camera)
+
+        # meshes
+        for mesh in bpy.data.meshes[:]:
+
+          # name
+          name(context, mesh)
+
+        # lamps
+        for lamp in bpy.data.lamps[:]:
+
+          # name
+          name(context, lamp)
+
+        # lattices
+        for lattice in bpy.data.lattices[:]:
+
+          # name
+          name(context, lattice)
+
+        # curves
+        for curve in bpy.data.curves[:]:
+
+          # name
+          name(context, curve)
+
+        # metaballs
+        for metaball in bpy.data.metaballs[:]:
+
+          # name
+          name(context, metaball)
+
+        # fonts
+        # for font in bpy.data.fonts[:]:
+
+          # name
+          # name(context, font)
+
+        # speakers
+        for speaker in bpy.data.speakers[:]:
+
+          # name
+          name(context, speaker)
+
+        # armatures
+        for armature in bpy.data.armatures[:]:
+
+          # name
+          name(context, armature)
+
+      # bone groups
+      if option.boneGroups:
+        for object in bpy.data.objects[:]:
+          if object.type in 'ARMATURE':
+            for group in object.pose.bone_groups[:]:
+
+              # name
+              name(context, group)
+
+      # bones
+      if option.bones:
+        for armature in bpy.data.armatures[:]:
+          for bone in armature.bones[:]:
+
+            # name
+            name(context, bone)
+
+      # bone constraints
+      if option.boneConstraints:
+        for object in bpy.data.objects[:]:
+          if object.type in 'ARMATURE':
+            for bone in object.pose.bones[:]:
+              for constraint in bone.constraints[:]:
+
+                # name
+                name(context, constraint)
+
+
+      # vertex groups
+      if option.vertexGroups:
+        for object in bpy.data.objects[:]:
+          if object.type in {'MESH', 'LATTICE'}:
+            for group in object.vertex_groups[:]:
+
+              # name
+              name(context, group)
+
+      # shape keys
+      if option.shapekeys:
+        for shapekey in bpy.data.shape_keys[:]:
+
+            # name
+            name(context, shapekey)
+            for block in shapekey.key_blocks[:]:
+
+              # name
+              name(context, block)
+
+      # uvs
+      if option.uvs:
+        for object in bpy.data.objects[:]:
+          if object.type in 'MESH':
+            for uv in object.data.uv_textures[:]:
+
+              # name
+              name(context, uv)
+
+      # vertex colors
+      if option.vertexColors:
+        for object in bpy.data.objects[:]:
+          if object.type in 'MESH':
+            for vertexColor in object.data.vertex_colors[:]:
+
+              # name
+              name(context, vertexColor)
+
+      # materials
+      if option.materials:
+        for material in bpy.data.materials[:]:
+
+          # name
+          name(context, material)
+
+      # textures
+      if option.textures:
+        for texture in bpy.data.textures[:]:
+
+          # name
+          name(context, texture)
+
+      # particles systems
+      if option.particleSystems:
+        for object in bpy.data.objects[:]:
+          if object.type in 'MESH':
+            for system in object.particle_systems[:]:
+
+              # name
+              name(context, system)
+
+      # particles settings
+      if option.particleSettings:
+        for settings in bpy.data.particles[:]:
+
+          # name
+          name(context, settings)
+
+    # batch type
+    else:
+      for object in bpy.data.objects[:]:
+
+        # objects
+        if option.objects:
 
           # batch type
           if option.batchType in 'SELECTED':
@@ -718,75 +1041,492 @@ class batch():
               if option.objectType in 'ALL':
 
                 # name
-                name(context, object.data)
+                name(context, object)
+
+              # object type
               elif option.objectType in object.type:
-                name(context, object.data)
+
+                # name
+                name(context, object)
+
+          # batch type
           else:
 
             # object type
             if option.objectType in 'ALL':
 
               # name
-              name(context, object.data)
+              name(context, object)
+
+            # object type
             elif option.objectType in object.type:
-              name(context, object.data)
-
-      # bones
-      if option.bones:
-
-        # batch type
-        if option.batchType in 'SELECTED':
-          if object.select:
-            if object.type in 'ARMATURE':
-              for bone in object.data.bones[:]:
-                if bone.select:
-
-                  # name
-                  name(context, bone)
-        else:
-          if object.type in 'ARMATURE':
-            for bone in object.data.bones[:]:
 
               # name
-              name(context, bone)
+              name(context, object)
 
-      # bone constraints
-      if option.boneConstraints:
+        # groups
+        if option.groups:
 
-        # batch type
-        if option.batchType in 'SELECTED':
-          if object.select:
-            if object.type in 'ARMATURE':
-              for bone in object.pose.bones[:]:
-                if bone.bone.select:
-                  for constraint in bone.constraints[:]:
+          # batch type
+          if option.batchType in 'SELECTED':
+            if object.select:
 
-                    # constraint type
-                    if option.constraintType in 'ALL':
+              # object type
+              if option.objectType in 'ALL':
+                for group in bpy.data.groups[:]:
+                  if object in group.objects[:]:
 
-                      # name
-                      name(context, constraint)
-                    elif option.constraintType in constraint.type:
-                      name(context, constraint)
-        else:
-          if object.type in 'ARMATURE':
-            for bone in object.pose.bones[:]:
-              for constraint in bone.constraints[:]:
+                    # name
+                    name(context, group)
+
+              # object type
+              elif option.objectType in object.type:
+                for group in bpy.data.groups[:]:
+                  if object in group.objects[:]:
+
+                    # name
+                    name(context, group)
+
+          # batch type
+          else:
+
+              # object type
+              if option.objectType in 'ALL':
+                for group in bpy.data.groups[:]:
+                  if object in group.objects[:]:
+
+                    # name
+                    name(context, group)
+
+              # object type
+              elif option.objectType in object.type:
+                for group in bpy.data.groups[:]:
+                  if object in group.objects[:]:
+
+                    # name
+                    name(context, group)
+
+        # actions
+        if option.actions:
+          if hasattr(object.animation_data, 'action'):
+            if hasattr(object.animation_data.action, 'name'):
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+
+                  # object type
+                  if option.objectType in 'ALL':
+
+                    # name
+                    name(context, object.animation_data.action)
+
+                  # object type
+                  elif option.objectType in object.type:
+
+                    # name
+                    name(context, object.animation_data.action)
+
+              # batch type
+              else:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # name
+                  name(context, object.animation_data.action)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # name
+                  name(context, object.animation_data.action)
+
+
+        # grease pencil
+        if option.greasePencil:
+          if hasattr(object.grease_pencil, 'name'):
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # name
+                  name(context, object.grease_pencil)
+
+                  # layers
+                  for layer in object.grease_pencil.layers[:]:
+
+                    # name
+                    name (context, layer)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # name
+                  name(context, object.grease_pencil)
+
+                  # layers
+                  for layer in object.grease_pencil.layers[:]:
+
+                    # name
+                    name (context, layer)
+
+            # batch type
+            else:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # name
+                  name(context, object.grease_pencil)
+
+                  # layers
+                  for layer in object.grease_pencil.layers[:]:
+
+                    # name
+                    name(context, layer)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # name
+                  name(context, object.grease_pencil)
+
+                  # layers
+                  for layer in object.grease_pencil.layers[:]:
+
+                    # name
+                    name (context, layer)
+
+
+        # constraints
+        if option.constraints:
+
+          # batch type
+          if option.batchType in 'SELECTED':
+            if object.select:
+              for constraint in object.constraints[:]:
 
                 # constraint type
                 if option.constraintType in 'ALL':
 
                   # name
                   name(context, constraint)
+
+                # constraint type
                 elif option.constraintType in constraint.type:
+
+                  # name
                   name(context, constraint)
 
-      # materials
-      if option.materials:
+          # batch type
+          else:
+            for constraint in object.constraints[:]:
+
+              # constraint type
+              if option.constraintType in 'ALL':
+
+                # name
+                name(context, constraint)
+
+              # constraint type
+              elif option.constraintType in constraint.type:
+
+                # name
+                name(context, constraint)
+
+        # modifiers
+        if option.modifiers:
 
           # batch type
           if option.batchType in 'SELECTED':
             if object.select:
+              for modifier in object.modifiers[:]:
+
+                # modifier type
+                if option.modifierType in 'ALL':
+
+                  # name
+                  name(context, modifier)
+
+                # modifier tye
+                elif option.modifierType in modifier.type:
+
+                  # name
+                  name(context, modifier)
+
+          # batch type
+          else:
+            for modifier in object.modifiers[:]:
+
+              # modifier type
+              if option.modifierType in 'ALL':
+
+                # name
+                name(context, modifier)
+
+              # modifier tye
+              elif option.modifierType in modifier.type:
+
+                # name
+                name(context, modifier)
+
+        # object data
+        if option.objectData:
+          if object.type not in 'EMPTY':
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # name
+                  name(context, object.data)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # name
+                  name(context, object.data)
+
+            # batch type
+            else:
+
+              # object type
+              if option.objectType in 'ALL':
+
+                # name
+                name(context, object.data)
+
+              # object type
+              elif option.objectType in object.type:
+
+                # name
+                name(context, object.data)
+
+        # bone groups
+        if option.boneGroups:
+
+          # batch type
+          if option.batchType in 'SELECTED':
+            if object.select:
+              if object.type in 'ARMATURE':
+                for group in object.pose.bone_groups[:]:
+                  if object.select:
+
+                    # name
+                    name(context, group)
+
+          # batch type
+          else:
+            if object.type in 'ARMATURE':
+              for group in object.pose.bone_groups[:]:
+
+                # name
+                name(context, group)
+
+        # bones
+        if option.bones:
+
+          # batch type
+          if option.batchType in 'SELECTED':
+            if object.select:
+              if object.type in 'ARMATURE':
+                for bone in object.data.bones[:]:
+                  if bone.select:
+
+                    # name
+                    name(context, bone)
+
+          # batch type
+          else:
+            if object.type in 'ARMATURE':
+              for bone in object.data.bones[:]:
+
+                # name
+                name(context, bone)
+
+        # bone constraints
+        if option.boneConstraints:
+
+          # batch type
+          if option.batchType in 'SELECTED':
+            if object.select:
+              if object.type in 'ARMATURE':
+                for bone in object.pose.bones[:]:
+                  if bone.bone.select:
+                    for constraint in bone.constraints[:]:
+
+                      # constraint type
+                      if option.constraintType in 'ALL':
+
+                        # name
+                        name(context, constraint)
+
+                      # constraint type
+                      elif option.constraintType in constraint.type:
+
+                        # name
+                        name(context, constraint)
+          else:
+            if object.type in 'ARMATURE':
+              for bone in object.pose.bones[:]:
+                for constraint in bone.constraints[:]:
+
+                  # constraint type
+                  if option.constraintType in 'ALL':
+
+                    # name
+                    name(context, constraint)
+
+                  # constraint type
+                  elif option.constraintType in constraint.type:
+
+                    # name
+                    name(context, constraint)
+
+        # vertex groups
+        if option.vertexGroups:
+          if object.type in {'MESH', 'LATTICE'}:
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for group in object.vertex_groups[:]:
+
+                  # object type
+                  if option.objectType in 'ALL':
+
+                    # name
+                    name(context, group)
+
+                  # object type
+                  elif option.objectType in object.type:
+
+                    # name
+                    name(context, group)
+
+            # batch type
+            else:
+              for group in object.vertex_groups[:]:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # name
+                  name(context, group)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # name
+                  name(context, group)
+
+        # shapekeys
+        if option.shapekeys:
+          if object.type in {'MESH', 'CURVE', 'SURFACE', 'LATTICE'}:
+            if hasattr(object.data.shape_keys, 'key_blocks'):
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for block in object.data.shape_keys.key_blocks[:]:
+
+                    # object type
+                    if option.objectType in 'ALL':
+
+                      # name
+                      name(context, block)
+
+                    # object type
+                    elif option.objectType in object.type:
+
+                      # name
+                      name(context, block)
+
+              # batch type
+              else:
+                for block in object.data.shape_keys.key_blocks[:]:
+
+                  # object type
+                  if option.objectType in 'ALL':
+
+                    # name
+                    name(context, block)
+
+                  # object type
+                  elif option.objectType in object.type:
+
+                    # name
+                    name(context, block)
+
+        # uvs
+        if option.uvs:
+          if object.type in 'MESH':
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for uv in object.data.uv_textures[:]:
+
+                  # name
+                  name(context, uv)
+
+            # batch type
+            else:
+             for uv in object.data.uv_textures[:]:
+
+                # name
+                name(context, uv)
+
+        # vertex colors
+        if option.vertexColors:
+          if object.type in 'MESH':
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for vertexColor in object.data.vertex_colors[:]:
+
+                  # name
+                  name(context, vertexColor)
+
+            # batch type
+            else:
+              for vertexColor in object.data.vertex_colors[:]:
+
+                # name
+                name(context, vertexColor)
+
+        # materials
+        if option.materials:
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for material in object.material_slots[:]:
+                  if material.material != None:
+
+                    # object type
+                    if option.objectType in 'ALL':
+
+                      # name
+                      name(context, material.material)
+
+                    # object type
+                    elif option.objectType in object.type:
+
+                      # name
+                      name(context, material.material)
+
+            # batch type
+            else:
               for material in object.material_slots[:]:
                 if material.material != None:
 
@@ -795,27 +1535,39 @@ class batch():
 
                     # name
                     name(context, material.material)
+
+                  # object type
                   elif option.objectType in object.type:
+
+                    # name
                     name(context, material.material)
-          else:
-            for material in object.material_slots[:]:
-              if material.material != None:
 
-                # object type
-                if option.objectType in 'ALL':
+        # textures
+        if option.textures:
+          if context.scene.render.engine not in 'CYCLES':
 
-                  # name
-                  name(context, material.material)
-                elif option.objectType in object.type:
-                  name(context, material.material)
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for material in object.material_slots[:]:
+                  if material.material != None:
+                    for texture in material.material.texture_slots[:]:
+                      if texture != None:
 
-      # textures
-      if option.textures:
-        if context.scene.render.engine not in 'CYCLES':
+                        # object type
+                        if option.objectType in 'ALL':
 
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
+                          # name
+                          name(context, texture.texture)
+
+                        # object type
+                        elif option.objectType in object.type:
+
+                          # name
+                          name(context, texture.texture)
+
+            # batch type
+            else:
               for material in object.material_slots[:]:
                 if material.material != None:
                   for texture in material.material.texture_slots[:]:
@@ -826,236 +1578,86 @@ class batch():
 
                         # name
                         name(context, texture.texture)
+
+                      # object type
                       elif option.objectType in object.type:
+
+                        # name
                         name(context, texture.texture)
-          else:
-            for material in object.material_slots[:]:
-              if material.material != None:
-                for texture in material.material.texture_slots[:]:
-                  if texture != None:
 
-                    # object type
-                    if option.objectType in 'ALL':
-
-                      # name
-                      name(context, texture.texture)
-                    elif option.objectType in object.type:
-                      name(context, texture.texture)
-
-      # particle systems
-      if option.particleSystems:
-        if object.type in 'MESH':
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for system in object.particle_systems[:]:
-
-                # object type
-                if option.objectType in 'ALL':
-
-                  # name
-                  name(context, system)
-                elif option.objectType in object.type:
-                  name(context, system)
-          else:
-            for system in object.particle_systems[:]:
-
-              # object type
-              if option.objectType in 'ALL':
-
-                # name
-                name(context, system)
-              elif option.objectType in object.type:
-                name(context, system)
-
-      # particle settings
-      if option.particleSettings:
-        if object.type in 'MESH':
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for system in object.particle_systems[:]:
-
-                # object type
-                if option.objectType in 'ALL':
-
-                  # name
-                  name(context, system.settings)
-                elif option.objectType in object.type:
-                  name(context, system.settings)
-          else:
-            for system in object.particle_systems[:]:
-
-              # object type
-              if option.objectType in 'ALL':
-
-                # name
-                name(context, system.settings)
-              elif option.objectType in object.type:
-                name(context, system.settings)
-
-      # groups
-      if option.groups:
-
-        # batch type
-        if option.batchType in 'SELECTED':
-          if object.select:
-
-            # object type
-            if option.objectType in 'ALL':
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
-
-                  # name
-                  name(context, group)
-            elif option.objectType in object.type:
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
-                  name(context, group)
-        else:
-
-            # object type
-            if option.objectType in 'ALL':
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
-
-                  # name
-                  name(context, group)
-            elif option.objectType in object.type:
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
-                  name(context, group)
-
-      # vertex groups
-      if option.vertexGroups:
-        if object.type in {'MESH', 'LATTICE'}:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for group in object.vertex_groups[:]:
-
-                # object type
-                if option.objectType in 'ALL':
-
-                  # name
-                  name(context, group)
-                elif option.objectType in object.type:
-                  name(context, group)
-          else:
-            for group in object.vertex_groups[:]:
-
-              # object type
-              if option.objectType in 'ALL':
-
-                # name
-                name(context, group)
-              elif option.objectType in object.type:
-                name(context, group)
-
-      # shapekeys
-      if option.shapekeys:
-        if object.type in {'MESH', 'CURVE', 'SURFACE', 'LATTICE'}:
-          if object.data.shape_keys:
+        # particle systems
+        if option.particleSystems:
+          if object.type in 'MESH':
 
             # batch type
             if option.batchType in 'SELECTED':
               if object.select:
-                for key in object.data.shape_keys.key_blocks[:]:
+                for system in object.particle_systems[:]:
 
                   # object type
                   if option.objectType in 'ALL':
 
                     # name
-                    name(context, key)
+                    name(context, system)
+
+                  # object type
                   elif option.objectType in object.type:
-                    name(context, key)
+
+                    # name
+                    name(context, system)
+
+            # batch type
             else:
-              for key in object.data.shape_keys.key_blocks[:]:
+              for system in object.particle_systems[:]:
 
                 # object type
                 if option.objectType in 'ALL':
 
                   # name
-                  name(context, key)
+                  name(context, system)
+
+                # object type
                 elif option.objectType in object.type:
-                  name(context, key)
 
+                  # name
+                  name(context, system)
 
-      # uvs
-      if option.uvs:
-        if object.type in 'MESH':
+        # particle settings
+        if option.particleSettings:
+          if object.type in 'MESH':
 
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for uv in object.data.uv_textures[:]:
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for system in object.particle_systems[:]:
+
+                  # object type
+                  if option.objectType in 'ALL':
+
+                    # name
+                    name(context, system.settings)
+
+                  # object type
+                  elif option.objectType in object.type:
+
+                    # name
+                    name(context, system.settings)
+
+            # batch type
+            else:
+              for system in object.particle_systems[:]:
 
                 # object type
                 if option.objectType in 'ALL':
 
                   # name
-                  name(context, uv)
-                elif option.objectType in object.type:
-                  name(context, uv)
-          else:
-           for uv in object.data.uv_textures[:]:
-
-              # object type
-              if option.objectType in 'ALL':
-
-                # name
-                name(context, uv)
-              elif option.objectType in object.type:
-                name(context, uv)
-
-      # vertex colors
-      if option.vertexColors:
-        if object.type in 'MESH':
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for vertexColor in object.data.vertex_colors[:]:
+                  name(context, system.settings)
 
                 # object type
-                if option.objectType in 'ALL':
-
-                  # name
-                  name(context, vertexColor)
                 elif option.objectType in object.type:
-                  name(context, vertexColor)
-          else:
-            for vertexColor in object.data.vertex_colors[:]:
-
-              # object type
-              if option.objectType in 'ALL':
-
-                # name
-                name(context, vertexColor)
-              elif option.objectType in object.type:
-                name(context, vertexColor)
-
-      # bone groups
-      if option.boneGroups:
-
-        # batch type
-        if option.batchType in 'SELECTED':
-          if object.select:
-            if object.type in 'ARMATURE':
-              for group in object.pose.bone_groups[:]:
-                if object.select:
 
                   # name
-                  name(context, group)
-        else:
-          if object.type in 'ARMATURE':
-            for group in object.pose.bone_groups[:]:
-
-              # name
-              name(context, group)
+                  name(context, system.settings)
 
     # purge re cache
     re.purge()
@@ -1076,7 +1678,23 @@ class batch():
       # trim start
       newName = newName[option.trimStart:]
     else:
-      newName = datablock.name[option.trimStart:]
+
+      # name
+      if hasattr(datablock, 'name'):
+
+        # tag
+        if option.tag:
+          newName = datablock.label[option.trimStart:]
+        else:
+          newName = datablock.name[option.trimStart:]
+
+      # bl_label
+      elif hasattr(datablock, 'bl_label'):
+        newName = datablock.bl_label[option.trimStart:]
+
+      # info
+      elif hasattr(datablock, 'info'):
+        newName = datablock.info[option.trimStart:]
 
     # trim end
     if option.trimEnd > 0:
@@ -1091,8 +1709,24 @@ class batch():
     # prefix & suffix
     newName = option.prefix + newName + option.suffix
 
-    # assign new name
-    datablock.name = newName
+    # assign names
+
+    # name
+    if hasattr(datablock, 'name'):
+
+      # tag
+      if option.tag:
+        datablock.label = newName
+      else:
+        datablock.name = newName
+
+    # bl_label
+    elif hasattr(datablock, 'bl_label'):
+      datablock.bl_label = newName
+
+    # info
+    elif hasattr(datablock, 'info'):
+      datablock.info = newName
 
   # copy
   def copy(context):
@@ -3061,4 +3695,3 @@ class batch():
 
           # use active object
           screen.batchCopySettings.useActiveObject = batchCopyOption.useActiveObject
-

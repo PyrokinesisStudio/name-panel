@@ -52,10 +52,12 @@ class menuList():
   # constraint
   constraints = [
     ('ALL', 'All Constraints', '', 'CONSTRAINT', 0),
+
     # motion tracking
     ('CAMERA_SOLVER', 'Camera Solver', '', 'CONSTRAINT_DATA', 1),
     ('FOLLOW_TRACK', 'Follow Track', '', 'CONSTRAINT_DATA', 2),
     ('OBJECT_SOLVER', 'Object Solver', '', 'CONSTRAINT_DATA', 3),
+
     # transform
     ('COPY_LOCATION', 'Copy Location', '', 'CONSTRAINT_DATA', 4),
     ('COPY_ROTATION', 'Copy Rotation', '', 'CONSTRAINT_DATA', 5),
@@ -67,6 +69,7 @@ class menuList():
     ('LIMIT_SCALE', 'Limit Scale', '', 'CONSTRAINT_DATA', 11),
     ('MAINTAIN_VOLUME', 'Maintain Volume', '', 'CONSTRAINT_DATA', 12),
     ('TRANSFORM', 'Transformation', '', 'CONSTRAINT_DATA', 13),
+
     # tracking
     ('CLAMP_TO', 'Clamp To', '', 'CONSTRAINT_DATA', 14),
     ('DAMPED_TRACK', 'Damped Track', '', 'CONSTRAINT_DATA', 15),
@@ -75,6 +78,7 @@ class menuList():
     ('SPLINE_IK', 'Spline IK', '', 'CONSTRAINT_DATA', 18),
     ('STRETCH_TO', 'Stretch To', '', 'CONSTRAINT_DATA', 19),
     ('TRACK_TO', 'Track To', '', 'CONSTRAINT_DATA', 20),
+
     # relationship
     ('ACTION', 'Action', '', 'CONSTRAINT_DATA', 21),
     ('CHILD_OF', 'Child Of', '', 'CONSTRAINT_DATA', 22),
@@ -88,6 +92,7 @@ class menuList():
   # modifier
   modifiers = [
     ('ALL', 'All Modifiers', '', 'MODIFIER', 0),
+
     # modify
     ('DATA_TRANSFER', 'Data Transfer', '', 'MOD_DATA_TRANSFER', 1),
     ('MESH_CACHE', 'Mesh Cache', '', 'MOD_MESHDEFORM', 2),
@@ -97,6 +102,7 @@ class menuList():
     ('VERTEX_WEIGHT_EDIT', 'Vertex Weight Edit', '', 'MOD_VERTEX_WEIGHT', 6),
     ('VERTEX_WEIGHT_MIX', 'Vertex Weight Mix', '', 'MOD_VERTEX_WEIGHT', 7),
     ('VERTEX_WEIGHT_PROXIMITY', 'Vertex Weight Proximity', '', 'MOD_VERTEX_WEIGHT', 8),
+
     # generate
     ('ARRAY', 'Array', '', 'MOD_ARRAY', 9),
     ('BEVEL', 'Bevel', '', 'MOD_BEVEL', 10),
@@ -114,6 +120,7 @@ class menuList():
     ('SUBSURF', 'Subdivision Surface', '', 'MOD_SUBSURF', 22),
     ('TRIANGULATE', 'Triangulate', '', 'MOD_TRIANGULATE', 23),
     ('WIREFRAME', 'Wireframe', '', 'MOD_WIREFRAME', 24),
+
     # deform
     ('ARMATURE', 'Armature', '', 'MOD_ARMATURE', 25),
     ('CAST', 'Cast', '', 'MOD_CAST', 26),
@@ -130,6 +137,7 @@ class menuList():
     ('SMOOTH', 'Smooth', '', 'MOD_SMOOTH', 37),
     ('WARP', 'Warp', '', 'MOD_WARP', 38),
     ('WAVE', 'Wave', '', 'MOD_WAVE', 39),
+
     # simulate
     ('CLOTH', 'Cloth', '', 'MOD_CLOTH', 40),
     ('COLLISION', 'Collision', '', 'MOD_PHYSICS', 41),
@@ -153,6 +161,13 @@ class panel(PropertyGroup):
     Properties that effect how item panel displays the datablocks within the users current selection.
   '''
 
+  # filters
+  filters = BoolProperty(
+    name = 'Filters',
+    description = 'Toggle name filters for the item panel.',
+    default = False
+  )
+
   # selected
   selected = BoolProperty(
     name = 'View all selected',
@@ -160,10 +175,24 @@ class panel(PropertyGroup):
     default = False
   )
 
-  # filter
-  filters = BoolProperty(
-    name = 'Filters',
-    description = 'Toggle name filters for the item panel.',
+  # groups
+  groups = BoolProperty(
+    name = 'View groups',
+    description = 'Display group names.',
+    default = False
+  )
+
+  # action
+  action = BoolProperty(
+    name = 'View action',
+    description = 'Display object action name.',
+    default = False
+  )
+
+  # grease pencil
+  greasePencil = BoolProperty(
+    name = 'View grease pencil',
+    description = 'Display grease pencil and layer names',
     default = False
   )
 
@@ -181,38 +210,17 @@ class panel(PropertyGroup):
     default = False
   )
 
+  # bone groups
+  boneGroups = BoolProperty(
+    name = 'View bone groups',
+    description = 'Display armature bone group names.',
+    default = False
+  )
+
   # bone constraints
   boneConstraints = BoolProperty(
     name = 'View bone constraints',
     description = 'Display bone constraint names.',
-    default = False
-  )
-
-  # materials
-  materials = BoolProperty(
-    name = 'View object materials',
-    description = 'Display object material names.',
-    default = False
-  )
-
-  # textures
-  textures = BoolProperty(
-    name = 'View material textures.',
-    description = 'Display texture names.',
-    default = False
-  )
-
-  # particle systems
-  particleSystems = BoolProperty(
-    name = 'View particle systems',
-    description = 'Display the particle system and setting names. (Modifier filter must be active)',
-    default = False
-  )
-
-  # groups
-  groups = BoolProperty(
-    name = 'View groups',
-    description = 'Display group names.',
     default = False
   )
 
@@ -244,10 +252,24 @@ class panel(PropertyGroup):
     default = False
   )
 
-  # bone group
-  boneGroups = BoolProperty(
-    name = 'View bone groups',
-    description = 'Display armature bone group names.',
+  # materials
+  materials = BoolProperty(
+    name = 'View object materials',
+    description = 'Display object material names.',
+    default = False
+  )
+
+  # textures
+  textures = BoolProperty(
+    name = 'View material textures.',
+    description = 'Display texture names.',
+    default = False
+  )
+
+  # particle systems
+  particleSystems = BoolProperty(
+    name = 'View particle systems',
+    description = 'Display the particle system and setting names. (Modifier filter must be active)',
     default = False
   )
 
@@ -286,8 +308,8 @@ class batch():
         name = 'Batch Type',
         description = '',
         items = [
-          ('SELECTED', 'Selected', 'Batch auto name will only effect the objects within the current selection.'),
-          ('GLOBAL', 'Global', 'Batch auto name will effect all objects in the file.')
+          ('SELECTED', 'Selected', 'Batch auto name will only effect the object datablocks within the current selection.'),
+          ('OBJECTS', 'All Objects', 'Batch auto name will effect all object datablocks in the file.')
         ],
         default = 'SELECTED'
       )
@@ -555,77 +577,77 @@ class batch():
          name = 'Locked Track',
          description = 'Name used for locked track constraints.',
          default = 'Locked Track'
-       )
+      )
 
       # spline inverse kinematics
       splineInverseKinematics = StringProperty(
          name = 'Spline Inverse Kinematics',
          description = 'Name used for spline inverse kinematics constraints.',
          default = 'Spline Inverse Kinematics'
-       )
+      )
 
       # stretch to
       stretchTo = StringProperty(
          name = 'Stretch To',
          description = 'Name used for stretch to constraints.',
          default = 'Stretch To'
-       )
+      )
 
       # track to
       trackTo = StringProperty(
          name = 'Track To',
          description = 'Name used for track to constraints.',
          default = 'Track To'
-       )
+      )
 
       # action
       action = StringProperty(
          name = 'Action',
          description = 'Name used for action constraints.',
          default = 'Action'
-       )
+      )
 
       # child of
       childOf = StringProperty(
          name = 'Child Of',
          description = 'Name used for child of constraints.',
          default = 'Child Of'
-       )
+      )
 
       # floor
       floor = StringProperty(
          name = 'Floor',
          description = 'Name used for floor constraints.',
          default = 'Floor'
-       )
+      )
 
       # follow path
       followPath = StringProperty(
          name = 'Follow Path',
          description = 'Name used for follow path constraints.',
          default = 'Follow Path'
-       )
+      )
 
       # pivot
       pivot = StringProperty(
          name = 'Pivot',
          description = 'Name used for pivot constraints.',
          default = 'Pivot'
-       )
+      )
 
       # rigid body joint
       rigidBodyJoint = StringProperty(
          name = 'Rigid Body Joint',
          description = 'Name used for rigid body joint constraints.',
          default = 'Rigid Body Joint'
-       )
+      )
 
       # shrinkwrap
       shrinkwrap = StringProperty(
          name = 'Shrinkwrap',
          description = 'Name used for shrinkwrap constraints.',
          default = 'Shrinkwrap'
-       )
+      )
 
     # modifier
     class modifiers(PropertyGroup):
@@ -1063,13 +1085,21 @@ class batch():
       Properties that effect how the batch name operation is performed.
     '''
 
+    # tag
+    tag = BoolProperty(
+      name = 'Tag',
+      description = 'Used by batch name internally. (keep it off)',
+      default = False
+    )
+
     # batch type
     batchType = EnumProperty(
       name = 'Batch Type',
       description = '',
       items = [
         ('SELECTED', 'Selected', 'Batch name will only effect the object datablocks within the current selection.'),
-        ('GLOBAL', 'Global', 'Batch name will effect all object datablocks in the file.')
+        ('OBJECTS', 'All Objects', 'Batch name will effect all object datablocks in the file.'),
+        ('GLOBAL', 'Global', 'Batch name will effect all datablocks in the file. (Disables type filter menus.)')
       ],
       default = 'SELECTED'
     )
@@ -1078,6 +1108,27 @@ class batch():
     objects = BoolProperty(
       name = 'Objects',
       description = 'Name objects.',
+      default = False
+    )
+
+    # groups
+    groups = BoolProperty(
+      name = 'Groups',
+      description = 'Name object groups.',
+      default = False
+    )
+
+    # actions
+    actions = BoolProperty(
+      name = 'Actions',
+      description = 'Name actions.',
+      default = False
+    )
+
+    # grease pencil
+    greasePencil = BoolProperty(
+      name = 'Grease Pencil',
+      description = 'Name grease pencil and layers.',
       default = False
     )
 
@@ -1102,6 +1153,13 @@ class batch():
       default = False
     )
 
+    # bone groups
+    boneGroups = BoolProperty(
+      name = 'Bone Groups',
+      description = 'Name bone groups.',
+      default = False
+    )
+
     # bones
     bones = BoolProperty(
       name = 'Bones',
@@ -1113,41 +1171,6 @@ class batch():
     boneConstraints = BoolProperty(
       name = 'Bone Constraints',
       description = 'Name bone constraints.',
-      default = False
-    )
-
-    # materials
-    materials = BoolProperty(
-      name = 'Materials',
-      description = 'Name materials.',
-      default = False
-    )
-
-    # textures
-    textures = BoolProperty(
-      name = 'Textures',
-      description = 'Name material textures.',
-      default = False
-    )
-
-    # particle systems
-    particleSystems = BoolProperty(
-      name = 'Particle Systems',
-      description = 'Name particle systems.',
-      default = False
-    )
-
-    # particle settings
-    particleSettings = BoolProperty(
-      name = 'Particle Settings',
-      description = 'Name particle settings.',
-      default = False
-    )
-
-    # groups
-    groups = BoolProperty(
-      name = 'Groups',
-      description = 'Name object groups.',
       default = False
     )
 
@@ -1179,10 +1202,31 @@ class batch():
       default = False
     )
 
-    # bone groups
-    boneGroups = BoolProperty(
-      name = 'Bone Groups',
-      description = 'Name bone groups.',
+    # materials
+    materials = BoolProperty(
+      name = 'Materials',
+      description = 'Name materials.',
+      default = False
+    )
+
+    # textures
+    textures = BoolProperty(
+      name = 'Textures',
+      description = 'Name material textures.',
+      default = False
+    )
+
+    # particle systems
+    particleSystems = BoolProperty(
+      name = 'Particle Systems',
+      description = 'Name particle systems.',
+      default = False
+    )
+
+    # particle settings
+    particleSettings = BoolProperty(
+      name = 'Particle Settings',
+      description = 'Name particle settings.',
       default = False
     )
 
@@ -1210,6 +1254,132 @@ class batch():
       default = 'ALL'
     )
 
+    # scenes
+    scenes = BoolProperty(
+      name = 'scenes',
+      description = 'Name scenes. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # render layers
+    renderLayers = BoolProperty(
+      name = 'Render Layers',
+      description = 'Name render layers. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # worlds
+    worlds = BoolProperty(
+      name = 'Worlds',
+      description = 'Name worlds. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # libraries
+    libraries = BoolProperty(
+      name = 'Libraries',
+      description = 'Name libraries. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # images
+    images = BoolProperty(
+      name = 'Images',
+      description = 'Name images. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # masks
+    masks = BoolProperty(
+      name = 'Masks',
+      description = 'Name masks. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # sequences
+    sequences = BoolProperty(
+      name = 'Sequences',
+      description = 'Name sequences. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # movie clips
+    movieClips = BoolProperty(
+      name = 'Movie Clips',
+      description = 'Name movie clips. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # sounds
+    sounds = BoolProperty(
+      name = 'Sounds',
+      description = 'Name sounds. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # screens
+    screens = BoolProperty(
+      name = 'Screens',
+      description = 'Name screens. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # keying sets
+    keyingSets = BoolProperty(
+      name = 'Keying Sets',
+      description = 'Name keying sets. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # palettes
+    palettes = BoolProperty(
+      name = 'Palettes',
+      description = 'Name color palettes. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # brushes
+    brushes = BoolProperty(
+      name = 'Brushes',
+      description = 'Name brushes. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # linestyles
+    linestyles = BoolProperty(
+      name = 'Linestyles',
+      description = 'Name linestyles. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # nodes
+    nodes = BoolProperty(
+      name = 'Nodes',
+      description = 'Name nodes. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # node labels
+    nodeLabels = BoolProperty(
+      name = 'Node Labels',
+      description = 'Name node labels. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # node groups
+    nodeGroups = BoolProperty(
+      name = 'Node Groups',
+      description = 'Name node groups. (Must use \'Global\' batch type option)',
+      default = False
+    )
+
+    # texts
+    texts = BoolProperty(
+      name = 'Texts',
+      description = 'Name text documents. (Must use \'Global\' batch type option)',
+      default = False
+    )
+    
     # custom name
     customName = StringProperty(
       name = 'Custom Name',
@@ -1238,13 +1408,13 @@ class batch():
     # prefix
     prefix = StringProperty(
       name = 'Prefix',
-      description = 'Designate a prefix.'
+      description = 'Place this text at the beginning of the name.'
     )
 
     # suffix
     suffix = StringProperty(
       name = 'Suffix',
-      description = 'Designate a suffix.'
+      description = 'Place this text at the end of the name.'
     )
 
     # trim start
@@ -1276,8 +1446,8 @@ class batch():
       name = 'Batch Type',
       description = '',
       items = [
-        ('SELECTED', 'Selected', 'Batch name copy will only effect the objects within the current selection.'),
-        ('GLOBAL', 'Global', 'Batch name copy will effect all objects in the file.')
+        ('SELECTED', 'Selected', 'Batch name copy will only effect the object datablocks within the current selection.'),
+        ('OBJECTS', 'All Objects', 'Batch name copy will effect all object datablocks in the file.')
       ],
       default = 'SELECTED'
     )
@@ -1345,4 +1515,3 @@ class batch():
       description = 'Use the names available from the active object to paste to the other datablock names.',
       default = False
     )
-

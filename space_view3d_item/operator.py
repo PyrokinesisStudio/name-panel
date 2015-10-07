@@ -861,18 +861,10 @@ class batch():
     '''
       Batch name datablocks.
     '''
-    bl_idname = 'view3d.batch_name'
+    bl_idname = 'wm.batch_name'
     bl_label = 'Batch Name'
     bl_description = 'Batch name datablocks.'
     bl_options = {'REGISTER', 'UNDO'}
-
-    # poll
-    @classmethod
-    def poll(cls, context):
-      '''
-        Space data type must be in 3D view.
-      '''
-      return context.space_data.type in 'VIEW_3D'
 
     # draw
     def draw(self, context):
@@ -892,33 +884,33 @@ class batch():
       # column
       column = layout.column(align=True)
 
+      # object datablocks
+
       # row 1
       row = column.row(align=True)
-
-      # split
-      split = row.split(align=True)
-      split.prop(option, 'objects', text='', icon='OBJECT_DATA')
-      split.prop(option, 'constraints', text='', icon='CONSTRAINT')
-      split.prop(option, 'modifiers', text='', icon='MODIFIER')
-      split.prop(option, 'objectData', text='', icon='MESH_DATA')
-      split.prop(option, 'bones', text='', icon='BONE_DATA')
-      split.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
-      split.prop(option, 'materials', text='', icon='MATERIAL')
-      split.prop(option, 'textures', text='', icon='TEXTURE')
-      split.prop(option, 'particleSystems', text='', icon='PARTICLES')
-      split.prop(option, 'particleSettings', text='', icon='MOD_PARTICLES')
+      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.prop(option, 'objects', text='', icon='OBJECT_DATA')
+      row.prop(option, 'groups', text='', icon='GROUP')
+      row.prop(option, 'actions', text='', icon='ACTION')
+      row.prop(option, 'greasePencil', text='', icon='GREASEPENCIL')
+      row.prop(option, 'constraints', text='', icon='CONSTRAINT')
+      row.prop(option, 'modifiers', text='', icon='MODIFIER')
+      row.prop(option, 'objectData', text='', icon='MESH_DATA')
+      row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
+      row.prop(option, 'bones', text='', icon='BONE_DATA')
+      row.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
 
       # row 2
       row = column.row(align=True)
-
-      #split
-      split = row.split(align=True)
-      split.prop(option, 'groups', text='', icon='GROUP')
-      split.prop(option, 'vertexGroups', text='', icon='GROUP_VERTEX')
-      split.prop(option, 'shapekeys', text='', icon='SHAPEKEY_DATA')
-      split.prop(option, 'uvs', text='', icon='GROUP_UVS')
-      split.prop(option, 'vertexColors', text='', icon='GROUP_VCOL')
-      split.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
+      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.prop(option, 'vertexGroups', text='', icon='GROUP_VERTEX')
+      row.prop(option, 'shapekeys', text='', icon='SHAPEKEY_DATA')
+      row.prop(option, 'uvs', text='', icon='GROUP_UVS')
+      row.prop(option, 'vertexColors', text='', icon='GROUP_VCOL')
+      row.prop(option, 'materials', text='', icon='MATERIAL')
+      row.prop(option, 'textures', text='', icon='TEXTURE')
+      row.prop(option, 'particleSystems', text='', icon='PARTICLES')
+      row.prop(option, 'particleSettings', text='', icon='MOD_PARTICLES')
 
       # type filters
       column = layout.column()
@@ -926,8 +918,42 @@ class batch():
       column.prop(option, 'constraintType', text='')
       column.prop(option, 'modifierType', text='')
 
+      # global datablocks
+
+      # column
+      column = layout.column(align=True)
+
+      # row 1
+      row = column.row(align=True)
+      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.prop(option, 'scenes', text='', icon='SCENE_DATA')
+      row.prop(option, 'renderLayers', text='', icon='RENDERLAYERS')
+      row.prop(option, 'worlds', text='', icon='WORLD')
+      row.prop(option, 'libraries', text='', icon='LIBRARY_DATA_DIRECT')
+      row.prop(option, 'images', text='', icon='IMAGE_DATA')
+      row.prop(option, 'masks', text='', icon='MOD_MASK')
+      row.prop(option, 'sequences', text='', icon='SEQUENCE')
+      row.prop(option, 'movieClips', text='', icon='CLIP')
+      row.prop(option, 'sounds', text='', icon='SOUND')
+
+      # row 2
+      row = column.row(align=True)
+      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.prop(option, 'screens', text='', icon='SPLITSCREEN')
+      row.prop(option, 'keyingSets', text='', icon='KEYINGSET')
+      row.prop(option, 'palettes', text='', icon='COLOR')
+      row.prop(option, 'brushes', text='', icon='BRUSH_DATA')
+      row.prop(option, 'linestyles', text='', icon='LINE_DATA')
+      row.prop(option, 'nodes', text='', icon='NODE_SEL')
+      row.prop(option, 'nodeLabels', text='', icon='NODE')
+      row.prop(option, 'nodeGroups', text='', icon='NODETREE')
+      row.prop(option, 'texts', text='', icon='TEXT')
+
+      # row
+      row = column.row()
+      row.separator()
+
       # input fields
-      column.separator()
 
       # custom name
       column.prop(option, 'customName')
@@ -979,7 +1005,7 @@ class batch():
       '''
         Invoke the operator panel/menu, control its width.
       '''
-      context.window_manager.invoke_props_dialog(self, width=296)
+      context.window_manager.invoke_props_dialog(self, width=300)
       return {'RUNNING_MODAL'}
 
   # batch copy
@@ -1204,4 +1230,3 @@ class batch():
       # reset
       function.batch.transfer(context, self.auto, self.names, self.name, self.copy)
       return {'FINISHED'}
-

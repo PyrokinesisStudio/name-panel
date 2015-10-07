@@ -20,7 +20,7 @@
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
 #  Contact: trentin.shaun.frederick@gmail.com
-#  Version: 1.0
+#  Version: 1.1
 #
 # ##### END INFO BLOCK #####
 
@@ -28,7 +28,7 @@
 bl_info = {
   'name': 'Item Panel & Batch Naming',
   'author': 'Trentin Frederick (proxe)',
-  'version': (1, 0),
+  'version': (1, 1),
   'blender': (2, 75, 0),
   'location': '3D View → Properties Panel → Item',
   'description': 'An improved item panel for the 3D View with included batch naming tools.',
@@ -100,24 +100,25 @@ def unregister():
   bpy.types.VIEW3D_PT_view3d_name.remove(interface.panel.draw)
 
   # property groups
-  bpy.utils.unregister_class(settings.batch.name)
-  bpy.utils.unregister_class(settings.batch.copy)
   bpy.utils.unregister_class(settings.batch.auto.name)
   bpy.utils.unregister_class(settings.batch.auto.objects)
   bpy.utils.unregister_class(settings.batch.auto.constraints)
   bpy.utils.unregister_class(settings.batch.auto.modifiers)
   bpy.utils.unregister_class(settings.batch.auto.objectData)
+  bpy.utils.unregister_class(settings.batch.name)
+  bpy.utils.unregister_class(settings.batch.copy)
   bpy.utils.unregister_class(settings.panel)
 
   # operators
-  bpy.utils.unregister_class(operator.batch.name)
-  bpy.utils.unregister_class(operator.batch.copy)
   bpy.utils.unregister_class(operator.batch.auto.name)
   bpy.utils.unregister_class(operator.batch.auto.objects)
   bpy.utils.unregister_class(operator.batch.auto.constraints)
   bpy.utils.unregister_class(operator.batch.auto.modifiers)
   bpy.utils.unregister_class(operator.batch.auto.objectData)
+  bpy.utils.unregister_class(operator.batch.name)
+  bpy.utils.unregister_class(operator.batch.copy)
   bpy.utils.unregister_class(operator.batch.reset)
+  bpy.utils.unregister_class(operator.batch.transfer)
 
   # menu
   bpy.utils.unregister_class(interface.menu)
@@ -137,4 +138,3 @@ def unregister():
 
 if __name__ in '__main__':
   register()
-

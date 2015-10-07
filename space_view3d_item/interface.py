@@ -387,30 +387,32 @@ class panel():
 
       # row 1
       row = column.row(align=True)
-
-      # split
-      split = row.split(align=True)
-      split.prop(option, 'constraints', text='', icon='CONSTRAINT')
-      split.prop(option, 'modifiers', text='', icon='MODIFIER')
-      split.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
-      split.prop(option, 'materials', text='', icon='MATERIAL')
-      split.prop(option, 'textures', text='', icon='TEXTURE')
-      split.prop(option, 'particleSystems', text='', icon='PARTICLES')
+      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.prop(option, 'groups', text='', icon='GROUP')
+      row.prop(option, 'action', text='', icon='ACTION')
+      row.prop(option, 'greasePencil', text='', icon='GREASEPENCIL')
+      row.prop(option, 'constraints', text='', icon='CONSTRAINT')
+      row.prop(option, 'modifiers', text='', icon='MODIFIER')
+      row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
+      row.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
 
       # row 2
       row = column.row(align=True)
-
-      # split
-      split = row.split(align=True)
-      split.prop(option, 'groups', text='', icon='GROUP')
-      split.prop(option, 'vertexGroups', text='', icon='GROUP_VERTEX')
-      split.prop(option, 'shapekeys', text='', icon='SHAPEKEY_DATA')
-      split.prop(option, 'uvs', text='', icon='GROUP_UVS')
-      split.prop(option, 'vertexColors', text='', icon='GROUP_VCOL')
-      split.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
+      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.prop(option, 'vertexGroups', text='', icon='GROUP_VERTEX')
+      row.prop(option, 'shapekeys', text='', icon='SHAPEKEY_DATA')
+      row.prop(option, 'uvs', text='', icon='GROUP_UVS')
+      row.prop(option, 'vertexColors', text='', icon='GROUP_VCOL')
+      row.prop(option, 'materials', text='', icon='MATERIAL')
+      row.prop(option, 'textures', text='', icon='TEXTURE')
+      row.prop(option, 'particleSystems', text='', icon='PARTICLES')
 
     # column
     column = layout.column()
+
+    # row
+    row = column.row()
+    row.separator()
 
     # datablock list
 
@@ -432,6 +434,45 @@ class panel():
             sub.scale_x = 1.6
             sub.label(text='', icon='GROUP')
             row.prop(group, 'name', text='')
+
+    # action
+    if option.action:
+      if hasattr(context.active_object.animation_data, 'action'):
+        if hasattr(context.active_object.animation_data.action, 'name'):
+
+          # row
+          row = column.row(align=True)
+
+          # sub
+          sub = row.row()
+          sub.scale_x = 1.6
+          sub.label(text='', icon='ACTION')
+          row.prop(data.objects[context.active_object.name].animation_data.action, 'name', text='')
+
+    # grease pencil
+    if option.greasePencil:
+      if hasattr(context.active_object.grease_pencil, 'name'):
+
+        # row
+        row = column.row(align=True)
+
+        # sub
+        sub = row.row()
+        sub.scale_x = 1.6
+        sub.label(text='', icon='GREASEPENCIL')
+        row.prop(data.objects[context.active_object.name].grease_pencil, 'name', text='')
+
+        for layer in data.objects[context.active_object.name].grease_pencil.layers[:]:
+
+          # row
+          row = column.row(align=True)
+
+          sub = row.row(align=True)
+          sub.scale_x = 0.17
+          sub.prop(layer, 'color', text='')
+          row.prop(layer, 'info', text='')
+          row.prop(layer, 'lock', text='')
+          row.prop(layer, 'hide', text='')
 
     # constraints
     if option.constraints:
@@ -475,11 +516,17 @@ class panel():
         sub.scale_x = 1.6
         sub.label(text='', icon=modifierIcon(modifier))
         row.prop(modifier, 'name', text='')
-        if modifier.show_viewport:
-          iconView = 'RESTRICT_VIEW_OFF'
-        else:
-          iconView = 'RESTRICT_VIEW_ON'
-        row.prop(modifier, 'show_viewport', text='', icon=iconView)
+        if modifier.type not in {'COLLISION', 'SOFT_BODY'}:
+          if modifier.show_render:
+            iconRender = 'RESTRICT_RENDER_OFF'
+          else:
+            iconRender = 'RESTRICT_RENDER_ON'
+          row.prop(modifier, 'show_render', text='', icon=iconRender)
+          if modifier.show_viewport:
+            iconView = 'RESTRICT_VIEW_OFF'
+          else:
+            iconView = 'RESTRICT_VIEW_ON'
+          row.prop(modifier, 'show_viewport', text='', icon=iconView)
 
         # particle systems
         if option.particleSystems:
@@ -493,11 +540,6 @@ class panel():
             sub.scale_x = 1.6
             sub.label(text='', icon='PARTICLES')
             row.prop(modifier.particle_system, 'name', text='')
-            if modifier.show_render:
-              iconRender = 'RESTRICT_RENDER_OFF'
-            else:
-              iconRender = 'RESTRICT_RENDER_ON'
-            row.prop(modifier, 'show_render', text='', icon=iconRender)
 
             # particle settings
 
@@ -547,6 +589,10 @@ class panel():
     else:
       option.textures = False
 
+    # row
+    row = column.row()
+    row.separator()
+
     # selected
     if option.selected:
 
@@ -578,6 +624,45 @@ class panel():
                     sub.scale_x = 1.6
                     sub.label(text='', icon='GROUP')
                     row.prop(group, 'name', text='')
+
+            # actions
+            if option.action:
+              if hasattr(object.animation_data, 'action'):
+                if hasattr(object.animation_data.action, 'name'):
+
+                  # row
+                  row = column.row(align=True)
+
+                  # sub
+                  sub = row.row()
+                  sub.scale_x = 1.6
+                  sub.label(text='', icon='ACTION')
+                  row.prop(data.objects[object.name].animation_data.action, 'name', text='')
+
+            # grease pencil
+            if option.greasePencil:
+              if hasattr(object.grease_pencil, 'name'):
+
+                # row
+                row = column.row(align=True)
+
+                # sub
+                sub = row.row()
+                sub.scale_x = 1.6
+                sub.label(text='', icon='GREASEPENCIL')
+                row.prop(data.objects[object.name].grease_pencil, 'name', text='')
+
+                for layer in data.objects[object.name].grease_pencil.layers[:]:
+
+                  # row
+                  row = column.row(align=True)
+
+                  sub = row.row(align=True)
+                  sub.scale_x = 0.175
+                  sub.prop(layer, 'color', text='')
+                  row.prop(layer, 'info', text='')
+                  row.prop(layer, 'lock', text='')
+                  row.prop(layer, 'hide', text='')
 
             # constraints
             if option.constraints:
@@ -617,11 +702,17 @@ class panel():
                 sub.scale_x = 1.6
                 sub.label(text='', icon=modifierIcon(modifier))
                 row.prop(modifier, 'name', text='')
-                if modifier.show_viewport:
-                  iconView = 'RESTRICT_VIEW_OFF'
-                else:
-                  iconView = 'RESTRICT_VIEW_ON'
-                row.prop(modifier, 'show_viewport', text='', icon=iconView)
+                if modifier.type not in {'COLLISION', 'SOFT_BODY'}:
+                  if modifier.show_render:
+                    iconRender = 'RESTRICT_RENDER_OFF'
+                  else:
+                    iconRender = 'RESTRICT_RENDER_ON'
+                  row.prop(modifier, 'show_render', text='', icon=iconRender)
+                  if modifier.show_viewport:
+                    iconView = 'RESTRICT_VIEW_OFF'
+                  else:
+                    iconView = 'RESTRICT_VIEW_ON'
+                  row.prop(modifier, 'show_viewport', text='', icon=iconView)
 
                 # particle systems
                 if option.particleSystems:
@@ -635,11 +726,6 @@ class panel():
                     sub.scale_x = 1.6
                     sub.label(text='', icon='PARTICLES')
                     row.prop(modifier.particle_system, 'name', text='')
-                    if modifier.show_render:
-                      iconRender = 'RESTRICT_RENDER_OFF'
-                    else:
-                      iconRender = 'RESTRICT_RENDER_ON'
-                    row.prop(modifier, 'show_render', text='', icon=iconRender)
 
                     # particle settings
 
@@ -689,6 +775,10 @@ class panel():
             else:
               option.textures = False
 
+            # row
+            row = column.row()
+            row.separator()
+
     # empty
     if context.object.type in 'EMPTY':
       if context.object.empty_draw_type in 'IMAGE':
@@ -696,6 +786,10 @@ class panel():
         # row
         row = column.row(align=True)
         row.template_ID(context.active_object, 'data', open='image.open', unlink='image.unlink')
+
+        # row
+        row = column.row()
+        row.separator()
 
     # object data
     else:
@@ -783,6 +877,43 @@ class panel():
               iconActive = 'RESTRICT_RENDER_ON'
             row.prop(vertexColor, 'active_render', text='', icon=iconActive)
 
+      # materials
+      if option.materials:
+        for material in data.objects[context.active_object.name].material_slots[:]:
+          if material.material != None:
+            if material.link == 'DATA':
+
+              # row
+              row = column.row(align=True)
+
+              # sub
+              sub = row.row()
+              sub.scale_x = 1.6
+              sub.label(text='', icon='MATERIAL')
+              row.prop(material.material, 'name', text='')
+
+              # textures
+              if option.textures:
+                if context.scene.render.engine not in 'CYCLES':
+                  for texture in material.material.texture_slots[:]:
+                    if texture != None:
+
+                      # row
+                      row = column.row(align=True)
+
+                      # sub
+                      sub = row.row()
+                      sub.scale_x = 1.6
+                      sub.label(text='', icon='TEXTURE')
+                      row.prop(texture.texture, 'name', text='')
+                      if texture.use:
+                        iconToggle = 'RADIOBUT_ON'
+                      else:
+                        iconToggle = 'RADIOBUT_OFF'
+                      row.prop(texture, 'use', text='', icon=iconToggle)
+      else:
+        option.textures = False
+
       # bone groups
       if option.boneGroups:
         if data.objects[context.active_object.name].type in 'ARMATURE':
@@ -796,6 +927,10 @@ class panel():
             sub.scale_x = 1.6
             sub.label(text='', icon='GROUP_BONE')
             row.prop(group, 'name', text='')
+
+      # row
+      row = column.row()
+      row.separator()
 
       # bone
       if (data.objects[context.active_object.name].type in 'ARMATURE' and
@@ -836,6 +971,12 @@ class panel():
 
         # selected bones
         if option.selectedBones:
+
+          #row
+          row = column.row()
+          row.separator()
+
+          # sort
           if context.selected_editable_bones:
             selectedBones = context.selected_editable_bones
           elif context.selected_pose_bones:
@@ -883,42 +1024,15 @@ class panel():
                           iconView = 'RESTRICT_VIEW_OFF'
                         row.prop(constraint, 'mute', text='', icon=iconView)
 
-    # materials
-    if option.materials:
-      for material in data.objects[context.active_object.name].material_slots[:]:
-        if material.material != None:
-          if material.link == 'DATA':
+                # row
+                row = column.row()
+                row.separator()
+        else:
 
-            # row
-            row = column.row(align=True)
+          # row
+          row = column.row()
+          row.separator()
 
-            # sub
-            sub = row.row()
-            sub.scale_x = 1.6
-            sub.label(text='', icon='MATERIAL')
-            row.prop(material.material, 'name', text='')
-
-            # textures
-            if option.textures:
-              if context.scene.render.engine not in 'CYCLES':
-                for texture in material.material.texture_slots[:]:
-                  if texture != None:
-
-                    # row
-                    row = column.row(align=True)
-
-                    # sub
-                    sub = row.row()
-                    sub.scale_x = 1.6
-                    sub.label(text='', icon='TEXTURE')
-                    row.prop(texture.texture, 'name', text='')
-                    if texture.use:
-                      iconToggle = 'RADIOBUT_ON'
-                    else:
-                      iconToggle = 'RADIOBUT_OFF'
-                    row.prop(texture, 'use', text='', icon=iconToggle)
-    else:
-      option.textures = False
 
     # view selected
     if option.selected:
@@ -1015,20 +1129,6 @@ class panel():
                       iconActive = 'RESTRICT_RENDER_ON'
                     row.prop(vertexColor, 'active_render', text='', icon=iconActive)
 
-              # bone groups
-              if option.boneGroups:
-                if data.objects[object.name].type in 'ARMATURE':
-                  for group in data.objects[object.name].pose.bone_groups[:]:
-
-                    # row
-                    row = column.row(align=True)
-
-                    # sub
-                    sub = row.row()
-                    sub.scale_x = 1.6
-                    sub.label(text='', icon='GROUP_BONE')
-                    row.prop(group, 'name', text='')
-
               # materials
               if option.materials:
                 for material in data.objects[object.name].material_slots[:]:
@@ -1065,6 +1165,25 @@ class panel():
                               row.prop(texture, 'use', text='', icon=iconToggle)
               else:
                 option.textures = False
+
+              # bone groups
+              if option.boneGroups:
+                if data.objects[object.name].type in 'ARMATURE':
+                  for group in data.objects[object.name].pose.bone_groups[:]:
+
+                    # row
+                    row = column.row(align=True)
+
+                    # sub
+                    sub = row.row()
+                    sub.scale_x = 1.6
+                    sub.label(text='', icon='GROUP_BONE')
+                    row.prop(group, 'name', text='')
+
+              # row
+              row = column.row()
+              row.separator()
+
 
 # default
 class default():
@@ -1115,7 +1234,7 @@ class menu(Menu):
     layout.operator('view3d.batch_auto_name', icon='AUTO')
 
     # bath name
-    layout.operator('view3d.batch_name', icon='SORTALPHA')
+    layout.operator('wm.batch_name', icon='SORTALPHA')
 
     # batch copy
     layout.operator('view3d.batch_copy', icon='COPYDOWN')
@@ -1136,4 +1255,3 @@ class menu(Menu):
 
     # modifier names
     # layout.operator('view3d.auto_name_modifier_names', icon='MODIFIER')
-

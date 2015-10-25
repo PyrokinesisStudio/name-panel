@@ -2239,188 +2239,223 @@ class batch:
     option = context.screen.batchNameSettings
 
     # objects
-    if datablock.rna_type.identifier in 'Object':
-      storage.batch.objects.append([datablock.name, [1, datablock]])
+    if option.objects:
+      if datablock.rna_type.identifier in 'Object':
+        storage.batch.objects.append([datablock.name, [1, datablock]])
 
     # groups
-    elif datablock.rna_type.identifier in 'Group':
-      storage.batch.groups.append([datablock.name, [1, datablock]])
+    if option.groups:
+      if datablock.rna_type.identifier in 'Group':
+        storage.batch.groups.append([datablock.name, [1, datablock]])
 
     # actions
-    elif datablock.rna_type.identifier in 'Action':
-      storage.batch.actions.append([datablock.name, [1, datablock]])
+    if option.actions:
+      if datablock.rna_type.identifier in 'Action':
+        storage.batch.actions.append([datablock.name, [1, datablock]])
 
     # grease pencils
-    elif datablock.rna_type.identifier in 'GreasePencil':
-      storage.batch.greasePencils.append([datablock.name, [1, datablock]])
+    if option.greasePencil:
+      if datablock.rna_type.identifier in 'GreasePencil':
+        storage.batch.greasePencils.append([datablock.name, [1, datablock]])
 
-    # pencil layers
-    elif datablock.rna_type.identifier in 'GPencilLayer':
-      storage.batch.pencilLayers.append([datablock.info, [1, datablock]])
+      # pencil layers
+      if datablock.rna_type.identifier in 'GPencilLayer':
+        storage.batch.pencilLayers.append([datablock.info, [1, datablock]])
 
     # constraints
-    elif hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier in 'Constraint':
-        storage.batch.constraints.append([datablock.name, [1, datablock]])
+    if option.constraints:
+      if hasattr(datablock.rna_type.base, 'identifier'):
+        if datablock.rna_type.base.identifier in 'Constraint':
+          storage.batch.constraints.append([datablock.name, [1, datablock]])
 
     # modifiers
-    elif hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier in 'Modifier':
-        storage.batch.modifiers.append([datablock.name, [1, datablock]])
+    if option.modifiers:
+      if hasattr(datablock.rna_type.base, 'identifier'):
+        if datablock.rna_type.base.identifier in 'Modifier':
+          storage.batch.modifiers.append([datablock.name, [1, datablock]])
 
-    # cameras
-    elif datablock.rna_type.identifier in 'Camera':
-      storage.batch.cameras.append([datablock.name, [1, datablock]])
+    # object data
+    if option.objectData:
 
-    # meshes
-    elif datablock.rna_type.identifier in 'Mesh':
-      storage.batch.meshes.append([datablock.name, [1, datablock]])
+      # cameras
+      if datablock.rna_type.identifier in 'Camera':
+        storage.batch.cameras.append([datablock.name, [1, datablock]])
 
-    # lamps
-    elif hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier in 'Lamp':
-        storage.batch.lamps.append([datablock.name, [1, datablock]])
+      # meshes
+      if datablock.rna_type.identifier in 'Mesh':
+        storage.batch.meshes.append([datablock.name, [1, datablock]])
 
-    # lattices
-    elif datablock.rna_type.identifier in 'Lattice':
-      storage.batch.lattices.append([datablock.name, [1, datablock]])
+      # lamps
+      if hasattr(datablock.rna_type.base, 'identifier'):
+        if datablock.rna_type.base.identifier in 'Lamp':
+          storage.batch.lamps.append([datablock.name, [1, datablock]])
 
-    # surface
-    elif datablock.rna_type.identifier in 'SurfaceCurve':
-      storage.batch.curves.surface.append([datablock.name, [1, datablock]])
+      # lattices
+      if datablock.rna_type.identifier in 'Lattice':
+        storage.batch.lattices.append([datablock.name, [1, datablock]])
 
-    # text
-    elif datablock.rna_type.identifier in 'TextCurve':
-      storage.batch.curves.text.append([datablock.name, [1, datablock]])
+      # surface
+      if datablock.rna_type.identifier in 'SurfaceCurve':
+        storage.batch.curves.surface.append([datablock.name, [1, datablock]])
 
-    # curves
-    elif datablock.rna_type.identifier in 'Curve':
-      storage.batch.curves.curve.append([datablock.name, [1, datablock]])
+      # text
+      if datablock.rna_type.identifier in 'TextCurve':
+        storage.batch.curves.text.append([datablock.name, [1, datablock]])
 
-    # metaballs
-    elif datablock.rna_type.identifier in 'MetaBall':
-      storage.batch.metaballs.append([datablock.name, [1, datablock]])
+      # curves
+      if datablock.rna_type.identifier in 'Curve':
+        storage.batch.curves.curve.append([datablock.name, [1, datablock]])
 
-    # speakers
-    elif datablock.rna_type.identifier in 'Speaker':
-      storage.batch.speakers.append([datablock.name, [1, datablock]])
+      # metaballs
+      if datablock.rna_type.identifier in 'MetaBall':
+        storage.batch.metaballs.append([datablock.name, [1, datablock]])
 
-    # armatures
-    elif datablock.rna_type.identifier in 'Armature':
-      storage.batch.armatures.append([datablock.name, [1, datablock]])
+      # speakers
+      if datablock.rna_type.identifier in 'Speaker':
+        storage.batch.speakers.append([datablock.name, [1, datablock]])
+
+      # armatures
+      if datablock.rna_type.identifier in 'Armature':
+        storage.batch.armatures.append([datablock.name, [1, datablock]])
 
     # bones
-    elif datablock.rna_type.identifier in {'PoseBone', 'EditBone', 'Bone'}:
-      storage.batch.bones.append([datablock.name, [1, datablock]])
+    if option.bones:
+      if datablock.rna_type.identifier in {'PoseBone', 'EditBone', 'Bone'}:
+        storage.batch.bones.append([datablock.name, [1, datablock]])
 
     # vertex groups
-    elif datablock.rna_type.identifier in 'VertexGroup':
-      storage.batch.vertexGroups.append([datablock.name, [1, datablock]])
+    if option.vertexGroups:
+      if datablock.rna_type.identifier in 'VertexGroup':
+        storage.batch.vertexGroups.append([datablock.name, [1, datablock]])
 
     # shapekeys
-    elif datablock.rna_type.identifier in 'ShapeKey':
-      storage.batch.shapekeys.append([datablock.name, [1, datablock]])
+    if option.shapekeys:
+      if datablock.rna_type.identifier in 'ShapeKey':
+        storage.batch.shapekeys.append([datablock.name, [1, datablock]])
 
     # uvs
-    elif datablock.rna_type.identifier in 'MeshTexturePolyLayer':
-      storage.batch.uvs.append([datablock.name, [1, datablock]])
+    if option.uvs:
+      if datablock.rna_type.identifier in 'MeshTexturePolyLayer':
+        storage.batch.uvs.append([datablock.name, [1, datablock]])
 
     # vertex colors
-    elif datablock.rna_type.identifier in 'MeshLoopColorLayer':
-      storage.batch.vertexColors.append([datablock.name, [1, datablock]])
+    if option.vertexColors:
+      if datablock.rna_type.identifier in 'MeshLoopColorLayer':
+        storage.batch.vertexColors.append([datablock.name, [1, datablock]])
 
     # materials
-    elif datablock.rna_type.identifier in 'Material':
-      storage.batch.materials.append([datablock.name, [1, datablock]])
+    if option.materials:
+      if datablock.rna_type.identifier in 'Material':
+        storage.batch.materials.append([datablock.name, [1, datablock]])
 
     # textures
-    elif hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier in 'Texture':
-        storage.batch.textures.append([datablock.name, [1, datablock]])
+    if option.textures:
+      if hasattr(datablock.rna_type.base, 'identifier'):
+        if datablock.rna_type.base.identifier in 'Texture':
+          storage.batch.textures.append([datablock.name, [1, datablock]])
 
     # particle systems
-    elif datablock.rna_type.identifier in 'ParticleSystem':
-      storage.batch.particleSystems.append([datablock.name, [1, datablock]])
+    if option.particleSystems:
+      if datablock.rna_type.identifier in 'ParticleSystem':
+        storage.batch.particleSystems.append([datablock.name, [1, datablock]])
 
     # particle settings
-    elif datablock.rna_type.identifier in 'ParticleSettings':
-      storage.batch.particleSettings.append([datablock.name, [1, datablock]])
+    if option.particleSettings:
+      if datablock.rna_type.identifier in 'ParticleSettings':
+        storage.batch.particleSettings.append([datablock.name, [1, datablock]])
 
     # scenes
-    elif datablock.rna_type.identifier in 'Scene':
-      storage.batch.scenes.append([datablock.name, [1, datablock]])
+    if option.scenes:
+      if datablock.rna_type.identifier in 'Scene':
+        storage.batch.scenes.append([datablock.name, [1, datablock]])
 
     # render layers
-    elif datablock.rna_type.identifier in 'SceneRenderLayer':
-      storage.batch.renderLayers.append([datablock.name, [1, datablock]])
+    if option.renderLayers:
+      if datablock.rna_type.identifier in 'SceneRenderLayer':
+        storage.batch.renderLayers.append([datablock.name, [1, datablock]])
 
-    # world
-    elif datablock.rna_type.identifier in 'World':
-      storage.batch.world.append([datablock.name, [1, datablock]])
+    # worlds
+    if option.worlds:
+      if datablock.rna_type.identifier in 'World':
+        storage.batch.world.append([datablock.name, [1, datablock]])
 
     # libraries
-    elif datablock.rna_type.identifier in 'Library':
-      storage.batch.libraries.append([datablock.name, [1, datablock]])
+    if option.libraries:
+      if datablock.rna_type.identifier in 'Library':
+        storage.batch.libraries.append([datablock.name, [1, datablock]])
 
-    # image
-    elif datablock.rna_type.identifier in 'Image':
-      storage.batch.image.append([datablock.name, [1, datablock]])
+    # images
+    if option.images:
+      if datablock.rna_type.identifier in 'Image':
+        storage.batch.image.append([datablock.name, [1, datablock]])
 
     # masks
-    elif datablock.rna_type.identifier in 'Mask':
-      storage.batch.masks.append([datablock.name, [1, datablock]])
+    if option.masks:
+      if datablock.rna_type.identifier in 'Mask':
+        storage.batch.masks.append([datablock.name, [1, datablock]])
 
     # sequences
-    elif hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier in 'Sequence':
-        storage.batch.sequences.append([datablock.name, [1, datablock]])
+    if option.sequences:
+      if hasattr(datablock.rna_type.base, 'identifier'):
+        if datablock.rna_type.base.identifier in 'Sequence':
+          storage.batch.sequences.append([datablock.name, [1, datablock]])
 
     # movie clips
-    elif datablock.rna_type.identifier in 'MovieClip':
-      storage.batch.moviewClips.append([datablock.name, [1, datablock]])
+    if option.movieClips:
+      if datablock.rna_type.identifier in 'MovieClip':
+        storage.batch.moviewClips.append([datablock.name, [1, datablock]])
 
     # sounds
-    elif datablock.rna_type.identifier in 'Sound':
-      storage.batch.sounds.append([datablock.name, [1, datablock]])
+    if option.sounds:
+      if datablock.rna_type.identifier in 'Sound':
+        storage.batch.sounds.append([datablock.name, [1, datablock]])
 
     # screens
-    elif datablock.rna_type.identifier in 'Screen':
-      storage.batch.screens.append([datablock.name, [1, datablock]])
+    if option.screens:
+      if datablock.rna_type.identifier in 'Screen':
+        storage.batch.screens.append([datablock.name, [1, datablock]])
 
     # keying sets
-    elif datablock.rna_type.identifier in 'KeyingSet':
-      storage.batch.keyingSets.append([datablock.bl_label, [1, datablock]])
+    if option.keyingSets:
+      if datablock.rna_type.identifier in 'KeyingSet':
+        storage.batch.keyingSets.append([datablock.bl_label, [1, datablock]])
 
     # palettes
-    elif datablock.rna_type.identifier in 'Palette':
-      storage.batch.palettes.append([datablock.name, [1, datablock]])
+    if option.palettes:
+      if datablock.rna_type.identifier in 'Palette':
+        storage.batch.palettes.append([datablock.name, [1, datablock]])
 
     # brushes
-    elif datablock.rna_type.identifier in 'Brush':
-      storage.batch.brushes.append([datablock.name, [1, datablock]])
+    if option.brushes:
+      if datablock.rna_type.identifier in 'Brush':
+        storage.batch.brushes.append([datablock.name, [1, datablock]])
 
     # linestyles
-    elif datablock.rna_type.identifier in 'FreestyleLineStyle':
-      storage.batch.linestyles.append([datablock.name, [1, datablock]])
+    if option.linestyles:
+      if datablock.rna_type.identifier in 'FreestyleLineStyle':
+        storage.batch.linestyles.append([datablock.name, [1, datablock]])
 
     # nodes
-    elif hasattr(datablock.rna_type.base, 'base'):
-      if hasattr(datablock.rna_type.base.base, 'base'):
-        if hasattr(datablock.rna_type.base.base.base, 'identifier'):
-          if datablock.rna_type.base.base.base.identifier in 'Node':
-            storage.batch.nodes.append([datablock.name, [1, datablock]])
+    if option.nodes:
+      if hasattr(datablock.rna_type.base, 'base'):
+        if hasattr(datablock.rna_type.base.base, 'base'):
+          if hasattr(datablock.rna_type.base.base.base, 'identifier'):
+            if datablock.rna_type.base.base.base.identifier in 'Node':
+              storage.batch.nodes.append([datablock.name, [1, datablock]])
 
-            if batch.tag:
-              datablock.label = batch.name(context, datablock.label)
+              if batch.tag:
+                datablock.label = batch.name(context, datablock.label)
 
     # node groups
-    elif hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier in 'NodeTree':
-        storage.batch.nodeGroups.append([datablock.name, [1, datablock]])
+    if option.nodeGroups:
+      if hasattr(datablock.rna_type.base, 'identifier'):
+        if datablock.rna_type.base.identifier in 'NodeTree':
+          storage.batch.nodeGroups.append([datablock.name, [1, datablock]])
 
     # texts
-    elif datablock.rna_type.identifier in 'Text':
-      storage.batch.texts.append([datablock.name, [1, datablock]])
+    if option.texts:
+      if datablock.rna_type.identifier in 'Text':
+        storage.batch.texts.append([datablock.name, [1, datablock]])
 
   def process(context, collection):
     '''
@@ -2447,67 +2482,63 @@ class batch:
 
     # collection
     for item in collection[:]:
-      name = item[0]
 
       # sort
       if option.sort:
 
         # name
-        name = batch.name(context, (re.split(r'\W[0-9]*$|_[0-9]*$', item[0]))[0])
+        item[0] = batch.name(context, (re.split(r'\W[0-9]*$|_[0-9]*$', item[0]))[0])
       else:
-        name = batch.name(context, item[0])
+        item[0] = batch.name(context, item[0])
 
       # count
-      count.append(name)
+      count.append(item[0])
 
     # name count
     i = 0
     for item in collection[:]:
-      namecount = item[1][0]
 
       # name count
-      namecount = count.count(count[i])
+      item[1][0] = count.count(count[i])
       i += 1
 
     # randomize
     for item in collection[:]:
-      namecount = item[1][0]
-      datablock = item[1][1]
 
       if option.sort:
-        if namecount > 1:
+        if item[1][0] > 1:
 
           # name
-          if hasattr(datablock, 'name'):
-            datablock.name = str(random())
-          elif hasattr(datablock, 'info'):
-            datablock.info = str(random())
-          elif hasattr(datablock, 'bl_label'):
-            datablock.bl_label = str(random())
+          if hasattr(item[1][1], 'name'):
+            item[1][1].name = str(random())
+          elif hasattr(item[1][1], 'info'):
+            item[1][1].info = str(random())
+          elif hasattr(item[1][1], 'bl_label'):
+            item[1][1].bl_label = str(random())
 
           # batch count
           batch.count += 1
         elif not option.sortOnly:
 
           # name
-          if hasattr(datablock, 'name'):
-            datablock.name = str(random())
-          elif hasattr(datablock, 'info'):
-            datablock.info = str(random())
-          elif hasattr(datablock, 'bl_label'):
-            datablock.bl_label = str(random())
+          if hasattr(item[1][1], 'name'):
+            item[1][1].name = str(random())
+          elif hasattr(item[1][1], 'info'):
+            item[1][1].info = str(random())
+          elif hasattr(item[1][1], 'bl_label'):
+            item[1][1].bl_label = str(random())
 
           # batch count
           batch.count += 1
       else:
 
         # name
-        if hasattr(datablock, 'name'):
-          datablock.name = str(random())
-        elif hasattr(datablock, 'info'):
-          datablock.info = str(random())
-        elif hasattr(datablock, 'bl_label'):
-          datablock.bl_label = str(random())
+        if hasattr(item[1][1], 'name'):
+          item[1][1].name = str(random())
+        elif hasattr(item[1][1], 'info'):
+          item[1][1].info = str(random())
+        elif hasattr(item[1][1], 'bl_label'):
+          item[1][1].bl_label = str(random())
 
         # batch count
         batch.count += 1
@@ -2516,50 +2547,43 @@ class batch:
     if option.sort:
       i = 0
       for item in collection[:]:
-        name = item[0]
-
-        datablocks.append([name, i])
+        datablocks.append([item[0], i])
         i += 1
       i = 0
       for item in sorted(datablocks):
-        name = collection[item[1]][0]
-        namecount = collection[item[1]][1][0]
-        datablock = collection[item[1]][1][1]
 
         # name count
-        if namecount > 1:
+        if collection[item[1]][1][0] > 1:
 
           # duplicates
-          if name not in duplicates:
+          if collection[item[1]][0] not in duplicates:
 
             # name
-            if hasattr(datablock, 'name'):
-              datablock.name = name + option.separator + str(i + option.number).zfill(len(str(namecount)))
-            elif hasattr(datablock, 'info'):
-              datablock.info = name + option.separator + str(i + option.number).zfill(len(str(namecount)))
-            elif hasattr(datablock, 'bl_label'):
-              datablock.bl_label = name + option.separator + str(i + option.number).zfill(len(str(namecount)))
+            if hasattr(collection[item[1]][1][1], 'name'):
+              collection[item[1]][1][1].name = collection[item[1]][0] + option.separator + str(i + option.number).zfill(len(str(collection[item[1]][1][0])))
+            elif hasattr(collection[item[1]][1][1], 'info'):
+              collection[item[1]][1][1].info = collection[item[1]][0] + option.separator + str(i + option.number).zfill(len(str(collection[item[1]][1][0])))
+            elif hasattr(collection[item[1]][1][1], 'bl_label'):
+              collection[item[1]][1][1].bl_label = collection[item[1]][0] + option.separator + str(i + option.number).zfill(len(str(collection[item[1]][1][0])))
             i += 1
-          if i == namecount:
+          if i == collection[item[1]][1][0]:
             i = 0
 
             # duplicates
-            duplicates.append(name)
+            duplicates.append(collection[item[1]][0])
 
     # assign names
     if not option.sortOnly:
       for item in collection[:]:
-        name = item[0]
-        datablock = item[1][1]
-        if name not in duplicates:
+        if item[0] not in duplicates:
 
           # name
-          if hasattr(datablock, 'name'):
-            datablock.name = name
-          elif hasattr(datablock, 'info'):
-            datablock.info = name
-          elif hasattr(datablock, 'bl_label'):
-            datablock.bl_label = name
+          if hasattr(item[1][1], 'name'):
+            item[1][1].name = item[0]
+          elif hasattr(item[1][1], 'info'):
+            item[1][1].info = item[0]
+          elif hasattr(item[1][1], 'bl_label'):
+            item[1][1].bl_label = item[0]
 
     # clear count
     count.clear()

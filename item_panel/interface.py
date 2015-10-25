@@ -1117,7 +1117,7 @@ class panel:
     sub.scale_x = 1.6
 
     # active
-    if datablock.active:
+    if datablock == context.active_bone:
 
       # selected bones
       sub.prop(option, 'selectedBones', text='', icon='BONE_DATA')
@@ -1211,23 +1211,26 @@ class panel:
       if object.type in 'ARMATURE':
         if object.mode in {'POSE', 'EDIT'}:
 
+          layout.separator()
+
           # bones
           if object.mode in 'POSE':
-            bone = object.data.bones.active
+            bone = context.active_bone
           else:
-            bone = object.data.edit_bones.active
+            bone = context.active_bone
 
           panel.bone(self, context, layout, bone, object, option)
 
           # bone constraints
           if option.boneConstraints:
             if object.mode in 'POSE':
+              bone = context.active_pose_bone
               for constraint in bone.constraints[:]:
 
                 # search
                 if option.search in constraint.name:
 
-                  panel.constraint(self, context, layout, constraint, option)
+                  panel.constraint(self, context, layout, constraint, object, option)
 
           # selected bones
           if option.selectedBones:
@@ -1239,12 +1242,12 @@ class panel:
             row.separator()
 
             # edit mode
-            if object.mode in 'EDIT':
-              bones = object.data.edit_bones[:]
+            if object.mode in 'POSE':
+              bones = object.data.bones[:]
 
             # pose mode
             else:
-              bones = object.data.bones[:]
+              bones = object.data.edit_bones[:]
 
             # selected bones
             selectedBones = [
@@ -1279,7 +1282,7 @@ class panel:
                     for constraint in object.pose.bones[bone[1].name].constraints[:]:
 
                       # constraint
-                      panel.constraint(self, context, layout, constraint, option)
+                      panel.constraint(self, context, layout, constraint, object, option)
 
                 # row
                 row = layout.row()

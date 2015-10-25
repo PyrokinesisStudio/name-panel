@@ -30,7 +30,7 @@ class specials(Menu):
   '''
   bl_idname = 'VIEW3D_MT_item_panel_specials'
   bl_label = 'Operators'
-  bl_description = ''
+  bl_description = 'Operators and settings.'
 
   def draw(self, context):
     '''
@@ -39,6 +39,9 @@ class specials(Menu):
 
     # layout
     layout = self.layout
+
+    # option
+    option = context.screen.itemPanelSettings
 
     # batch auto name
     layout.operator('view3d.batch_auto_name', icon='AUTO')
@@ -55,6 +58,17 @@ class specials(Menu):
 
     # batch transfer
     layout.operator('view3d.batch_transfer_settings', icon='RECOVER_AUTO')
+
+    # separator
+    layout.separator()
+
+    # pin active object
+    layout.prop(option, 'pinActiveObject')
+
+    # hide search
+    layout.prop(option, 'hideSearch')
+
+    # serparator
     # layout.separator()
 
     # object names

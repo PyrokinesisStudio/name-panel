@@ -1,5 +1,4 @@
 
-
 # ##### BEGIN GPL LICENSE BLOCK #####
 #
 #  This program is free software; you can redistribute it and/or modify it
@@ -68,21 +67,24 @@ class item(Panel):
 
     # pin active object
     if option.pinActiveObject:
+      if context.active_object:
 
-      # populate
-      interface.panel.populate(self, context, layout, context.active_object, option)
+        # populate
+        interface.panel.populate(self, context, layout, context.active_object, option)
 
       # selected
       if option.selected:
 
         # sorted
         for datablock in sorted(selectedObjects):
-          if datablock[1] != context.active_object:
+          if datablock:
+            if datablock[1] != context.active_object:
 
-            # populate
-            interface.panel.populate(self, context, layout, datablock[1], option)
+              # populate
+              interface.panel.populate(self, context, layout, datablock[1], option)
     else:
       for datablock in sorted(selectedObjects):
+        if datablock:
 
-        # populate
-        interface.panel.populate(self, context, layout, datablock[1], option)
+          # populate
+          interface.panel.populate(self, context, layout, datablock[1], option)

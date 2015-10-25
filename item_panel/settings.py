@@ -21,136 +21,7 @@
 import bpy
 from bpy.types import PropertyGroup
 from bpy.props import EnumProperty, BoolProperty, StringProperty, IntProperty
-
-###########
-## LISTS ##
-###########
-
-# list
-class menuList:
-  '''
-    Contains Lists;
-      objects
-      modifiers
-      constraints
-  '''
-  # object
-  objects = [
-    ('ALL', 'All Objects', '', 'OBJECT_DATA', 0),
-    ('MESH', 'Mesh', '', 'OUTLINER_OB_MESH', 1),
-    ('CURVE', 'Curve', '', 'OUTLINER_OB_CURVE', 2),
-    ('SURFACE', 'Surface', '', 'OUTLINER_OB_SURFACE', 3),
-    ('META', 'Meta', '', 'OUTLINER_OB_META', 4),
-    ('FONT', 'Text', '', 'OUTLINER_OB_FONT', 5),
-    ('ARMATURE', 'Armature', '', 'OUTLINER_OB_ARMATURE', 6),
-    ('LATTICE', 'Lattice', '', 'OUTLINER_OB_LATTICE', 7),
-    ('EMPTY', 'Empty', '', 'OUTLINER_OB_EMPTY', 8),
-    ('SPEAKER', 'Speaker', '', 'OUTLINER_OB_SPEAKER', 9),
-    ('CAMERA', 'Camera', '', 'OUTLINER_OB_CAMERA', 10),
-    ('LAMP', 'Lamp', '', 'OUTLINER_OB_LAMP', 11)
-  ]
-
-  # constraint
-  constraints = [
-    ('ALL', 'All Constraints', '', 'CONSTRAINT', 0),
-
-    # motion tracking
-    ('CAMERA_SOLVER', 'Camera Solver', '', 'CONSTRAINT_DATA', 1),
-    ('FOLLOW_TRACK', 'Follow Track', '', 'CONSTRAINT_DATA', 2),
-    ('OBJECT_SOLVER', 'Object Solver', '', 'CONSTRAINT_DATA', 3),
-
-    # transform
-    ('COPY_LOCATION', 'Copy Location', '', 'CONSTRAINT_DATA', 4),
-    ('COPY_ROTATION', 'Copy Rotation', '', 'CONSTRAINT_DATA', 5),
-    ('COPY_SCALE', 'Copy Scale', '', 'CONSTRAINT_DATA', 6),
-    ('COPY_TRANSFORMS', 'Copy Transforms', '', 'CONSTRAINT_DATA', 7),
-    ('LIMIT_DISTANCE', 'Limit Distance', '', 'CONSTRAINT_DATA', 8),
-    ('LIMIT_LOCATION', 'Limit Location', '', 'CONSTRAINT_DATA', 9),
-    ('LIMIT_ROTATION', 'Limit Rotation', '', 'CONSTRAINT_DATA', 10),
-    ('LIMIT_SCALE', 'Limit Scale', '', 'CONSTRAINT_DATA', 11),
-    ('MAINTAIN_VOLUME', 'Maintain Volume', '', 'CONSTRAINT_DATA', 12),
-    ('TRANSFORM', 'Transformation', '', 'CONSTRAINT_DATA', 13),
-
-    # tracking
-    ('CLAMP_TO', 'Clamp To', '', 'CONSTRAINT_DATA', 14),
-    ('DAMPED_TRACK', 'Damped Track', '', 'CONSTRAINT_DATA', 15),
-    ('IK', 'Inverse Kinematics', '', 'CONSTRAINT_DATA', 16),
-    ('LOCKED_TRACK', 'Locked Track', '', 'CONSTRAINT_DATA', 17),
-    ('SPLINE_IK', 'Spline IK', '', 'CONSTRAINT_DATA', 18),
-    ('STRETCH_TO', 'Stretch To', '', 'CONSTRAINT_DATA', 19),
-    ('TRACK_TO', 'Track To', '', 'CONSTRAINT_DATA', 20),
-
-    # relationship
-    ('ACTION', 'Action', '', 'CONSTRAINT_DATA', 21),
-    ('CHILD_OF', 'Child Of', '', 'CONSTRAINT_DATA', 22),
-    ('FLOOR', 'Floor', '', 'CONSTRAINT_DATA', 23),
-    ('FOLLOW_PATH', 'Follow Path', '', 'CONSTRAINT_DATA', 24),
-    ('PIVOT', 'Pivot', '', 'CONSTRAINT_DATA', 25),
-    ('RIGID_BODY_JOINT', 'Rigid Body Joint', '', 'CONSTRAINT_DATA', 26),
-    ('SHRINKWRAP', 'Shrinkwrap', '', 'CONSTRAINT_DATA', 27)
-  ]
-
-  # modifier
-  modifiers = [
-    ('ALL', 'All Modifiers', '', 'MODIFIER', 0),
-
-    # modify
-    ('DATA_TRANSFER', 'Data Transfer', '', 'MOD_DATA_TRANSFER', 1),
-    ('MESH_CACHE', 'Mesh Cache', '', 'MOD_MESHDEFORM', 2),
-    ('NORMAL_EDIT', 'Normal Edit', '', 'MOD_NORMALEDIT', 3),
-    ('UV_PROJECT', 'UV Project', '', 'MOD_UVPROJECT', 4),
-    ('UV_WARP', 'UV Warp', '', 'MOD_UVPROJECT', 5),
-    ('VERTEX_WEIGHT_EDIT', 'Vertex Weight Edit', '', 'MOD_VERTEX_WEIGHT', 6),
-    ('VERTEX_WEIGHT_MIX', 'Vertex Weight Mix', '', 'MOD_VERTEX_WEIGHT', 7),
-    ('VERTEX_WEIGHT_PROXIMITY', 'Vertex Weight Proximity', '', 'MOD_VERTEX_WEIGHT', 8),
-
-    # generate
-    ('ARRAY', 'Array', '', 'MOD_ARRAY', 9),
-    ('BEVEL', 'Bevel', '', 'MOD_BEVEL', 10),
-    ('BOOLEAN', 'Boolean', '', 'MOD_BOOLEAN', 11),
-    ('BUILD', 'Build', '', 'MOD_BUILD', 12),
-    ('DECIMATE', 'Decimate', '', 'MOD_DECIM', 13),
-    ('EDGE_SPLIT', 'Edge Split', '', 'MOD_EDGESPLIT', 14),
-    ('MASK', 'Mask', '', 'MOD_MASK', 15),
-    ('MIRROR', 'Mirror', '', 'MOD_MIRROR', 16),
-    ('MULTIRES', 'Multiresolution', '', 'MOD_MULTIRES', 17),
-    ('REMESH', 'Remesh', '', 'MOD_REMESH', 18),
-    ('SCREW', 'Screw', '', 'MOD_SCREW', 19),
-    ('SKIN', 'Skin', '', 'MOD_SKIN', 20),
-    ('SOLIDIFY', 'Solidify', '', 'MOD_SOLIDIFY', 21),
-    ('SUBSURF', 'Subdivision Surface', '', 'MOD_SUBSURF', 22),
-    ('TRIANGULATE', 'Triangulate', '', 'MOD_TRIANGULATE', 23),
-    ('WIREFRAME', 'Wireframe', '', 'MOD_WIREFRAME', 24),
-
-    # deform
-    ('ARMATURE', 'Armature', '', 'MOD_ARMATURE', 25),
-    ('CAST', 'Cast', '', 'MOD_CAST', 26),
-    ('CORRECTIVE_SMOOTH', 'Corrective Smooth', '', 'MOD_SMOOTH', 27),
-    ('CURVE', 'Curve', '', 'MOD_CURVE', 28),
-    ('DISPLACE', 'Displace', '', 'MOD_DISPLACE', 29),
-    ('HOOK', 'Hook', '', 'HOOK', 30),
-    ('LAPLACIANSMOOTH', 'Laplacian Smooth', '', 'MOD_SMOOTH', 31),
-    ('LAPLACIANDEFORM', 'Laplacian Deform', '', 'MOD_MESHDEFORM', 32),
-    ('LATTICE', 'Lattice', '', 'MOD_LATTICE', 33),
-    ('MESH_DEFORM', 'Mesh Deform', '', 'MOD_MESHDEFORM', 34),
-    ('SHRINKWRAP', 'Shrinkwrap', '', 'MOD_SHRINKWRAP', 35),
-    ('SIMPLE_DEFORM', 'Simple Deform', '', 'MOD_SIMPLEDEFORM', 36),
-    ('SMOOTH', 'Smooth', '', 'MOD_SMOOTH', 37),
-    ('WARP', 'Warp', '', 'MOD_WARP', 38),
-    ('WAVE', 'Wave', '', 'MOD_WAVE', 39),
-
-    # simulate
-    ('CLOTH', 'Cloth', '', 'MOD_CLOTH', 40),
-    ('COLLISION', 'Collision', '', 'MOD_PHYSICS', 41),
-    ('DYNAMIC_PAINT', 'Dynamic Paint', '', 'MOD_DYNAMICPAINT', 42),
-    ('EXPLODE', 'Explode', '', 'MOD_EXPLODE', 43),
-    ('FLUID_SIMULATION', 'Fluid Simulation', '', 'MOD_FLUIDSIM', 44),
-    ('OCEAN', 'Ocean', '', 'MOD_OCEAN', 45),
-    ('PARTICLE_INSTANCE', 'Particle Instance', '', 'MOD_PARTICLES', 46),
-    ('PARTICLE_SYSTEM', 'Particle System', '', 'MOD_PARTICLES', 47),
-    ('SMOKE', 'Smoke', '', 'MOD_SMOKE', 48),
-    ('SOFT_BODY', 'Soft Body', '', 'MOD_SOFT', 49)
-  ]
+from . import storage
 
 #####################
 ## PROPERTY GROUPS ##
@@ -181,6 +52,20 @@ class panel(PropertyGroup):
     name = 'Selected',
     description = 'Display all possible object related datablock names within your current selection inside the item panel.',
     default = False
+  )
+
+  # pin active object
+  pinActiveObject = BoolProperty(
+    name = 'Pin Active Object',
+    description = 'Keeps the active object at the top of the stack.',
+    default = True
+  )
+
+  # hide search
+  hideSearch = BoolProperty(
+    name = 'Hide Search Field',
+    description = 'Hide the search field when the datablock filters are hidden.',
+    default = True
   )
 
   # groups
@@ -281,6 +166,13 @@ class panel(PropertyGroup):
     default = False
   )
 
+  # search
+  search = StringProperty(
+    name = 'Search',
+    description = 'Search filtering string.',
+    default = ''
+  )
+
   # selected bones
   selectedBones = BoolProperty(
     name = 'Selected',
@@ -316,8 +208,8 @@ class batch:
         name = 'Batch Type',
         description = '',
         items = [
-          ('SELECTED', 'Selected', 'Batch auto name will only effect the object related datablock names within the current selection.'),
-          ('OBJECTS', 'All Objects', 'Batch auto name will effect all object related datablock names in the file.')
+          ('SELECTED', 'Selected', 'Effect all objects, and object related datablock names in the current 3D view selection.'),
+          ('OBJECTS', 'All Objects', 'Effect all objects, and object related datablock names in the file.')
         ],
         default = 'SELECTED'
       )
@@ -360,7 +252,7 @@ class batch:
       objectType = EnumProperty(
         name = 'Object Type',
         description = 'Type of objects to be effected.',
-        items = menuList.objects,
+        items = storage.batch.menu.objects,
         default = 'ALL'
       )
 
@@ -368,7 +260,7 @@ class batch:
       constraintType = EnumProperty(
         name = 'Constraint Type',
         description = 'Type of constraints to be effected.',
-        items = menuList.constraints,
+        items = storage.batch.menu.constraints,
         default = 'ALL'
       )
 
@@ -376,7 +268,7 @@ class batch:
       modifierType = EnumProperty(
         name = 'Modifier Type',
         description = 'Type of modifiers to be effected.',
-        items = menuList.modifiers,
+        items = storage.batch.menu.modifiers,
         default = 'ALL'
       )
 
@@ -1093,21 +985,14 @@ class batch:
       Properties that effect how the batch name operation is performed.
     '''
 
-    # tag
-    tag = BoolProperty(
-      name = 'Tag',
-      description = 'Used by batch name internally. (keep it off)',
-      default = False
-    )
-
     # batch type
     batchType = EnumProperty(
       name = 'Batch Type',
       description = '',
       items = [
-        ('SELECTED', 'Selected', 'Batch name will only effect the object related datablock names within the current selection.'),
-        ('OBJECTS', 'All Objects', 'Batch name will effect all object related datablock names in the file.'),
-        ('GLOBAL', 'Global', 'Batch name will effect all datablocks in the file. (Disables type filter menus.)')
+        ('SELECTED', 'Selected', 'Effect all objects, and object related datablock names in the current 3D view selection.'),
+        ('OBJECTS', 'All Objects', 'Effect all objects, and object related datablock names in the file.'),
+        ('GLOBAL', 'Global', 'Effect all datablocks in the file. (Disables type filter menus.)')
       ],
       default = 'SELECTED'
     )
@@ -1242,7 +1127,7 @@ class batch:
     objectType = EnumProperty(
       name = 'Object Type',
       description = 'Type of objects to be effected.',
-      items = menuList.objects,
+      items = storage.batch.menu.objects,
       default = 'ALL'
     )
 
@@ -1250,7 +1135,7 @@ class batch:
     constraintType = EnumProperty(
       name = 'Constraint Type',
       description = 'Type of constraints to be effected.',
-      items = menuList.constraints,
+      items = storage.batch.menu.constraints,
       default = 'ALL'
     )
 
@@ -1258,133 +1143,133 @@ class batch:
     modifierType = EnumProperty(
       name = 'Modifier Type',
       description = 'Type of modifiers to be effected.',
-      items = menuList.modifiers,
+      items = storage.batch.menu.modifiers,
       default = 'ALL'
     )
 
     # scenes
     scenes = BoolProperty(
-      name = 'scenes',
-      description = 'Name scenes. (Must use \'Global\' batch type option)',
+      name = 'Scenes',
+      description = 'Name scenes.',
       default = False
     )
 
     # render layers
     renderLayers = BoolProperty(
       name = 'Render Layers',
-      description = 'Name render layers. (Must use \'Global\' batch type option)',
+      description = 'Name render layers.',
       default = False
     )
 
     # worlds
     worlds = BoolProperty(
       name = 'Worlds',
-      description = 'Name worlds. (Must use \'Global\' batch type option)',
+      description = 'Name worlds.',
       default = False
     )
 
     # libraries
     libraries = BoolProperty(
       name = 'Libraries',
-      description = 'Name libraries. (Must use \'Global\' batch type option)',
+      description = 'Name libraries.',
       default = False
     )
 
     # images
     images = BoolProperty(
       name = 'Images',
-      description = 'Name images. (Must use \'Global\' batch type option)',
+      description = 'Name images.',
       default = False
     )
 
     # masks
     masks = BoolProperty(
       name = 'Masks',
-      description = 'Name masks. (Must use \'Global\' batch type option)',
+      description = 'Name masks.',
       default = False
     )
 
     # sequences
     sequences = BoolProperty(
       name = 'Sequences',
-      description = 'Name sequences. (Must use \'Global\' batch type option)',
+      description = 'Name sequences.',
       default = False
     )
 
     # movie clips
     movieClips = BoolProperty(
       name = 'Movie Clips',
-      description = 'Name movie clips. (Must use \'Global\' batch type option)',
+      description = 'Name movie clips.',
       default = False
     )
 
     # sounds
     sounds = BoolProperty(
       name = 'Sounds',
-      description = 'Name sounds. (Must use \'Global\' batch type option)',
+      description = 'Name sounds.',
       default = False
     )
 
     # screens
     screens = BoolProperty(
       name = 'Screens',
-      description = 'Name screens. (Must use \'Global\' batch type option)',
+      description = 'Name screens.',
       default = False
     )
 
     # keying sets
     keyingSets = BoolProperty(
       name = 'Keying Sets',
-      description = 'Name keying sets. (Must use \'Global\' batch type option)',
+      description = 'Name keying sets.',
       default = False
     )
 
     # palettes
     palettes = BoolProperty(
       name = 'Palettes',
-      description = 'Name color palettes. (Must use \'Global\' batch type option)',
+      description = 'Name color palettes.',
       default = False
     )
 
     # brushes
     brushes = BoolProperty(
       name = 'Brushes',
-      description = 'Name brushes. (Must use \'Global\' batch type option)',
+      description = 'Name brushes.',
       default = False
     )
 
     # linestyles
     linestyles = BoolProperty(
       name = 'Linestyles',
-      description = 'Name linestyles. (Must use \'Global\' batch type option)',
+      description = 'Name linestyles.',
       default = False
     )
 
     # nodes
     nodes = BoolProperty(
       name = 'Nodes',
-      description = 'Name nodes. (Must use \'Global\' batch type option)',
+      description = 'Name nodes.',
       default = False
     )
 
     # node labels
     nodeLabels = BoolProperty(
       name = 'Node Labels',
-      description = 'Name node labels. (Must use \'Global\' batch type option)',
+      description = 'Name node labels.',
       default = False
     )
 
     # node groups
     nodeGroups = BoolProperty(
       name = 'Node Groups',
-      description = 'Name node groups. (Must use \'Global\' batch type option)',
+      description = 'Name node groups.',
       default = False
     )
 
     # texts
     texts = BoolProperty(
       name = 'Texts',
-      description = 'Name text documents. (Must use \'Global\' batch type option)',
+      description = 'Name text documents.',
       default = False
     )
 
@@ -1430,7 +1315,7 @@ class batch:
       name = 'Trim Start',
       description = 'Trim the beginning of the name.',
       min = 0,
-      max = 50,
+      max = 63,
       default = 0
     )
 
@@ -1439,9 +1324,38 @@ class batch:
       name = 'Trim End',
       description = 'Trim the ending of the name.',
       min = 0,
-      max = 50,
+      max = 63,
       default = 0
     )
+
+    # sort
+    sort = BoolProperty(
+      name = 'Sort Duplicates',
+      description = 'Manage names that are identical with a trailing value.',
+      default = True
+    )
+
+    # number
+    number = IntProperty(
+      name = 'Starting Number',
+      description = 'Number to start with when renaming duplicates.',
+      min = 1,
+      default = 1
+    )
+
+    # separator
+    separator = StringProperty(
+        name = 'Separator',
+        description = 'The separator to use between the name and number when renaming duplicates.',
+        default = '.'
+    )
+
+    # sort only
+    sortOnly = BoolProperty(
+       name = 'Only Sort Duplicates',
+       description = 'Only effect names during the operator process that are considered duplicates.',
+       default = False
+     )
 
   # copy
   class copy(PropertyGroup):
@@ -1454,8 +1368,8 @@ class batch:
       name = 'Batch Type',
       description = '',
       items = [
-        ('SELECTED', 'Selected', 'Batch name copy will only effect the object related datablock names within the current selection.'),
-        ('OBJECTS', 'All Objects', 'Batch name copy will effect all object related datablock names in the file.')
+        ('SELECTED', 'Selected', 'Effect all objects, and object related datablock names in the current 3D view selection.'),
+        ('OBJECTS', 'All Objects', 'Effect all objects, and object related datablock names in the file.')
       ],
       default = 'SELECTED'
     )

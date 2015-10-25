@@ -52,7 +52,8 @@ def register():
   '''
 
   # remove blender default panel
-  bpy.utils.unregister_class(bpy.types.VIEW3D_PT_view3d_name)
+  try:
+    bpy.utils.unregister_class(bpy.types.VIEW3D_PT_view3d_name)
 
   # panel
   bpy.utils.register_class(panel.item)
@@ -147,7 +148,7 @@ def unregister():
   '''
     Unregister.
   '''
-  
+
   # panel
   bpy.utils.unregister_class(panel.item)
 

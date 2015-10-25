@@ -21,7 +21,7 @@
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
 #  Contact: trentin.shaun.frederick@gmail.com
-#  Version: 1.2
+#  Version: 1.3
 #
 # ##### END INFO BLOCK #####
 
@@ -29,7 +29,7 @@
 bl_info = {
   'name': 'Item Panel & Batch Naming',
   'author': 'Trentin Frederick (proxe)',
-  'version': (1, 2),
+  'version': (1, 3),
   'blender': (2, 76, 0),
   'location': '3D View → Properties Panel → Item',
   'description': 'An improved item panel for the 3D View with included batch naming tools.',
@@ -39,7 +39,7 @@ bl_info = {
 # imports
 import bpy
 from bpy.props import PointerProperty
-from . import panel, menu, operator, settings
+from . import panel, menu, operator, settings, interface
 
 ##############
 ## REGISTER ##
@@ -52,15 +52,12 @@ def register():
   '''
 
   # remove blender default panel
-  bpy.types.VIEW3D_PT_view3d_name.remove(bpy.types.VIEW3D_PT_view3d_name.draw)
+  bpy.utils.unregister_class(bpy.types.VIEW3D_PT_view3d_name)
 
-  # remove add-on default panel
-  bpy.types.VIEW3D_PT_view3d_name.remove(panel.default.draw)
+  # panel
+  bpy.utils.register_class(panel.item)
 
-  # append add-on panel
-  bpy.types.VIEW3D_PT_view3d_name.append(panel.item.draw)
-
-  # menu
+  # menus
   bpy.utils.register_class(menu.specials)
 
   # operators
@@ -85,27 +82,74 @@ def register():
   bpy.utils.register_class(settings.panel)
 
   # pointer properties
-  bpy.types.Screen.batchAutoNameSettings = PointerProperty(type=settings.batch.auto.name)
-  bpy.types.Scene.batchAutoNameObjectNames = PointerProperty(type=settings.batch.auto.objects)
-  bpy.types.Scene.batchAutoNameConstraintNames = PointerProperty(type=settings.batch.auto.constraints)
-  bpy.types.Scene.batchAutoNameModifierNames = PointerProperty(type=settings.batch.auto.modifiers)
-  bpy.types.Scene.batchAutoNameObjectDataNames = PointerProperty(type=settings.batch.auto.objectData)
-  bpy.types.Screen.batchNameSettings = PointerProperty(type=settings.batch.name)
-  bpy.types.Screen.batchCopySettings = PointerProperty(type=settings.batch.copy)
-  bpy.types.Screen.itemPanelSettings = PointerProperty(type=settings.panel)
 
+  # batch auto name settings
+  bpy.types.Screen.batchAutoNameSettings = PointerProperty(
+    type = settings.batch.auto.name,
+    name = 'Batch Auto Name Settings',
+    description = 'Storage location for the batch auto name operator settings.'
+  )
+
+  # batch auto name object names
+  bpy.types.Scene.batchAutoNameObjectNames = PointerProperty(
+    type = settings.batch.auto.objects,
+    name = 'Batch Auto Name Object Names',
+    description = 'Storage location for the object names used during the auto name operation.'
+  )
+
+  # batch auto name constraint names
+  bpy.types.Scene.batchAutoNameConstraintNames = PointerProperty(
+    type = settings.batch.auto.constraints,
+    name = 'Batch Auto Name Constraint Names',
+    description = 'Storage location for the constraint names used during the auto name operation.'
+  )
+
+  # batch auto name modifier names
+  bpy.types.Scene.batchAutoNameModifierNames = PointerProperty(
+    type = settings.batch.auto.modifiers,
+    name = 'Batch Auto Name Modifier Names',
+    description = 'Storage location for the modifier names used during the auto name operation.'
+  )
+
+  # batch auto name object data names
+  bpy.types.Scene.batchAutoNameObjectDataNames = PointerProperty(
+    type = settings.batch.auto.objectData,
+    name = 'Batch Auto Name Object Data Names',
+    description = 'Storage location for the object data names used during the auto name operation.'
+  )
+
+  # batch name settings
+  bpy.types.Screen.batchNameSettings = PointerProperty(
+    type = settings.batch.name,
+    name = 'Batch Name Settings',
+    description = 'Storage location for the batch name operator settings.'
+  )
+
+  # batch copy settings
+  bpy.types.Screen.batchCopySettings = PointerProperty(
+    type = settings.batch.copy,
+    name = 'Batch Name Copy Settings',
+    description = 'Storage location for the batch copy name operator settings.'
+  )
+
+  # item panel settings
+  bpy.types.Screen.itemPanelSettings = PointerProperty(
+    type = settings.panel,
+    name = 'Item Panel Settings',
+    description = 'Storage location for the item panel settings.'
+  )
+
+  # append batch name button
+  bpy.types.OUTLINER_HT_header.append(interface.button.batchName)
 
 # unregister
 def unregister():
   '''
     Unregister.
   '''
-
-  # remove add-on panel
-  bpy.types.VIEW3D_PT_view3d_name.remove(panel.item.draw)
-
-  # append add-on default panel
-  bpy.types.VIEW3D_PT_view3d_name.append(panel.default.draw)
+  
+  # panel
+  bpy.utils.unregister_class(panel.item)
 
   # menu
   bpy.utils.unregister_class(menu.specials)
@@ -140,6 +184,9 @@ def unregister():
   del bpy.types.Screen.batchNameSettings
   del bpy.types.Screen.batchCopySettings
   del bpy.types.Screen.itemPanelSettings
+
+  # remove batch name button
+  bpy.types.OUTLINER_HT_header.remove(interface.button.batchName)
 
 if __name__ in '__main__':
   register()

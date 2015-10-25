@@ -593,7 +593,7 @@ class panel:
         panel.blocks.objectData.boneGroup(self, context, column, object, option)
 
         # bones
-        panel.blocks.bone(self, context, column, object, option)
+        # panel.blocks.bone(self, context, column, object, option)
 
   # object
   def object(self, context, layout, datablock, option):
@@ -1110,27 +1110,30 @@ class panel:
     # row
     row = layout.row(align=True)
 
-    # sub
-    sub = row.row(align=True)
-
-    # scale
-    sub.scale_x = 1.6
-
     # active
     if datablock == context.active_bone:
+
+      # sub
+      sub = row.row(align=True)
+
+      # scale
+      sub.scale_x = 1.6
 
       # selected bones
       sub.prop(option, 'selectedBones', text='', icon='BONE_DATA')
 
     # selected
-    else:
-      sub.label(text='', icon='BONE_DATA')
+    # else:
+    #   sub.label(text='', icon='BONE_DATA')
 
     # pose mode
     if object.mode in 'POSE':
 
       # name
-      row.prop(datablock, 'name', text='')
+      if not datablock == context.active_bone:
+        row.prop(datablock, 'name', text='', icon='BONE_DATA')
+      else:
+        row.prop(datablock, 'name', text='')
 
       # options
       if option.options:

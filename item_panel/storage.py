@@ -28,9 +28,6 @@ import bpy
 # batch
 class batch:
   '''
-    Contains Functions;
-      sort
-
     Contains Classes;
       Menu
 

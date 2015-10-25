@@ -1,5 +1,5 @@
 # Item Panel
-Version 1.2
+Version 1.3
 
 Item panel add-on for blender, with included batch naming tools.
 

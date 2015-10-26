@@ -1335,18 +1335,26 @@ class batch:
       default = True
     )
 
-    # number
-    number = IntProperty(
-      name = 'Starting Number',
+    # start
+    start = IntProperty(
+      name = 'Start',
       description = 'Number to start with when renaming duplicates.',
       min = 1,
       default = 1
     )
 
+    # padding
+    padding = IntProperty(
+      name = 'Padding',
+      description = 'Number of zeroes to place before the incrementing number.',
+      min = 0,
+      default = 0
+    )
+
     # separator
     separator = StringProperty(
         name = 'Separator',
-        description = 'The separator to use between the name and number when renaming duplicates. Hint: Include needed zeroes after the separator.',
+        description = 'The separator to use between the name and number when renaming duplicates.',
         default = '.'
     )
 

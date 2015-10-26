@@ -1346,7 +1346,7 @@ class batch:
     # separator
     separator = StringProperty(
         name = 'Separator',
-        description = 'The separator to use between the name and number when renaming duplicates.',
+        description = 'The separator to use between the name and number when renaming duplicates. Hint: Include needed zeroes after the separator.',
         default = '.'
     )
 

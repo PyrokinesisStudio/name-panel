@@ -2560,11 +2560,11 @@ class batch:
 
             # name
             if hasattr(collection[item[1]][1][1], 'name'):
-              collection[item[1]][1][1].name = collection[item[1]][0] + option.separator + str(i + option.number).zfill(len(str(collection[item[1]][1][0])))
+              collection[item[1]][1][1].name = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
             elif hasattr(collection[item[1]][1][1], 'info'):
-              collection[item[1]][1][1].info = collection[item[1]][0] + option.separator + str(i + option.number).zfill(len(str(collection[item[1]][1][0])))
+              collection[item[1]][1][1].info = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
             elif hasattr(collection[item[1]][1][1], 'bl_label'):
-              collection[item[1]][1][1].bl_label = collection[item[1]][0] + option.separator + str(i + option.number).zfill(len(str(collection[item[1]][1][0])))
+              collection[item[1]][1][1].bl_label = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
             i += 1
           if i == collection[item[1]][1][0]:
             i = 0
@@ -4160,8 +4160,11 @@ class batch:
       # process
       batchNameOption.sort = False
 
-      # number
-      batchNameOption.number = 1
+      # padding
+      batchNameOption.padding = 0
+
+      # start
+      batchNameOption.start = 1
 
       # separator
       batchNameOption.separator = '.'
@@ -4705,8 +4708,11 @@ class batch:
           # process
           screen.batchNameSettings.sort = batchNameOption.process
 
-          # number
-          screen.batchNameSettings.number = batchNameOption.number
+          # padding
+          screen.batchNameSettings.padding = batchNameOption.padding
+
+          # start
+          screen.batchNameSettings.start = batchNameOption.start
 
           # separator
           screen.batchNameSettings.separator = batchNameOption.separator

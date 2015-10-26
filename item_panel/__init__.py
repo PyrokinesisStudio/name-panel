@@ -54,6 +54,8 @@ def register():
   # remove blender default panel
   try:
     bpy.utils.unregister_class(bpy.types.VIEW3D_PT_view3d_name)
+  except:
+    pass
 
   # panel
   bpy.utils.register_class(panel.item)

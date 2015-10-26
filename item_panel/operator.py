@@ -996,12 +996,21 @@ class batch:
       row.label(text='Trim End:')
       row.prop(option, 'trimEnd', text='')
 
+      # row
       row = column.row()
+
+      # separator
       row.separator()
 
+      # sort duplicates
+
+      # row
       row = column.row(align=True)
-      row.prop(option, 'sort', text='Sort Duplicate Names', toggle=True)
-      row.prop(option, 'number', text='Starting Number')
+      row.prop(option, 'sort', text='Sort Duplicates', toggle=True)
+      row.prop(option, 'padding', text='Padding')
+      row.prop(option, 'start', text='Start at')
+
+      # sub
       sub = row.row(align=True)
       sub.scale_x = 0.1
       sub.prop(option, 'separator', text='')

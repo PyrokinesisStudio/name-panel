@@ -708,9 +708,6 @@ class batch:
     # option
     option = context.screen.batchNameSettings
 
-    # tag
-    tag = False
-
     # batch type
     if option.batchType in {'SELECTED', 'OBJECTS'}:
 
@@ -1621,78 +1618,6 @@ class batch:
         # clear shared
         batch.shared.particleSettings.clear()
 
-      # scenes
-      if option.scenes:
-        tag = True
-
-      # renderLayers
-      if option.renderLayers:
-        tag = True
-
-      # worlds
-      if option.worlds:
-        tag = True
-
-      # libraries
-      if option.libraries:
-        tag = True
-
-      # images
-      if option.images:
-        tag = True
-
-      # masks
-      if option.masks:
-        tag = True
-
-      # sequences
-      if option.sequences:
-        tag = True
-
-      # movieclips
-      if option.movieClips:
-        tag = True
-
-      # sounds
-      if option.sounds:
-        tag = True
-
-      # screens
-      if option.screens:
-        tag = True
-
-      # keying sets
-      if option.keyingSets:
-        tag = True
-
-      # palettes
-      if option.palettes:
-        tag = True
-
-      # brushes
-      if option.brushes:
-        tag = True
-
-      # linestyles
-      if option.linestyles:
-        tag = True
-
-      # nodes
-      if option.nodes:
-        tag = True
-
-      # node labels
-      if option.nodeLabels:
-        tag = True
-
-      # node groups
-      if option.nodeGroups:
-        tag = True
-
-      # texts
-      if option.texts:
-        tag = True
-
     # batch type
     elif option.batchType in 'GLOBAL':
 
@@ -1892,200 +1817,195 @@ class batch:
           # sort
           batch.sort(context, settings)
 
-    # batch type and tag
-    elif option.batchType in 'GLOBAL' or tag:
+    # scenes
+    if option.scenes:
+      for scene in bpy.data.scenes[:]:
 
-      # scenes
-      if option.scenes:
-        for scene in bpy.data.scenes[:]:
+        # sort
+        batch.sort(context, scene)
+
+    # render layers
+    if option.renderLayers:
+      for scene in bpy.data.scenes[:]:
+        for layer in scene.render.layers[:]:
 
           # sort
-          batch.sort(context, scene)
+          batch.sort(context, layer)
 
-      # render layers
-      if option.renderLayers:
-        for scene in bpy.data.scenes[:]:
-          for layer in scene.render.layers[:]:
+    # worlds
+    if option.worlds:
+      for world in bpy.data.worlds[:]:
+
+        # sort
+        batch.sort(context, world)
+
+    # libraries
+    if option.libraries:
+      for library in bpy.data.libraries[:]:
+
+        # sort
+        batch.sort(context, library)
+
+    # images
+    if option.images:
+      for image in bpy.data.images[:]:
+
+        # sort
+        batch.sort(context, image)
+
+    # masks
+    if option.masks:
+      for mask in bpy.data.masks[:]:
+
+        # sort
+        batch.sort(context, mask)
+
+    # sequences
+    if option.sequences:
+      for scene in bpy.data.scenes[:]:
+        if hasattr(scene.sequence_editor, 'sequence_all'):
+          for sequence in scene.sequence_editor.sequences_all[:]:
 
             # sort
-            batch.sort(context, layer)
+            batch.sort(context, sequence)
 
-      # worlds
-      if option.worlds:
-        for world in bpy.data.worlds[:]:
+    # movie clips
+    if option.movieClips:
+      for clip in bpy.data.movieclips[:]:
 
-          # sort
-          batch.sort(context, world)
+        # sort
+        batch.sort(context, clip)
 
-      # libraries
-      if option.libraries:
-        for library in bpy.data.libraries[:]:
+    # sounds
+    if option.sounds:
+      for sound in bpy.data.sounds[:]:
 
-          # sort
-          batch.sort(context, library)
+        # sort
+        batch.sort(context, sound)
 
-      # images
-      if option.images:
-        for image in bpy.data.images[:]:
+    # screens
+    if option.screens:
+      for screen in bpy.data.screens[:]:
 
-          # sort
-          batch.sort(context, image)
+        # sort
+        batch.sort(context, screen)
 
-      # masks
-      if option.masks:
-        for mask in bpy.data.masks[:]:
-
-          # sort
-          batch.sort(context, mask)
-
-      # sequences
-      if option.sequences:
-        for scene in bpy.data.scenes[:]:
-          if hasattr(scene.sequence_editor, 'sequence_all'):
-            for sequence in scene.sequence_editor.sequences_all[:]:
-
-              # sort
-              batch.sort(context, sequence)
-
-      # movie clips
-      if option.movieClips:
-        for clip in bpy.data.movieclips[:]:
+    # keying sets
+    if option.keyingSets:
+      for scene in bpy.data.scenes[:]:
+        for keyingSet in scene.keying_sets[:]:
 
           # sort
-          batch.sort(context, clip)
+          batch.sort(context, keyingSet)
 
-      # sounds
-      if option.sounds:
-        for sound in bpy.data.sounds[:]:
+    # palettes
+    if option.palettes:
+      for palette in bpy.data.palettes[:]:
 
-          # sort
-          batch.sort(context, sound)
+        # sort
+        batch.sort(context, palette)
 
-      # screens
-      if option.screens:
-        for screen in bpy.data.screens[:]:
+    # brushes
+    if option.brushes:
+      for brush in bpy.data.brushes[:]:
 
-          # sort
-          batch.sort(context, screen)
+        # sort
+        batch.sort(context, brush)
 
-      # keying sets
-      if option.keyingSets:
-        for scene in bpy.data.scenes[:]:
-          for keyingSet in scene.keying_sets[:]:
+    # line styles
+    if option.linestyles:
+      for style in bpy.data.linestyles[:]:
 
-            # sort
-            batch.sort(context, keyingSet)
+        # sort
+        batch.sort(context, style)
 
-      # palettes
-      if option.palettes:
-        for palette in bpy.data.palettes[:]:
+    # nodes
+    if option.nodes:
 
-          # sort
-          batch.sort(context, palette)
-
-      # brushes
-      if option.brushes:
-        for brush in bpy.data.brushes[:]:
-
-          # sort
-          batch.sort(context, brush)
-
-      # line styles
-      if option.linestyles:
-        for style in bpy.data.linestyles[:]:
-
-          # sort
-          batch.sort(context, style)
-
-      # nodes
-      if option.nodes:
-
-        # shader
-        for material in bpy.data.materials[:]:
-          if hasattr(material.node_tree, 'nodes'):
-            for node in material.node_tree.nodes[:]:
-
-              # sort
-              batch.sort(context, node)
-
-        # compositing
-        for scene in bpy.data.scenes[:]:
-          if hasattr(scene.node_tree, 'nodes'):
-            for node in scene.node_tree.nodes[:]:
-
-              # sort
-              batch.sort(context, node)
-
-        # texture
-        for texture in bpy.data.textures[:]:
-          if hasattr(texture.node_tree, 'nodes'):
-            for node in texture.node_tree.nodes[:]:
-
-              # sort
-              batch.sort(context, node)
-
-        # groups
-        for group in bpy.data.node_groups[:]:
-          for node in group.nodes[:]:
+      # shader
+      for material in bpy.data.materials[:]:
+        if hasattr(material.node_tree, 'nodes'):
+          for node in material.node_tree.nodes[:]:
 
             # sort
             batch.sort(context, node)
 
-      # node labels
-      if option.nodeLabels:
-
-        # batch tag
-        batch.tag = True
-
-        # shader
-        for material in bpy.data.materials[:]:
-          if hasattr(material.node_tree, 'nodes'):
-            for node in material.node_tree.nodes[:]:
-
-              # sort
-              batch.sort(context, node)
-
-        # compositing
-        for scene in bpy.data.scenes[:]:
-          if hasattr(scene.node_tree, 'nodes'):
-            for node in scene.node_tree.nodes[:]:
-
-              # sort
-              batch.sort(context, node)
-
-        # texture
-        for texture in bpy.data.textures[:]:
-          if hasattr(texture.node_tree, 'nodes'):
-            for node in texture.node_tree.nodes[:]:
-
-              # sort
-              batch.sort(context, node)
-
-        # groups
-        for group in bpy.data.node_groups[:]:
-          for node in group.nodes[:]:
+      # compositing
+      for scene in bpy.data.scenes[:]:
+        if hasattr(scene.node_tree, 'nodes'):
+          for node in scene.node_tree.nodes[:]:
 
             # sort
             batch.sort(context, node)
 
-      # node groups
-      if option.nodeGroups:
-        for group in bpy.data.node_groups[:]:
+      # texture
+      for texture in bpy.data.textures[:]:
+        if hasattr(texture.node_tree, 'nodes'):
+          for node in texture.node_tree.nodes[:]:
+
+            # sort
+            batch.sort(context, node)
+
+      # groups
+      for group in bpy.data.node_groups[:]:
+        for node in group.nodes[:]:
 
           # sort
-          batch.sort(context, group)
+          batch.sort(context, node)
 
-      # texts
-      if option.texts:
-        for text in bpy.data.texts[:]:
+    # node labels
+    if option.nodeLabels:
+
+      # batch tag
+      batch.tag = True
+
+      # shader
+      for material in bpy.data.materials[:]:
+        if hasattr(material.node_tree, 'nodes'):
+          for node in material.node_tree.nodes[:]:
+
+            # sort
+            batch.sort(context, node)
+
+      # compositing
+      for scene in bpy.data.scenes[:]:
+        if hasattr(scene.node_tree, 'nodes'):
+          for node in scene.node_tree.nodes[:]:
+
+            # sort
+            batch.sort(context, node)
+
+      # texture
+      for texture in bpy.data.textures[:]:
+        if hasattr(texture.node_tree, 'nodes'):
+          for node in texture.node_tree.nodes[:]:
+
+            # sort
+            batch.sort(context, node)
+
+      # groups
+      for group in bpy.data.node_groups[:]:
+        for node in group.nodes[:]:
 
           # sort
-          batch.sort(context, text)
+          batch.sort(context, node)
 
       # batch tag
       batch.tag = False
 
-    tag = False
+    # node groups
+    if option.nodeGroups:
+      for group in bpy.data.node_groups[:]:
+
+        # sort
+        batch.sort(context, group)
+
+    # texts
+    if option.texts:
+      for text in bpy.data.texts[:]:
+
+        # sort
+        batch.sort(context, text)
 
     all = [
 
@@ -2224,6 +2144,9 @@ class batch:
       # texts
       storage.batch.texts,
     ]
+
+    # debug
+    # print(all)
 
     # process
     for item in all[:]:
@@ -2377,7 +2300,7 @@ class batch:
     # worlds
     if option.worlds:
       if datablock.rna_type.identifier in 'World':
-        storage.batch.world.append([datablock.name, [1, datablock]])
+        storage.batch.worlds.append([datablock.name, [1, datablock]])
 
     # libraries
     if option.libraries:
@@ -2387,7 +2310,7 @@ class batch:
     # images
     if option.images:
       if datablock.rna_type.identifier in 'Image':
-        storage.batch.image.append([datablock.name, [1, datablock]])
+        storage.batch.images.append([datablock.name, [1, datablock]])
 
     # masks
     if option.masks:

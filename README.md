@@ -5,7 +5,7 @@ Item panel add-on for blender, with included batch naming tools.
 
 More information <a href='http://blenderartists.org/forum/showthread.php?272086-Addon-Item-Panel-amp-Batch-Naming-0-8-5&p=2240265#post2240265'>here</a>
 
-Download link is on the right, "Download Zip"
+Download button is located near the top of the page; 'Download Zip'
 
 Remove and install via blender, removing any old version of this add-on first.
 

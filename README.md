@@ -1,7 +1,7 @@
 # Item Panel
 Version 1.3
 
-Item panel add-on for blender, with included batch naming tools.
+Item panel & batch naming add-on for blender, with included batch naming tools.
 
 More information <a href='http://blenderartists.org/forum/showthread.php?272086-Addon-Item-Panel-amp-Batch-Naming-1-3'>here</a>
 

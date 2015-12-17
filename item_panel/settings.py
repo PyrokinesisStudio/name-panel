@@ -61,13 +61,6 @@ class panel(PropertyGroup):
     default = True
   )
 
-  # hide search
-  hideSearch = BoolProperty(
-    name = 'Hide Search Field',
-    description = 'Hide the search field when the datablock filters are hidden.',
-    default = True
-  )
-
   # groups
   groups = BoolProperty(
     name = 'Groups',
@@ -164,13 +157,6 @@ class panel(PropertyGroup):
     name = 'Particle Systems',
     description = 'Display the particle system and setting names. (Modifier filter must be active)',
     default = False
-  )
-
-  # search
-  search = StringProperty(
-    name = 'Search',
-    description = 'Search filtering string.',
-    default = ''
   )
 
   # selected bones

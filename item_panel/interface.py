@@ -927,8 +927,17 @@ class panel:
       # row
       row = layout.row(align=True)
 
+      # sub
+      sub = row.row(align=True)
+
+      # scale
+      sub.scale_x = 1.6
+
+      # make active
+      sub.operator('view3d.make_active', text='', icon=icon.object(datablock)).target = datablock.name
+
       # object
-      row.prop(datablock, 'name', text='', icon=icon.object(datablock))
+      row.prop(datablock, 'name', text='')
 
       # options
       if option.options:

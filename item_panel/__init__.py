@@ -21,7 +21,7 @@
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
 #  Contact: trentin.shaun.frederick@gmail.com
-#  Version: 1.3
+#  Version: 1.4
 #
 # ##### END INFO BLOCK #####
 

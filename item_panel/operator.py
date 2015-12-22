@@ -20,7 +20,7 @@
 # imports
 import bpy
 from bpy.types import Operator
-from bpy.props import BoolProperty
+from bpy.props import BoolProperty, StringProperty
 from . import function
 
 ###############
@@ -1266,3 +1266,41 @@ class batch:
       # reset
       function.batch.transferSettings(context, self.auto, self.names, self.name, self.copy)
       return {'FINISHED'}
+
+# make active object
+class makeActive(Operator):
+  '''
+    Assigns an active object when called.
+  '''
+  bl_idname = 'view3d.make_active'
+  bl_label = 'Make Active'
+  bl_description = 'Makes this selected object the active object.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The target object that will become the active object.',
+    default = ''
+  )
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view and there must be an active object.
+    '''
+    return context.space_data.type in 'VIEW_3D' and context.active_object
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+
+    # select active object
+    bpy.data.objects[context.active_object.name].select = True
+
+    # target
+    bpy.context.scene.objects.active = bpy.data.objects[self.target]
+    return {'FINISHED'}

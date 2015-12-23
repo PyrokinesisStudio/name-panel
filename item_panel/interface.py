@@ -934,7 +934,7 @@ class panel:
       sub.scale_x = 1.6
 
       # make active
-      sub.operator('view3d.make_active', text='', icon=icon.object(datablock)).target = datablock.name
+      sub.operator('view3d.make_active_object', text='', icon=icon.object(datablock)).target = datablock.name
 
       # object
       row.prop(datablock, 'name', text='')
@@ -1424,14 +1424,14 @@ class panel:
     # row
     row = layout.row(align=True)
 
+    # sub
+    sub = row.row(align=True)
+
+    # scale
+    sub.scale_x = 1.6
+
     # active
     if datablock == context.active_bone:
-
-      # sub
-      sub = row.row(align=True)
-
-      # scale
-      sub.scale_x = 1.6
 
       # selected bones
       sub.prop(option, 'selectedBones', text='', icon='BONE_DATA')
@@ -1445,7 +1445,11 @@ class panel:
 
       # name
       if not datablock == context.active_bone:
-        row.prop(datablock, 'name', text='', icon='BONE_DATA')
+
+        # make active bone
+        sub.operator('view3d.make_active_bone', text='', icon='BONE_DATA').target = datablock.name
+
+        row.prop(datablock, 'name', text='')
       else:
         row.prop(datablock, 'name', text='')
 
@@ -1474,6 +1478,10 @@ class panel:
     else:
 
       # name
+      if not datablock == context.active_bone:
+
+        # make active bone
+        sub.operator('view3d.make_active_bone', text='', icon='BONE_DATA').target = datablock.name
       row.prop(datablock, 'name', text='')
 
       # options

@@ -74,7 +74,8 @@ def register():
   bpy.utils.register_class(operator.batch.copy)
   bpy.utils.register_class(operator.batch.resetSettings)
   bpy.utils.register_class(operator.batch.transferSettings)
-  bpy.utils.register_class(operator.makeActive)
+  bpy.utils.register_class(operator.makeActiveObject)
+  bpy.utils.register_class(operator.makeActiveBone)
 
   # property groups
   bpy.utils.register_class(settings.batch.auto.name)
@@ -170,7 +171,8 @@ def unregister():
   bpy.utils.unregister_class(operator.batch.copy)
   bpy.utils.unregister_class(operator.batch.resetSettings)
   bpy.utils.unregister_class(operator.batch.transferSettings)
-  bpy.utils.unregister_class(operator.makeActive)
+  bpy.utils.unregister_class(operator.makeActiveObject)
+  bpy.utils.unregister_class(operator.makeActiveBone)
 
   # property groups
   bpy.utils.unregister_class(settings.batch.auto.name)

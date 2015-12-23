@@ -1300,13 +1300,13 @@ class batch:
       function.batch.transferSettings(context, self.auto, self.names, self.name, self.copy)
       return {'FINISHED'}
 
-# make active object
-class makeActive(Operator):
+# make active
+class makeActiveObject(Operator):
   '''
     Assigns an active object when called.
   '''
-  bl_idname = 'view3d.make_active'
-  bl_label = 'Make Active'
+  bl_idname = 'view3d.make_active_object'
+  bl_label = 'Make Active Object'
   bl_description = 'Makes this selected object the active object.'
   bl_options = {'REGISTER', 'UNDO'}
 
@@ -1330,10 +1330,82 @@ class makeActive(Operator):
     '''
       Execute the operator.
     '''
+    try:
 
-    # select active object
-    bpy.data.objects[context.active_object.name].select = True
+      # select active object
+      bpy.data.objects[context.active_object.name].select = True
 
-    # target
-    bpy.context.scene.objects.active = bpy.data.objects[self.target]
+      # target
+      context.scene.objects.active = bpy.data.objects[self.target]
+    except:
+
+      # warning messege
+      self.report({'WARNING'}, 'Invalid target.')
+    return {'FINISHED'}
+
+# make active bone
+class makeActiveBone(Operator):
+  '''
+    Assigns an active bone when called.
+  '''
+  bl_idname = 'view3d.make_active_bone'
+  bl_label = 'Make Active Bone'
+  bl_description = 'Makes this selected bone the active bone.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The target bone that will become the active object.',
+    default = ''
+  )
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view and there must be an active bone.
+    '''
+    return context.space_data.type in 'VIEW_3D' and context.active_bone or context.active_pose_bone
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+    try:
+
+      # edit mode
+      if context.object.mode in 'EDIT':
+
+        # select active edit bone
+        context.active_object.data.edit_bones.active.select = True
+
+        # select head
+        context.active_object.data.edit_bones.active.select_head = True
+
+        # select tail
+        context.active_object.data.edit_bones.active.select_tail = True
+
+        # target
+        context.scene.objects[context.active_object.name].data.edit_bones.active = bpy.data.armatures[context.active_object.data.name].edit_bones[self.target]
+
+        # select head
+        context.active_object.data.edit_bones.active.select_head = True
+
+        # select tail
+        context.active_object.data.edit_bones.active.select_tail = True
+
+      # pose mode
+      else:
+
+        # select active bone
+        context.active_object.data.bones.active.select = True
+
+        # target
+        context.scene.objects[context.active_object.name].data.bones.active = bpy.data.armatures[context.active_object.data.name].bones[self.target]
+    except:
+
+      # warning messege
+      self.report({'WARNING'}, 'Invalid target.')
     return {'FINISHED'}

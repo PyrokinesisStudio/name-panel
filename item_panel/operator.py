@@ -22,6 +22,7 @@ import bpy
 from bpy.types import Operator
 from bpy.props import BoolProperty, StringProperty
 from . import function
+from .text import cheatsheet
 
 ###############
 ## OPERATORS ##
@@ -969,6 +970,9 @@ class batch:
       row = column.row(align=True)
       row.prop(option, 'find', icon='VIEWZOOM')
 
+      # cheatsheet
+      row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
+
       # regex
       row.prop(option, 'regex', text='', icon='SCRIPT')
       column.separator()
@@ -1043,6 +1047,35 @@ class batch:
       '''
       context.window_manager.invoke_props_dialog(self, width=300)
       return {'RUNNING_MODAL'}
+
+    # generate cheatsheet
+  class generateCheatsheet(Operator):
+    '''
+      Generate python regular expression cheatsheet.
+    '''
+    bl_idname = 'wm.regular_expression_cheatsheet'
+    bl_label = 'Cheatsheet'
+    bl_description = 'Generate a text reference for python regular expressions.'
+    bl_options = {'REGISTER', 'UNDO'}
+
+    # execute
+    def execute(self, context):
+      '''
+        Execute the operator.
+      '''
+
+      # cheatsheet
+      if not 'Regular Expressions Cheatsheet' in bpy.data.texts:
+
+        # write
+        bpy.data.texts.new('Regular Expressions Cheatsheet').write(cheatsheet)
+
+        # place cursor
+        bpy.data.texts['Regular Expressions Cheatsheet'].current_line_index = 0
+
+        # info messege
+        self.report({'INFO'}, 'Cheatsheet created.')
+      return {'FINISHED'}
 
   # batch copy
   class copy(Operator):

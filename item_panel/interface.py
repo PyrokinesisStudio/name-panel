@@ -737,7 +737,7 @@ class panel:
     row.prop(option, 'selected', text='', icon='OOPS')
 
     # operator menu
-    row.menu('VIEW3D_MT_item_panel_specials', text='', icon='DOWNARROW_HLT')
+    row.menu('VIEW3D_MT_item_panel_specials', text='', icon='COLLAPSEMENU')
 
     # filters
     if option.filters:

@@ -1,123 +1,107 @@
 cheatsheet = r'''
-Python Regular Expressions Cheatsheet
+Special Characters
+
+  \        Escape special characters or start a sequence.
+
+  .        Matches any character. ('.*' matches everything in a name.)
+
+  ^        Matches beginning of string.
+
+  $        Matches end of string.
+
+  [3a-c]   Matches any characters '3', 'a', 'b' or 'c'.
+
+  [^3a-c]  Matches any characters except '3', 'a', 'b' or 'c'.
+
+  a|b      matches either a or b.
+
+  ()       Creates a capture group and indicates precedence.
 
 
-Non-special chars match themselves. Exceptions are special characters:
+Quantifiers
 
-  \             Escape special char or start a sequence.
+  *        0 or more. (append ? for fewest)
 
-  .             Match any char except newline, see re.DOTALL
+  +        1 or more. (append ? for fewest)
 
-  ^             Match start of the string, see re.MULTILINE
+  ?        0 or 1. (append ? for fewest)
 
-  $             Match end of the string, see re.MULTILINE
+  {m}      Exactly m occurrences.
 
-  []            Enclose a set of matchable chars
+  {m, n}   From m to n, m defaults to 0, n defaults to infinity.
 
-  R|S           Match either regex R or regex S.
-
-  ()            Create capture group, & indicate precedence
+  {m, n}?  From m to n, as few as possible.
 
 
-After '[', enclose a set, the only special chars are:
+Special Sequences
 
-  ]             End the set, if not the 1st char
+  \A       Start of string.
 
-  -             A range, eg. a-c matches a, b or c
+  \b       Matches empty string at word boundary. (between \w and \W)
 
-  ^             Negate the set only if it is the 1st char
+  \B       Matches empty string not at word boundary.
 
+  \d       A digit.
 
-Quantifiers (append '?' for non-greedy):
+  \D       A non-digit.
 
-  {m}           Exactly m repetitions
+  \s       Whitespace.
 
-  {m,n}         From m (default 0) to n (default infinity)
+  \S       Non-whitespace.
 
-  *             0 or more. Same as {,}
+  \w       Alphanumeric, Same as: [0-9a-zA-Z_]
 
-  +             1 or more. Same as {1,}
+  \W       Non-alphanumeric.
 
-  ?             0 or 1. Same as {,1}
-
-
-Special sequences:
-
-  \A            Start of string
-
-  \b            Match empty string at word (\w+) boundary
-
-  \B            Match empty string not at word boundary
-
-  \d            Digit
-
-  \D            Non-digit
-
-  \s            Whitespace [ \t\n\r\f\v], see LOCALE,UNICODE
-
-  \S            Non-whitespace
-
-  \w            Alphanumeric: [0-9a-zA-Z_], see LOCALE
-
-  \W            Non-alphanumeric
-
-  \Z            End of string
-
-  \g<id>        Match prev named or numbered group,
-                  '<' & '>' are literal, e.g. \g<0>
-                  or \g<name> (not \g0 or \gname)
+  \Z       End of name.
 
 
-Special character escapes are much like those already escaped in Python string
-  literals. Hence regex '\n' is same as regex '\\n':
+Groups
 
-  \a            ASCII Bell (BEL)
+  (?P<name>...)  Creates a group with the id of 'name'.
 
-  \f            ASCII Formfeed
+  \g<id>         Matches a previously defined group.
 
-  \n            ASCII Linefeed
-
-  \r            ASCII Carriage return
-
-  \t            ASCII Tab
-
-  \v            ASCII Vertical tab
-
-  \\            A single backslash
-
-  \xHH          Two digit hexadecimal character goes here
-
-  \OOO          Three digit octal char (or just use an
-                  initial zero, e.g. \0, \09)
-
-  \DD           Decimal number 1 to 99, match
-                  previous numbered group
+  (?(id)yes|no)  Match 'yes' if group 'id' matched, else 'no'.
 
 
-Extensions. Do not cause grouping, except 'P<name>':
+Example
 
-  (?iLmsux)     Match empty string, sets re.X flags
+  \W[0-9]*$|_[0-9]*$
 
-  (?:...)       Non-capturing version of regular parens
+  This expression will strip any numbers at the tail end of a name up to and
+  including any non-alphanumeric character OR it will strip any numbers up to
+  and including an underscore.
 
-  (?P<name>...) Create a named capturing group.
+  The individual characters used are;
 
-  (?P=name)     Match whatever matched prev named group
+  \W    Non-alphanumeric. (any character other then [0-9a-zA-Z_])
 
-  (?#...)       A comment; ignored.
+  [0-9] Character class from range 0 through 9.
 
-  (?=...)       Lookahead assertion, match without consuming
+  *     Anything preceding this symbol will be matched until no other matches
+        are found.
 
-  (?!...)       Negative lookahead assertion
+  $     Indicates that we want to start from the end of the string.
 
-  (?<=...)      Lookbehind assertion, match if preceded
+  |     Or, has to be one or the other, otherwise nothing happens, either
+        everything on the left or everything on the right of this symbol.
 
-  (?<!...)      Negative lookbehind assertion
+  _     This is literally the underscore symbol, the expression above has an '|'
+        in it because the underscore is considered an Alphanumeric symbol and
+        everything before the '|' symbol will not remove numbers from the end of
+        the name if those numbers are proceded by an underscore.
 
-  (?(id)y|n)    Match 'y' if group 'id' matched, else 'n'
+        in other words \W[0-9]*$ by itself works for almost all situations when
+        you want to remove trailing numbers except if those numbers are proceded
+        by an underscore, in those cases you will likely want to use '|' to
+        account for the underscore situation.
 
 
-  For a more complete documentation of python regular expressions;
+  Regular expressions are much like a tiny programming language, this cheatsheet
+  will get you started.
+
+  For a more complete documentation of python related regular expressions;
 
     https://docs.python.org/3.5/library/re.html
 '''

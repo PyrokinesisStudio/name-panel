@@ -194,8 +194,9 @@ class batch:
         name = 'Batch Type',
         description = '',
         items = [
-          ('SELECTED', 'Selected', 'Effect all objects, and object related datablock names in the current 3D view selection.'),
-          ('OBJECTS', 'All Objects', 'Effect all objects, and object related datablock names in the file.')
+          ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
+          ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
+          ('OBJECTS', 'All Objects', 'Effect all objects and object related datablock names in the file.')
         ],
         default = 'SELECTED'
       )
@@ -976,9 +977,10 @@ class batch:
       name = 'Batch Type',
       description = '',
       items = [
-        ('SELECTED', 'Selected', 'Effect all objects, and object related datablock names in the current 3D view selection.'),
-        ('OBJECTS', 'All Objects', 'Effect all objects, and object related datablock names in the file.'),
-        ('GLOBAL', 'Global', 'Effect all datablocks in the file. (Disables type filter menus.)')
+        ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
+        ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
+        ('OBJECTS', 'All Objects', 'Effect all objects and object related datablock names in the file.'),
+        ('GLOBAL', 'Global', 'Effect all datablocks in the file whether they are attached to an object or not. (Disables type filter menus.)')
       ],
       default = 'SELECTED'
     )
@@ -1362,8 +1364,9 @@ class batch:
       name = 'Batch Type',
       description = '',
       items = [
-        ('SELECTED', 'Selected', 'Effect all objects, and object related datablock names in the current 3D view selection.'),
-        ('OBJECTS', 'All Objects', 'Effect all objects, and object related datablock names in the file.')
+        ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
+        ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
+        ('OBJECTS', 'All Objects', 'Effect all objects and object related datablock names in the file.')
       ],
       default = 'SELECTED'
     )
@@ -1375,10 +1378,10 @@ class batch:
       items = [
         ('OBJECT', 'Object', 'Use the name from the object.', 'OBJECT_DATA', 0),
         ('DATA', 'Object Data', 'Use the name from the object\'s data.', 'MESH_DATA', 1),
-        ('MATERIAL', 'Material', 'Use the name from the active material of the object.', 'MATERIAL', 2),
-        ('TEXTURE', 'Texture', 'Use the name from the active material\'s active texture of the object.', 'TEXTURE', 3),
-        ('PARTICLE_SYSTEM', 'Particle System', 'Use the name from the active particle system of the object.', 'PARTICLES', 4),
-        ('PARTICLE_SETTINGS', 'Particle Settings', 'Use the name from the active particle system\'s settings of the object.', 'MOD_PARTICLES', 5)
+        ('MATERIAL', 'Active Material', 'Use the name from the active material of the object.', 'MATERIAL', 2),
+        ('TEXTURE', 'Active Texture', 'Use the name from the active material\'s active texture of the object.', 'TEXTURE', 3),
+        ('PARTICLE_SYSTEM', 'Active Particle System', 'Use the name from the active particle system of the object.', 'PARTICLES', 4),
+        ('PARTICLE_SETTINGS', 'Active Particle Settings', 'Use the name from the active particle system\'s settings of the object.', 'MOD_PARTICLES', 5)
       ],
       default = 'OBJECT'
     )

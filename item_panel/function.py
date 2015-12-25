@@ -4629,7 +4629,7 @@ class batch:
           screen.batchNameSettings.trimEnd = batchNameOption.trimEnd
 
           # process
-          screen.batchNameSettings.sort = batchNameOption.process
+          screen.batchNameSettings.sort = batchNameOption.sort
 
           # padding
           screen.batchNameSettings.padding = batchNameOption.padding
@@ -4641,7 +4641,7 @@ class batch:
           screen.batchNameSettings.separator = batchNameOption.separator
 
           # process only
-          screen.batchNameSettings.sortOnly = batchNameOption.processOnly
+          screen.batchNameSettings.sortOnly = batchNameOption.sortOnly
 
     # copy
     if copy:

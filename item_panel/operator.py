@@ -1051,11 +1051,11 @@ class batch:
     # generate cheatsheet
   class generateCheatsheet(Operator):
     '''
-      Generate python regular expression cheatsheet.
+      Generate regular expression cheatsheet.
     '''
     bl_idname = 'wm.regular_expression_cheatsheet'
-    bl_label = 'Cheatsheet'
-    bl_description = 'Generate a text reference for python regular expressions.'
+    bl_label = 'Generate Cheatsheet'
+    bl_description = 'Generate a text reference for regular expressions.'
     bl_options = {'REGISTER', 'UNDO'}
 
     # execute
@@ -1074,7 +1074,7 @@ class batch:
         bpy.data.texts['Regular Expressions Cheatsheet'].current_line_index = 0
 
         # info messege
-        self.report({'INFO'}, 'Cheatsheet created.')
+        self.report({'INFO'}, 'Regular expression cheatsheet created.')
       return {'FINISHED'}
 
   # batch copy
@@ -1149,7 +1149,7 @@ class batch:
       '''
         Invoke the operator panel/menu, control its width.
       '''
-      context.window_manager.invoke_props_dialog(self, width=150)
+      context.window_manager.invoke_props_dialog(self, width=180)
       return {'RUNNING_MODAL'}
 
   # reset

@@ -94,14 +94,32 @@ class batch:
       # name
       name = batch.auto.name
 
-      for object in bpy.data.objects[:]:
+      # batch type
+      if option.batchType in {'SELECTED', 'OBJECTS'}:
 
-        # objects
-        if option.objects:
+        for object in bpy.data.objects[:]:
 
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
+          # objects
+          if option.objects:
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # name
+                  name(context, object, True, False, False, False)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # name
+                  name(context, object, True, False, False, False)
+
+            # batch type
+            else:
 
               # object type
               if option.objectType in 'ALL':
@@ -115,27 +133,28 @@ class batch:
                 # name
                 name(context, object, True, False, False, False)
 
-          # batch type
-          else:
+          # constraints
+          if option.constraints:
 
-            # object type
-            if option.objectType in 'ALL':
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for constraint in object.constraints[:]:
 
-              # name
-              name(context, object, True, False, False, False)
+                  # constraint type
+                  if option.constraintType in 'ALL':
 
-            # object type
-            elif option.objectType in object.type:
+                    # name
+                    name(context, constraint, False, True, False, False)
 
-              # name
-              name(context, object, True, False, False, False)
+                  # constraint type
+                  elif option.constraintType in constraint.type:
 
-        # constraints
-        if option.constraints:
+                    # name
+                    name(context, constraint, False, True, False, False)
 
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
+            # batch type
+            else:
               for constraint in object.constraints[:]:
 
                 # constraint type
@@ -150,8 +169,135 @@ class batch:
                   # name
                   name(context, constraint, False, True, False, False)
 
-          # batch type
-          else:
+          # modifiers
+          if option.modifiers:
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for modifier in object.modifiers[:]:
+
+                  # modifier type
+                  if option.modifierType in 'ALL':
+
+                    # name
+                    name(context, modifier, False, False, True, False)
+
+                  # modifier type
+                  elif option.modifierType in modifier.type:
+
+                    # name
+                    name(context, modifier, False, False, True, False)
+            else:
+              for modifier in object.modifiers[:]:
+
+                # modifier type
+                if option.modifierType in 'ALL':
+
+                  # name
+                  name(context, modifier, False, False, True, False)
+
+                # modifier type
+                elif option.modifierType in modifier.type:
+
+                  # name
+                  name(context, modifier, False, False, True, False)
+
+          # object data
+          if option.objectData:
+            if object.type not in 'EMPTY':
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+
+                  # object type
+                  if option.objectType in 'ALL':
+
+                    # name
+                    name(context, object, False, False, False, True)
+
+                  # object type
+                  elif option.objectType in object.type:
+
+                    # name
+                    name(context, object, False, False, False, True)
+
+              # batch type
+              else:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # name
+                  name(context, object, False, False, False, True)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # name
+                  name(context, object, False, False, False, True)
+
+          # bone constraints
+          if option.boneConstraints:
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                if object.type in 'ARMATURE':
+                  for bone in object.pose.bones[:]:
+                    if bone.bone.select:
+                      for constraint in bone.constraints[:]:
+
+                        # constraint type
+                        if option.constraintType in 'ALL':
+
+                          # name
+                          name(context, constraint, False, True, False, False)
+
+                        # constraint type
+                        elif option.constraintType in constraint.type:
+
+                          # name
+                          name(context, constraint, False, True, False, False)
+            else:
+              if object.type in 'ARMATURE':
+                for bone in object.pose.bones[:]:
+                  for constraint in bone.constraints[:]:
+
+                    # constraint type
+                    if option.constraintType in 'ALL':
+
+                      # name
+                      name(context, constraint, False, True, False, False)
+
+                    # constraint type
+                    elif option.constraintType in constraint.type:
+
+                      # name
+                      name(context, constraint, False, True, False, False)
+
+      # batch type
+      else:
+        for object in context.scene.objects[:]:
+
+          # objects
+          if option.objects:
+
+            # object type
+            if option.objectType in 'ALL':
+
+              # name
+              name(context, object, True, False, False, False)
+
+            # object type
+            elif option.objectType in object.type:
+
+              # name
+              name(context, object, True, False, False, False)
+
+          # constraints
+          if option.constraints:
             for constraint in object.constraints[:]:
 
               # constraint type
@@ -166,26 +312,8 @@ class batch:
                 # name
                 name(context, constraint, False, True, False, False)
 
-        # modifiers
-        if option.modifiers:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for modifier in object.modifiers[:]:
-
-                # modifier type
-                if option.modifierType in 'ALL':
-
-                  # name
-                  name(context, modifier, False, False, True, False)
-
-                # modifier type
-                elif option.modifierType in modifier.type:
-
-                  # name
-                  name(context, modifier, False, False, True, False)
-          else:
+          # modifiers
+          if option.modifiers:
             for modifier in object.modifiers[:]:
 
               # modifier type
@@ -200,28 +328,9 @@ class batch:
                 # name
                 name(context, modifier, False, False, True, False)
 
-        # object data
-        if option.objectData:
-          if object.type not in 'EMPTY':
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-
-                # object type
-                if option.objectType in 'ALL':
-
-                  # name
-                  name(context, object, False, False, False, True)
-
-                # object type
-                elif option.objectType in object.type:
-
-                  # name
-                  name(context, object, False, False, False, True)
-
-            # batch type
-            else:
+          # object data
+          if option.objectData:
+            if object.type not in 'EMPTY':
 
               # object type
               if option.objectType in 'ALL':
@@ -235,29 +344,8 @@ class batch:
                 # name
                 name(context, object, False, False, False, True)
 
-        # bone constraints
-        if option.boneConstraints:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              if object.type in 'ARMATURE':
-                for bone in object.pose.bones[:]:
-                  if bone.bone.select:
-                    for constraint in bone.constraints[:]:
-
-                      # constraint type
-                      if option.constraintType in 'ALL':
-
-                        # name
-                        name(context, constraint, False, True, False, False)
-
-                      # constraint type
-                      elif option.constraintType in constraint.type:
-
-                        # name
-                        name(context, constraint, False, True, False, False)
-          else:
+          # bone constraints
+          if option.boneConstraints:
             if object.type in 'ARMATURE':
               for bone in object.pose.bones[:]:
                 for constraint in bone.constraints[:]:
@@ -1028,42 +1116,9 @@ class batch:
         for object in bpy.data.objects[:]:
           if object.type not in 'EMPTY':
 
-              # batch type
-              if option.batchType in 'SELECTED':
-                if object.select:
-
-                    # object type
-                    if option.objectType in 'ALL':
-                      if object.data.users == 1:
-
-                        # sort
-                        batch.sort(context, object.data)
-                      else:
-
-                        # shared shared
-                        if object.data.name not in batch.shared.objectData[:]:
-                          batch.shared.objectData.append(object.data.name)
-
-                          # sort
-                          batch.sort(context, object.data)
-
-                    # object type
-                    elif option.objectType in object.type:
-                      if object.data.users == 1:
-
-                        # sort
-                        batch.sort(context, object.data)
-                      else:
-
-                        # shared shared
-                        if object.data.name not in batch.shared.objectData[:]:
-                          batch.shared.objectData.append(object.data.name)
-
-                          # sort
-                          batch.sort(context, object.data)
-
-              # batch type
-              else:
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
 
                 # object type
                 if option.objectType in 'ALL':
@@ -1094,6 +1149,39 @@ class batch:
 
                       # sort
                       batch.sort(context, object.data)
+
+            # batch type
+            else:
+
+              # object type
+              if option.objectType in 'ALL':
+                if object.data.users == 1:
+
+                  # sort
+                  batch.sort(context, object.data)
+                else:
+
+                  # shared shared
+                  if object.data.name not in batch.shared.objectData[:]:
+                    batch.shared.objectData.append(object.data.name)
+
+                    # sort
+                    batch.sort(context, object.data)
+
+              # object type
+              elif option.objectType in object.type:
+                if object.data.users == 1:
+
+                  # sort
+                  batch.sort(context, object.data)
+                else:
+
+                  # shared shared
+                  if object.data.name not in batch.shared.objectData[:]:
+                    batch.shared.objectData.append(object.data.name)
+
+                    # sort
+                    batch.sort(context, object.data)
 
         # clear shared
         batch.shared.objectData.clear()
@@ -1186,6 +1274,8 @@ class batch:
 
                         # sort
                         batch.sort(context, constraint)
+
+          # batch type
           else:
             if object.type in 'ARMATURE':
               for bone in object.pose.bones[:]:
@@ -1324,35 +1414,9 @@ class batch:
       if option.materials:
         for object in bpy.data.objects[:]:
 
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for slot in object.material_slots[:]:
-                  if slot.material != None:
-                    if slot.material.users == 1:
-
-                      # object type
-                      if option.objectType in 'ALL':
-
-                        # sort
-                        batch.sort(context, slot.material)
-
-                      # object type
-                      elif option.objectType in object.type:
-
-                        # sort
-                        batch.sort(context, slot.material)
-                    else:
-
-                      # shared
-                      if slot.material not in batch.shared.materials[:]:
-                        batch.shared.materials.append(slot.material)
-
-                        # sort
-                        batch.sort(context, slot.material)
-
-            # batch type
-            else:
+          # batch type
+          if option.batchType in 'SELECTED':
+            if object.select:
               for slot in object.material_slots[:]:
                 if slot.material != None:
                   if slot.material.users == 1:
@@ -1376,6 +1440,32 @@ class batch:
 
                       # sort
                       batch.sort(context, slot.material)
+
+          # batch type
+          else:
+            for slot in object.material_slots[:]:
+              if slot.material != None:
+                if slot.material.users == 1:
+
+                  # object type
+                  if option.objectType in 'ALL':
+
+                    # sort
+                    batch.sort(context, slot.material)
+
+                  # object type
+                  elif option.objectType in object.type:
+
+                    # sort
+                    batch.sort(context, slot.material)
+                else:
+
+                  # shared
+                  if slot.material not in batch.shared.materials[:]:
+                    batch.shared.materials.append(slot.material)
+
+                    # sort
+                    batch.sort(context, slot.material)
 
         # clear shared
         batch.shared.materials.clear()
@@ -1551,40 +1641,6 @@ class batch:
               if object.select:
                 for system in object.particle_systems[:]:
 
-                    # object type
-                    if option.objectType in 'ALL':
-                      if system.settings.users == 1:
-
-                        # sort
-                        batch.sort(context, system.settings)
-                      else:
-
-                        # shared
-                        if system.settings not in batch.shared.particleSettings[:]:
-                          batch.shared.particleSettings.append(system.settings)
-
-                          # sort
-                          batch.sort(context, system.settings)
-
-                    # object type
-                    elif option.objectType in object.type:
-                      if system.settings.users == 1:
-
-                        # sort
-                        batch.sort(context, system.settings)
-                      else:
-
-                        # shared
-                        if system.settings not in batch.shared.particleSettings[:]:
-                          batch.shared.particleSettings.append(system.settings)
-
-                          # sort
-                          batch.sort(context, system.settings)
-
-            # batch type
-            else:
-              for system in object.particle_systems[:]:
-
                   # object type
                   if option.objectType in 'ALL':
                     if system.settings.users == 1:
@@ -1614,6 +1670,482 @@ class batch:
 
                         # sort
                         batch.sort(context, system.settings)
+
+            # batch type
+            else:
+              for system in object.particle_systems[:]:
+
+                # object type
+                if option.objectType in 'ALL':
+                  if system.settings.users == 1:
+
+                    # sort
+                    batch.sort(context, system.settings)
+                  else:
+
+                    # shared
+                    if system.settings not in batch.shared.particleSettings[:]:
+                      batch.shared.particleSettings.append(system.settings)
+
+                      # sort
+                      batch.sort(context, system.settings)
+
+                # object type
+                elif option.objectType in object.type:
+                  if system.settings.users == 1:
+
+                    # sort
+                    batch.sort(context, system.settings)
+                  else:
+
+                    # shared
+                    if system.settings not in batch.shared.particleSettings[:]:
+                      batch.shared.particleSettings.append(system.settings)
+
+                      # sort
+                      batch.sort(context, system.settings)
+
+        # clear shared
+        batch.shared.particleSettings.clear()
+
+    # batch type
+    if option.batchType in 'SCENE':
+
+      # objects
+      if option.objects:
+        for object in context.scene.objects[:]:
+
+          # object type
+          if option.objectType in 'ALL':
+
+            # sort
+            batch.sort(context, object)
+
+          # object type
+          elif option.objectType in object.type:
+
+            # sort
+            batch.sort(context, object)
+
+      # groups
+      if option.groups:
+        for object in context.scene.objects[:]:
+
+          # object type
+          if option.objectType in 'ALL':
+            for group in bpy.data.groups[:]:
+              if object in group.objects[:]:
+
+                # sort
+                batch.sort(context, group)
+
+          # object type
+          elif option.objectType in object.type:
+            for group in bpy.data.groups[:]:
+              if object in group.objects[:]:
+
+                # sort
+                batch.sort(context, group)
+
+      # actions
+      if option.actions:
+        for object in context.scene.objects[:]:
+          if hasattr(object.animation_data, 'action'):
+            if hasattr(object.animation_data.action, 'name'):
+
+              # object type
+              if option.objectType in 'ALL':
+
+                # sort
+                batch.sort(context, object.animation_data.action)
+
+              # object type
+              elif option.objectType in object.type:
+
+                # sort
+                batch.sort(context, object.animation_data.action)
+
+      # grease pencil
+      if option.greasePencil:
+        for object in context.scene.objects[:]:
+          if hasattr(object.grease_pencil, 'name'):
+
+            # object type
+            if option.objectType in 'ALL':
+              if object.grease_pencil.users == 1:
+
+                # sort
+                batch.sort(context, object.grease_pencil)
+
+                # layers
+                for layer in object.grease_pencil.layers[:]:
+
+                  # sort
+                  batch.sort(context, layer)
+              else:
+
+                # shared
+                if object.grease_pencil not in batch.shared.greasePencils[:]:
+                  batch.shared.greasePencils.append(object.grease_pencil)
+
+                  # sort
+                  batch.sort(context, object.grease_pencil)
+
+                  # layers
+                  for layer in object.grease_pencil.layers[:]:
+
+                    # sort
+                    batch.sort(context, layer)
+
+            # object type
+            elif option.objectType in object.type:
+              if object.grease_pencil.users == 1:
+
+                # sort
+                batch.sort(context, object.grease_pencil)
+
+                # layers
+                for layer in object.grease_pencil.layers[:]:
+
+                  # sort
+                  batch.sort(context, layer)
+              else:
+
+                # shared
+                if object.grease_pencil not in batch.shared.greasePencils[:]:
+                  batch.shared.greasePencils.append(object.grease_pencil)
+
+                  # sort
+                  batch.sort(context, object.grease_pencil)
+
+                  # layers
+                  for layer in object.grease_pencil.layers[:]:
+
+                    # sort
+                    batch.sort(context, layer)
+
+        # clear shared
+        batch.shared.greasePencils.clear()
+
+      # constraints
+      if option.constraints:
+        for object in context.scene.objects[:]:
+          for constraint in object.constraints[:]:
+
+            # constraint type
+            if option.constraintType in 'ALL':
+
+              # sort
+              batch.sort(context, constraint)
+
+            # constraint type
+            elif option.constraintType in constraint.type:
+
+              # sort
+              batch.sort(context, constraint)
+
+      # modifiers
+      if option.modifiers:
+        for object in context.scene.objects[:]:
+          for modifier in object.modifiers[:]:
+
+            # modifier type
+            if option.modifierType in 'ALL':
+
+              # sort
+              batch.sort(context, modifier)
+
+            # modifier tye
+            elif option.modifierType in modifier.type:
+
+              # sort
+              batch.sort(context, modifier)
+
+      # object data
+      if option.objectData:
+        for object in context.scene.objects[:]:
+          if object.type not in 'EMPTY':
+
+            # object type
+            if option.objectType in 'ALL':
+              if object.data.users == 1:
+
+                # sort
+                batch.sort(context, object.data)
+              else:
+
+                # shared shared
+                if object.data.name not in batch.shared.objectData[:]:
+                  batch.shared.objectData.append(object.data.name)
+
+                  # sort
+                  batch.sort(context, object.data)
+
+            # object type
+            elif option.objectType in object.type:
+              if object.data.users == 1:
+
+                # sort
+                batch.sort(context, object.data)
+              else:
+
+                # shared shared
+                if object.data.name not in batch.shared.objectData[:]:
+                  batch.shared.objectData.append(object.data.name)
+
+                  # sort
+                  batch.sort(context, object.data)
+
+        # clear shared
+        batch.shared.objectData.clear()
+
+      # bone groups
+      if option.boneGroups:
+        for object in context.scene.objects[:]:
+          if object.type in 'ARMATURE':
+            for group in object.pose.bone_groups[:]:
+
+              # sort
+              batch.sort(context, group)
+
+      # bones
+      if option.bones:
+        for object in context.scene.objects[:]:
+          if object.type in 'ARMATURE':
+
+            # edit mode
+            if object.mode in 'EDIT':
+              for bone in bpy.data.armatures[object.data.name].edit_bones[:]:
+
+                  # sort
+                  batch.sort(context, bone)
+
+            # pose or object mode
+            else:
+              for bone in bpy.data.armatures[object.data.name].bones[:]:
+
+                  # sort
+                  batch.sort(context, bone)
+
+      # bone constraints
+      if option.boneConstraints:
+        for object in context.scene.objects[:]:
+          if object.type in 'ARMATURE':
+            for bone in object.pose.bones[:]:
+              for constraint in bone.constraints[:]:
+
+                # constraint type
+                if option.constraintType in 'ALL':
+
+                  # sort
+                  batch.sort(context, constraint)
+
+                # constraint type
+                elif option.constraintType in constraint.type:
+
+                  # sort
+                  batch.sort(context, constraint)
+
+      # vertex groups
+      if option.vertexGroups:
+        for object in context.scene.objects[:]:
+          if hasattr(object, 'vertex_groups'):
+            for group in object.vertex_groups[:]:
+
+              # object type
+              if option.objectType in 'ALL':
+
+                # sort
+                batch.sort(context, group)
+
+              # object type
+              elif option.objectType in object.type:
+
+                # sort
+                batch.sort(context, group)
+
+      # shapekeys
+      if option.shapekeys:
+        for object in context.scene.objects[:]:
+          if hasattr(object.data, 'shape_keys'):
+            if hasattr(object.data.shape_keys, 'key_blocks'):
+              for block in object.data.shape_keys.key_blocks[:]:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # sort
+                  batch.sort(context, block)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # sort
+                  batch.sort(context, block)
+
+      # uvs
+      if option.uvs:
+        for object in context.scene.objects[:]:
+          if object.type in 'MESH':
+            for uv in object.data.uv_textures[:]:
+
+              # sort
+              batch.sort(context, uv)
+
+      # vertex colors
+      if option.vertexColors:
+        for object in context.scene.objects[:]:
+          if object.type in 'MESH':
+            for color in object.data.vertex_colors[:]:
+
+              # sort
+              batch.sort(context, color)
+
+      # materials
+      if option.materials:
+        for object in context.scene.objects[:]:
+          for slot in object.material_slots[:]:
+            if slot.material != None:
+              if slot.material.users == 1:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # sort
+                  batch.sort(context, slot.material)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # sort
+                  batch.sort(context, slot.material)
+              else:
+
+                # shared
+                if slot.material not in batch.shared.materials[:]:
+                  batch.shared.materials.append(slot.material)
+
+                  # sort
+                  batch.sort(context, slot.material)
+
+        # clear shared
+        batch.shared.materials.clear()
+
+      # textures
+      if option.textures:
+        for object in context.scene.objects[:]:
+          if context.scene.render.engine not in 'CYCLES':
+            for slot in object.material_slots[:]:
+              if slot.material != None:
+                if slot.material.users == 1:
+                  for texslot in slot.material.texture_slots[:]:
+                    if texslot != None:
+                      if texslot.texture.users == 1:
+
+                        # object type
+                        if option.objectType in 'ALL':
+
+                          # sort
+                          batch.sort(context, texslot.texture)
+
+                        # object type
+                        elif option.objectType in object.type:
+
+                          # sort
+                          batch.sort(context, texslot.texture)
+                      else:
+
+                        # shared
+                        if texslot.texture not in batch.shared[:]:
+                          batch.shared.append(texslot.texture)
+
+                          # sort
+                          batch.sort(context, texslot.texture)
+                else:
+
+                  # shared
+                  if slot.material not in batch.shared.materials[:]:
+                    batch.shared.materials.append(slot.material)
+                    for texslot in slot.material.texture_slots[:]:
+                      if texslot != None:
+                        if texslot.texture.users == 1:
+
+                          # object type
+                          if option.objectType in 'ALL':
+
+                            # sort
+                            batch.sort(context, texslot.texture)
+
+                          # object type
+                          elif option.objectType in object.type:
+
+                            # sort
+                            batch.sort(context, texslot.texture)
+                        else:
+
+                          # shared
+                          if texslot.texture not in batch.shared.textures[:]:
+                            batch.shared.textures.append(texslot.texture)
+
+                            # sort
+                            batch.sort(context, texslot.texture)
+
+        # clear shared
+        batch.shared.textures.clear()
+
+      # particle systems
+      if option.particleSystems:
+        for object in context.scene.objects[:]:
+          if object.type in 'MESH':
+            for system in object.particle_systems[:]:
+
+              # object type
+              if option.objectType in 'ALL':
+
+                # sort
+                batch.sort(context, system)
+
+              # object type
+              elif option.objectType in object.type:
+
+                # sort
+                batch.sort(context, system)
+
+      # particle settings
+      if option.particleSettings:
+        for object in context.scene.objects[:]:
+          if object.type in 'MESH':
+            for system in object.particle_systems[:]:
+
+              # object type
+              if option.objectType in 'ALL':
+                if system.settings.users == 1:
+
+                  # sort
+                  batch.sort(context, system.settings)
+                else:
+
+                  # shared
+                  if system.settings not in batch.shared.particleSettings[:]:
+                    batch.shared.particleSettings.append(system.settings)
+
+                    # sort
+                    batch.sort(context, system.settings)
+
+              # object type
+              elif option.objectType in object.type:
+                if system.settings.users == 1:
+
+                  # sort
+                  batch.sort(context, system.settings)
+                else:
+
+                  # shared
+                  if system.settings not in batch.shared.particleSettings[:]:
+                    batch.shared.particleSettings.append(system.settings)
+
+                    # sort
+                    batch.sort(context, system.settings)
 
         # clear shared
         batch.shared.particleSettings.clear()
@@ -2155,7 +2687,7 @@ class batch:
   # sort
   def sort(context, datablock):
     '''
-      Sort datablocks, send datablock values to name.
+      Sort datablocks into proper storage list.
     '''
 
     # option
@@ -2576,151 +3108,12 @@ class batch:
     # option
     option = context.screen.batchCopySettings
 
-    for object in bpy.data.objects[:]:
+    # batch type
+    if option.batchType in {'SELECTED', 'OBJECTS'}:
+      for object in bpy.data.objects[:]:
 
-      # source object
-      if option.source in 'OBJECT':
-
-        # objects
-        if option.objects:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-
-              # use active object
-              if option.useActiveObject:
-                object.name = context.active_object.name
-              else:
-                object.name = object.name
-          else:
-
-            # use active object
-            if option.useActiveObject:
-              object.name = context.active_object.name
-            else:
-              object.name = object.name
-
-        # object data
-        if option.objectData:
-          if object.type not in 'EMPTY':
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-
-                # use active object
-                if option.useActiveObject:
-                  object.data.name = context.active_object.name
-                else:
-                  object.data.name = object.name
-            else:
-
-              # use active object
-              if option.useActiveObject:
-                object.data.name = context.active_object.name
-              else:
-                object.data.name = object.name
-
-        # materials
-        if option.materials:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for material in object.material_slots[:]:
-                if material.material != None:
-
-                  # use active object
-                  if option.useActiveObject:
-                    material.material.name = context.active_object.name
-                  else:
-                    material.material.name = object.name
-          else:
-            for material in object.material_slots[:]:
-              if material.material != None:
-
-                # use active object
-                if option.useActiveObject:
-                  material.material.name = context.active_object.name
-                else:
-                  material.material.name = object.name
-
-        # textures
-        if option.textures:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for material in object.material_slots[:]:
-                if material.material != None:
-                  for texture in material.material.texture_slots[:]:
-                    if texture != None:
-
-                      # use active object
-                      if option.useActiveObject:
-                        texture.texture.name = context.active_object.name
-                      else:
-                        texture.texture.name = object.name
-          else:
-            for material in object.material_slots[:]:
-              if material.material != None:
-                for texture in material.material.texture_slots[:]:
-                  if texture != None:
-
-                    # use active object
-                    if option.useActiveObject:
-                      texture.texture.name = context.active_object.name
-                    else:
-                      texture.texture.name = object.name
-
-        # particle systems
-        if option.particleSystems:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for system in object.particle_systems[:]:
-
-                # use active object
-                if option.useActiveObject:
-                  system.name = context.active_object.name
-                else:
-                  system.name = object.name
-          else:
-            for system in object.particle_systems[:]:
-
-              # use active object
-              if option.useActiveObject:
-                system.name = context.active_object.name
-              else:
-                system.name = object.name
-
-        # particle settings
-        if option.particleSettings:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for system in object.particle_systems[:]:
-
-                # use active object
-                if option.useActiveObject:
-                  system.settings.name = context.active_object.name
-                else:
-                  system.settings.name = object.name
-          else:
-            for system in object.particle_systems[:]:
-
-              # use active object
-              if option.useActiveObject:
-                system.settings.name = context.active_object.name
-              else:
-                system.settings.name = object.name
-
-      # source data
-      if option.source in 'DATA':
-        if object.type not in 'EMPTY':
+        # source object
+        if option.source in 'OBJECT':
 
           # objects
           if option.objects:
@@ -2731,36 +3124,37 @@ class batch:
 
                 # use active object
                 if option.useActiveObject:
-                  object.name = context.active_object.data.name
+                  object.name = context.active_object.name
                 else:
-                  object.name = object.data.name
+                  object.name = object.name
             else:
 
               # use active object
               if option.useActiveObject:
-                object.name = context.active_object.data.name
+                object.name = context.active_object.name
               else:
-                object.name = object.data.name
+                object.name = object.name
 
           # object data
           if option.objectData:
+            if object.type not in 'EMPTY':
 
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+
+                  # use active object
+                  if option.useActiveObject:
+                    object.data.name = context.active_object.name
+                  else:
+                    object.data.name = object.name
+              else:
 
                 # use active object
                 if option.useActiveObject:
-                  object.data.name = context.active_object.data.name
+                  object.data.name = context.active_object.name
                 else:
-                  object.data.name = object.data.name
-            else:
-
-              # use active object
-              if option.useActiveObject:
-                object.data.name = context.active_object.data.name
-              else:
-                object.data.name = object.data.name
+                  object.data.name = object.name
 
           # materials
           if option.materials:
@@ -2773,18 +3167,18 @@ class batch:
 
                     # use active object
                     if option.useActiveObject:
-                      material.material.name = context.active_object.data.name
+                      material.material.name = context.active_object.name
                     else:
-                      material.material.name = object.data.name
+                      material.material.name = object.name
             else:
               for material in object.material_slots[:]:
                 if material.material != None:
 
                   # use active object
                   if option.useActiveObject:
-                    material.material.name = context.active_object.data.name
+                    material.material.name = context.active_object.name
                   else:
-                    material.material.name = object.data.name
+                    material.material.name = object.name
 
           # textures
           if option.textures:
@@ -2799,9 +3193,9 @@ class batch:
 
                         # use active object
                         if option.useActiveObject:
-                          texture.texture.name = context.active_object.data.name
+                          texture.texture.name = context.active_object.name
                         else:
-                          texture.texture.name = object.data.name
+                          texture.texture.name = object.name
             else:
               for material in object.material_slots[:]:
                 if material.material != None:
@@ -2810,9 +3204,9 @@ class batch:
 
                       # use active object
                       if option.useActiveObject:
-                        texture.texture.name = context.active_object.data.name
+                        texture.texture.name = context.active_object.name
                       else:
-                        texture.texture.name = object.data.name
+                        texture.texture.name = object.name
 
           # particle systems
           if option.particleSystems:
@@ -2824,17 +3218,17 @@ class batch:
 
                   # use active object
                   if option.useActiveObject:
-                    system.name = context.active_object.data.name
+                    system.name = context.active_object.name
                   else:
-                    system.name = object.data.name
+                    system.name = object.name
             else:
               for system in object.particle_systems[:]:
 
                 # use active object
                 if option.useActiveObject:
-                  system.name = context.active_object.data.name
+                  system.name = context.active_object.name
                 else:
-                  system.name = object.data.name
+                  system.name = object.name
 
           # particle settings
           if option.particleSettings:
@@ -2846,185 +3240,160 @@ class batch:
 
                   # use active object
                   if option.useActiveObject:
-                    system.settings.name = context.active_object.data.name
+                    system.settings.name = context.active_object.name
                   else:
-                    system.settings.name = object.data.name
+                    system.settings.name = object.name
             else:
               for system in object.particle_systems[:]:
 
                 # use active object
                 if option.useActiveObject:
-                  system.settings.name = context.active_object.data.name
+                  system.settings.name = context.active_object.name
                 else:
-                  system.settings.name = object.data.name
+                  system.settings.name = object.name
 
-      # source material
-      if option.source in 'MATERIAL':
-
-        # objects
-        if option.objects:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-
-              # use active object
-              if option.useActiveObject:
-                if hasattr(context.active_object.active_material, 'name'):
-                  object.name = context.active_object.active_material.name
-              else:
-                if hasattr(object.active_material, 'name'):
-                  object.name = object.active_material.name
-          else:
-
-            # use active object
-            if option.useActiveObject:
-              if hasattr(context.active_object.active_material, 'name'):
-                object.name = context.active_object.active_material.name
-            else:
-              if hasattr(object.active_material, 'name'):
-                object.name = object.active_material.name
-
-        # object data
-        if option.objectData:
+        # source data
+        if option.source in 'DATA':
           if object.type not in 'EMPTY':
 
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
+            # objects
+            if option.objects:
 
-                # use active object
-                if option.useActiveObject:
-                  if hasattr(context.active_object.active_material, 'name'):
-                    object.data.name = context.active_object.active_material.name
-                else:
-                  if hasattr(object.active_material, 'name'):
-                    object.data.name = object.active_material.name
-            else:
-
-              # use active object
-              if option.useActiveObject:
-                if hasattr(context.active_object.active_material, 'name'):
-                  object.data.name = context.active_object.active_material.name
-              else:
-                if hasattr(object.active_material, 'name'):
-                  object.data.name = object.active_material.name
-
-        # materials
-        if option.materials:
-
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for material in object.material_slots[:]:
-                if material.material != None:
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
 
                   # use active object
                   if option.useActiveObject:
-                    if hasattr(context.active_object.active_material, 'name'):
-                      material.material.name = context.active_object.active_material.name
+                    object.name = context.active_object.data.name
                   else:
-                    if hasattr(object.active_material, 'name'):
-                      material.material.name = object.active_material.name
-          else:
-            for material in object.material_slots[:]:
-              if material.material != None:
+                    object.name = object.data.name
+              else:
 
                 # use active object
                 if option.useActiveObject:
-                  if hasattr(context.active_object.active_material, 'name'):
-                    material.material.name = context.active_object.active_material.name
+                  object.name = context.active_object.data.name
                 else:
-                  if hasattr(object.active_material, 'name'):
-                    material.material.name = object.active_material.name
+                  object.name = object.data.name
 
-        # textures
-        if option.textures:
+            # object data
+            if option.objectData:
 
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for material in object.material_slots[:]:
-                if material.material != None:
-                  for texture in material.material.texture_slots[:]:
-                    if texture != None:
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+
+                  # use active object
+                  if option.useActiveObject:
+                    object.data.name = context.active_object.data.name
+                  else:
+                    object.data.name = object.data.name
+              else:
+
+                # use active object
+                if option.useActiveObject:
+                  object.data.name = context.active_object.data.name
+                else:
+                  object.data.name = object.data.name
+
+            # materials
+            if option.materials:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for material in object.material_slots[:]:
+                    if material.material != None:
 
                       # use active object
                       if option.useActiveObject:
-                        if hasattr(context.active_object.active_material, 'name'):
-                          texture.texture.name = context.active_object.active_material.name
+                        material.material.name = context.active_object.data.name
                       else:
-                        if hasattr(object.active_material, 'name'):
-                          texture.texture.name = object.active_material.name
-          else:
-            for material in object.material_slots[:]:
-              if material.material != None:
-                for texture in material.material.texture_slots[:]:
-                  if texture != None:
+                        material.material.name = object.data.name
+              else:
+                for material in object.material_slots[:]:
+                  if material.material != None:
 
                     # use active object
                     if option.useActiveObject:
-                      if hasattr(context.active_object.active_material, 'name'):
-                        texture.texture.name = context.active_object.active_material.name
+                      material.material.name = context.active_object.data.name
                     else:
-                      if hasattr(object.active_material, 'name'):
-                        texture.texture.name = object.active_material.name
+                      material.material.name = object.data.name
 
-        # particle systems
-        if option.particleSystems:
+            # textures
+            if option.textures:
 
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for system in object.particle_systems[:]:
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for material in object.material_slots[:]:
+                    if material.material != None:
+                      for texture in material.material.texture_slots[:]:
+                        if texture != None:
 
-                # use active object
-                if option.useActiveObject:
-                  if hasattr(context.active_object.active_material, 'name'):
-                    system.name = context.active_object.active_material.name
-                else:
-                  if hasattr(object.active_material, 'name'):
-                    system.name = object.active_material.name
-          else:
-            for system in object.particle_systems[:]:
-
-              # use active object
-              if option.useActiveObject:
-                if hasattr(context.active_object.active_material, 'name'):
-                  system.name = context.active_object.active_material.name
+                          # use active object
+                          if option.useActiveObject:
+                            texture.texture.name = context.active_object.data.name
+                          else:
+                            texture.texture.name = object.data.name
               else:
-                if hasattr(object.active_material, 'name'):
-                  system.name = object.active_material.name
+                for material in object.material_slots[:]:
+                  if material.material != None:
+                    for texture in material.material.texture_slots[:]:
+                      if texture != None:
 
-        # particle settings
-        if option.particleSettings:
+                        # use active object
+                        if option.useActiveObject:
+                          texture.texture.name = context.active_object.data.name
+                        else:
+                          texture.texture.name = object.data.name
 
-          # batch type
-          if option.batchType in 'SELECTED':
-            if object.select:
-              for system in object.particle_systems[:]:
+            # particle systems
+            if option.particleSystems:
 
-                # use active object
-                if option.useActiveObject:
-                  if hasattr(context.active_object.active_material, 'name'):
-                    system.settings.name = context.active_object.active_material.name
-                else:
-                  if hasattr(object.active_material, 'name'):
-                    system.settings.name = object.active_material.name
-          else:
-            for system in object.particle_systems[:]:
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for system in object.particle_systems[:]:
 
-              # use active object
-              if option.useActiveObject:
-                if hasattr(context.active_object.active_material, 'name'):
-                  system.settings.name = context.active_object.active_material.name
+                    # use active object
+                    if option.useActiveObject:
+                      system.name = context.active_object.data.name
+                    else:
+                      system.name = object.data.name
               else:
-                if hasattr(object.active_material, 'name'):
-                  system.settings.name = object.active_material.name
+                for system in object.particle_systems[:]:
 
-      # source texture
-      if option.source in 'TEXTURE':
-        if context.scene.render.engine not in 'CYCLES':
+                  # use active object
+                  if option.useActiveObject:
+                    system.name = context.active_object.data.name
+                  else:
+                    system.name = object.data.name
+
+            # particle settings
+            if option.particleSettings:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for system in object.particle_systems[:]:
+
+                    # use active object
+                    if option.useActiveObject:
+                      system.settings.name = context.active_object.data.name
+                    else:
+                      system.settings.name = object.data.name
+              else:
+                for system in object.particle_systems[:]:
+
+                  # use active object
+                  if option.useActiveObject:
+                    system.settings.name = context.active_object.data.name
+                  else:
+                    system.settings.name = object.data.name
+
+        # source material
+        if option.source in 'MATERIAL':
 
           # objects
           if option.objects:
@@ -3035,24 +3404,20 @@ class batch:
 
                 # use active object
                 if option.useActiveObject:
-                  if hasattr(context.active_object.active_material, 'active_texture'):
-                    if hasattr(context.active_object.active_material.active_texture, 'name'):
-                      object.name = context.active_object.active_material.active_texture.name
+                  if hasattr(context.active_object.active_material, 'name'):
+                    object.name = context.active_object.active_material.name
                 else:
-                  if hasattr(object.active_material, 'active_texture'):
-                    if hasattr(object.active_material.active_texture, 'name'):
-                      object.name = object.active_material.active_texture.name
+                  if hasattr(object.active_material, 'name'):
+                    object.name = object.active_material.name
             else:
 
               # use active object
               if option.useActiveObject:
-                if hasattr(context.active_object.active_material, 'active_texture'):
-                  if hasattr(context.active_object.active_material.active_texture, 'name'):
-                    object.name = context.active_object.active_material.active_texture.name
+                if hasattr(context.active_object.active_material, 'name'):
+                  object.name = context.active_object.active_material.name
               else:
-                if hasattr(object.active_material, 'active_texture'):
-                  if hasattr(object.active_material.active_texture, 'name'):
-                    object.name = object.active_material.active_texture.name
+                if hasattr(object.active_material, 'name'):
+                  object.name = object.active_material.name
 
           # object data
           if option.objectData:
@@ -3064,24 +3429,20 @@ class batch:
 
                   # use active object
                   if option.useActiveObject:
-                    if hasattr(context.active_object.active_material, 'active_texture'):
-                      if hasattr(context.active_object.active_material.active_texture, 'name'):
-                        object.data.name = context.active_object.active_material.active_texture.name
+                    if hasattr(context.active_object.active_material, 'name'):
+                      object.data.name = context.active_object.active_material.name
                   else:
-                    if hasattr(object.active_material, 'active_texture'):
-                      if hasattr(object.active_material.active_texture, 'name'):
-                        object.data.name = object.active_material.active_texture.name
+                    if hasattr(object.active_material, 'name'):
+                      object.data.name = object.active_material.name
               else:
 
                 # use active object
                 if option.useActiveObject:
-                  if hasattr(context.active_object.active_material, 'active_texture'):
-                    if hasattr(context.active_object.active_material.active_texture, 'name'):
-                      object.data.name = context.active_object.active_material.active_texture.name
+                  if hasattr(context.active_object.active_material, 'name'):
+                    object.data.name = context.active_object.active_material.name
                 else:
-                  if hasattr(object.active_material, 'active_texture'):
-                    if hasattr(object.active_material.active_texture, 'name'):
-                      object.data.name = object.active_material.active_texture.name
+                  if hasattr(object.active_material, 'name'):
+                    object.data.name = object.active_material.name
 
           # materials
           if option.materials:
@@ -3094,26 +3455,22 @@ class batch:
 
                     # use active object
                     if option.useActiveObject:
-                      if hasattr(context.active_object.active_material, 'active_texture'):
-                        if hasattr(context.active_object.active_material.active_texture, 'name'):
-                          material.material.name = context.active_object.active_material.active_texture.name
+                      if hasattr(context.active_object.active_material, 'name'):
+                        material.material.name = context.active_object.active_material.name
                     else:
-                      if hasattr(object.active_material, 'active_texture'):
-                        if hasattr(object.active_material.active_texture, 'name'):
-                          material.material.name = object.active_material.active_texture.name
+                      if hasattr(object.active_material, 'name'):
+                        material.material.name = object.active_material.name
             else:
               for material in object.material_slots[:]:
                 if material.material != None:
 
                   # use active object
                   if option.useActiveObject:
-                    if hasattr(context.active_object.active_material, 'active_texture'):
-                      if hasattr(context.active_object.active_material.active_texture, 'name'):
-                        material.material.name = context.active_object.active_material.active_texture.name
+                    if hasattr(context.active_object.active_material, 'name'):
+                      material.material.name = context.active_object.active_material.name
                   else:
-                    if hasattr(object.active_material, 'active_texture'):
-                      if hasattr(object.active_material.active_texture, 'name'):
-                        material.material.name = object.active_material.active_texture.name
+                    if hasattr(object.active_material, 'name'):
+                      material.material.name = object.active_material.name
 
           # textures
           if option.textures:
@@ -3121,6 +3478,198 @@ class batch:
             # batch type
             if option.batchType in 'SELECTED':
               if object.select:
+                for material in object.material_slots[:]:
+                  if material.material != None:
+                    for texture in material.material.texture_slots[:]:
+                      if texture != None:
+
+                        # use active object
+                        if option.useActiveObject:
+                          if hasattr(context.active_object.active_material, 'name'):
+                            texture.texture.name = context.active_object.active_material.name
+                        else:
+                          if hasattr(object.active_material, 'name'):
+                            texture.texture.name = object.active_material.name
+            else:
+              for material in object.material_slots[:]:
+                if material.material != None:
+                  for texture in material.material.texture_slots[:]:
+                    if texture != None:
+
+                      # use active object
+                      if option.useActiveObject:
+                        if hasattr(context.active_object.active_material, 'name'):
+                          texture.texture.name = context.active_object.active_material.name
+                      else:
+                        if hasattr(object.active_material, 'name'):
+                          texture.texture.name = object.active_material.name
+
+          # particle systems
+          if option.particleSystems:
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for system in object.particle_systems[:]:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.active_material, 'name'):
+                      system.name = context.active_object.active_material.name
+                  else:
+                    if hasattr(object.active_material, 'name'):
+                      system.name = object.active_material.name
+            else:
+              for system in object.particle_systems[:]:
+
+                # use active object
+                if option.useActiveObject:
+                  if hasattr(context.active_object.active_material, 'name'):
+                    system.name = context.active_object.active_material.name
+                else:
+                  if hasattr(object.active_material, 'name'):
+                    system.name = object.active_material.name
+
+          # particle settings
+          if option.particleSettings:
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+                for system in object.particle_systems[:]:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.active_material, 'name'):
+                      system.settings.name = context.active_object.active_material.name
+                  else:
+                    if hasattr(object.active_material, 'name'):
+                      system.settings.name = object.active_material.name
+            else:
+              for system in object.particle_systems[:]:
+
+                # use active object
+                if option.useActiveObject:
+                  if hasattr(context.active_object.active_material, 'name'):
+                    system.settings.name = context.active_object.active_material.name
+                else:
+                  if hasattr(object.active_material, 'name'):
+                    system.settings.name = object.active_material.name
+
+        # source texture
+        if option.source in 'TEXTURE':
+          if context.scene.render.engine not in 'CYCLES':
+
+            # objects
+            if option.objects:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.active_material, 'active_texture'):
+                      if hasattr(context.active_object.active_material.active_texture, 'name'):
+                        object.name = context.active_object.active_material.active_texture.name
+                  else:
+                    if hasattr(object.active_material, 'active_texture'):
+                      if hasattr(object.active_material.active_texture, 'name'):
+                        object.name = object.active_material.active_texture.name
+              else:
+
+                # use active object
+                if option.useActiveObject:
+                  if hasattr(context.active_object.active_material, 'active_texture'):
+                    if hasattr(context.active_object.active_material.active_texture, 'name'):
+                      object.name = context.active_object.active_material.active_texture.name
+                else:
+                  if hasattr(object.active_material, 'active_texture'):
+                    if hasattr(object.active_material.active_texture, 'name'):
+                      object.name = object.active_material.active_texture.name
+
+            # object data
+            if option.objectData:
+              if object.type not in 'EMPTY':
+
+                # batch type
+                if option.batchType in 'SELECTED':
+                  if object.select:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.active_material, 'active_texture'):
+                        if hasattr(context.active_object.active_material.active_texture, 'name'):
+                          object.data.name = context.active_object.active_material.active_texture.name
+                    else:
+                      if hasattr(object.active_material, 'active_texture'):
+                        if hasattr(object.active_material.active_texture, 'name'):
+                          object.data.name = object.active_material.active_texture.name
+                else:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.active_material, 'active_texture'):
+                      if hasattr(context.active_object.active_material.active_texture, 'name'):
+                        object.data.name = context.active_object.active_material.active_texture.name
+                  else:
+                    if hasattr(object.active_material, 'active_texture'):
+                      if hasattr(object.active_material.active_texture, 'name'):
+                        object.data.name = object.active_material.active_texture.name
+
+            # materials
+            if option.materials:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for material in object.material_slots[:]:
+                    if material.material != None:
+
+                      # use active object
+                      if option.useActiveObject:
+                        if hasattr(context.active_object.active_material, 'active_texture'):
+                          if hasattr(context.active_object.active_material.active_texture, 'name'):
+                            material.material.name = context.active_object.active_material.active_texture.name
+                      else:
+                        if hasattr(object.active_material, 'active_texture'):
+                          if hasattr(object.active_material.active_texture, 'name'):
+                            material.material.name = object.active_material.active_texture.name
+              else:
+                for material in object.material_slots[:]:
+                  if material.material != None:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.active_material, 'active_texture'):
+                        if hasattr(context.active_object.active_material.active_texture, 'name'):
+                          material.material.name = context.active_object.active_material.active_texture.name
+                    else:
+                      if hasattr(object.active_material, 'active_texture'):
+                        if hasattr(object.active_material.active_texture, 'name'):
+                          material.material.name = object.active_material.active_texture.name
+
+            # textures
+            if option.textures:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for material in object.material_slots[:]:
+                    if material.material != None:
+                      for texture in material.material.texture_slots[:]:
+                        if texture != None:
+
+                          # use active object
+                          if option.useActiveObject:
+                            if hasattr(context.active_object.active_material, 'active_texture'):
+                              if hasattr(context.active_object.active_material.active_texture, 'name'):
+                                texture.texture.name = context.active_object.active_material.active_texture.name
+                          else:
+                            if hasattr(object.active_material, 'active_texture'):
+                              if hasattr(object.active_material.active_texture, 'name'):
+                                texture.texture.name = object.active_material.active_texture.name
+              else:
                 for material in object.material_slots[:]:
                   if material.material != None:
                     for texture in material.material.texture_slots[:]:
@@ -3135,7 +3684,656 @@ class batch:
                           if hasattr(object.active_material, 'active_texture'):
                             if hasattr(object.active_material.active_texture, 'name'):
                               texture.texture.name = object.active_material.active_texture.name
+
+            # particle systems
+            if option.particleSystems:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for system in object.particle_systems[:]:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.active_material, 'active_texture'):
+                        if hasattr(context.active_object.active_material.active_texture, 'name'):
+                          system.name = context.active_object.active_material.active_texture.name
+                    else:
+                      if hasattr(object.active_material, 'active_texture'):
+                        if hasattr(object.active_material.active_texture, 'name'):
+                          system.name = object.active_material.active_texture.name
+              else:
+                for system in object.particle_systems[:]:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.active_material, 'active_texture'):
+                      if hasattr(context.active_object.active_material.active_texture, 'name'):
+                        system.name = context.active_object.active_material.active_texture.name
+                  else:
+                    if hasattr(object.active_material, 'active_texture'):
+                      if hasattr(object.active_material.active_texture, 'name'):
+                        system.name = object.active_material.active_texture.name
+
+            # particle settings
+            if option.particleSettings:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for system in object.particle_systems[:]:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.active_material, 'active_texture'):
+                        if hasattr(context.active_object.active_material.active_texture, 'name'):
+                          system.settings.name = context.active_object.active_material.active_texture.name
+                    else:
+                      if hasattr(object.active_material, 'active_texture'):
+                        if hasattr(object.active_material.active_texture, 'name'):
+                          system.settings.name = object.active_material.active_texture.name
+              else:
+                for system in object.particle_systems[:]:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.active_material, 'active_texture'):
+                      if hasattr(context.active_object.active_material.active_texture, 'name'):
+                        system.settings.name = context.active_object.active_material.active_texture.name
+                  else:
+                    if hasattr(object.active_material, 'active_texture'):
+                      if hasattr(object.active_material.active_texture, 'name'):
+                        system.settings.name = object.active_material.active_texture.name
+
+        # source particle system
+        if option.source in 'PARTICLE_SYSTEM':
+
+            # objects
+            if option.objects:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.particle_systems.active, 'name'):
+                      object.name = context.active_object.particle_systems.active.name
+                  else:
+                    if hasattr(object.particle_systems.active, 'name'):
+                      object.name = object.particle_systems.active.name
+              else:
+
+                # use active object
+                if option.useActiveObject:
+                  if hasattr(context.active_object.particle_systems.active, 'name'):
+                    object.name = context.active_object.particle_systems.active.name
+                else:
+                  if hasattr(object.particle_systems.active, 'name'):
+                    object.name = object.particle_systems.active.name
+
+            # object data
+            if option.objectData:
+              if object.type not in 'EMPTY':
+
+                # batch type
+                if option.batchType in 'SELECTED':
+                  if object.select:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.particle_systems.active, 'name'):
+                        object.data.name = context.active_object.particle_systems.active.name
+                    else:
+                      if hasattr(object.particle_systems.active, 'name'):
+                        object.data.name = object.particle_systems.active.name
+                else:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.particle_systems.active, 'name'):
+                      object.data.name = context.active_object.particle_systems.active.name
+                  else:
+                    if hasattr(object.particle_systems.active, 'name'):
+                      object.data.name = object.particle_systems.active.name
+
+            # materials
+            if option.materials:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for material in object.material_slots[:]:
+                    if material.material != None:
+
+                      # use active object
+                      if option.useActiveObject:
+                        if hasattr(context.active_object.particle_systems.active, 'name'):
+                          material.material.name = context.active_object.particle_systems.active.name
+                      else:
+                        if hasattr(object.particle_systems.active, 'name'):
+                          material.material.name = object.particle_systems.active.name
+              else:
+                for material in object.material_slots[:]:
+                  if material.material != None:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.particle_systems.active, 'name'):
+                        material.material.name = context.active_object.particle_systems.active.name
+                    else:
+                      if hasattr(object.particle_systems.active, 'name'):
+                        material.material.name = object.particle_systems.active.name
+
+            # textures
+            if option.textures:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for material in object.material_slots[:]:
+                    if material.material != None:
+                      for texture in material.material.texture_slots[:]:
+                        if texture != None:
+
+                          # use active object
+                          if option.useActiveObject:
+                            if hasattr(context.active_object.particle_systems.active, 'name'):
+                              texture.texture.name = context.active_object.particle_systems.active.name
+                          else:
+                            if hasattr(object.particle_systems.active, 'name'):
+                              texture.texture.name = object.particle_systems.active.name
+              else:
+                for material in object.material_slots[:]:
+                  if material.material != None:
+                    for texture in material.material.texture_slots[:]:
+                      if texture != None:
+
+                        # use active object
+                        if option.useActiveObject:
+                          if hasattr(context.active_object.particle_systems.active, 'name'):
+                            texture.texture.name = context.active_object.particle_systems.active.name
+                        else:
+                          if hasattr(object.particle_systems.active, 'name'):
+                            texture.texture.name = object.particle_systems.active.name
+
+            # particle system
+            if option.particleSystems:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for system in object.particle_systems[:]:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.particle_systems.active, 'name'):
+                        system.name = context.active_object.particle_systems.active.name
+                    else:
+                      if hasattr(object.particle_systems.active, 'name'):
+                        system.name = object.particle_systems.active.name
+              else:
+                for system in object.particle_systems[:]:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.particle_systems.active, 'name'):
+                      system.name = context.active_object.particle_systems.active.name
+                  else:
+                    if hasattr(object.particle_systems.active, 'name'):
+                      system.name = object.particle_systems.active.name
+
+            # particle settings
+            if option.particleSettings:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for system in object.particle_systems[:]:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.particle_systems.active, 'name'):
+                        system.settings.name = context.active_object.particle_systems.active.name
+                    else:
+                      if hasattr(object.particle_systems.active, 'name'):
+                        system.settings.name = object.particle_systems.active.name
+              else:
+                for system in object.particle_systems[:]:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.particle_systems.active, 'name'):
+                      system.settings.name = context.active_object.particle_systems.active.name
+                  else:
+                    if hasattr(object.particle_systems.active, 'name'):
+                      system.settings.name = object.particle_systems.active.name
+
+        # source particle settings
+        if option.source in 'PARTICLE_SETTINGS':
+
+            # objects
+            if option.objects:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.particle_systems.active, 'settings'):
+                      object.name = context.active_object.particle_systems.active.settings.name
+                  else:
+                    if hasattr(object.particle_systems.active, 'settings'):
+                      object.name = object.particle_systems.active.settings.name
+              else:
+
+                # use active object
+                if option.useActiveObject:
+                  if hasattr(context.active_object.particle_systems.active, 'settings'):
+                    object.name = context.active_object.particle_systems.active.settings.name
+                else:
+                  if hasattr(object.particle_systems.active, 'settings'):
+                    object.name = object.particle_systems.active.settings.name
+
+            # object data
+            if option.objectData:
+              if object.type not in 'EMPTY':
+
+                # batch type
+                if option.batchType in 'SELECTED':
+                  if object.select:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.particle_systems.active, 'settings'):
+                        object.data.name = context.active_object.particle_systems.active.settings.name
+                    else:
+                      if hasattr(object.particle_systems.active, 'settings'):
+                        object.data.name = object.particle_systems.active.settings.name
+                else:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.particle_systems.active, 'settings'):
+                      object.data.name = context.active_object.particle_systems.active.settings.name
+                  else:
+                    if hasattr(object.particle_systems.active, 'settings'):
+                      object.data.name = object.particle_systems.active.settings.name
+
+            # materials
+            if option.materials:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for material in object.material_slots[:]:
+                    if material.material != None:
+
+                      # use active object
+                      if option.useActiveObject:
+                        if hasattr(context.active_object.particle_systems.active, 'settings'):
+                          material.material.name = context.active_object.particle_systems.active.settings.name
+                      else:
+                        if hasattr(object.particle_systems.active, 'settings'):
+                          material.material.name = object.particle_systems.active.settings.name
+              else:
+                for material in object.material_slots[:]:
+                  if material.material != None:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.particle_systems.active, 'settings'):
+                        material.material.name = context.active_object.particle_systems.active.settings.name
+                    else:
+                      if hasattr(object.particle_systems.active, 'settings'):
+                        material.material.name = object.particle_systems.active.settings.name
+
+            # textures
+            if option.textures:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for material in object.material_slots[:]:
+                    if material.material != None:
+                      for texture in material.material.texture_slots[:]:
+                        if texture != None:
+
+                          # use active object
+                          if option.useActiveObject:
+                            if hasattr(context.active_object.particle_systems.active, 'settings'):
+                              texture.texture.name = context.active_object.particle_systems.active.settings.name
+                          else:
+                            if hasattr(object.particle_systems.active, 'settings'):
+                              texture.texture.name = object.particle_systems.active.settings.name
+              else:
+                for material in object.material_slots[:]:
+                  if material.material != None:
+                    for texture in material.material.texture_slots[:]:
+                      if texture != None:
+
+                        # use active object
+                        if option.useActiveObject:
+                          if hasattr(context.active_object.particle_systems.active, 'settings'):
+                            texture.texture.name = context.active_object.particle_systems.active.settings.name
+                        else:
+                          if hasattr(object.particle_systems.active, 'settings'):
+                            texture.texture.name = object.particle_systems.active.settings.name
+
+            # particle systems
+            if option.particleSystems:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for system in object.particle_systems[:]:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.particle_systems.active, 'settings'):
+                        system.name = context.active_object.particle_systems.active.settings.name
+                    else:
+                      if hasattr(object.particle_systems.active, 'settings'):
+                        system.name = object.particle_systems.active.settings.name
+              else:
+                for system in object.particle_systems[:]:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.particle_systems.active, 'settings'):
+                      system.name = context.active_object.particle_systems.active.settings.name
+                  else:
+                    if hasattr(object.particle_systems.active, 'settings'):
+                      system.name = object.particle_systems.active.settings.name
+
+            # particle settings
+            if option.particleSettings:
+
+              # batch type
+              if option.batchType in 'SELECTED':
+                if object.select:
+                  for system in object.particle_systems[:]:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.particle_systems.active, 'settings'):
+                        system.settings.name = context.active_object.particle_systems.active.settings.name
+                    else:
+                      if hasattr(object.particle_systems.active, 'settings'):
+                        system.settings.name = object.particle_systems.active.settings.name
+              else:
+                for system in object.particle_systems[:]:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.particle_systems.active, 'settings'):
+                      system.settings.name = context.active_object.particle_systems.active.settings.name
+                  else:
+                    if hasattr(object.particle_systems.active, 'settings'):
+                      system.settings.name = object.particle_systems.active.settings.name
+    # batch type
+    else:
+      for object in context.scene.objects[:]:
+
+        # source object
+        if option.source in 'OBJECT':
+
+          # objects
+          if option.objects:
+
+            # use active object
+            if option.useActiveObject:
+              object.name = context.active_object.name
             else:
+              object.name = object.name
+
+          # object data
+          if option.objectData:
+            if object.type not in 'EMPTY':
+
+              # use active object
+              if option.useActiveObject:
+                object.data.name = context.active_object.name
+              else:
+                object.data.name = object.name
+
+          # materials
+          if option.materials:
+            for material in object.material_slots[:]:
+              if material.material != None:
+
+                # use active object
+                if option.useActiveObject:
+                  material.material.name = context.active_object.name
+                else:
+                  material.material.name = object.name
+
+          # textures
+          if option.textures:
+            for material in object.material_slots[:]:
+              if material.material != None:
+                for texture in material.material.texture_slots[:]:
+                  if texture != None:
+
+                    # use active object
+                    if option.useActiveObject:
+                      texture.texture.name = context.active_object.name
+                    else:
+                      texture.texture.name = object.name
+
+          # particle systems
+          if option.particleSystems:
+            for system in object.particle_systems[:]:
+
+              # use active object
+              if option.useActiveObject:
+                system.name = context.active_object.name
+              else:
+                system.name = object.name
+
+          # particle settings
+          if option.particleSettings:
+            for system in object.particle_systems[:]:
+
+              # use active object
+              if option.useActiveObject:
+                system.settings.name = context.active_object.name
+              else:
+                system.settings.name = object.name
+
+        # source data
+        if option.source in 'DATA':
+          if object.type not in 'EMPTY':
+
+            # objects
+            if option.objects:
+
+              # use active object
+              if option.useActiveObject:
+                object.name = context.active_object.data.name
+              else:
+                object.name = object.data.name
+
+            # object data
+            if option.objectData:
+
+              # use active object
+              if option.useActiveObject:
+                object.data.name = context.active_object.data.name
+              else:
+                object.data.name = object.data.name
+
+            # materials
+            if option.materials:
+              for material in object.material_slots[:]:
+                if material.material != None:
+
+                  # use active object
+                  if option.useActiveObject:
+                    material.material.name = context.active_object.data.name
+                  else:
+                    material.material.name = object.data.name
+
+            # textures
+            if option.textures:
+              for material in object.material_slots[:]:
+                if material.material != None:
+                  for texture in material.material.texture_slots[:]:
+                    if texture != None:
+
+                      # use active object
+                      if option.useActiveObject:
+                        texture.texture.name = context.active_object.data.name
+                      else:
+                        texture.texture.name = object.data.name
+
+            # particle systems
+            if option.particleSystems:
+              for system in object.particle_systems[:]:
+
+                # use active object
+                if option.useActiveObject:
+                  system.name = context.active_object.data.name
+                else:
+                  system.name = object.data.name
+
+            # particle settings
+            if option.particleSettings:
+              for system in object.particle_systems[:]:
+
+                # use active object
+                if option.useActiveObject:
+                  system.settings.name = context.active_object.data.name
+                else:
+                  system.settings.name = object.data.name
+
+        # source material
+        if option.source in 'MATERIAL':
+
+          # objects
+          if option.objects:
+
+            # use active object
+            if option.useActiveObject:
+              if hasattr(context.active_object.active_material, 'name'):
+                object.name = context.active_object.active_material.name
+            else:
+              if hasattr(object.active_material, 'name'):
+                object.name = object.active_material.name
+
+          # object data
+          if option.objectData:
+            if object.type not in 'EMPTY':
+
+              # use active object
+              if option.useActiveObject:
+                if hasattr(context.active_object.active_material, 'name'):
+                  object.data.name = context.active_object.active_material.name
+              else:
+                if hasattr(object.active_material, 'name'):
+                  object.data.name = object.active_material.name
+
+          # materials
+          if option.materials:
+            for material in object.material_slots[:]:
+              if material.material != None:
+
+                # use active object
+                if option.useActiveObject:
+                  if hasattr(context.active_object.active_material, 'name'):
+                    material.material.name = context.active_object.active_material.name
+                else:
+                  if hasattr(object.active_material, 'name'):
+                    material.material.name = object.active_material.name
+
+          # textures
+          if option.textures:
+            for material in object.material_slots[:]:
+              if material.material != None:
+                for texture in material.material.texture_slots[:]:
+                  if texture != None:
+
+                    # use active object
+                    if option.useActiveObject:
+                      if hasattr(context.active_object.active_material, 'name'):
+                        texture.texture.name = context.active_object.active_material.name
+                    else:
+                      if hasattr(object.active_material, 'name'):
+                        texture.texture.name = object.active_material.name
+
+          # particle systems
+          if option.particleSystems:
+            for system in object.particle_systems[:]:
+
+              # use active object
+              if option.useActiveObject:
+                if hasattr(context.active_object.active_material, 'name'):
+                  system.name = context.active_object.active_material.name
+              else:
+                if hasattr(object.active_material, 'name'):
+                  system.name = object.active_material.name
+
+          # particle settings
+          if option.particleSettings:
+            for system in object.particle_systems[:]:
+
+              # use active object
+              if option.useActiveObject:
+                if hasattr(context.active_object.active_material, 'name'):
+                  system.settings.name = context.active_object.active_material.name
+              else:
+                if hasattr(object.active_material, 'name'):
+                  system.settings.name = object.active_material.name
+
+        # source texture
+        if option.source in 'TEXTURE':
+          if context.scene.render.engine not in 'CYCLES':
+
+            # objects
+            if option.objects:
+
+              # use active object
+              if option.useActiveObject:
+                if hasattr(context.active_object.active_material, 'active_texture'):
+                  if hasattr(context.active_object.active_material.active_texture, 'name'):
+                    object.name = context.active_object.active_material.active_texture.name
+              else:
+                if hasattr(object.active_material, 'active_texture'):
+                  if hasattr(object.active_material.active_texture, 'name'):
+                    object.name = object.active_material.active_texture.name
+
+            # object data
+            if option.objectData:
+              if object.type not in 'EMPTY':
+
+                # use active object
+                if option.useActiveObject:
+                  if hasattr(context.active_object.active_material, 'active_texture'):
+                    if hasattr(context.active_object.active_material.active_texture, 'name'):
+                      object.data.name = context.active_object.active_material.active_texture.name
+                else:
+                  if hasattr(object.active_material, 'active_texture'):
+                    if hasattr(object.active_material.active_texture, 'name'):
+                      object.data.name = object.active_material.active_texture.name
+
+            # materials
+            if option.materials:
+              for material in object.material_slots[:]:
+                if material.material != None:
+
+                  # use active object
+                  if option.useActiveObject:
+                    if hasattr(context.active_object.active_material, 'active_texture'):
+                      if hasattr(context.active_object.active_material.active_texture, 'name'):
+                        material.material.name = context.active_object.active_material.active_texture.name
+                  else:
+                    if hasattr(object.active_material, 'active_texture'):
+                      if hasattr(object.active_material.active_texture, 'name'):
+                        material.material.name = object.active_material.active_texture.name
+
+            # textures
+            if option.textures:
               for material in object.material_slots[:]:
                 if material.material != None:
                   for texture in material.material.texture_slots[:]:
@@ -3151,24 +4349,8 @@ class batch:
                           if hasattr(object.active_material.active_texture, 'name'):
                             texture.texture.name = object.active_material.active_texture.name
 
-          # particle systems
-          if option.particleSystems:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for system in object.particle_systems[:]:
-
-                  # use active object
-                  if option.useActiveObject:
-                    if hasattr(context.active_object.active_material, 'active_texture'):
-                      if hasattr(context.active_object.active_material.active_texture, 'name'):
-                        system.name = context.active_object.active_material.active_texture.name
-                  else:
-                    if hasattr(object.active_material, 'active_texture'):
-                      if hasattr(object.active_material.active_texture, 'name'):
-                        system.name = object.active_material.active_texture.name
-            else:
+            # particle systems
+            if option.particleSystems:
               for system in object.particle_systems[:]:
 
                 # use active object
@@ -3181,24 +4363,8 @@ class batch:
                     if hasattr(object.active_material.active_texture, 'name'):
                       system.name = object.active_material.active_texture.name
 
-          # particle settings
-          if option.particleSettings:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for system in object.particle_systems[:]:
-
-                  # use active object
-                  if option.useActiveObject:
-                    if hasattr(context.active_object.active_material, 'active_texture'):
-                      if hasattr(context.active_object.active_material.active_texture, 'name'):
-                        system.settings.name = context.active_object.active_material.active_texture.name
-                  else:
-                    if hasattr(object.active_material, 'active_texture'):
-                      if hasattr(object.active_material.active_texture, 'name'):
-                        system.settings.name = object.active_material.active_texture.name
-            else:
+            # particle settings
+            if option.particleSettings:
               for system in object.particle_systems[:]:
 
                 # use active object
@@ -3211,24 +4377,11 @@ class batch:
                     if hasattr(object.active_material.active_texture, 'name'):
                       system.settings.name = object.active_material.active_texture.name
 
-      # source particle system
-      if option.source in 'PARTICLE_SYSTEM':
+        # source particle system
+        if option.source in 'PARTICLE_SYSTEM':
 
-          # objects
-          if option.objects:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-
-                # use active object
-                if option.useActiveObject:
-                  if hasattr(context.active_object.particle_systems.active, 'name'):
-                    object.name = context.active_object.particle_systems.active.name
-                else:
-                  if hasattr(object.particle_systems.active, 'name'):
-                    object.name = object.particle_systems.active.name
-            else:
+            # objects
+            if option.objects:
 
               # use active object
               if option.useActiveObject:
@@ -3238,22 +4391,9 @@ class batch:
                 if hasattr(object.particle_systems.active, 'name'):
                   object.name = object.particle_systems.active.name
 
-          # object data
-          if option.objectData:
-            if object.type not in 'EMPTY':
-
-              # batch type
-              if option.batchType in 'SELECTED':
-                if object.select:
-
-                  # use active object
-                  if option.useActiveObject:
-                    if hasattr(context.active_object.particle_systems.active, 'name'):
-                      object.data.name = context.active_object.particle_systems.active.name
-                  else:
-                    if hasattr(object.particle_systems.active, 'name'):
-                      object.data.name = object.particle_systems.active.name
-              else:
+            # object data
+            if option.objectData:
+              if object.type not in 'EMPTY':
 
                 # use active object
                 if option.useActiveObject:
@@ -3263,23 +4403,8 @@ class batch:
                   if hasattr(object.particle_systems.active, 'name'):
                     object.data.name = object.particle_systems.active.name
 
-          # materials
-          if option.materials:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for material in object.material_slots[:]:
-                  if material.material != None:
-
-                    # use active object
-                    if option.useActiveObject:
-                      if hasattr(context.active_object.particle_systems.active, 'name'):
-                        material.material.name = context.active_object.particle_systems.active.name
-                    else:
-                      if hasattr(object.particle_systems.active, 'name'):
-                        material.material.name = object.particle_systems.active.name
-            else:
+            # materials
+            if option.materials:
               for material in object.material_slots[:]:
                 if material.material != None:
 
@@ -3291,25 +4416,8 @@ class batch:
                     if hasattr(object.particle_systems.active, 'name'):
                       material.material.name = object.particle_systems.active.name
 
-          # textures
-          if option.textures:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for material in object.material_slots[:]:
-                  if material.material != None:
-                    for texture in material.material.texture_slots[:]:
-                      if texture != None:
-
-                        # use active object
-                        if option.useActiveObject:
-                          if hasattr(context.active_object.particle_systems.active, 'name'):
-                            texture.texture.name = context.active_object.particle_systems.active.name
-                        else:
-                          if hasattr(object.particle_systems.active, 'name'):
-                            texture.texture.name = object.particle_systems.active.name
-            else:
+            # textures
+            if option.textures:
               for material in object.material_slots[:]:
                 if material.material != None:
                   for texture in material.material.texture_slots[:]:
@@ -3323,22 +4431,8 @@ class batch:
                         if hasattr(object.particle_systems.active, 'name'):
                           texture.texture.name = object.particle_systems.active.name
 
-          # particle system
-          if option.particleSystems:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for system in object.particle_systems[:]:
-
-                  # use active object
-                  if option.useActiveObject:
-                    if hasattr(context.active_object.particle_systems.active, 'name'):
-                      system.name = context.active_object.particle_systems.active.name
-                  else:
-                    if hasattr(object.particle_systems.active, 'name'):
-                      system.name = object.particle_systems.active.name
-            else:
+            # particle system
+            if option.particleSystems:
               for system in object.particle_systems[:]:
 
                 # use active object
@@ -3349,22 +4443,8 @@ class batch:
                   if hasattr(object.particle_systems.active, 'name'):
                     system.name = object.particle_systems.active.name
 
-          # particle settings
-          if option.particleSettings:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for system in object.particle_systems[:]:
-
-                  # use active object
-                  if option.useActiveObject:
-                    if hasattr(context.active_object.particle_systems.active, 'name'):
-                      system.settings.name = context.active_object.particle_systems.active.name
-                  else:
-                    if hasattr(object.particle_systems.active, 'name'):
-                      system.settings.name = object.particle_systems.active.name
-            else:
+            # particle settings
+            if option.particleSettings:
               for system in object.particle_systems[:]:
 
                 # use active object
@@ -3375,24 +4455,11 @@ class batch:
                   if hasattr(object.particle_systems.active, 'name'):
                     system.settings.name = object.particle_systems.active.name
 
-      # source particle settings
-      if option.source in 'PARTICLE_SETTINGS':
+        # source particle settings
+        if option.source in 'PARTICLE_SETTINGS':
 
-          # objects
-          if option.objects:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-
-                # use active object
-                if option.useActiveObject:
-                  if hasattr(context.active_object.particle_systems.active, 'settings'):
-                    object.name = context.active_object.particle_systems.active.settings.name
-                else:
-                  if hasattr(object.particle_systems.active, 'settings'):
-                    object.name = object.particle_systems.active.settings.name
-            else:
+            # objects
+            if option.objects:
 
               # use active object
               if option.useActiveObject:
@@ -3402,22 +4469,9 @@ class batch:
                 if hasattr(object.particle_systems.active, 'settings'):
                   object.name = object.particle_systems.active.settings.name
 
-          # object data
-          if option.objectData:
-            if object.type not in 'EMPTY':
-
-              # batch type
-              if option.batchType in 'SELECTED':
-                if object.select:
-
-                  # use active object
-                  if option.useActiveObject:
-                    if hasattr(context.active_object.particle_systems.active, 'settings'):
-                      object.data.name = context.active_object.particle_systems.active.settings.name
-                  else:
-                    if hasattr(object.particle_systems.active, 'settings'):
-                      object.data.name = object.particle_systems.active.settings.name
-              else:
+            # object data
+            if option.objectData:
+              if object.type not in 'EMPTY':
 
                 # use active object
                 if option.useActiveObject:
@@ -3427,23 +4481,8 @@ class batch:
                   if hasattr(object.particle_systems.active, 'settings'):
                     object.data.name = object.particle_systems.active.settings.name
 
-          # materials
-          if option.materials:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for material in object.material_slots[:]:
-                  if material.material != None:
-
-                    # use active object
-                    if option.useActiveObject:
-                      if hasattr(context.active_object.particle_systems.active, 'settings'):
-                        material.material.name = context.active_object.particle_systems.active.settings.name
-                    else:
-                      if hasattr(object.particle_systems.active, 'settings'):
-                        material.material.name = object.particle_systems.active.settings.name
-            else:
+            # materials
+            if option.materials:
               for material in object.material_slots[:]:
                 if material.material != None:
 
@@ -3455,25 +4494,8 @@ class batch:
                     if hasattr(object.particle_systems.active, 'settings'):
                       material.material.name = object.particle_systems.active.settings.name
 
-          # textures
-          if option.textures:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for material in object.material_slots[:]:
-                  if material.material != None:
-                    for texture in material.material.texture_slots[:]:
-                      if texture != None:
-
-                        # use active object
-                        if option.useActiveObject:
-                          if hasattr(context.active_object.particle_systems.active, 'settings'):
-                            texture.texture.name = context.active_object.particle_systems.active.settings.name
-                        else:
-                          if hasattr(object.particle_systems.active, 'settings'):
-                            texture.texture.name = object.particle_systems.active.settings.name
-            else:
+            # textures
+            if option.textures:
               for material in object.material_slots[:]:
                 if material.material != None:
                   for texture in material.material.texture_slots[:]:
@@ -3487,22 +4509,8 @@ class batch:
                         if hasattr(object.particle_systems.active, 'settings'):
                           texture.texture.name = object.particle_systems.active.settings.name
 
-          # particle systems
-          if option.particleSystems:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for system in object.particle_systems[:]:
-
-                  # use active object
-                  if option.useActiveObject:
-                    if hasattr(context.active_object.particle_systems.active, 'settings'):
-                      system.name = context.active_object.particle_systems.active.settings.name
-                  else:
-                    if hasattr(object.particle_systems.active, 'settings'):
-                      system.name = object.particle_systems.active.settings.name
-            else:
+            # particle systems
+            if option.particleSystems:
               for system in object.particle_systems[:]:
 
                 # use active object
@@ -3513,22 +4521,8 @@ class batch:
                   if hasattr(object.particle_systems.active, 'settings'):
                     system.name = object.particle_systems.active.settings.name
 
-          # particle settings
-          if option.particleSettings:
-
-            # batch type
-            if option.batchType in 'SELECTED':
-              if object.select:
-                for system in object.particle_systems[:]:
-
-                  # use active object
-                  if option.useActiveObject:
-                    if hasattr(context.active_object.particle_systems.active, 'settings'):
-                      system.settings.name = context.active_object.particle_systems.active.settings.name
-                  else:
-                    if hasattr(object.particle_systems.active, 'settings'):
-                      system.settings.name = object.particle_systems.active.settings.name
-            else:
+            # particle settings
+            if option.particleSettings:
               for system in object.particle_systems[:]:
 
                 # use active object

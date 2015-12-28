@@ -1184,7 +1184,12 @@ class panel:
     sub.scale_x = 1.6
 
     # label
-    sub.label(text='', icon='GROUP_VERTEX')
+    # sub.label(text='', icon='GROUP_VERTEX')
+
+    # select vertex group
+    prop = sub.operator('object.select_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
+    prop.object = object.name
+    prop.target = datablock.name
 
     # name
     row.prop(datablock, 'name', text='')

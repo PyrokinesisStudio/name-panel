@@ -19,6 +19,7 @@
 
 # imports
 import bpy
+import bmesh
 from bpy.types import Operator
 from bpy.props import BoolProperty, StringProperty
 from . import function
@@ -77,7 +78,7 @@ class batch:
         layout = self.layout
 
         # option
-        option = context.screen.batchAutoNameSettings
+        option = context.scene.batchAutoNameSettings
 
         # batch type
         layout.prop(option, 'batchType', expand=True)
@@ -878,7 +879,7 @@ class batch:
       layout = self.layout
 
       # option
-      option = context.screen.batchNameSettings
+      option = context.scene.batchNameSettings
 
       column = layout.column(align=True)
 
@@ -1105,7 +1106,7 @@ class batch:
       layout = self.layout
 
       # option
-      option = context.screen.batchCopySettings
+      option = context.scene.batchCopySettings
 
       # batch type
       layout.prop(option, 'batchType', expand=True)
@@ -1155,12 +1156,19 @@ class batch:
   # reset
   class resetSettings(Operator):
     '''
-      Reset batch operator properties.
+      Reset option values.
     '''
     bl_idname = 'view3d.batch_reset_settings'
     bl_label = 'Reset Settings'
     bl_description = 'Reset batch operator options to their default values.'
     bl_options = {'REGISTER', 'UNDO'}
+
+    # panel
+    panel = BoolProperty(
+      name = 'Item Panel',
+      description = 'Reset the options values for the item panel.',
+      default = False
+    )
 
     # auto
     auto = BoolProperty(
@@ -1171,8 +1179,8 @@ class batch:
 
     # names
     names = BoolProperty(
-      name = 'Batch Auto Name → Name Settings',
-      description = 'Reset the option values for batch auto name → name settings.',
+      name = 'Batch Auto Name → Names',
+      description = 'Reset the option values for batch auto name → names.',
       default = False
     )
 
@@ -1211,6 +1219,7 @@ class batch:
       column = layout.column()
 
       # options
+      column.prop(self, 'panel')
       column.prop(self, 'auto')
       column.prop(self, 'names')
       column.prop(self, 'name')
@@ -1223,18 +1232,25 @@ class batch:
       '''
 
       # reset
-      function.batch.resetSettings(context, self.auto, self.names, self.name, self.copy)
+      function.batch.resetSettings(context, self.panel, self.auto, self.names, self.name, self.copy)
       return {'FINISHED'}
 
   # transfer
   class transferSettings(Operator):
     '''
-      Transfer batch operator property values.
+      Transfer option values.
     '''
     bl_idname = 'view3d.batch_transfer_settings'
     bl_label = 'Transfer Settings'
     bl_description = 'Transfer current batch operator option values to other screens and scenes.'
     bl_options = {'REGISTER', 'UNDO'}
+
+    # panel
+    panel = BoolProperty(
+      name = 'Item Panel',
+      description = 'Transfer the options values for the item panel.',
+      default = True
+    )
 
     # auto
     auto = BoolProperty(
@@ -1245,8 +1261,8 @@ class batch:
 
     # names
     names = BoolProperty(
-      name = 'Batch Auto Name → Name Settings',
-      description = 'Transfer the option values for batch auto name → name settings.',
+      name = 'Batch Auto Name → Names',
+      description = 'Transfer the option values for batch auto name → names.',
       default = True
     )
 
@@ -1285,6 +1301,7 @@ class batch:
       column = layout.column()
 
       # options
+      column.prop(self, 'panel')
       column.prop(self, 'auto')
       column.prop(self, 'names')
       column.prop(self, 'name')
@@ -1297,7 +1314,7 @@ class batch:
       '''
 
       # reset
-      function.batch.transferSettings(context, self.auto, self.names, self.name, self.copy)
+      function.batch.transferSettings(context, self.panel, self.auto, self.names, self.name, self.copy)
       return {'FINISHED'}
 
 # make active
@@ -1332,8 +1349,11 @@ class makeActiveObject(Operator):
     '''
     try:
 
-      # select active object
+      # select
       bpy.data.objects[context.active_object.name].select = True
+
+      # mode set
+      bpy.ops.object.mode_set(mode='OBJECT')
 
       # target
       context.scene.objects.active = bpy.data.objects[self.target]
@@ -1378,7 +1398,7 @@ class makeActiveBone(Operator):
       # edit mode
       if context.object.mode in 'EDIT':
 
-        # select active edit bone
+        # select
         context.active_object.data.edit_bones.active.select = True
 
         # select head
@@ -1387,7 +1407,7 @@ class makeActiveBone(Operator):
         # select tail
         context.active_object.data.edit_bones.active.select_tail = True
 
-        # target
+        # active bone
         context.scene.objects[context.active_object.name].data.edit_bones.active = bpy.data.armatures[context.active_object.data.name].edit_bones[self.target]
 
         # select head
@@ -1399,11 +1419,110 @@ class makeActiveBone(Operator):
       # pose mode
       else:
 
-        # select active bone
+        # select
         context.active_object.data.bones.active.select = True
 
         # target
         context.scene.objects[context.active_object.name].data.bones.active = bpy.data.armatures[context.active_object.data.name].bones[self.target]
+    except:
+
+      # warning messege
+      self.report({'WARNING'}, 'Invalid target.')
+    return {'FINISHED'}
+
+# make active bone
+class selectVertexGroup(Operator):
+  '''
+    Selects a vertex group when called.
+  '''
+  bl_idname = 'object.select_vertex_group'
+  bl_label = 'Make Active Bone'
+  bl_description = 'Select this vertex group.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # object
+  object  = StringProperty(
+    name = 'Object',
+    description = 'The object the vertex group is in.',
+    default = ''
+  )
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The target vertex group that will be selected.',
+    default = ''
+  )
+
+  # extend
+  extend = BoolProperty(
+    name = 'Extend Selection',
+    description = 'Extend the selection.',
+    default = False
+  )
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+    try:
+
+      # select
+      context.scene.objects.active.select = True
+
+      # mode set
+      bpy.ops.object.mode_set(mode='OBJECT')
+
+      # active object
+      context.scene.objects.active = bpy.data.objects[self.object]
+
+      # mode set
+      bpy.ops.object.mode_set(mode='EDIT')
+
+      # bmesh
+      mesh = bmesh.from_edit_mesh(context.active_object.data)
+
+      # extend
+      if not self.extend:
+
+        # clear vertex
+        for vertex in mesh.verts:
+          vertex.select = False
+
+        # clear edge
+        for edge in mesh.edges:
+          edge.select = False
+
+        # clear face
+        for face in mesh.faces:
+          face.select = False
+
+      # group index
+      groupIndex = context.active_object.vertex_groups[self.target].index
+
+      # deform layer
+      deformLayer = mesh.verts.layers.deform.active
+
+      # select vertices
+      for vertex in mesh.verts:
+        deformVertex = vertex[deformLayer]
+        if groupIndex in deformVertex:
+          vertex.select = True
+
+      # flush selection
+      mesh.select_flush(True)
+
+      # update viewport
+      context.scene.objects.active = context.scene.objects.active
     except:
 
       # warning messege

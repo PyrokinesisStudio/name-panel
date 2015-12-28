@@ -89,7 +89,7 @@ class batch:
       '''
 
       # option
-      option = context.screen.batchAutoNameSettings
+      option = context.scene.batchAutoNameSettings
 
       # name
       name = batch.auto.name
@@ -369,7 +369,7 @@ class batch:
       '''
 
       # option
-      option = context.screen.batchAutoNameSettings
+      option = context.scene.batchAutoNameSettings
 
       # object name
       objectName = context.scene.batchAutoNameObjectNames
@@ -790,11 +790,11 @@ class batch:
   # main
   def main(context):
     '''
-      Send datablock values to sort.
+      Send datablock values to sort then send collections to process.
     '''
 
     # option
-    option = context.screen.batchNameSettings
+    option = context.scene.batchNameSettings
 
     # batch type
     if option.batchType in {'SELECTED', 'OBJECTS'}:
@@ -2681,8 +2681,8 @@ class batch:
     # print(all)
 
     # process
-    for item in all[:]:
-      batch.process(context, item)
+    for collection in all[:]:
+      batch.process(context, collection)
 
   # sort
   def sort(context, datablock):
@@ -2691,7 +2691,7 @@ class batch:
     '''
 
     # option
-    option = context.screen.batchNameSettings
+    option = context.scene.batchNameSettings
 
     # objects
     if option.objects:
@@ -2918,7 +2918,7 @@ class batch:
     '''
 
     # option
-    option = context.screen.batchNameSettings
+    option = context.scene.batchNameSettings
 
     # count
     count = [
@@ -3053,32 +3053,29 @@ class batch:
     collection.clear()
 
   # name
-  def name(context, target):
+  def name(context, datablock):
     '''
       Name datablocks received from process.
     '''
 
     # option
-    option = context.screen.batchNameSettings
+    option = context.scene.batchNameSettings
 
     # name check
-    nameCheck = target
+    nameCheck = datablock
 
     # custom name
     if option.customName != '':
 
       # new name
       newName = option.customName
-
-      # trim start
-      newName = newName[option.trimStart:]
     else:
 
       # new name
-      newName = target
+      newName = datablock
 
-      # trim start
-      newName = newName[option.trimStart:]
+    # trim start
+    newName = newName[option.trimStart:]
 
     # trim end
     if option.trimEnd > 0:
@@ -3097,16 +3094,16 @@ class batch:
     if nameCheck != newName:
       return newName
     else:
-      return target
+      return datablock
 
   # copy
   def copy(context):
     '''
-      Assign name values from source type to destination datablock.
+      Get names from source datablock and assign to destination datablock.
     '''
 
     # option
-    option = context.screen.batchCopySettings
+    option = context.scene.batchCopySettings
 
     # batch type
     if option.batchType in {'SELECTED', 'OBJECTS'}:
@@ -4533,35 +4530,80 @@ class batch:
                   if hasattr(object.particle_systems.active, 'settings'):
                     system.settings.name = object.particle_systems.active.settings.name
 
-  # reset
-  def resetSettings(context, auto, names, name, copy):
+  # reset settings
+  def resetSettings(context, panel, auto, names, name, copy):
     '''
-      Resets the screen property values for item panel add-on's batch operators.
+      Resets the property values for the item panel add-on.
     '''
 
-    # batch auto name option
-    batchAutoNameOption = context.screen.batchAutoNameSettings
+    # panel
+    if panel:
 
-    # object name
-    objectName = context.scene.batchAutoNameObjectNames
+      # item panel option
+      itemPanelOption = context.scene.itemPanelSettings
 
-    # constraint name
-    constraintName = context.scene.batchAutoNameConstraintNames
+      # filters
+      itemPanelOption.filters = False
 
-    # modifier name
-    modifierName = context.scene.batchAutoNameModifierNames
+      # options
+      itemPanelOption.options = False
 
-    # object data name
-    objectDataName = context.scene.batchAutoNameObjectDataNames
+      # selected
+      itemPanelOption.selected = False
 
-    # batch name option
-    batchNameOption = context.screen.batchNameSettings
+      # pin active object
+      itemPanelOption.pinActiveObject = True
 
-    # batch copy option
-    batchCopyOption = context.screen.batchCopySettings
+      # groups
+      itemPanelOption.groups = False
+
+      # action
+      itemPanelOption.action = False
+
+      # grease pencil
+      itemPanelOption.greasePencil = False
+
+      # constraints
+      itemPanelOption.constraints = False
+
+      # modifiers
+      itemPanelOption.modifiers = False
+
+      # bone groups
+      itemPanelOption.boneGroups = False
+
+      # bone constraints
+      itemPanelOption.boneConstraints = False
+
+      # vertex groups
+      itemPanelOption.vertexGroups = False
+
+      # shapekeys
+      itemPanelOption.shapekeys = False
+
+      # uvs
+      itemPanelOption.uvs = False
+
+      # vertex colors
+      itemPanelOption.vertexColors = False
+
+      # materials
+      itemPanelOption.materials = False
+
+      # textures
+      itemPanelOption.textures = False
+
+      # particle systems
+      itemPanelOption.particleSystems = False
+
+      # selected bones
+      itemPanelOption.selectedBones = False
 
     # auto
     if auto:
+
+      # batch auto name option
+      batchAutoNameOption = context.scene.batchAutoNameSettings
 
       # batch type
       batchAutoNameOption.batchType = 'SELECTED'
@@ -4593,7 +4635,8 @@ class batch:
     # names
     if names:
 
-      # object names
+      # object name
+      objectName = context.scene.batchAutoNameObjectNames
 
       # mesh
       objectName.mesh = 'Mesh'
@@ -4628,7 +4671,8 @@ class batch:
       # lamp
       objectName.lamp = 'Lamp'
 
-      # constraint names
+      # constraint name
+      constraintName = context.scene.batchAutoNameConstraintNames
 
       # camera solver
       constraintName.cameraSolver = 'Camera Solver'
@@ -4711,7 +4755,8 @@ class batch:
       # shrinkwrap
       constraintName.shrinkwrap = 'Shrinkwrap'
 
-      # modifier names
+      # modifier name
+      modifierName = context.scene.batchAutoNameModifierNames
 
       # data transfer
       modifierName.dataTransfer = 'Data Transfer'
@@ -4895,7 +4940,8 @@ class batch:
       # lamp
       modifierName.lamp = 'Lamp'
 
-      # object data
+      # object data name
+      objectDataName = context.scene.batchAutoNameObjectDataNames
 
       # mesh
       objectDataName.mesh = 'Mesh'
@@ -4927,8 +4973,11 @@ class batch:
       # lamp
       objectDataName.lamp = 'Lamp'
 
-      # name
+    # name
     if name:
+
+      # batch name option
+      batchNameOption = context.scene.batchNameSettings
 
       # batch type
       batchNameOption.batchType = 'SELECTED'
@@ -5092,6 +5141,9 @@ class batch:
     # copy
     if copy:
 
+      # batch copy option
+      batchCopyOption = context.scene.batchCopySettings
+
       # batch type
       batchCopyOption.batchType = 'SELECTED'
 
@@ -5119,46 +5171,111 @@ class batch:
       # use active object
       batchCopyOption.useActiveObject = False
 
-  # transfer
-  def transferSettings(context, auto, names, name, copy):
+  # transfer settings
+  def transferSettings(context, panel, auto, names, name, copy):
     '''
-      Resets the screen property values for item panel add-on's batch operators.
+      Resets the property values for the item panel add-on.
     '''
+
+    # panel settings
+    if panel:
+      for scene in bpy.data.scenes[:]:
+        if scene != context.scene:
+
+          # item panel option
+          itemPanelOption = context.scene.itemPanelSettings
+
+          # filters
+          scene.itemPanelSettings.filters = itemPanelOption.filters
+
+          # options
+          scene.itemPanelSettings.options = itemPanelOption.options
+
+          # selected
+          scene.itemPanelSettings.selected = itemPanelOption.selected
+
+          # pin active object
+          scene.itemPanelSettings.pinActiveObject = itemPanelOption.pinActiveObject
+
+          # groups
+          scene.itemPanelSettings.groups = itemPanelOption.groups
+
+          # action
+          scene.itemPanelSettings.action = itemPanelOption.action
+
+          # grease pencil
+          scene.itemPanelSettings.greasePencil = itemPanelOption.greasePencil
+
+          # constraint
+          scene.itemPanelSettings.constraints = itemPanelOption.constraints
+
+          # modifiers
+          scene.itemPanelSettings.modifiers = itemPanelOption.modifiers
+
+          # bone groups
+          scene.itemPanelSettings.boneGroups = itemPanelOption.boneGroups
+
+          # bone constraints
+          scene.itemPanelSettings.boneConstraints = itemPanelOption.boneConstraints
+
+          # vertex groups
+          scene.itemPanelSettings.vertexGroups = itemPanelOption.vertexGroups
+
+          # shapekeys
+          scene.itemPanelSettings.shapekeys = itemPanelOption.shapekeys
+
+          # uvs
+          scene.itemPanelSettings.uvs = itemPanelOption.uvs
+
+          # vertex colors
+          scene.itemPanelSettings.vertexColors = itemPanelOption.vertexColors
+
+          # materials
+          scene.itemPanelSettings.materials = itemPanelOption.materials
+
+          # textures
+          scene.itemPanelSettings.textures = itemPanelOption.textures
+
+          # particels systems
+          scene.itemPanelSettings.particleSystems = itemPanelOption.particleSystems
+
+          # selected bones
+          scene.itemPanelSettings.selectedBones = itemPanelOption.selectedBones
 
     # auto
     if auto:
-      for screen in bpy.data.screens[:]:
-        if screen != context.screen:
+      for scene in bpy.data.scenes[:]:
+        if scene != context.scene:
 
           # auto name option
-          batchAutoNameOption = context.screen.batchAutoNameSettings
+          batchAutoNameOption = context.scene.batchAutoNameSettings
 
           # batch type
-          screen.batchAutoNameSettings.batchType = batchAutoNameOption.batchType
+          scene.batchAutoNameSettings.batchType = batchAutoNameOption.batchType
 
           # objects
-          screen.batchAutoNameSettings.objects = batchAutoNameOption.objects
+          scene.batchAutoNameSettings.objects = batchAutoNameOption.objects
 
           # constraints
-          screen.batchAutoNameSettings.constraints = batchAutoNameOption.constraints
+          scene.batchAutoNameSettings.constraints = batchAutoNameOption.constraints
 
           # modifiers
-          screen.batchAutoNameSettings.modifiers = batchAutoNameOption.modifiers
+          scene.batchAutoNameSettings.modifiers = batchAutoNameOption.modifiers
 
           # objectData
-          screen.batchAutoNameSettings.objectData = batchAutoNameOption.objectData
+          scene.batchAutoNameSettings.objectData = batchAutoNameOption.objectData
 
           # bone Constraints
-          screen.batchAutoNameSettings.boneConstraints = batchAutoNameOption.boneConstraints
+          scene.batchAutoNameSettings.boneConstraints = batchAutoNameOption.boneConstraints
 
           # object type
-          screen.batchAutoNameSettings.objectType = batchAutoNameOption.objectType
+          scene.batchAutoNameSettings.objectType = batchAutoNameOption.objectType
 
           # constraint type
-          screen.batchAutoNameSettings.constraintType = batchAutoNameOption.constraintType
+          scene.batchAutoNameSettings.constraintType = batchAutoNameOption.constraintType
 
           # modifier type
-          screen.batchAutoNameSettings.modifierType = batchAutoNameOption.modifierType
+          scene.batchAutoNameSettings.modifierType = batchAutoNameOption.modifierType
 
     # names
     if names:
@@ -5167,17 +5284,6 @@ class batch:
 
           # object name
           objectName = context.scene.batchAutoNameObjectNames
-
-          # constraint name
-          constraintName = context.scene.batchAutoNameConstraintNames
-
-          # modifier name
-          modifierName = context.scene.batchAutoNameModifierNames
-
-          # object data name
-          objectDataName = context.scene.batchAutoNameObjectDataNames
-
-          # object names
 
           # mesh
           scene.batchAutoNameObjectNames.mesh = objectName.mesh
@@ -5212,7 +5318,8 @@ class batch:
           # lamp
           scene.batchAutoNameObjectNames.lamp = objectName.lamp
 
-          # constraint names
+          # constraint name
+          constraintName = context.scene.batchAutoNameConstraintNames
 
           # camera solver
           scene.batchAutoNameConstraintNames.cameraSolver = constraintName.cameraSolver
@@ -5295,7 +5402,8 @@ class batch:
           # shrinkwrap
           scene.batchAutoNameConstraintNames.shrinkwrap = constraintName.shrinkwrap
 
-          # modifier names
+          # modifier name
+          modifierName = context.scene.batchAutoNameModifierNames
 
           # data transfer
           scene.batchAutoNameModifierNames.dataTransfer = modifierName.dataTransfer
@@ -5444,7 +5552,8 @@ class batch:
           # soft body
           scene.batchAutoNameModifierNames.softBody = modifierName.softBody
 
-          # object data names
+          # object data name
+          objectDataName = context.scene.batchAutoNameObjectDataNames
 
           # mesh
           scene.batchAutoNameObjectDataNames.mesh = objectDataName.mesh
@@ -5478,196 +5587,196 @@ class batch:
 
     # name
     if name:
-      for screen in bpy.data.screens:
-        if screen != context.screen:
+      for scene in bpy.data.scenes:
+        if scene != context.scene:
 
           # batch name option
-          batchNameOption = context.screen.batchNameSettings
+          batchNameOption = context.scene.batchNameSettings
 
           # batch type
-          screen.batchNameSettings.batchType = batchNameOption.batchType
+          scene.batchNameSettings.batchType = batchNameOption.batchType
 
           # batch objects
-          screen.batchNameSettings.objects = batchNameOption.objects
+          scene.batchNameSettings.objects = batchNameOption.objects
 
           # batch object constraints
-          screen.batchNameSettings.constraints = batchNameOption.constraints
+          scene.batchNameSettings.constraints = batchNameOption.constraints
 
           # batch modifiers
-          screen.batchNameSettings.modifiers = batchNameOption.modifiers
+          scene.batchNameSettings.modifiers = batchNameOption.modifiers
 
           # batch object data
-          screen.batchNameSettings.objectData = batchNameOption.objectData
+          scene.batchNameSettings.objectData = batchNameOption.objectData
 
           # batch bones
-          screen.batchNameSettings.bones = batchNameOption.bones
+          scene.batchNameSettings.bones = batchNameOption.bones
 
           # batch bone constraints
-          screen.batchNameSettings.boneConstraints = batchNameOption.boneConstraints
+          scene.batchNameSettings.boneConstraints = batchNameOption.boneConstraints
 
           # batch materials
-          screen.batchNameSettings.materials = batchNameOption.materials
+          scene.batchNameSettings.materials = batchNameOption.materials
 
           # batch textures
-          screen.batchNameSettings.textures = batchNameOption.textures
+          scene.batchNameSettings.textures = batchNameOption.textures
 
           # batch particle systems
-          screen.batchNameSettings.particleSystems = batchNameOption.particleSystems
+          scene.batchNameSettings.particleSystems = batchNameOption.particleSystems
 
           # batch particle settings
-          screen.batchNameSettings.particleSettings = batchNameOption.particleSettings
+          scene.batchNameSettings.particleSettings = batchNameOption.particleSettings
 
           # batch groups
-          screen.batchNameSettings.groups = batchNameOption.groups
+          scene.batchNameSettings.groups = batchNameOption.groups
 
           # batch vertex groups
-          screen.batchNameSettings.vertexGroups = batchNameOption.vertexGroups
+          scene.batchNameSettings.vertexGroups = batchNameOption.vertexGroups
 
           # batch shape keys
-          screen.batchNameSettings.shapekeys = batchNameOption.shapekeys
+          scene.batchNameSettings.shapekeys = batchNameOption.shapekeys
 
           # batch uvs
-          screen.batchNameSettings.uvs = batchNameOption.uvs
+          scene.batchNameSettings.uvs = batchNameOption.uvs
 
           # batch vertex colors
-          screen.batchNameSettings.vertexColors = batchNameOption.vertexColors
+          scene.batchNameSettings.vertexColors = batchNameOption.vertexColors
 
           # batch bone groups
-          screen.batchNameSettings.boneGroups = batchNameOption.boneGroups
+          scene.batchNameSettings.boneGroups = batchNameOption.boneGroups
 
           # object type
-          screen.batchNameSettings.objectType = batchNameOption.objectType
+          scene.batchNameSettings.objectType = batchNameOption.objectType
 
           # constraint type
-          screen.batchNameSettings.constraintType = batchNameOption.constraintType
+          scene.batchNameSettings.constraintType = batchNameOption.constraintType
 
           # modifier type
-          screen.batchNameSettings.modifierType = batchNameOption.modifierType
+          scene.batchNameSettings.modifierType = batchNameOption.modifierType
 
           # scenes
-          screen.batchNameSettings.scenes = batchNameOption.scenes
+          scene.batchNameSettings.scenes = batchNameOption.scenes
 
           # render layers
-          screen.batchNameSettings.renderLayers = batchNameOption.renderLayers
+          scene.batchNameSettings.renderLayers = batchNameOption.renderLayers
 
           # worlds
-          screen.batchNameSettings.worlds = batchNameOption.worlds
+          scene.batchNameSettings.worlds = batchNameOption.worlds
 
           # libraries
-          screen.batchNameSettings.libraries = batchNameOption.libraries
+          scene.batchNameSettings.libraries = batchNameOption.libraries
 
           # images
-          screen.batchNameSettings.images = batchNameOption.images
+          scene.batchNameSettings.images = batchNameOption.images
 
           # masks
-          screen.batchNameSettings.masks = batchNameOption.masks
+          scene.batchNameSettings.masks = batchNameOption.masks
 
           # sequences
-          screen.batchNameSettings.sequences = batchNameOption.sequences
+          scene.batchNameSettings.sequences = batchNameOption.sequences
 
           # movie clips
-          screen.batchNameSettings.movieClips = batchNameOption.movieClips
+          scene.batchNameSettings.movieClips = batchNameOption.movieClips
 
           # sounds
-          screen.batchNameSettings.sounds = batchNameOption.sounds
+          scene.batchNameSettings.sounds = batchNameOption.sounds
 
           # screens
-          screen.batchNameSettings.screens = batchNameOption.screens
+          scene.batchNameSettings.screens = batchNameOption.screens
 
           # keying sets
-          screen.batchNameSettings.keyingSets = batchNameOption.keyingSets
+          scene.batchNameSettings.keyingSets = batchNameOption.keyingSets
 
           # palettes
-          screen.batchNameSettings.palettes = batchNameOption.palettes
+          scene.batchNameSettings.palettes = batchNameOption.palettes
 
           # brushes
-          screen.batchNameSettings.brushes = batchNameOption.brushes
+          scene.batchNameSettings.brushes = batchNameOption.brushes
 
           # linestyles
-          screen.batchNameSettings.linestyles = batchNameOption.linestyles
+          scene.batchNameSettings.linestyles = batchNameOption.linestyles
 
           # nodes
-          screen.batchNameSettings.nodes = batchNameOption.nodes
+          scene.batchNameSettings.nodes = batchNameOption.nodes
 
           # node labels
-          screen.batchNameSettings.nodeLabels = batchNameOption.nodeLabels
+          scene.batchNameSettings.nodeLabels = batchNameOption.nodeLabels
 
           # node groups
-          screen.batchNameSettings.nodeGroups = batchNameOption.nodeGroups
+          scene.batchNameSettings.nodeGroups = batchNameOption.nodeGroups
 
           # texts
-          screen.batchNameSettings.texts = batchNameOption.texts
+          scene.batchNameSettings.texts = batchNameOption.texts
 
           # name
-          screen.batchNameSettings.customName = batchNameOption.customName
+          scene.batchNameSettings.customName = batchNameOption.customName
 
           # find
-          screen.batchNameSettings.find = batchNameOption.find
+          scene.batchNameSettings.find = batchNameOption.find
 
           # regex
-          screen.batchNameSettings.regex = batchNameOption.regex
+          scene.batchNameSettings.regex = batchNameOption.regex
 
           # replace
-          screen.batchNameSettings.replace = batchNameOption.replace
+          scene.batchNameSettings.replace = batchNameOption.replace
 
           # prefix
-          screen.batchNameSettings.prefix = batchNameOption.prefix
+          scene.batchNameSettings.prefix = batchNameOption.prefix
 
           # suffix
-          screen.batchNameSettings.suffix = batchNameOption.suffix
+          scene.batchNameSettings.suffix = batchNameOption.suffix
 
           # trim start
-          screen.batchNameSettings.trimStart = batchNameOption.trimStart
+          scene.batchNameSettings.trimStart = batchNameOption.trimStart
 
           # trim end
-          screen.batchNameSettings.trimEnd = batchNameOption.trimEnd
+          scene.batchNameSettings.trimEnd = batchNameOption.trimEnd
 
           # process
-          screen.batchNameSettings.sort = batchNameOption.sort
+          scene.batchNameSettings.sort = batchNameOption.sort
 
           # padding
-          screen.batchNameSettings.padding = batchNameOption.padding
+          scene.batchNameSettings.padding = batchNameOption.padding
 
           # start
-          screen.batchNameSettings.start = batchNameOption.start
+          scene.batchNameSettings.start = batchNameOption.start
 
           # separator
-          screen.batchNameSettings.separator = batchNameOption.separator
+          scene.batchNameSettings.separator = batchNameOption.separator
 
           # process only
-          screen.batchNameSettings.sortOnly = batchNameOption.sortOnly
+          scene.batchNameSettings.sortOnly = batchNameOption.sortOnly
 
     # copy
     if copy:
-      for screen in bpy.data.screens[:]:
-        if screen != context.screen:
+      for scene in bpy.data.scenes[:]:
+        if scene != context.scene:
 
           # batch copy option
-          batchCopyOption = context.screen.batchCopySettings
+          batchCopyOption = context.scene.batchCopySettings
 
           # batch type
-          screen.batchCopySettings.batchType = batchCopyOption.batchType
+          scene.batchCopySettings.batchType = batchCopyOption.batchType
 
           # source
-          screen.batchCopySettings.source = batchCopyOption.source
+          scene.batchCopySettings.source = batchCopyOption.source
 
           # objects
-          screen.batchCopySettings.objects = batchCopyOption.objects
+          scene.batchCopySettings.objects = batchCopyOption.objects
 
           # object datas
-          screen.batchCopySettings.objectData = batchCopyOption.objectData
+          scene.batchCopySettings.objectData = batchCopyOption.objectData
 
           # materials
-          screen.batchCopySettings.materials = batchCopyOption.materials
+          scene.batchCopySettings.materials = batchCopyOption.materials
 
           # textures
-          screen.batchCopySettings.textures = batchCopyOption.textures
+          scene.batchCopySettings.textures = batchCopyOption.textures
 
           # particle systems
-          screen.batchCopySettings.particleSystems = batchCopyOption.particleSystems
+          scene.batchCopySettings.particleSystems = batchCopyOption.particleSystems
 
           # particle settings
-          screen.batchCopySettings.particleSettings = batchCopyOption.particleSettings
+          scene.batchCopySettings.particleSettings = batchCopyOption.particleSettings
 
           # use active object
-          screen.batchCopySettings.useActiveObject = batchCopyOption.useActiveObject
+          scene.batchCopySettings.useActiveObject = batchCopyOption.useActiveObject

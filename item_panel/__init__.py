@@ -76,6 +76,7 @@ def register():
   bpy.utils.register_class(operator.batch.transferSettings)
   bpy.utils.register_class(operator.makeActiveObject)
   bpy.utils.register_class(operator.makeActiveBone)
+  bpy.utils.register_class(operator.selectVertexGroup)
 
   # property groups
   bpy.utils.register_class(settings.batch.auto.name)
@@ -90,7 +91,7 @@ def register():
   # pointer properties
 
   # batch auto name settings
-  bpy.types.Screen.batchAutoNameSettings = PointerProperty(
+  bpy.types.Scene.batchAutoNameSettings = PointerProperty(
     type = settings.batch.auto.name,
     name = 'Batch Auto Name Settings',
     description = 'Storage location for the batch auto name operator settings.'
@@ -125,27 +126,27 @@ def register():
   )
 
   # batch name settings
-  bpy.types.Screen.batchNameSettings = PointerProperty(
+  bpy.types.Scene.batchNameSettings = PointerProperty(
     type = settings.batch.name,
     name = 'Batch Name Settings',
     description = 'Storage location for the batch name operator settings.'
   )
 
   # batch copy settings
-  bpy.types.Screen.batchCopySettings = PointerProperty(
+  bpy.types.Scene.batchCopySettings = PointerProperty(
     type = settings.batch.copy,
     name = 'Batch Name Copy Settings',
     description = 'Storage location for the batch copy name operator settings.'
   )
 
   # item panel settings
-  bpy.types.Screen.itemPanelSettings = PointerProperty(
+  bpy.types.Scene.itemPanelSettings = PointerProperty(
     type = settings.panel,
     name = 'Item Panel Settings',
     description = 'Storage location for the item panel settings.'
   )
 
-  # append batch name button
+  # append
   bpy.types.OUTLINER_HT_header.append(interface.button.batchName)
 
 # unregister
@@ -173,6 +174,7 @@ def unregister():
   bpy.utils.unregister_class(operator.batch.transferSettings)
   bpy.utils.unregister_class(operator.makeActiveObject)
   bpy.utils.unregister_class(operator.makeActiveBone)
+  bpy.utils.unregister_class(operator.selectVertexGroup)
 
   # property groups
   bpy.utils.unregister_class(settings.batch.auto.name)
@@ -185,14 +187,14 @@ def unregister():
   bpy.utils.unregister_class(settings.panel)
 
   # pointer properties
-  del bpy.types.Screen.batchAutoNameSettings
+  del bpy.types.Scene.batchAutoNameSettings
   del bpy.types.Scene.batchAutoNameObjectNames
   del bpy.types.Scene.batchAutoNameConstraintNames
   del bpy.types.Scene.batchAutoNameModifierNames
   del bpy.types.Scene.batchAutoNameObjectDataNames
-  del bpy.types.Screen.batchNameSettings
-  del bpy.types.Screen.batchCopySettings
-  del bpy.types.Screen.itemPanelSettings
+  del bpy.types.Scene.batchNameSettings
+  del bpy.types.Scene.batchCopySettings
+  del bpy.types.Scene.itemPanelSettings
 
   # remove batch name button
   bpy.types.OUTLINER_HT_header.remove(interface.button.batchName)

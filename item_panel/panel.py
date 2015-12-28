@@ -46,7 +46,7 @@ class item(Panel):
     layout = self.layout
 
     # option
-    option = context.screen.itemPanelSettings
+    option = context.scene.itemPanelSettings
 
     # selected objects
     selectedObjects = [

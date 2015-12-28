@@ -41,7 +41,7 @@ class specials(Menu):
     layout = self.layout
 
     # option
-    option = context.screen.itemPanelSettings
+    option = context.scene.itemPanelSettings
 
     # batch auto name
     layout.operator('view3d.batch_auto_name', icon='AUTO')

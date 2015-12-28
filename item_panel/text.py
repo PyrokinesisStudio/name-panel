@@ -90,10 +90,10 @@ Example
   _     This is literally the underscore symbol, the expression above has an '|'
         in it because the underscore is considered an Alphanumeric symbol and
         everything before the '|' symbol will not remove numbers from the end of
-        the name if those numbers are proceded by an underscore.
+        the name if those numbers are preceded by an underscore.
 
         in other words \W[0-9]*$ by itself works for almost all situations when
-        you want to remove trailing numbers except if those numbers are preceded
+        you want to remove trailing numbers except if those numbers are proceded
         by an underscore, in those cases you will likely want to use '|' to
         account for the underscore situation.
 

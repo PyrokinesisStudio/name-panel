@@ -1327,7 +1327,7 @@ class batch:
     start = IntProperty(
       name = 'Start',
       description = 'Number to start with.',
-      min = 1,
+      min = 0,
       default = 1
     )
 

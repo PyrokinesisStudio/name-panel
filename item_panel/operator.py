@@ -1475,18 +1475,20 @@ class selectVertexGroup(Operator):
       Execute the operator.
     '''
     try:
+      if bpy.data.objects[self.object] != context.scene.objects.active:
 
-      # select
-      context.scene.objects.active.select = True
+        # select
+        context.scene.objects.active.select = True
 
-      # mode set
-      bpy.ops.object.mode_set(mode='OBJECT')
+        # mode set
+        bpy.ops.object.mode_set(mode='OBJECT')
 
-      # active object
-      context.scene.objects.active = bpy.data.objects[self.object]
+        # active object
+        context.scene.objects.active = bpy.data.objects[self.object]
+      if not context.object.mode in 'EDIT':
 
-      # mode set
-      bpy.ops.object.mode_set(mode='EDIT')
+        # mode set
+        bpy.ops.object.mode_set(mode='EDIT')
 
       # bmesh
       mesh = bmesh.from_edit_mesh(context.active_object.data)
@@ -1523,6 +1525,7 @@ class selectVertexGroup(Operator):
 
       # update viewport
       context.scene.objects.active = context.scene.objects.active
+
     except:
 
       # warning messege

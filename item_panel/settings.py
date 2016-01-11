@@ -341,7 +341,7 @@ class batch:
         default = 'Lamp'
       )
 
-    # constraint
+    # constraints
     class constraints(PropertyGroup):
       '''
         Properties that effect the names used when auto naming constraints.
@@ -995,7 +995,7 @@ class batch:
     # groups
     groups = BoolProperty(
       name = 'Groups',
-      description = 'Name groups.',
+      description = 'Name object groups.',
       default = False
     )
 
@@ -1270,7 +1270,7 @@ class batch:
     # find
     find = StringProperty(
       name = 'Find',
-      description = 'Find this string in the datablock name and remove it.'
+      description = 'Find this text in the name and remove it.'
     )
 
     # regex
@@ -1283,25 +1283,25 @@ class batch:
     # replace
     replace = StringProperty(
       name = 'Replace',
-      description = 'Replace found string with the string entered here.'
+      description = 'Replace found text with the text entered here.'
     )
 
     # prefix
     prefix = StringProperty(
       name = 'Prefix',
-      description = 'Place this string at the beginning of the name.'
+      description = 'Place this text at the beginning of the name.'
     )
 
     # suffix
     suffix = StringProperty(
       name = 'Suffix',
-      description = 'Place this string at the end of the name.'
+      description = 'Place this text at the end of the name.'
     )
 
     # trim start
     trimStart = IntProperty(
       name = 'Trim Start',
-      description = 'Trim the beginning of the name.',
+      description = 'Remove this many characters from the beginning of the name.',
       min = 0,
       max = 63,
       default = 0
@@ -1310,7 +1310,7 @@ class batch:
     # trim end
     trimEnd = IntProperty(
       name = 'Trim End',
-      description = 'Trim the ending of the name.',
+      description = 'Remove this many characters from the end of the name.',
       min = 0,
       max = 63,
       default = 0
@@ -1319,14 +1319,14 @@ class batch:
     # sort
     sort = BoolProperty(
       name = 'Sort Duplicates',
-      description = 'Manage names that are identical with a trailing value.',
+      description = 'Recount names that are identical with a trailing number.',
       default = True
     )
 
     # start
     start = IntProperty(
       name = 'Start',
-      description = 'Number to start with when renaming duplicates.',
+      description = 'Number to start with.',
       min = 1,
       default = 1
     )
@@ -1334,7 +1334,7 @@ class batch:
     # padding
     padding = IntProperty(
       name = 'Padding',
-      description = 'Number of zeroes to place before the incrementing number.',
+      description = 'Number of zeroes to place before the final incrementing number.',
       min = 0,
       default = 0
     )
@@ -1342,14 +1342,14 @@ class batch:
     # separator
     separator = StringProperty(
         name = 'Separator',
-        description = 'The separator to use between the name and number when renaming duplicates.',
+        description = 'The separator to use between the name and number.',
         default = '.'
     )
 
     # sort only
     sortOnly = BoolProperty(
        name = 'Only Sort Duplicates',
-       description = 'Only effect names during the operator process that are considered duplicates.',
+       description = 'Only effect names during the naming process that need to be numbered.',
        default = False
      )
 

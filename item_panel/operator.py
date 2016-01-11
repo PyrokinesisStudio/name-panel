@@ -1242,7 +1242,7 @@ class batch:
     '''
     bl_idname = 'view3d.batch_transfer_settings'
     bl_label = 'Transfer Settings'
-    bl_description = 'Transfer current batch operator option values to other screens and scenes.'
+    bl_description = 'Transfer current batch operator option values to other scenes.'
     bl_options = {'REGISTER', 'UNDO'}
 
     # panel

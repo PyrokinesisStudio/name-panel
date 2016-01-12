@@ -39,7 +39,7 @@ bl_info = {
 # imports
 import bpy
 from bpy.props import PointerProperty
-from . import panel, menu, operator, settings, interface
+from . import panel, menu, operator, settings, interface, constraints
 
 ##############
 ## REGISTER ##
@@ -77,6 +77,8 @@ def register():
   bpy.utils.register_class(operator.makeActiveObject)
   bpy.utils.register_class(operator.makeActiveBone)
   bpy.utils.register_class(operator.selectVertexGroup)
+  bpy.utils.register_class(operator.constraintModal)
+  bpy.utils.register_class(operator.modifierModal)
 
   # property groups
   bpy.utils.register_class(settings.batch.auto.name)
@@ -175,6 +177,8 @@ def unregister():
   bpy.utils.unregister_class(operator.makeActiveObject)
   bpy.utils.unregister_class(operator.makeActiveBone)
   bpy.utils.unregister_class(operator.selectVertexGroup)
+  bpy.utils.unregister_class(operator.constraintModal)
+  bpy.utils.unregister_class(operator.modifierModal)
 
   # property groups
   bpy.utils.unregister_class(settings.batch.auto.name)

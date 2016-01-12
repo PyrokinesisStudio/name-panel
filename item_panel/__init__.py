@@ -21,7 +21,7 @@
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
 #  Contact: trentin.shaun.frederick@gmail.com
-#  Version: 1.4
+#  Version: 1.5
 #
 # ##### END INFO BLOCK #####
 
@@ -29,7 +29,7 @@
 bl_info = {
   'name': 'Item Panel & Batch Naming',
   'author': 'Trentin Frederick (proxe)',
-  'version': (1, 4),
+  'version': (1, 5),
   'blender': (2, 76, 0),
   'location': '3D View → Properties Panel → Item',
   'description': 'An improved item panel for the 3D View with included batch naming tools.',

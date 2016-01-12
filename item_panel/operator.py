@@ -24,6 +24,8 @@ from bpy.types import Operator
 from bpy.props import BoolProperty, StringProperty
 from . import function
 from .text import cheatsheet
+from .constraints import ConstraintButtonsPanel
+from .modifiers import ModifierButtonsPanel
 
 ###############
 ## OPERATORS ##
@@ -1531,3 +1533,149 @@ class selectVertexGroup(Operator):
       # warning messege
       self.report({'WARNING'}, 'Invalid target.')
     return {'FINISHED'}
+
+# constraints
+class constraintModal(ConstraintButtonsPanel, Operator):
+  '''
+    This is operator is used to create the required modal panel.
+  '''
+  bl_idname = 'view3d.constraint_settings'
+  bl_label = 'Constraint'
+  bl_description = 'Adjust the options for this constraint.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # object
+  object = StringProperty(
+    name = 'Object',
+    description = 'The object that the constraint is attached to.',
+    default = ''
+  )
+
+  # bone
+  bone = StringProperty(
+    name = 'Bone',
+    description = 'The bone that the constraint is attached to.'
+  )
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The constraint you wish to edit the settings of.',
+    default = ''
+  )
+
+  # draw
+  def draw(self, context):
+    '''
+      Draw the constraint options.
+    '''
+
+    # layout
+    layout = self.layout
+
+    # column
+    column = layout.column()
+
+    # # object
+    # column.prop(self, 'object')
+    #
+    # if context.mode in 'POSE':
+    #   # bone
+    #   column.prop(self, 'bone')
+    #
+    # # target
+    # column.prop(self, 'target')
+    #
+    # # separator
+    # column.separator()
+
+    # label
+    column.label(text=self.target + ':')
+
+    # constraint
+    if not bpy.data.objects[self.object].type in 'ARMATURE':
+      ConstraintButtonsPanel.draw_constraint(ConstraintButtonsPanel, context, layout, bpy.data.objects[self.object].constraints[self.target])
+
+    else:
+      ConstraintButtonsPanel.draw_constraint(ConstraintButtonsPanel, context, layout, bpy.data.objects[self.object].pose.bones[self.bone].constraints[self.target])
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+    return {'FINISHED'}
+
+  # invoke
+  def invoke(self, context, event):
+    '''
+      Invoke the operator panel/menu, control its width.
+    '''
+    context.window_manager.invoke_popup(self, width=300)
+    return {'RUNNING_MODAL'}
+
+# modifier modal
+class modifierModal(ModifierButtonsPanel, Operator):
+  '''
+    This is operator is used to create the required modal panel.
+  '''
+  bl_idname = 'view3d.modifier_settings'
+  bl_label = 'Modifier'
+  bl_description = 'Adjust the options for this modifier.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # object
+  object = StringProperty(
+    name = 'Object',
+    description = 'The object that the modifier is attached to.',
+    default = ''
+  )
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The modifier you wish to edit the settings of.',
+    default = ''
+  )
+
+  # draw
+  def draw(self, context):
+    '''
+      Draw the modifier options.
+    '''
+
+    # layout
+    layout = self.layout
+
+    # column
+    column = layout.column()
+
+    # # object
+    # column.prop(self, 'object')
+    #
+    # # target
+    # column.prop(self, 'target')
+    #
+    # # separator
+    # column.separator()
+
+    # label
+    column.label(text=self.target + ':')
+
+    # modifier
+    ModifierButtonsPanel.draw_modifier(ModifierButtonsPanel, context, layout, bpy.data.objects[self.object].modifiers[self.target], bpy.data.objects[self.object])
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+    return {'FINISHED'}
+
+  # invoke
+  def invoke(self, context, event):
+    '''
+      Invoke the operator panel/menu, control its width.
+    '''
+    context.window_manager.invoke_popup(self, width=300)
+    return {'RUNNING_MODAL'}

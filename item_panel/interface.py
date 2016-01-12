@@ -467,7 +467,7 @@ class panel:
           for constraint in object.constraints[:]:
 
             # constraint
-            panel.constraint(self, context, layout, constraint, object, option)
+            panel.constraint(self, context, layout, constraint, object, None, option)
 
       # modifier
       def modifier(self, context, layout, object, option):
@@ -627,7 +627,7 @@ class panel:
               bone = context.active_pose_bone
               for constraint in bone.constraints[:]:
 
-                panel.constraint(self, context, layout, constraint, object, option)
+                panel.constraint(self, context, layout, constraint, object, bone, option)
 
           # selected bones
           if option.selectedBones:
@@ -676,7 +676,7 @@ class panel:
                     for constraint in object.pose.bones[bone[1].name].constraints[:]:
 
                       # constraint
-                      panel.constraint(self, context, layout, constraint, object, option)
+                      panel.constraint(self, context, layout, constraint, object, bone[1], option)
 
                 # row
                 row = layout.row()
@@ -1049,9 +1049,9 @@ class panel:
       row.prop(datablock, 'hide', text='')
 
   # constraint
-  def constraint(self, context, layout, datablock, object, option):
+  def constraint(self, context, layout, datablock, object, bone, option):
     '''
-      The object constraint.
+      The object or pose bone constraint.
     '''
 
     # row
@@ -1092,6 +1092,13 @@ class panel:
 
       # mute
       row.prop(datablock, 'mute', text='', icon=iconView)
+
+    # modal
+    prop = row.operator('view3d.constraint_settings', text='', icon='COLLAPSEMENU')
+    prop.object = object.name
+    if object.type in 'ARMATURE' and object.mode in 'POSE':
+      prop.bone = bone.name
+    prop.target = datablock.name
 
   # modifier
   def modifier(self, context, layout, datablock, object, option):
@@ -1135,6 +1142,11 @@ class panel:
 
         # show viewport
         row.prop(datablock, 'show_viewport', text='', icon=iconView)
+
+    # modal
+    prop = row.operator('view3d.modifier_settings', text='', icon='COLLAPSEMENU')
+    prop.object = object.name
+    prop.target = datablock.name
 
   # object data
   def objectData(self, context, layout, datablock, option):

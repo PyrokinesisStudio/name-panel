@@ -3085,7 +3085,7 @@ class batch:
     if option.regex:
       newName = re.sub(option.find, option.replace, newName)
     else:
-      newName = re.sub(re.escape(option.find), re.escape(option.replace), newName)
+      newName = re.sub(re.escape(option.find), option.replace, newName)
 
     # prefix & suffix
     newName = option.prefix + newName + option.suffix

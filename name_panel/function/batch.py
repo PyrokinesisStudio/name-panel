@@ -771,6 +771,7 @@ def main(context):
   '''
     Send datablock values to sort then send collections to process.
   '''
+  global tag
 
   # option
   option = context.scene.BatchName

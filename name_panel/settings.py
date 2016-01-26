@@ -54,7 +54,7 @@ class preferences(AddonPreferences):
     layout = self.layout
 
     # enable popups
-    layout.prop(self, 'dialogues')
+    # layout.prop(self, 'dialogues')
     layout.prop(self, 'popups')
 
     # split

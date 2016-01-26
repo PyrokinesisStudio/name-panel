@@ -61,8 +61,8 @@ class preferences(AddonPreferences):
     split = layout.split(align=True)
     split.scale_y = 2
 
-    prop = split.operator('wm.url_open', text='BlenderMarket')
-    prop.url = ''
+    # prop = split.operator('wm.url_open', text='BlenderMarket')
+    # prop.url = ''
 
     prop = split.operator('wm.url_open', text='BlendSwap')
     prop.url = 'http://www.blendswap.com/blends/view/82472'

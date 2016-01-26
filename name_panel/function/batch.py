@@ -2998,7 +2998,7 @@ def sort(context, datablock):
   # movie clips
   if option.movieClips:
     if datablock.rna_type.identifier == 'MovieClip':
-      storage.batch.moviewClips.append([datablock.name, [1, datablock]])
+      storage.batch.movieClips.append([datablock.name, [1, datablock]])
 
   # sounds
   if option.sounds:

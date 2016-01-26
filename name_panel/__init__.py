@@ -203,7 +203,7 @@ def unregister():
   del bpy.types.Scene.batchAutoName_ModifierNames
   del bpy.types.Scene.batchAutoName_ObjectDataNames
   del bpy.types.Scene.BatchName
-  del bpy.types.Scene.BatchCopyNameName
+  del bpy.types.Scene.BatchCopyName
   del bpy.types.Scene.NamePanel
 
   # remove batch name button

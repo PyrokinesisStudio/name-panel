@@ -199,9 +199,9 @@ def unregister():
   # pointer properties
   del bpy.types.Scene.BatchAutoName
   del bpy.types.Scene.BatchAutoName_ObjectNames
-  del bpy.types.Scene.batchAutoName_ConstraintNames
-  del bpy.types.Scene.batchAutoName_ModifierNames
-  del bpy.types.Scene.batchAutoName_ObjectDataNames
+  del bpy.types.Scene.BatchAutoName_ConstraintNames
+  del bpy.types.Scene.BatchAutoName_ModifierNames
+  del bpy.types.Scene.BatchAutoName_ObjectDataNames
   del bpy.types.Scene.BatchName
   del bpy.types.Scene.BatchCopyName
   del bpy.types.Scene.NamePanel

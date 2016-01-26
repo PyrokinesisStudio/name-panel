@@ -50,7 +50,7 @@ class specials(Menu):
     layout.operator('wm.batch_name', icon='SORTALPHA')
 
     # batch copy
-    layout.operator('view3d.batch_copy', icon='COPYDOWN')
+    layout.operator('view3d.batch_copy_name', icon='COPYDOWN')
     layout.separator()
 
     # batch reset

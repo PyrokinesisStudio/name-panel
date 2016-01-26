@@ -1067,7 +1067,7 @@ class copy(Operator):
   '''
     Transfer names from some types of datablocks to others.
   '''
-  bl_idname = 'view3d.batch_copy'
+  bl_idname = 'view3d.batch_copy_name'
   bl_label = 'Batch Name Copy'
   bl_description = 'Copy names from some types of datablocks to others.'
   bl_options = {'REGISTER', 'UNDO'}
@@ -1090,7 +1090,7 @@ class copy(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.BatchCopy
+    option = context.scene.BatchCopyName
 
     # batch type
     layout.prop(option, 'batchType', expand=True)

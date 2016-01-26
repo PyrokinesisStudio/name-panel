@@ -21,7 +21,7 @@
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
 #  Contact: trentin.shaun.frederick@gmail.com
-#  Version: 1.6
+#  Version: 1.5
 #
 # ##### END INFO BLOCK #####
 
@@ -138,7 +138,7 @@ def register():
   )
 
   # batch copy settings
-  bpy.types.Scene.BatchCopy = PointerProperty(
+  bpy.types.Scene.BatchCopyName = PointerProperty(
     type = addon.batch.copy,
     name = 'Batch Name Copy Settings',
     description = 'Storage location for the batch copy name operator settings.'
@@ -203,7 +203,7 @@ def unregister():
   del bpy.types.Scene.batchAutoName_ModifierNames
   del bpy.types.Scene.batchAutoName_ObjectDataNames
   del bpy.types.Scene.BatchName
-  del bpy.types.Scene.BatchNameCopy
+  del bpy.types.Scene.BatchCopyNameName
   del bpy.types.Scene.NamePanel
 
   # remove batch name button

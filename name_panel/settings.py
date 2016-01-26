@@ -54,7 +54,7 @@ class preferences(AddonPreferences):
     layout = self.layout
 
     # enable popups
-    layout.prop(self, 'dialogues')
+    # layout.prop(self, 'dialogues')
     layout.prop(self, 'popups')
 
     # split
@@ -67,9 +67,9 @@ class preferences(AddonPreferences):
     prop = split.operator('wm.url_open', text='BlenderArtists')
     prop.url = 'http://blenderartists.org/forum/showthread.php?272086-Addon-Item-Panel-amp-Batch-Naming-1-5'
 
-    prop = split.operator('wm.url_open', text='BlendSwap')
-    prop.url = 'http://www.blendswap.com/blends/view/82472'
-    
+    # prop = split.operator('wm.url_open', text='BlendSwap')
+    # prop.url = 'http://www.blendswap.com/blends/view/82472'
+
     prop = split.operator('wm.url_open', text='Github')
     prop.url = 'https://github.com/trentinfrederick/name-panel'
 

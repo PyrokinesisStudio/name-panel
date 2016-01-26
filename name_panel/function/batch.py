@@ -2651,7 +2651,7 @@ def main(context):
       sort(context, clip)
 
     # process
-    process(context, storage.batch.clips)
+    process(context, storage.batch.movieClips)
 
   # sounds
   if option.sounds:
@@ -3248,7 +3248,7 @@ def copy(context):
   '''
 
   # option
-  option = context.scene.BatchCopy
+  option = context.scene.BatchCopyName
 
   # batch type
   if option.batchType in {'SELECTED', 'OBJECTS'}:

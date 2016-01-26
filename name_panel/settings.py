@@ -19,18 +19,66 @@
 
 # imports
 import bpy
-from bpy.types import PropertyGroup
-from bpy.props import EnumProperty, BoolProperty, StringProperty, IntProperty
+from bpy.types import PropertyGroup, AddonPreferences
+from bpy.props import PointerProperty, EnumProperty, BoolProperty, StringProperty, IntProperty
 from . import storage
 
 #####################
 ## PROPERTY GROUPS ##
 #####################
 
+# addon
+class preferences(AddonPreferences):
+  '''
+    Add-on user preferences.
+  '''
+  bl_idname = __package__
+
+  # dialogues
+  dialogues = BoolProperty(
+    name = 'Enable Operator Confirm Dialogues',
+    description = 'Enable confirm dialogues for batch operators',
+    default = True
+  )
+
+  # popups
+  popups = BoolProperty(
+  name = 'Enable Pop Ups (Experimental)',
+  description = 'Enable popups related to the settings of datablocks in the item panel.',
+  default = False
+  )
+
+  def draw(self, context):
+
+    # layout
+    layout = self.layout
+
+    # enable popups
+    layout.prop(self, 'dialogues')
+    layout.prop(self, 'popups')
+
+    # split
+    split = layout.split(align=True)
+    split.scale_y = 2
+
+    prop = split.operator('wm.url_open', text='BlenderMarket')
+    prop.url = ''
+
+    prop = split.operator('wm.url_open', text='BlendSwap')
+    prop.url = 'http://www.blendswap.com/blends/view/82472'
+
+
+    prop = split.operator('wm.url_open', text='BlenderArtists')
+    prop.url = 'http://blenderartists.org/forum/showthread.php?272086-Addon-Item-Panel-amp-Batch-Naming-1-5'
+
+    prop = split.operator('wm.url_open', text='Github')
+    prop.url = 'https://github.com/trentinfrederick/name-panel'
+
+
 # panel
 class panel(PropertyGroup):
   '''
-    Properties that effect how item panel displays the datablocks within the users current selection.
+    Properties that effect how name panel displays the datablocks within the users current selection.
   '''
 
   # filters
@@ -50,7 +98,7 @@ class panel(PropertyGroup):
   # selected
   selected = BoolProperty(
     name = 'Selected',
-    description = 'Display all possible object related datablock names within your current selection inside the item panel.',
+    description = 'Display all possible object related datablock names within your current selection inside the name panel.',
     default = False
   )
 

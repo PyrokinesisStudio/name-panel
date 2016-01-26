@@ -1,4 +1,3 @@
- 
 
 # ##### BEGIN GPL LICENSE BLOCK #####
 #
@@ -29,7 +28,8 @@ import bpy
 class batch:
   '''
     Contains Classes;
-      Menu
+      menu
+      curves
 
     Contains Lists;
       objects
@@ -39,6 +39,7 @@ class batch:
       pencilLayers
       constraints
       modifiers
+      cameras
       meshes
       lamps
       lattices
@@ -204,28 +205,6 @@ class batch:
       ('SOFT_BODY', 'Soft Body', '', 'MOD_SOFT', 49)
     ]
 
-  # curves
-  class curves:
-    '''
-      Contains Lists;
-        surface
-        text
-        curve
-    '''
-    # lists
-    # list = [
-    #  [datablock.name, [count, datablock]]
-    # ]
-
-    # surface
-    surface = []
-
-    # text
-    text = []
-
-    # curve
-    curve = []
-
   # lists
   # list = [
   #  [datablock.name, [count, datablock]]
@@ -258,6 +237,9 @@ class batch:
   # meshes
   meshes = []
 
+  # curves
+  curves = []
+
   # lamps
   lamps = []
 
@@ -272,7 +254,6 @@ class batch:
 
   # armatures
   armatures = []
-
 
   # bone groups
   boneGroups = []

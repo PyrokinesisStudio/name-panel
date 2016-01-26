@@ -22,15 +22,27 @@ import bpy
 from bpy.app.translations import pgettext_iface as iface_
 
 
-# modifier buttons panel
-class ModifierButtonsPanel:
+# modifier buttons
+class ModifierButtons:
   '''
       The UI settings for modifiers.
   '''
 
-  def draw_modifier(self, context, layout, md, ob):
+  def main(self, context, layout, md, ob):
 
     column = layout.column()
+
+    # if ob == context.active_object:
+
+      # row = column.row()
+      # prop = row.operator('object.modifier_apply')
+      # prop.apply_as = 'DATA'
+      # prop.modifier = md.name
+
+      # prop = row.operator('object.modifier_copy')
+      # prop.modifier = md.name
+
+      # column.separator()
 
     getattr(self, md.type)(self, column, ob, md)
 

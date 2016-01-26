@@ -26,9 +26,9 @@ from bpy.types import Menu
 
 class specials(Menu):
   '''
-    Menu for item panel operators.
+    Menu for name panel operators.
   '''
-  bl_idname = 'VIEW3D_MT_item_panel_specials'
+  bl_idname = 'VIEW3D_MT_name_panel_specials'
   bl_label = 'Operators'
   bl_description = 'Operators and settings.'
 
@@ -41,7 +41,7 @@ class specials(Menu):
     layout = self.layout
 
     # option
-    option = context.scene.itemPanelSettings
+    option = context.scene.NamePanel
 
     # batch auto name
     layout.operator('view3d.batch_auto_name', icon='AUTO')
@@ -54,10 +54,10 @@ class specials(Menu):
     layout.separator()
 
     # batch reset
-    layout.operator('view3d.batch_reset_settings', icon='FILE_REFRESH')
+    layout.operator('view3d.reset_name_panel_settings', icon='FILE_REFRESH')
 
     # batch transfer
-    layout.operator('view3d.batch_transfer_settings', icon='RECOVER_AUTO')
+    layout.operator('view3d.transfer_name_panel_settings', icon='RECOVER_AUTO')
 
     # separator
     layout.separator()

@@ -20,13 +20,13 @@
 # imports
 import bpy
 
-# constraint button panel
-class ConstraintButtonsPanel:
+# constraint button
+class ConstraintButtons:
   '''
     The UI settings for the constraint.
   '''
 
-  def draw_constraint(self, context, layout, con):
+  def main(self, context, layout, con):
 
     column = layout.column()
 

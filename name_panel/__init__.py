@@ -29,7 +29,7 @@
 bl_info = {
   'name': 'Name Panel',
   'author': 'Trentin Frederick (proxe)',
-  'version': (1, 6),
+  'version': (1, 5),
   'blender': (2, 76, 0),
   'location': '3D View → Properties Panel → Name',
   'description': 'An improved 3D view name panel with batch name tools.',

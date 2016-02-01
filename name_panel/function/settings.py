@@ -17,6 +17,9 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
+# imports
+import bpy
+
 # reset
 def reset(context, panel, auto, names, name, copy):
   '''

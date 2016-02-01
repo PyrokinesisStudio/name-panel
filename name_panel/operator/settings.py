@@ -150,39 +150,39 @@ class transfer(Operator):
     default = True
   )
 
-# poll
-@classmethod
-def poll(cls, context):
-  '''
-    Space data type must be in 3D view.
-  '''
-  return context.space_data.type in 'VIEW_3D'
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
 
-# draw
-def draw(self, context):
-  '''
-    Draw the operator panel/menu.
-  '''
+  # draw
+  def draw(self, context):
+    '''
+      Draw the operator panel/menu.
+    '''
 
-  # layout
-  layout = self.layout
+    # layout
+    layout = self.layout
 
-  # column
-  column = layout.column()
+    # column
+    column = layout.column()
 
-  # options
-  column.prop(self, 'panel')
-  column.prop(self, 'auto')
-  column.prop(self, 'names')
-  column.prop(self, 'name')
-  column.prop(self, 'copy')
+    # options
+    column.prop(self, 'panel')
+    column.prop(self, 'auto')
+    column.prop(self, 'names')
+    column.prop(self, 'name')
+    column.prop(self, 'copy')
 
-# execute
-def execute(self, context):
-  '''
-    Execute the operator.
-  '''
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
 
-  # reset
-  settings.transfer(context, self.panel, self.auto, self.names, self.name, self.copy)
-  return {'FINISHED'}
+    # reset
+    settings.transfer(context, self.panel, self.auto, self.names, self.name, self.copy)
+    return {'FINISHED'}

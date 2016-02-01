@@ -41,9 +41,9 @@ bl_info = {
 # imports
 import bpy
 from bpy.props import PointerProperty
-from . import settings as addon
+from . import settings as PropertyGroup
 from .interface import button, menu, panel
-from .operator import active, batch, popups, select, settings
+from .operator import active, auto, batch, copy, popups, select, settings
 
 # register
 def register():
@@ -58,7 +58,7 @@ def register():
     pass
 
   # preferences
-  bpy.utils.register_class(addon.preferences)
+  bpy.utils.register_class(PropertyGroup.preferences)
 
   # panel
   bpy.utils.register_class(panel.name)
@@ -67,14 +67,14 @@ def register():
   bpy.utils.register_class(menu.specials)
 
   # operators
-  bpy.utils.register_class(batch.auto.name)
-  bpy.utils.register_class(batch.auto.objects)
-  bpy.utils.register_class(batch.auto.constraints)
-  bpy.utils.register_class(batch.auto.modifiers)
-  bpy.utils.register_class(batch.auto.objectData)
+  bpy.utils.register_class(auto.name)
+  bpy.utils.register_class(auto.objects)
+  bpy.utils.register_class(auto.constraints)
+  bpy.utils.register_class(auto.modifiers)
+  bpy.utils.register_class(auto.objectData)
   bpy.utils.register_class(batch.name)
   bpy.utils.register_class(batch.generateCheatsheet)
-  bpy.utils.register_class(batch.copy)
+  bpy.utils.register_class(copy.name)
   bpy.utils.register_class(settings.reset)
   bpy.utils.register_class(settings.transfer)
   bpy.utils.register_class(active.object)
@@ -84,69 +84,69 @@ def register():
   bpy.utils.register_class(popups.modifier)
 
   # property groups
-  bpy.utils.register_class(addon.batch.auto.name)
-  bpy.utils.register_class(addon.batch.auto.objects)
-  bpy.utils.register_class(addon.batch.auto.constraints)
-  bpy.utils.register_class(addon.batch.auto.modifiers)
-  bpy.utils.register_class(addon.batch.auto.objectData)
-  bpy.utils.register_class(addon.batch.name)
-  bpy.utils.register_class(addon.batch.copy)
-  bpy.utils.register_class(addon.panel)
+  bpy.utils.register_class(PropertyGroup.batch.auto.name)
+  bpy.utils.register_class(PropertyGroup.batch.auto.objects)
+  bpy.utils.register_class(PropertyGroup.batch.auto.constraints)
+  bpy.utils.register_class(PropertyGroup.batch.auto.modifiers)
+  bpy.utils.register_class(PropertyGroup.batch.auto.objectData)
+  bpy.utils.register_class(PropertyGroup.batch.name)
+  bpy.utils.register_class(PropertyGroup.batch.copy)
+  bpy.utils.register_class(PropertyGroup.panel)
 
   # pointer properties
 
   # batch auto name settings
   bpy.types.Scene.BatchAutoName = PointerProperty(
-    type = addon.batch.auto.name,
+    type = PropertyGroup.batch.auto.name,
     name = 'Batch Auto Name Settings',
     description = 'Storage location for the batch auto name operator settings.'
   )
 
   # batch auto name object names
   bpy.types.Scene.BatchAutoName_ObjectNames = PointerProperty(
-    type = addon.batch.auto.objects,
+    type = PropertyGroup.batch.auto.objects,
     name = 'Batch Auto Name Object Names',
     description = 'Storage location for the object names used during the auto name operation.'
   )
 
   # batch auto name constraint names
   bpy.types.Scene.BatchAutoName_ConstraintNames = PointerProperty(
-    type = addon.batch.auto.constraints,
+    type = PropertyGroup.batch.auto.constraints,
     name = 'Batch Auto Name Constraint Names',
     description = 'Storage location for the constraint names used during the auto name operation.'
   )
 
   # batch auto name modifier names
   bpy.types.Scene.BatchAutoName_ModifierNames = PointerProperty(
-    type = addon.batch.auto.modifiers,
+    type = PropertyGroup.batch.auto.modifiers,
     name = 'Batch Auto Name Modifier Names',
     description = 'Storage location for the modifier names used during the auto name operation.'
   )
 
   # batch auto name object data names
   bpy.types.Scene.BatchAutoName_ObjectDataNames = PointerProperty(
-    type = addon.batch.auto.objectData,
+    type = PropertyGroup.batch.auto.objectData,
     name = 'Batch Auto Name Object Data Names',
     description = 'Storage location for the object data names used during the auto name operation.'
   )
 
   # batch name settings
   bpy.types.Scene.BatchName = PointerProperty(
-    type = addon.batch.name,
+    type = PropertyGroup.batch.name,
     name = 'Batch Name Settings',
     description = 'Storage location for the batch name operator settings.'
   )
 
   # batch copy settings
   bpy.types.Scene.BatchCopyName = PointerProperty(
-    type = addon.batch.copy,
+    type = PropertyGroup.batch.copy,
     name = 'Batch Name Copy Settings',
     description = 'Storage location for the batch copy name operator settings.'
   )
 
   # name panel settings
   bpy.types.Scene.NamePanel = PointerProperty(
-    type = addon.panel,
+    type = PropertyGroup.panel,
     name = 'Name Panel Settings',
     description = 'Storage location for the name panel settings.'
   )
@@ -161,7 +161,7 @@ def unregister():
   '''
 
   # preferences
-  bpy.utils.unregister_class(addon.preferences)
+  bpy.utils.unregister_class(PropertyGroup.preferences)
 
   # panel
   bpy.utils.unregister_class(panel.name)
@@ -170,14 +170,14 @@ def unregister():
   bpy.utils.unregister_class(menu.specials)
 
   # operators
-  bpy.utils.unregister_class(batch.auto.name)
-  bpy.utils.unregister_class(batch.auto.objects)
-  bpy.utils.unregister_class(batch.auto.constraints)
-  bpy.utils.unregister_class(batch.auto.modifiers)
-  bpy.utils.unregister_class(batch.auto.objectData)
+  bpy.utils.unregister_class(auto.name)
+  bpy.utils.unregister_class(auto.objects)
+  bpy.utils.unregister_class(auto.constraints)
+  bpy.utils.unregister_class(auto.modifiers)
+  bpy.utils.unregister_class(auto.objectData)
   bpy.utils.unregister_class(batch.name)
   bpy.utils.unregister_class(batch.generateCheatsheet)
-  bpy.utils.unregister_class(batch.copy)
+  bpy.utils.unregister_class(copy.name)
   bpy.utils.unregister_class(settings.reset)
   bpy.utils.unregister_class(settings.transfer)
   bpy.utils.unregister_class(active.object)
@@ -187,14 +187,14 @@ def unregister():
   bpy.utils.unregister_class(popups.modifier)
 
   # property groups
-  bpy.utils.unregister_class(addon.batch.auto.name)
-  bpy.utils.unregister_class(addon.batch.auto.objects)
-  bpy.utils.unregister_class(addon.batch.auto.constraints)
-  bpy.utils.unregister_class(addon.batch.auto.modifiers)
-  bpy.utils.unregister_class(addon.batch.auto.objectData)
-  bpy.utils.unregister_class(addon.batch.name)
-  bpy.utils.unregister_class(addon.batch.copy)
-  bpy.utils.unregister_class(addon.panel)
+  bpy.utils.unregister_class(PropertyGroup.batch.auto.name)
+  bpy.utils.unregister_class(PropertyGroup.batch.auto.objects)
+  bpy.utils.unregister_class(PropertyGroup.batch.auto.constraints)
+  bpy.utils.unregister_class(PropertyGroup.batch.auto.modifiers)
+  bpy.utils.unregister_class(PropertyGroup.batch.auto.objectData)
+  bpy.utils.unregister_class(PropertyGroup.batch.name)
+  bpy.utils.unregister_class(PropertyGroup.batch.copy)
+  bpy.utils.unregister_class(PropertyGroup.panel)
 
   # pointer properties
   del bpy.types.Scene.BatchAutoName

@@ -23,10 +23,6 @@ from bpy.types import PropertyGroup, AddonPreferences
 from bpy.props import PointerProperty, EnumProperty, BoolProperty, StringProperty, IntProperty
 from . import storage
 
-#####################
-## PROPERTY GROUPS ##
-#####################
-
 # addon
 class preferences(AddonPreferences):
   '''

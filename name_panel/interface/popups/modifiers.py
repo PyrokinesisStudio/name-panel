@@ -21,7 +21,6 @@
 import bpy
 from bpy.app.translations import pgettext_iface as iface_
 
-
 # modifier buttons
 class ModifierButtons:
   '''

@@ -20,10 +20,6 @@
 import bpy
 from bpy.types import Menu
 
-##########
-## MENU ##
-##########
-
 class specials(Menu):
   '''
     Menu for name panel operators.

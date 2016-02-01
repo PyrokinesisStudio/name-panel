@@ -20,10 +20,6 @@
 # imports
 import bpy
 
-#############
-## CLASSES ##
-#############
-
 # batch
 class batch:
   '''

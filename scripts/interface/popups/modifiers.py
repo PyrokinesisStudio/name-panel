@@ -17,6 +17,8 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
+# modified properties_data_modifier.py
+
 # imports
 import bpy
 from bpy.app.translations import pgettext_iface as iface_

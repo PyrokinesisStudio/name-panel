@@ -94,7 +94,99 @@ class name(Panel):
           # populate
           populate(self, context, layout, datablock[1], option)
 
-# populate
+# filters
+def filters(self, context, layout, option):
+  '''
+    The name panel filters
+  '''
+
+  # row
+  row = layout.row(align=True)
+
+  # scale
+  row.scale_y = 1.25
+
+  # icon toggle
+  if option.filters:
+    iconToggle = 'RADIOBUT_ON'
+  else:
+    iconToggle = 'RADIOBUT_OFF'
+
+  # filters
+  row.prop(option, 'filters', text='Filters', icon=iconToggle, toggle=True)
+
+  # options
+  row.prop(option, 'options', text='', icon='SETTINGS')
+
+  # selected
+  row.prop(option, 'selected', text='', icon='OOPS')
+
+  # operator menu
+  row.menu('VIEW3D_MT_name_panel_specials', text='', icon='COLLAPSEMENU')
+
+  # filters
+  if option.filters:
+
+    # row 1
+    row = layout.row(align=True)
+
+    # scale
+    row.scale_x = 5 # hack: forces buttons to line up correctly
+
+    # groups
+    row.prop(option, 'groups', text='', icon='GROUP')
+
+    # action
+    row.prop(option, 'action', text='', icon='ACTION')
+
+    # grease pencil
+    row.prop(option, 'greasePencil', text='', icon='GREASEPENCIL')
+
+    # constraints
+    row.prop(option, 'constraints', text='', icon='CONSTRAINT')
+
+    # modifiers
+    row.prop(option, 'modifiers', text='', icon='MODIFIER')
+
+    # bone groups
+    row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
+
+    # bone constraints
+    row.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
+
+    # row 2
+    row = layout.row(align=True)
+
+    # scale
+    row.scale_x = 5 # hack: forces buttons to line up correctly
+
+    # vertex groups
+    row.prop(option, 'vertexGroups', text='', icon='GROUP_VERTEX')
+
+    # shapekeys
+    row.prop(option, 'shapekeys', text='', icon='SHAPEKEY_DATA')
+
+    # uvs
+    row.prop(option, 'uvs', text='', icon='GROUP_UVS')
+
+    # vertex colors
+    row.prop(option, 'vertexColors', text='', icon='GROUP_VCOL')
+
+    # materials
+    row.prop(option, 'materials', text='', icon='MATERIAL')
+
+    # textures
+    row.prop(option, 'textures', text='', icon='TEXTURE')
+
+    # particles systems
+    row.prop(option, 'particleSystems', text='', icon='PARTICLES')
+
+  # row
+  row = layout.row(align=True)
+
+  # search
+  # row.prop(option, 'search', text='', icon='VIEWZOOM')# populate
+
 def populate(self, context, layout, object, option):
   '''
     Populates the name panel with datablock names.
@@ -162,6 +254,341 @@ def populate(self, context, layout, object, option):
 
   # bones
   block.bone(self, context, column, object, option)
+
+# block
+class block:
+  '''
+    contains classes;
+      object
+      objectData
+
+    contains functions;
+      bone
+      material
+  '''
+
+  # object
+  class object:
+    '''
+      contains functions;
+        group
+        action
+        greasepencil
+        constraint
+        modifier
+        material
+    '''
+
+    # group
+    def group(self, context, layout, object, option):
+      '''
+        group related code block.
+      '''
+
+      # tag
+      global tag
+
+      # search
+      search = context.scene.NamePanel.search
+
+      # groups
+      if option.groups:
+        for group in bpy.data.groups[:]:
+          for groupobject in group.objects[:]:
+            if groupobject == object:
+              if search == '' or search in group.name:
+                tag = True
+
+                # group
+                Group(self, context, layout, group, object)
+
+    # action
+    def action(self, context, layout, object, option):
+      '''
+        action related code block.
+      '''
+
+      # action
+      if option.action:
+        if hasattr(object.animation_data, 'action'):
+          if hasattr(object.animation_data.action, 'name'):
+
+            Action(self, context, layout, object.animation_data.action, object)
+
+    # greasePencil
+    def greasePencil(self, context, layout, object, option):
+      '''
+        grease pencil related code block.
+      '''
+
+      # grease pencil
+      if option.greasePencil:
+
+        # layers
+        if hasattr(object.grease_pencil, 'name'):
+
+          # grease pencil
+          GreasePencil(self, context, layout, object.grease_pencil, object, True)
+
+          # pencil layers
+          for layer in bpy.data.objects[object.name].grease_pencil.layers[:]:
+
+            # pencil layer
+            PencilLayer(self, context, layout, layer, object, option)
+
+    # constraint
+    def constraint(self, context, layout, object, option):
+      '''
+        Constraint related code block.
+      '''
+
+      # constraints
+      if option.constraints:
+        for constraint in object.constraints[:]:
+
+          # constraint
+          Constraint(self, context, layout, constraint, object, None, option)
+
+    # modifier
+    def modifier(self, context, layout, object, option):
+      '''
+        Modifier related code block.
+      '''
+      # modifiers
+      if option.modifiers:
+        for modifier in object.modifiers[:]:
+
+          # modifier
+          Modifier(self, context, layout, modifier, object, option, True)
+
+          # particle systems
+          if option.particleSystems:
+            if modifier.type in 'PARTICLE_SYSTEM':
+
+              # particle
+              Particle(self, context, layout, modifier, object, option, True)
+
+    # material
+    def material(self, context, layout, object, option):
+      '''
+        Material related code block.
+      '''
+
+      # materials
+      for slot in object.material_slots:
+        if slot.link == 'OBJECT':
+          if slot.material != None:
+
+            # material
+            Material(self, context, layout, slot, object, True)
+
+            # textures
+            if option.textures:
+              if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
+                for tslot in slot.material.texture_slots[:]:
+                  if hasattr(tslot, 'texture'):
+                    if tslot.texture != None:
+
+                      # texture
+                      Texture(self, context, layout, tslot, object, option)
+
+
+  # object data
+  class objectData:
+    '''
+      Constains Functions;
+        vertexGroup
+        shapekey
+        uv
+        vertexColor
+        material
+        boneGroup
+    '''
+
+    # vertex group
+    def vertexGroup(self, context, layout, object, option):
+      '''
+        Vertex group related code block.
+      '''
+
+      # vertex groups
+      if option.vertexGroups:
+        if hasattr(object, 'vertex_groups'):
+          for group in object.vertex_groups[:]:
+
+            # vertex group
+            VertexGroup(self, context, layout, group, object, option)
+
+    # shapekey
+    def shapekey(self, context, layout, object, option):
+      '''
+        Shapekey related code block.
+      '''
+
+      # shapekeys
+      if option.shapekeys:
+        if hasattr(object.data, 'shape_keys'):
+          if hasattr(object.data.shape_keys, 'key_blocks'):
+            for key in object.data.shape_keys.key_blocks[:]:
+
+              # shapekey
+              Shapekey(self, context, layout, key, object, option)
+
+    # uv
+    def uv(self, context, layout, object, option):
+      '''
+        UV related code block.
+      '''
+
+      # uvs
+      if option.uvs:
+        if object.type in 'MESH':
+          for uv in object.data.uv_textures[:]:
+
+            # uv
+            UV(self, context, layout, uv, object, option)
+
+    # vertex color
+    def vertexColor(self, context, layout, object, option):
+      '''
+        Vertex color related code block.
+      '''
+
+      # vertex colors
+      if option.vertexColors:
+        if object.type in 'MESH':
+          for vertexColor in object.data.vertex_colors[:]:
+
+            # vertex color
+            VertexColor(self, context, layout, vertexColor, object, option)
+
+    # materials
+    def material(self, context, layout, object, option):
+      '''
+        Material related code block.
+      '''
+
+      # materials
+      for slot in object.material_slots:
+        if slot.link == 'DATA':
+          if slot.material != None:
+
+            # material
+            Material(self, context, layout, slot, object, True)
+
+            # textures
+            if option.textures:
+              if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
+                for tslot in slot.material.texture_slots[:]:
+                  if hasattr(tslot, 'texture'):
+                    if tslot.texture != None:
+
+                      # texture
+                      Texture(self, context, layout, tslot, object, option)
+
+    # bone groups
+    def boneGroup(self, context, layout, object, option):
+      '''
+        Bone group related code block.
+      '''
+
+      # bone groups
+      if option.boneGroups:
+        if object.type in 'ARMATURE':
+          for group in object.pose.bone_groups[:]:
+
+            # bone group
+            BoneGroup(self, context, layout, group, object)
+
+  # bones
+  def bone(self, context, layout, object, option):
+    '''
+      Bone related code block.
+    '''
+
+    # active bone
+    if object.type in 'ARMATURE':
+      if object.mode in {'POSE', 'EDIT'}:
+
+        layout.separator()
+
+        # bones
+        if object.mode in 'POSE':
+          bone = context.active_bone
+        else:
+          bone = context.active_bone
+
+        Bone(self, context, layout, bone, object, option, True)
+
+        # bone constraints
+        if option.boneConstraints:
+          if object.mode in 'POSE':
+            bone = context.active_pose_bone
+            for constraint in bone.constraints[:]:
+
+              Constraint(self, context, layout, constraint, object, bone, option)
+
+        # selected bones
+        if option.selectedBones:
+
+          # row
+          row = layout.row()
+
+          # separator
+          row.separator()
+
+          # edit mode
+          if object.mode in 'POSE':
+            bones = object.data.bones[:]
+
+          # pose mode
+          else:
+            bones = object.data.edit_bones[:]
+
+          # selected bones
+          selectedBones = [
+            # [name, object]
+          ]
+
+          for bone in bones:
+
+            # pose mode
+            if object.mode in 'POSE':
+              if bone.select:
+                selectedBones.append([bone.name, bone])
+
+            # edit mode
+            else:
+              if bone.select:
+                selectedBones.append([bone.name, bone])
+
+          # sort and display
+          for bone in sorted(selectedBones):
+            if bone[1] != context.active_bone:
+
+              # bone
+              Bone(self, context, layout, bone[1], object, option, True)
+
+              # bone constraints
+              if option.boneConstraints:
+                if object.mode in 'POSE':
+                  for constraint in object.pose.bones[bone[1].name].constraints[:]:
+
+                    # constraint
+                    Constraint(self, context, layout, constraint, object, bone[1], option)
+
+              # row
+              row = layout.row()
+
+              # separator
+              row.separator()
+        else:
+
+          # row
+          row = layout.row()
+
+          # separator
+          row.separator()
 
 # object
 def Object(self, context, layout, datablock, option, enabled):
@@ -816,430 +1243,3 @@ def Bone(self, context, layout, datablock, object, option, bone):
 
       # lock
       row.prop(datablock, 'lock', text='', icon=iconLock)\
-
-# filters
-def filters(self, context, layout, option):
-  '''
-    The name panel filters
-  '''
-
-  # row
-  row = layout.row(align=True)
-
-  # scale
-  row.scale_y = 1.25
-
-  # icon toggle
-  if option.filters:
-    iconToggle = 'RADIOBUT_ON'
-  else:
-    iconToggle = 'RADIOBUT_OFF'
-
-  # filters
-  row.prop(option, 'filters', text='Filters', icon=iconToggle, toggle=True)
-
-  # options
-  row.prop(option, 'options', text='', icon='SETTINGS')
-
-  # selected
-  row.prop(option, 'selected', text='', icon='OOPS')
-
-  # operator menu
-  row.menu('VIEW3D_MT_name_panel_specials', text='', icon='COLLAPSEMENU')
-
-  # filters
-  if option.filters:
-
-    # row 1
-    row = layout.row(align=True)
-
-    # scale
-    row.scale_x = 5 # hack: forces buttons to line up correctly
-
-    # groups
-    row.prop(option, 'groups', text='', icon='GROUP')
-
-    # action
-    row.prop(option, 'action', text='', icon='ACTION')
-
-    # grease pencil
-    row.prop(option, 'greasePencil', text='', icon='GREASEPENCIL')
-
-    # constraints
-    row.prop(option, 'constraints', text='', icon='CONSTRAINT')
-
-    # modifiers
-    row.prop(option, 'modifiers', text='', icon='MODIFIER')
-
-    # bone groups
-    row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
-
-    # bone constraints
-    row.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
-
-    # row 2
-    row = layout.row(align=True)
-
-    # scale
-    row.scale_x = 5 # hack: forces buttons to line up correctly
-
-    # vertex groups
-    row.prop(option, 'vertexGroups', text='', icon='GROUP_VERTEX')
-
-    # shapekeys
-    row.prop(option, 'shapekeys', text='', icon='SHAPEKEY_DATA')
-
-    # uvs
-    row.prop(option, 'uvs', text='', icon='GROUP_UVS')
-
-    # vertex colors
-    row.prop(option, 'vertexColors', text='', icon='GROUP_VCOL')
-
-    # materials
-    row.prop(option, 'materials', text='', icon='MATERIAL')
-
-    # textures
-    row.prop(option, 'textures', text='', icon='TEXTURE')
-
-    # particles systems
-    row.prop(option, 'particleSystems', text='', icon='PARTICLES')
-
-  # row
-  row = layout.row(align=True)
-
-  # search
-  # row.prop(option, 'search', text='', icon='VIEWZOOM')
-
-# block
-class block:
-  '''
-    contains classes;
-      object
-      objectData
-
-    contains functions;
-      bone
-      material
-  '''
-
-  # object
-  class object:
-    '''
-      contains functions;
-        group
-        action
-        greasepencil
-        constraint
-        modifier
-        material
-    '''
-
-    # group
-    def group(self, context, layout, object, option):
-      '''
-        group related code block.
-      '''
-
-      # tag
-      global tag
-
-      # search
-      search = context.scene.NamePanel.search
-
-      # groups
-      if option.groups:
-        for group in bpy.data.groups[:]:
-          for groupobject in group.objects[:]:
-            if groupobject == object:
-              if search == '' or search in group.name:
-                tag = True
-
-                # group
-                Group(self, context, layout, group, object)
-
-    # action
-    def action(self, context, layout, object, option):
-      '''
-        action related code block.
-      '''
-
-      # action
-      if option.action:
-        if hasattr(object.animation_data, 'action'):
-          if hasattr(object.animation_data.action, 'name'):
-
-            Action(self, context, layout, object.animation_data.action, object)
-
-    # greasePencil
-    def greasePencil(self, context, layout, object, option):
-      '''
-        grease pencil related code block.
-      '''
-
-      # grease pencil
-      if option.greasePencil:
-
-        # layers
-        if hasattr(object.grease_pencil, 'name'):
-
-          # grease pencil
-          GreasePencil(self, context, layout, object.grease_pencil, object, True)
-
-          # pencil layers
-          for layer in bpy.data.objects[object.name].grease_pencil.layers[:]:
-
-            # pencil layer
-            PencilLayer(self, context, layout, layer, object, option)
-
-    # constraint
-    def constraint(self, context, layout, object, option):
-      '''
-        Constraint related code block.
-      '''
-
-      # constraints
-      if option.constraints:
-        for constraint in object.constraints[:]:
-
-          # constraint
-          Constraint(self, context, layout, constraint, object, None, option)
-
-    # modifier
-    def modifier(self, context, layout, object, option):
-      '''
-        Modifier related code block.
-      '''
-      # modifiers
-      if option.modifiers:
-        for modifier in object.modifiers[:]:
-
-          # modifier
-          Modifier(self, context, layout, modifier, object, option, True)
-
-          # particle systems
-          if option.particleSystems:
-            if modifier.type in 'PARTICLE_SYSTEM':
-
-              # particle
-              Particle(self, context, layout, modifier, object, option, True)
-
-    # materials
-    def material(self, context, layout, object, option):
-      '''
-        Material related code block.
-      '''
-
-      # materials
-      if option.materials:
-        for material in object.material_slots[:]:
-          if material.material != None:
-            if material.link == 'OBJECT':
-
-              # material
-              Material(self, context, layout, material, object, option, True)
-
-  # object data
-  class objectData:
-    '''
-      Constains Functions;
-        vertexGroup
-        shapekey
-        uv
-        vertexColor
-        material
-        boneGroup
-    '''
-
-    # vertex group
-    def vertexGroup(self, context, layout, object, option):
-      '''
-        Vertex group related code block.
-      '''
-
-      # vertex groups
-      if option.vertexGroups:
-        if hasattr(object, 'vertex_groups'):
-          for group in object.vertex_groups[:]:
-
-            # vertex group
-            VertexGroup(self, context, layout, group, object, option)
-
-    # shapekey
-    def shapekey(self, context, layout, object, option):
-      '''
-        Shapekey related code block.
-      '''
-
-      # shapekeys
-      if option.shapekeys:
-        if hasattr(object.data, 'shape_keys'):
-          if hasattr(object.data.shape_keys, 'key_blocks'):
-            for key in object.data.shape_keys.key_blocks[:]:
-
-              # shapekey
-              Shapekey(self, context, layout, key, object, option)
-
-    # uv
-    def uv(self, context, layout, object, option):
-      '''
-        UV related code block.
-      '''
-
-      # uvs
-      if option.uvs:
-        if object.type in 'MESH':
-          for uv in object.data.uv_textures[:]:
-
-            # uv
-            UV(self, context, layout, uv, object, option)
-
-    # vertex color
-    def vertexColor(self, context, layout, object, option):
-      '''
-        Vertex color related code block.
-      '''
-
-      # vertex colors
-      if option.vertexColors:
-        if object.type in 'MESH':
-          for vertexColor in object.data.vertex_colors[:]:
-
-            # vertex color
-            VertexColor(self, context, layout, vertexColor, object, option)
-
-    # materials
-    def material(self, context, layout, object, option):
-      '''
-        Material related code block.
-      '''
-
-      # materials
-      if option.materials:
-        for material in object.material_slots[:]:
-          if material.material != None:
-            if material.link == 'DATA':
-
-              # material
-              Material(self, context, layout, material, object, True)
-
-    # bone groups
-    def boneGroup(self, context, layout, object, option):
-      '''
-        Bone group related code block.
-      '''
-
-      # bone groups
-      if option.boneGroups:
-        if object.type in 'ARMATURE':
-          for group in object.pose.bone_groups[:]:
-
-            # bone group
-            BoneGroup(self, context, layout, group, object)
-
-  # bones
-  def bone(self, context, layout, object, option):
-    '''
-      Bone related code block.
-    '''
-
-    # active bone
-    if object.type in 'ARMATURE':
-      if object.mode in {'POSE', 'EDIT'}:
-
-        layout.separator()
-
-        # bones
-        if object.mode in 'POSE':
-          bone = context.active_bone
-        else:
-          bone = context.active_bone
-
-        Bone(self, context, layout, bone, object, option, True)
-
-        # bone constraints
-        if option.boneConstraints:
-          if object.mode in 'POSE':
-            bone = context.active_pose_bone
-            for constraint in bone.constraints[:]:
-
-              Constraint(self, context, layout, constraint, object, bone, option)
-
-        # selected bones
-        if option.selectedBones:
-
-          # row
-          row = layout.row()
-
-          # separator
-          row.separator()
-
-          # edit mode
-          if object.mode in 'POSE':
-            bones = object.data.bones[:]
-
-          # pose mode
-          else:
-            bones = object.data.edit_bones[:]
-
-          # selected bones
-          selectedBones = [
-            # [name, object]
-          ]
-
-          for bone in bones:
-
-            # pose mode
-            if object.mode in 'POSE':
-              if bone.select:
-                selectedBones.append([bone.name, bone])
-
-            # edit mode
-            else:
-              if bone.select:
-                selectedBones.append([bone.name, bone])
-
-          # sort and display
-          for bone in sorted(selectedBones):
-            if bone[1] != context.active_bone:
-
-              # bone
-              Bone(self, context, layout, bone[1], object, option, True)
-
-              # bone constraints
-              if option.boneConstraints:
-                if object.mode in 'POSE':
-                  for constraint in object.pose.bones[bone[1].name].constraints[:]:
-
-                    # constraint
-                    Constraint(self, context, layout, constraint, object, bone[1], option)
-
-              # row
-              row = layout.row()
-
-              # separator
-              row.separator()
-        else:
-
-          # row
-          row = layout.row()
-
-          # separator
-          row.separator()
-
-  # material
-  def material(self, context, layout, datablock, object, option):
-    '''
-      Material related code block.
-    '''
-
-    # material
-    Material(self, context, layout, datablock, object, True)
-
-    # textures
-    if option.textures:
-      if context.scene.render.engine not in 'CYCLES':
-        for texture in datablock.material.texture_slots[:]:
-          if texture != None:
-
-            # texture
-            Texture(self, context, layout, texture, object, option)

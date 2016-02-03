@@ -908,7 +908,7 @@ def filters(self, context, layout, option):
   row = layout.row(align=True)
 
   # search
-  row.prop(option, 'search', text='', icon='VIEWZOOM')
+  # row.prop(option, 'search', text='', icon='VIEWZOOM')
 
 # block
 class block:

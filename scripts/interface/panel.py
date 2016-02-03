@@ -367,6 +367,8 @@ class block:
 
               # particle
               Particle(self, context, layout, modifier, object, option, True)
+      else:
+        context.scene['NamePanel']['particleSystems'] = 0
 
     # material
     def material(self, context, layout, object, option):
@@ -375,22 +377,25 @@ class block:
       '''
 
       # materials
-      for slot in object.material_slots:
-        if slot.link == 'OBJECT':
-          if slot.material != None:
+      if option.materials:
+        for slot in object.material_slots:
+          if slot.link == 'OBJECT':
+            if slot.material != None:
 
-            # material
-            Material(self, context, layout, slot, object, True)
+              # material
+              Material(self, context, layout, slot, object, True)
 
-            # textures
-            if option.textures:
-              if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-                for tslot in slot.material.texture_slots[:]:
-                  if hasattr(tslot, 'texture'):
-                    if tslot.texture != None:
+              # textures
+              if option.textures:
+                if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
+                  for tslot in slot.material.texture_slots[:]:
+                    if hasattr(tslot, 'texture'):
+                      if tslot.texture != None:
 
-                      # texture
-                      Texture(self, context, layout, tslot, object, option)
+                        # texture
+                        Texture(self, context, layout, tslot, object, option)
+      else:
+        context.scene['NamePanel']['textures'] = 0
 
 
   # object data
@@ -469,22 +474,25 @@ class block:
       '''
 
       # materials
-      for slot in object.material_slots:
-        if slot.link == 'DATA':
-          if slot.material != None:
+      if option.materials:
+        for slot in object.material_slots:
+          if slot.link == 'DATA':
+            if slot.material != None:
 
-            # material
-            Material(self, context, layout, slot, object, True)
+              # material
+              Material(self, context, layout, slot, object, True)
 
-            # textures
-            if option.textures:
-              if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-                for tslot in slot.material.texture_slots[:]:
-                  if hasattr(tslot, 'texture'):
-                    if tslot.texture != None:
+              # textures
+              if option.textures:
+                if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
+                  for tslot in slot.material.texture_slots[:]:
+                    if hasattr(tslot, 'texture'):
+                      if tslot.texture != None:
 
-                      # texture
-                      Texture(self, context, layout, tslot, object, option)
+                        # texture
+                        Texture(self, context, layout, tslot, object, option)
+      else:
+        context.scene['NamePanel']['textures'] = 0
 
     # bone groups
     def boneGroup(self, context, layout, object, option):

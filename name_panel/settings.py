@@ -104,6 +104,13 @@ class panel(PropertyGroup):
     default = True
   )
 
+  # search
+  search = StringProperty(
+    name = 'Search',
+    description = 'Search filter.',
+    default = ''
+  )
+
   # groups
   groups = BoolProperty(
     name = 'Groups',

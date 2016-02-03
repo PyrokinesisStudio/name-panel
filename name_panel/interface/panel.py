@@ -22,15 +22,19 @@ from bpy.types import Panel
 from .. import storage
 from . import icon
 
+tag = False
+
 # name
 class name(Panel):
   '''
     Name panel.
   '''
-  bl_label = 'Name'
   bl_idname = 'VIEW3D_PT_name'
   bl_space_type = 'VIEW_3D'
-  bl_region_type = 'UI'
+  bl_region_type = 'TOOLS'
+  bl_label = 'Name'
+  bl_options = {'HIDE_HEADER'}
+  bl_category = 'Name'
 
   # draw
   def draw(self, context):
@@ -90,8 +94,77 @@ class name(Panel):
           # populate
           populate(self, context, layout, datablock[1], option)
 
+# populate
+def populate(self, context, layout, object, option):
+  '''
+    Populates the name panel with datablock names.
+  '''
+
+  # tag
+  global tag
+
+  # search
+  search = context.scene.NamePanel.search
+
+  # column
+  column = layout.column()
+
+  # search
+  if search == '' or search in object.name or search not in object.name and tag:
+
+    if search not in object.name and tag:
+
+      # object
+      Object(self, context, column, object, option, False)
+    else:
+
+      # object
+      Object(self, context, column, object, option, True)
+
+  # group
+  block.object.group(self, context, column, object, option)
+
+  # action
+  block.object.action(self, context, column, object, option)
+
+  # grease pencil
+  block.object.greasePencil(self, context, column, object, option)
+
+  # constraint
+  block.object.constraint(self, context, column, object, option)
+
+  # modifier
+  block.object.modifier(self, context, column, object, option)
+
+  # material
+  block.object.material(self, context, column, object, option)
+
+  # object data
+  ObjectData(self, context, column, object, option, True)
+
+  # vertex group
+  block.objectData.vertexGroup(self, context, column, object, option)
+
+  # shapekey
+  block.objectData.shapekey(self, context, column, object, option)
+
+  # uv
+  block.objectData.uv(self, context, column, object, option)
+
+  # vertex color
+  block.objectData.vertexColor(self, context, column, object, option)
+
+  # material
+  block.objectData.material(self, context, column, object, option)
+
+  # bone group
+  block.objectData.boneGroup(self, context, column, object, option)
+
+  # bones
+  block.bone(self, context, column, object, option)
+
 # object
-def Object(self, context, layout, datablock, option):
+def Object(self, context, layout, datablock, option, enabled):
   '''
     The object.
   '''
@@ -101,6 +174,7 @@ def Object(self, context, layout, datablock, option):
 
     # row
     row = layout.row(align=True)
+    row.active = enabled
 
     # template
     row.template_ID(context.scene.objects, 'active')
@@ -110,6 +184,7 @@ def Object(self, context, layout, datablock, option):
 
     # row
     row = layout.row(align=True)
+    row.active = enabled
 
     # sub
     sub = row.row(align=True)
@@ -156,7 +231,6 @@ def Group(self, context, layout, datablock, object):
   # name
   row.prop(datablock, 'name', text='')
 
-
 # action
 def Action(self, context, layout, datablock, object):
   '''
@@ -179,13 +253,14 @@ def Action(self, context, layout, datablock, object):
   row.prop(datablock, 'name', text='')
 
 # grease pencil
-def GreasePencil(self, context, layout, datablock, object):
+def GreasePencil(self, context, layout, datablock, object, enabled):
   '''
     The object grease pencil.
   '''
 
   # row
   row = layout.row(align=True)
+  row.active = enabled
 
   # sub
   sub = row.row()
@@ -296,12 +371,14 @@ def Constraint(self, context, layout, datablock, object, bone, option):
         prop.bone = ''
         prop.target = datablock.name
 
-
 # modifier
-def Modifier(self, context, layout, datablock, object, option):
+def Modifier(self, context, layout, datablock, object, option, enabled):
   '''
     The object modifier.
   '''
+
+  # search
+  search = context.scene.NamePanel.search
 
   # enable popup
   try:
@@ -311,6 +388,7 @@ def Modifier(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
+  row.active = enabled
 
   # sub
   sub = row.row()
@@ -353,13 +431,14 @@ def Modifier(self, context, layout, datablock, object, option):
       prop.target = datablock.name
 
 # object data
-def ObjectData(self, context, layout, datablock, option):
+def ObjectData(self, context, layout, datablock, option, enabled):
   '''
     The object data.
   '''
 
   # row
   row = layout.row(align=True)
+  row.active = enabled
 
   # empty
   if datablock.type in 'EMPTY':
@@ -526,13 +605,14 @@ def VertexColor(self, context, layout, datablock, object, option):
     row.prop(datablock, 'active_render', text='', icon=iconActive)
 
 # material
-def Material(self, context, layout, datablock, object):
+def Material(self, context, layout, datablock, object, enabled):
   '''
     The object material.
   '''
 
   # row
   row = layout.row(align=True)
+  row.active = enabled
 
   # sub
   sub = row.row()
@@ -580,13 +660,14 @@ def Texture(self, context, layout, datablock, object, option):
     row.prop(datablock, 'use', text='', icon=iconToggle)
 
 # particle
-def Particle(self, context, layout, datablock, object, option):
+def Particle(self, context, layout, datablock, object, option, enabled):
   '''
     The modifier particle system and settings.
   '''
 
   # row
   row = layout.row(align=True)
+  row.active = enabled
 
   # sub
   sub = row.row()
@@ -637,13 +718,14 @@ def BoneGroup(self, context, layout, datablock, object):
   row.prop(datablock, 'name', text='')
 
 # bone
-def Bone(self, context, layout, datablock, object, option):
+def Bone(self, context, layout, datablock, object, option, bone):
   '''
     The object data bone.
   '''
 
   # row
   row = layout.row(align=True)
+  row.active = enabled
 
   # sub
   sub = row.row(align=True)
@@ -822,116 +904,11 @@ def filters(self, context, layout, option):
     # particles systems
     row.prop(option, 'particleSystems', text='', icon='PARTICLES')
 
-# populate
-def populate(self, context, layout, object, option):
-  '''
-    Populates the name panel with datablock names.
-  '''
+  # row
+  row = layout.row(align=True)
 
-  if object == context.active_object:
-
-    # column
-    column = layout.column()
-
-    # separator
-    column.separator()
-
-    # object
-    Object(self, context, column, object, option)
-
-    # group
-    block.object.group(self, context, column, object, option)
-
-    # action
-    block.object.action(self, context, column, object, option)
-
-    # grease pencil
-    block.object.greasePencil(self, context, column, object, option)
-
-    # constraint
-    block.object.constraint(self, context, column, object, option)
-
-    # modifier
-    block.object.modifier(self, context, column, object, option)
-
-    # material
-    block.object.material(self, context, column, object, option)
-
-    # object data
-    ObjectData(self, context, column, object, option)
-
-    # vertex group
-    block.objectData.vertexGroup(self, context, column, object, option)
-
-    # shapekey
-    block.objectData.shapekey(self, context, column, object, option)
-
-    # uv
-    block.objectData.uv(self, context, column, object, option)
-
-    # vertex color
-    block.objectData.vertexColor(self, context, column, object, option)
-
-    # material
-    block.objectData.material(self, context, column, object, option)
-
-    # bone group
-    block.objectData.boneGroup(self, context, column, object, option)
-
-    # bones
-    block.bone(self, context, column, object, option)
-
-  else:
-    if option.selected:
-
-      # column
-      column = layout.column()
-
-      # separator
-      column.separator()
-
-      # object
-      Object(self, context, column, object, option)
-
-      # group
-      block.object.group(self, context, column, object, option)
-
-      # action
-      block.object.action(self, context, column, object, option)
-
-      # grease pencil
-      block.object.greasePencil(self, context, column, object, option)
-
-      # constraint
-      block.object.constraint(self, context, column, object, option)
-
-      # modifier
-      block.object.modifier(self, context, column, object, option)
-
-      # material
-      block.object.material(self, context, column, object, option)
-
-      # object data
-      ObjectData(self, context, column, object, option)
-
-      # vertex group
-      block.objectData.vertexGroup(self, context, column, object, option)
-
-      # shapekey
-      block.objectData.shapekey(self, context, column, object, option)
-
-      # uv
-      block.objectData.uv(self, context, column, object, option)
-
-      # vertex color
-      block.objectData.vertexColor(self, context, column, object, option)
-
-      # material
-      block.objectData.material(self, context, column, object, option)
-
-      # bone group
-      block.objectData.boneGroup(self, context, column, object, option)
-
+  # search
+  row.prop(option, 'search', text='', icon='VIEWZOOM')
 
 # block
 class block:
@@ -963,14 +940,22 @@ class block:
         group related code block.
       '''
 
+      # tag
+      global tag
+
+      # search
+      search = context.scene.NamePanel.search
+
       # groups
       if option.groups:
         for group in bpy.data.groups[:]:
           for groupobject in group.objects[:]:
             if groupobject == object:
+              if search == '' or search in group.name:
+                tag = True
 
-              # group
-              Group(self, context, layout, group, object)
+                # group
+                Group(self, context, layout, group, object)
 
     # action
     def action(self, context, layout, object, option):
@@ -998,7 +983,7 @@ class block:
         if hasattr(object.grease_pencil, 'name'):
 
           # grease pencil
-          GreasePencil(self, context, layout, object.grease_pencil, object)
+          GreasePencil(self, context, layout, object.grease_pencil, object, True)
 
           # pencil layers
           for layer in bpy.data.objects[object.name].grease_pencil.layers[:]:
@@ -1029,14 +1014,14 @@ class block:
         for modifier in object.modifiers[:]:
 
           # modifier
-          Modifier(self, context, layout, modifier, object, option)
+          Modifier(self, context, layout, modifier, object, option, True)
 
           # particle systems
           if option.particleSystems:
             if modifier.type in 'PARTICLE_SYSTEM':
 
               # particle
-              Particle(self, context, layout, modifier, object, option)
+              Particle(self, context, layout, modifier, object, option, True)
 
     # materials
     def material(self, context, layout, object, option):
@@ -1051,7 +1036,7 @@ class block:
             if material.link == 'OBJECT':
 
               # material
-              Material(self, context, layout, material, object, option)
+              Material(self, context, layout, material, object, option, True)
 
   # object data
   class objectData:
@@ -1135,7 +1120,7 @@ class block:
             if material.link == 'DATA':
 
               # material
-              Material(self, context, layout, material, object)
+              Material(self, context, layout, material, object, True)
 
     # bone groups
     def boneGroup(self, context, layout, object, option):
@@ -1169,7 +1154,7 @@ class block:
         else:
           bone = context.active_bone
 
-        Bone(self, context, layout, bone, object, option)
+        Bone(self, context, layout, bone, object, option, True)
 
         # bone constraints
         if option.boneConstraints:
@@ -1218,7 +1203,7 @@ class block:
             if bone[1] != context.active_bone:
 
               # bone
-              Bone(self, context, layout, bone[1], object, option)
+              Bone(self, context, layout, bone[1], object, option, True)
 
               # bone constraints
               if option.boneConstraints:
@@ -1248,7 +1233,7 @@ class block:
     '''
 
     # material
-    Material(self, context, layout, datablock, object)
+    Material(self, context, layout, datablock, object, True)
 
     # textures
     if option.textures:

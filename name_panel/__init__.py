@@ -31,7 +31,7 @@ bl_info = {
   'author': 'Trentin Frederick (proxe)',
   'version': (1, 5),
   'blender': (2, 76, 0),
-  'location': '3D View → Properties Panel → Name',
+  'location': '3D View → Toolshelf → Name Tab',
   'description': 'An improved 3D view name panel with batch name tools.',
   'wiki_url': '',
   'tracker_url': 'https://github.com/trentinfrederick/name-panel/issues',

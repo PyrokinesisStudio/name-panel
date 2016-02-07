@@ -63,7 +63,7 @@ class preferences(AddonPreferences):
   # popups
   popups = BoolProperty(
   name = 'Enable Pop Ups (Experimental)',
-  description = 'Enable popups related to the settings of datablocks in the item panel.',
+  description = 'Experimental feature, only works for modifiers and constraints, if even then.',
   default = False
   )
 

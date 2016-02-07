@@ -64,6 +64,13 @@ class panel(PropertyGroup):
     default = ''
   )
 
+  # regex
+  regex = BoolProperty(
+    name = 'Regular Expressions',
+    description = 'Use regular expressions.',
+    default = False
+  )
+
   # groups
   groups = BoolProperty(
     name = 'Groups',

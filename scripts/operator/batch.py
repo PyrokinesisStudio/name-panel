@@ -239,5 +239,5 @@ class generateCheatsheet(Operator):
       bpy.data.texts['Regular Expressions Cheatsheet'].current_line_index = 0
 
       # info messege
-      self.report({'INFO'}, 'Regular expression cheatsheet created.')
+      self.report({'INFO'}, 'See \'Regular Expressions Cheatsheet\' in text editor')
     return {'FINISHED'}

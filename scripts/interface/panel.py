@@ -213,7 +213,7 @@ def filters(self, context, layout, option):
   row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
   row.prop(option, 'regex', text='', icon='SCRIPTPLUGINS')
 
-# attached
+# gather
 def gather(context, member):
   '''
     Creates a object datablock dictionary for name panel.
@@ -278,7 +278,7 @@ def gather(context, member):
         # search
         if search == '' or re.search(search, constraint.name):
 
-          # attached
+          # member
           member[object.name].append(constraint.name)
 
     # modifiers
@@ -412,13 +412,13 @@ def gather(context, member):
       if object.mode in {'POSE', 'EDIT'}:
 
         # bones
-        if object.mode in 'POSE':
-          bone = context.active_bone
-        else:
-          bone = context.active_bone
+        bone = context.active_bone
 
         # constraints
-        constraints = [constraint.name for constraint in bone.constraints]
+        if hasattr(bone, 'constraints'):
+          constraints = [constraint.name for constraint in bone.constraints]
+        else:
+          constraints = []
 
         # search
         if search == '' or re.search(search, bone.name) or [re.search(search, item) for item in constraints]:
@@ -881,9 +881,6 @@ class block:
               # bone group
               BoneGroup(self, context, layout, group, object)
 
-              # attached
-              attached[object.name] = True
-
   # bones
   def bone(self, context, layout, object, option):
     '''
@@ -899,23 +896,14 @@ class block:
 
         layout.separator()
 
-        # bones
-        if object.mode in 'POSE':
-          bone = context.active_bone
-        else:
-          bone = context.active_bone
-
-        # constraints
-        constraints = [constraint.name for constraint in bone.constraints]
+        # bone
+        bone = context.active_bone
 
         # search
-        if search == '' or re.search(search, bone.name) or [re.search(search, item) for item in constraints]:
+        # if search == '' or re.search(search, bone.name) or [re.search(search, item) for item in constraints]:
 
-          # bone
-          Bone(self, context, layout, bone, object, option)
-
-          # attached
-          attached[object.name] = True
+        # bone
+        Bone(self, context, layout, bone, object, option)
 
         # bone constraints
         if option.boneConstraints:
@@ -928,9 +916,6 @@ class block:
 
                 # constraint
                 Constraint(self, context, layout, constraint, object, bone, option)
-
-                # attached
-                attached[object.name] = True
 
         # selected bones
         if option.selectedBones:
@@ -972,9 +957,6 @@ class block:
                 # bone
                 Bone(self, context, layout, bone[1], object, option)
 
-                # attached
-                attached[object.name] = True
-
               # bone constraints
               if option.boneConstraints:
                 if object.mode in 'POSE':
@@ -985,9 +967,6 @@ class block:
 
                       # constraint
                       Constraint(self, context, layout, constraint, object, bone[1], option)
-
-                      # attached
-                      attached[object.name] = True
 
               # row
               row = layout.row()
@@ -1574,7 +1553,7 @@ def BoneGroup(self, context, layout, datablock, object):
   row.prop(datablock, 'name', text='')
 
 # bone
-def Bone(self, context, layout, datablock, object, option, bone):
+def Bone(self, context, layout, datablock, object, option):
   '''
     The object data bone.
   '''
@@ -1643,7 +1622,7 @@ def Bone(self, context, layout, datablock, object, option, bone):
     if not datablock == context.active_bone:
 
       # make active bone
-      sub.operator('view3d.make_active_bone', text='', icon='BONE_DATA').target = datablock.name
+      sub.operator('view3d.active_bone', text='', icon='BONE_DATA').target = datablock.name
     row.prop(datablock, 'name', text='')
 
     # options

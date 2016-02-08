@@ -18,8 +18,8 @@
 # ##### END GPL LICENSE BLOCK #####
 
 import bpy
-import re
 import os
+import re
 from bpy.types import Panel
 from .. import storage
 from . import icon
@@ -44,7 +44,6 @@ class name(Panel):
     '''
       Name panel body.
     '''
-
 
     # layout
     layout = self.layout

@@ -73,50 +73,42 @@ class name(Panel):
     member = gather(context, member)
     # print(member)
 
-    # selected
-    if option.selected:
+    # objects
+    for object in context.selected_objects[:]:
+      selectedObjects.append([object.name, object])
 
-      # objects
-      for object in context.selected_objects[:]:
-        selectedObjects.append([object.name, object])
-    if selectedObjects != []:
+    # pin active object
+    if option.pinActiveObject:
+      if context.active_object:
 
-      # pin active object
-      if option.pinActiveObject:
-        if context.active_object:
+        # search
+        if search == '' or re.search(search, context.active_object.name) or [re.search(search, item) for item in member[context.active_object.name]]:
 
-          # search
-          if search == '' or re.search(search, context.active_object.name) or [re.search(search, item) for item in member[context.active_object.name]]:
+          # populate
+          populate(self, context, layout, context.active_object, option)
 
-            # populate
-            populate(self, context, layout, context.active_object, option)
-
-        # selected
-        if option.selected:
-
-          # sorted
-          for datablock in sorted(selectedObjects):
-            if datablock[1] != context.active_object:
-
-              # search
-              if search == '' or re.search(search, datablock[1].name) or [re.search(search, item) for item in member[object.name]]:
-
-                # populate
-                populate(self, context, layout, datablock[1], option)
-      else:
+      # selected
+      if option.selected:
 
         # sorted
         for datablock in sorted(selectedObjects):
+          if datablock[1] != context.active_object:
 
-          # search
-          if search == '' or re.search(search, datablock[1].name) or [re.search(search, item) for item in member[object.name]]:
+            # search
+            if search == '' or re.search(search, datablock[1].name) or [re.search(search, item) for item in member[object.name]]:
 
-            # populate
-            populate(self, context, layout, datablock[1], option)
-
+              # populate
+              populate(self, context, layout, datablock[1], option)
     else:
-      column = layout.column()
-      column.label('Nothing to show.')
+
+      # sorted
+      for datablock in sorted(selectedObjects):
+
+        # search
+        if search == '' or re.search(search, datablock[1].name) or [re.search(search, item) for item in member[object.name]]:
+
+          # populate
+          populate(self, context, layout, datablock[1], option)
 
 # filters
 def filters(self, context, layout, option):

@@ -33,7 +33,6 @@ bl_info = {
   'blender': (2, 76, 0),
   'location': '3D View → Toolshelf → Name Tab',
   'description': 'An improved 3D view name panel with batch name tools.',
-  'wiki_url': '',
   'tracker_url': 'https://github.com/trentinfrederick/name-panel/issues',
   'category': '3D View'
 }

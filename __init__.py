@@ -43,7 +43,7 @@ from bpy.types import AddonPreferences
 from bpy.props import *
 from .scripts import settings as PropertyGroup
 from .scripts.interface import button, icon, menu, panel
-from .scripts.operator import active, auto, batch, copy, popups, select, settings, text
+from .scripts.operator import active, auto, batch, copy, shortcuts, select, settings, text
 
 # preferences
 class preferences(AddonPreferences):
@@ -126,8 +126,8 @@ def register():
   bpy.utils.register_class(active.object)
   bpy.utils.register_class(active.bone)
   bpy.utils.register_class(select.vertexGroup)
-  bpy.utils.register_class(popups.constraint)
-  bpy.utils.register_class(popups.modifier)
+  bpy.utils.register_class(shortcuts.constraint)
+  bpy.utils.register_class(shortcuts.modifier)
 
   # property groups
   bpy.utils.register_class(PropertyGroup.batch.auto.name)
@@ -229,8 +229,8 @@ def unregister():
   bpy.utils.unregister_class(active.object)
   bpy.utils.unregister_class(active.bone)
   bpy.utils.unregister_class(select.vertexGroup)
-  bpy.utils.unregister_class(popups.constraint)
-  bpy.utils.unregister_class(popups.modifier)
+  bpy.utils.unregister_class(shortcuts.constraint)
+  bpy.utils.unregister_class(shortcuts.modifier)
 
   # property groups
   bpy.utils.unregister_class(PropertyGroup.batch.auto.name)

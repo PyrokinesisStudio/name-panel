@@ -96,13 +96,13 @@ class constraint(ConstraintButtons, Operator):
     '''
     return {'FINISHED'}
 
-  # invoke
-  def invoke(self, context, event):
-    '''
-      Invoke the operator panel/menu, control its width.
-    '''
-    context.window_manager.invoke_popup(self, width=300)
-    return {'RUNNING_MODAL'}
+  # # invoke
+  # def invoke(self, context, event):
+  #   '''
+  #     Invoke the operator panel/menu, control its width.
+  #   '''
+  #   context.window_manager.invoke_popup(self, width=300)
+  #   return {'RUNNING_MODAL'}
 
 # modifier modal
 class modifier(ModifierButtons, Operator):
@@ -162,10 +162,10 @@ class modifier(ModifierButtons, Operator):
     '''
     return {'FINISHED'}
 
-  # invoke
-  def invoke(self, context, event):
-    '''
-      Invoke the operator panel/menu, control its width.
-    '''
-    context.window_manager.invoke_popup(self, width=300)
-    return {'RUNNING_MODAL'}
+  # # invoke
+  # def invoke(self, context, event):
+  #   '''
+  #     Invoke the operator panel/menu, control its width.
+  #   '''
+  #   context.window_manager.invoke_popup(self, width=300)
+  #   return {'RUNNING_MODAL'}

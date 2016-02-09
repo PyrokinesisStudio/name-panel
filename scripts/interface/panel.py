@@ -66,11 +66,11 @@ class name(Panel):
     search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
 
     # member
-    member = {object.name: [] for object in context.selected_objects[:]}
+    member = {object.name: [] for object in context.selected_objects[:]} if search != '' else pass
 
     # member
-    member = gather(context, member)
-    # print(member)
+    member = gather(context, member) if search != '' else pass
+    print(member)
 
     # objects
     for object in context.selected_objects[:]:
@@ -81,7 +81,7 @@ class name(Panel):
       if context.active_object:
 
         # search
-        if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name]]:
+        if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if search != '']:
 
           # populate
           populate(self, context, layout, context.active_object, option)
@@ -94,7 +94,7 @@ class name(Panel):
           if datablock[1] != context.active_object:
 
             # search
-            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name]]:
+            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name] if search != '']:
 
               # populate
               populate(self, context, layout, datablock[1], option)
@@ -104,7 +104,7 @@ class name(Panel):
       for datablock in sorted(selectedObjects):
 
         # search
-        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name]]:
+        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name] if search != '']:
 
           # populate
           populate(self, context, layout, datablock[1], option)
@@ -245,7 +245,7 @@ def gather(context, member):
       if hasattr(object.grease_pencil, 'name'):
 
         # layers
-        layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers[:]]
+        layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers]
 
         # search
         if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers]:
@@ -254,7 +254,7 @@ def gather(context, member):
           member[object.name].append(object.grease_pencil.name)
 
           # pencil layers
-          for layer in bpy.data.objects[object.name].grease_pencil.layers[:]:
+          for layer in bpy.data.objects[object.name].grease_pencil.layers:
 
             # search
             if search == '' or re.search(search, layer.info, re.I):
@@ -313,6 +313,8 @@ def gather(context, member):
 
           # textures
           textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
+
+          [print(i) for i in [re.search(search, item, re.I) for item in textures]]
 
           # search
           if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures]:

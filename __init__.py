@@ -43,7 +43,7 @@ from bpy.types import AddonPreferences
 from bpy.props import *
 from .scripts import settings as PropertyGroup
 from .scripts.interface import button, icon, menu, panel
-from .scripts.operator import active, auto, batch, copy, popups, select, settings
+from .scripts.operator import active, auto, batch, copy, popups, select, settings, text
 
 # preferences
 class preferences(AddonPreferences):
@@ -119,7 +119,7 @@ def register():
   bpy.utils.register_class(auto.modifiers)
   bpy.utils.register_class(auto.objectData)
   bpy.utils.register_class(batch.name)
-  bpy.utils.register_class(batch.generateCheatsheet)
+  bpy.utils.register_class(text.generate)
   bpy.utils.register_class(copy.name)
   bpy.utils.register_class(settings.reset)
   bpy.utils.register_class(settings.transfer)
@@ -222,7 +222,7 @@ def unregister():
   bpy.utils.unregister_class(auto.modifiers)
   bpy.utils.unregister_class(auto.objectData)
   bpy.utils.unregister_class(batch.name)
-  bpy.utils.unregister_class(batch.generateCheatsheet)
+  bpy.utils.unregister_class(text.generate)
   bpy.utils.unregister_class(copy.name)
   bpy.utils.unregister_class(settings.reset)
   bpy.utils.unregister_class(settings.transfer)

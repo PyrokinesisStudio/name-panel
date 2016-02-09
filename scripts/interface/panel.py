@@ -70,7 +70,6 @@ class name(Panel):
 
     # member
     member = gather(context, member)
-    print(member)
 
     # objects
     for object in context.selected_objects[:]:

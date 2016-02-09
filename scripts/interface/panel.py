@@ -1145,16 +1145,16 @@ def Constraint(self, context, layout, datablock, object, bone, option):
   # sub.label(text='', icon='CONSTRAINT')
 
   if object.type in 'ARMATURE' and object.mode in 'POSE':
-    op = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
-    op.object = object.name
-    op.bone = bone.name
-    op.target = datablock.name
+    prop = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
+    prop.object = object.name
+    prop.bone = bone.name
+    prop.target = datablock.name
 
   else:
-    op = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
-    op.object = object.name
-    op.bone = ''
-    op.target = datablock.name
+    prop = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
+    prop.object = object.name
+    prop.bone = ''
+    prop.target = datablock.name
 
 
   # name
@@ -1207,10 +1207,10 @@ def Modifier(self, context, layout, datablock, object, option):
   search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
 
   # enable popup
-  try:
-    popup = context.user_preferences.addons[addon].preferences['popups']
-  except:
-    popup = False
+  # try:
+  #   popup = context.user_preferences.addons[addon].preferences['popups']
+  # except:
+  #   popup = False
 
   # row
   row = layout.row(align=True)
@@ -1223,7 +1223,10 @@ def Modifier(self, context, layout, datablock, object, option):
   sub.scale_x = 1.6
 
   # label
-  sub.label(text='', icon=icon.modifier(datablock))
+  # sub.label(text='', icon=icon.modifier(datablock))
+  prop = sub.operator('view3d.modifier_settings', text='', icon=icon.modifier(datablock), emboss=False)
+  prop.object = object.name
+  prop.target = datablock.name
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1250,11 +1253,11 @@ def Modifier(self, context, layout, datablock, object, option):
       # show viewport
       row.prop(datablock, 'show_viewport', text='', icon=iconView)
 
-    # popup
-    if popup:
-      prop = row.operator('view3d.modifier_settings', text='', icon='COLLAPSEMENU')
-      prop.object = object.name
-      prop.target = datablock.name
+    # # popup
+    # if popup:
+    #   prop = row.operator('view3d.modifier_settings', text='', icon='COLLAPSEMENU')
+    #   prop.object = object.name
+    #   prop.target = datablock.name
 
 # object data
 def ObjectData(self, context, layout, datablock, option):

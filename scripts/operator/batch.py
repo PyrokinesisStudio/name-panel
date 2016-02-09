@@ -119,7 +119,6 @@ class name(Operator):
     row.prop(option, 'nodeGroups', text='', icon='NODETREE')
     row.prop(option, 'texts', text='', icon='TEXT')
 
-
     # row
     row = column.row()
     row.separator()

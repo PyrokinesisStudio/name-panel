@@ -59,12 +59,12 @@ class preferences(AddonPreferences):
     default = True
   )
 
-  # popups
-  popups = BoolProperty(
-  name = 'Enable Pop Ups (Experimental)',
-  description = 'Experimental feature, only works for modifiers and constraints, if even then.',
-  default = False
-  )
+  # # popups
+  # popups = BoolProperty(
+  # name = 'Enable Pop Ups (Experimental)',
+  # description = 'Experimental feature, only works for modifiers and constraints, if even then.',
+  # default = False
+  # )
 
   def draw(self, context):
 
@@ -73,7 +73,7 @@ class preferences(AddonPreferences):
 
     # enable popups
     # layout.prop(self, 'dialogues')
-    layout.prop(self, 'popups')
+    # layout.prop(self, 'popups')
 
     # split
     split = layout.split(align=True)
@@ -103,41 +103,8 @@ def register():
   except:
     pass
 
-  # preferences
-  bpy.utils.register_class(preferences)
-
-  # panel
-  bpy.utils.register_class(panel.name)
-
-  # menus
-  bpy.utils.register_class(menu.specials)
-
-  # operators
-  bpy.utils.register_class(auto.name)
-  bpy.utils.register_class(auto.objects)
-  bpy.utils.register_class(auto.constraints)
-  bpy.utils.register_class(auto.modifiers)
-  bpy.utils.register_class(auto.objectData)
-  bpy.utils.register_class(batch.name)
-  bpy.utils.register_class(text.generate)
-  bpy.utils.register_class(copy.name)
-  bpy.utils.register_class(settings.reset)
-  bpy.utils.register_class(settings.transfer)
-  bpy.utils.register_class(active.object)
-  bpy.utils.register_class(active.bone)
-  bpy.utils.register_class(select.vertexGroup)
-  bpy.utils.register_class(shortcuts.constraint)
-  bpy.utils.register_class(shortcuts.modifier)
-
-  # property groups
-  bpy.utils.register_class(PropertyGroup.batch.auto.name)
-  bpy.utils.register_class(PropertyGroup.batch.auto.objects)
-  bpy.utils.register_class(PropertyGroup.batch.auto.constraints)
-  bpy.utils.register_class(PropertyGroup.batch.auto.modifiers)
-  bpy.utils.register_class(PropertyGroup.batch.auto.objectData)
-  bpy.utils.register_class(PropertyGroup.batch.name)
-  bpy.utils.register_class(PropertyGroup.batch.copy)
-  bpy.utils.register_class(PropertyGroup.panel)
+  # register module
+  bpy.utils.register_module(__name__)
 
   # pointer properties
 
@@ -215,32 +182,8 @@ def unregister():
   # menu
   bpy.utils.unregister_class(menu.specials)
 
-  # operators
-  bpy.utils.unregister_class(auto.name)
-  bpy.utils.unregister_class(auto.objects)
-  bpy.utils.unregister_class(auto.constraints)
-  bpy.utils.unregister_class(auto.modifiers)
-  bpy.utils.unregister_class(auto.objectData)
-  bpy.utils.unregister_class(batch.name)
-  bpy.utils.unregister_class(text.generate)
-  bpy.utils.unregister_class(copy.name)
-  bpy.utils.unregister_class(settings.reset)
-  bpy.utils.unregister_class(settings.transfer)
-  bpy.utils.unregister_class(active.object)
-  bpy.utils.unregister_class(active.bone)
-  bpy.utils.unregister_class(select.vertexGroup)
-  bpy.utils.unregister_class(shortcuts.constraint)
-  bpy.utils.unregister_class(shortcuts.modifier)
-
-  # property groups
-  bpy.utils.unregister_class(PropertyGroup.batch.auto.name)
-  bpy.utils.unregister_class(PropertyGroup.batch.auto.objects)
-  bpy.utils.unregister_class(PropertyGroup.batch.auto.constraints)
-  bpy.utils.unregister_class(PropertyGroup.batch.auto.modifiers)
-  bpy.utils.unregister_class(PropertyGroup.batch.auto.objectData)
-  bpy.utils.unregister_class(PropertyGroup.batch.name)
-  bpy.utils.unregister_class(PropertyGroup.batch.copy)
-  bpy.utils.unregister_class(PropertyGroup.panel)
+  # register module
+  bpy.utils.unregister_module(__name__)
 
   # pointer properties
   del bpy.types.Scene.BatchAutoName
@@ -255,5 +198,5 @@ def unregister():
   # remove batch name button
   bpy.types.OUTLINER_HT_header.remove(interface.button.batchName)
 
-if __name__ in '__main__':
+if __name__ == '__main__':
   register()

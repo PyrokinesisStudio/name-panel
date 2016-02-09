@@ -81,7 +81,7 @@ class name(Panel):
       if context.active_object:
 
         # search
-        if search == '' or re.search(search, context.active_object.name) or [re.search(search, item) for item in member[context.active_object.name]]:
+        if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name]]:
 
           # populate
           populate(self, context, layout, context.active_object, option)
@@ -94,7 +94,7 @@ class name(Panel):
           if datablock[1] != context.active_object:
 
             # search
-            if search == '' or re.search(search, datablock[1].name) or [re.search(search, item) for item in member[object.name]]:
+            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name]]:
 
               # populate
               populate(self, context, layout, datablock[1], option)
@@ -104,7 +104,7 @@ class name(Panel):
       for datablock in sorted(selectedObjects):
 
         # search
-        if search == '' or re.search(search, datablock[1].name) or [re.search(search, item) for item in member[object.name]]:
+        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name]]:
 
           # populate
           populate(self, context, layout, datablock[1], option)
@@ -225,7 +225,7 @@ def gather(context, member):
           if groupobject == object:
 
             # search
-            if search == '' or re.search(search, group.name):
+            if search == '' or re.search(search, group.name, re.I):
 
               # member
               member[object.name].append(group.name)
@@ -236,7 +236,7 @@ def gather(context, member):
         if hasattr(object.animation_data.action, 'name'):
 
           # search
-          if search == '' or re.search(search, object.animation_data.action.name):
+          if search == '' or re.search(search, object.animation_data.action.name, re.I):
 
             member[object.name].append(object.animation_data.action.name)
 
@@ -248,7 +248,7 @@ def gather(context, member):
         layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers[:]]
 
         # search
-        if search == '' or re.search(search, object.grease_pencil.name) or [re.search(search, item) for item in layers]:
+        if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers]:
 
           # member
           member[object.name].append(object.grease_pencil.name)
@@ -257,7 +257,7 @@ def gather(context, member):
           for layer in bpy.data.objects[object.name].grease_pencil.layers[:]:
 
             # search
-            if search == '' or re.search(search, layer.info):
+            if search == '' or re.search(search, layer.info, re.I):
 
               # member
               member[object.name].append(layer.info)
@@ -267,7 +267,7 @@ def gather(context, member):
       for constraint in object.constraints[:]:
 
         # search
-        if search == '' or re.search(search, constraint.name):
+        if search == '' or re.search(search, constraint.name, re.I):
 
           # member
           member[object.name].append(constraint.name)
@@ -286,7 +286,7 @@ def gather(context, member):
           particle = ''
 
         # search
-        if search == '' or re.search(search, modifier.name) or re.search(search, particle):
+        if search == '' or re.search(search, modifier.name, re.I) or re.search(search, particle, re.I):
 
           # member
           member[object.name].append(modifier.name)
@@ -296,12 +296,12 @@ def gather(context, member):
             if modifier.type in 'PARTICLE_SYSTEM':
 
               # search
-              if search == '' or re.search(search, modifier.particle_system.name):
+              if search == '' or re.search(search, modifier.particle_system.name, re.I):
 
                 # member
                 member[object.name].append(modifier.particle_system.name)
 
-                if search == '' or re.search(search, modifier.particle_system.settings.name):
+                if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
 
                   # member
                   member[object.name].append(modifier.particle_system.settings.name)
@@ -315,7 +315,7 @@ def gather(context, member):
           textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
 
           # search
-          if search == '' or re.search(search, slot.material.name) or [re.search(search, item) for item in textures]:
+          if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures]:
 
             # member
             member[object.name].append(slot.material.name)
@@ -328,7 +328,7 @@ def gather(context, member):
                     if tslot.texture != None:
 
                       # search
-                      if search == '' or re.search(search, tslot.texture.name):
+                      if search == '' or re.search(search, tslot.texture.name, re.I):
 
                         # member
                         member[object.name].append(tslot.texture.name)
@@ -337,7 +337,7 @@ def gather(context, member):
     # object data
     if object.type != 'EMPTY':
 
-      if search == '' or re.search(search, object.data.name):
+      if search == '' or re.search(search, object.data.name, re.I):
 
         # member
         member[object.name].append(object.data.name)
@@ -348,7 +348,7 @@ def gather(context, member):
         for group in object.vertex_groups[:]:
 
           # search
-          if search == '' or re.search(search, group.name):
+          if search == '' or re.search(search, group.name, re.I):
 
             # member
             member[object.name].append(group.name)
@@ -360,7 +360,7 @@ def gather(context, member):
           for key in object.data.shape_keys.key_blocks[:]:
 
             # search
-            if search == '' or re.search(search, key.name):
+            if search == '' or re.search(search, key.name, re.I):
 
               # member
               member[object.name].append(key.name)
@@ -371,7 +371,7 @@ def gather(context, member):
         for uv in object.data.uv_textures[:]:
 
           # search
-          if search == '' or re.search(search, uv.name):
+          if search == '' or re.search(search, uv.name, re.I):
 
             # member
             member[object.name].append(uv.name)
@@ -382,7 +382,7 @@ def gather(context, member):
         for vertexColor in object.data.vertex_colors[:]:
 
           # search
-          if search == '' or re.search(search, vertexColor.name):
+          if search == '' or re.search(search, vertexColor.name, re.I):
 
             # member
             member[object.name].append(vertexColor.name)
@@ -393,7 +393,7 @@ def gather(context, member):
         for group in object.pose.bone_groups[:]:
 
           # search
-          if search == '' or re.search(search, group.name):
+          if search == '' or re.search(search, group.name, re.I):
 
             # member
             member[object.name].append(group.name)
@@ -412,7 +412,7 @@ def gather(context, member):
           constraints = []
 
         # search
-        if search == '' or re.search(search, bone.name) or [re.search(search, item) for item in constraints]:
+        if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints]:
 
           # member
           member[object.name].append(bone.name)
@@ -424,7 +424,7 @@ def gather(context, member):
             for constraint in bone.constraints[:]:
 
               # search
-              if search == '' or re.search(search, constraint.name):
+              if search == '' or re.search(search, constraint.name, re.I):
 
                 # member
                 member[object.name].append(constraint.name)
@@ -448,7 +448,7 @@ def gather(context, member):
               constraints = [constraint.name for constraint in object.pose.bones[bone.name].constraints[:]]
 
               # search
-              if search == '' or re.search(search, bone.name) or [re.search(search, item) for item in constraints]:
+              if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints]:
 
                 # member
                 member[object.name].append(bone.name)
@@ -459,7 +459,7 @@ def gather(context, member):
                   for constraint in object.pose.bones[bone.name].constraints[:]:
 
                     # search
-                    if search == '' or re.search(search, constraint.name):
+                    if search == '' or re.search(search, constraint.name, re.I):
 
                       # member
                       member[object.name].append(constraint.name)
@@ -563,7 +563,7 @@ class block:
             if groupobject == object:
 
               # search
-              if search == '' or re.search(search, group.name):
+              if search == '' or re.search(search, group.name, re.I):
 
                 # group
                 Group(self, context, layout, group, object)
@@ -583,7 +583,7 @@ class block:
           if hasattr(object.animation_data.action, 'name'):
 
             # search
-            if search == '' or re.search(search, object.animation_data.action.name):
+            if search == '' or re.search(search, object.animation_data.action.name, re.I):
 
               # action
               Action(self, context, layout, object.animation_data.action, object)
@@ -605,7 +605,7 @@ class block:
           layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers[:]]
 
           # search
-          if search == '' or re.search(search, object.grease_pencil.name) or [re.search(search, item) for item in layers]:
+          if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers]:
 
             # grease pencil
             GreasePencil(self, context, layout, object.grease_pencil, object, option)
@@ -614,7 +614,7 @@ class block:
             for layer in bpy.data.objects[object.name].grease_pencil.layers[:]:
 
               # search
-              if search == '' or re.search(search, layer.info):
+              if search == '' or re.search(search, layer.info, re.I):
 
                 # pencil layer
                 PencilLayer(self, context, layout, layer, object, option)
@@ -633,7 +633,7 @@ class block:
         for constraint in object.constraints[:]:
 
           # search
-          if search == '' or re.search(search, constraint.name):
+          if search == '' or re.search(search, constraint.name, re.I):
 
             # constraint
             Constraint(self, context, layout, constraint, object, None, option)
@@ -661,7 +661,7 @@ class block:
             particle = []
 
           # search
-          if search == '' or re.search(search, modifier.name) or [re.search(search, item) for item in particle]:
+          if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle]:
 
             # modifier
             Modifier(self, context, layout, modifier, object, option)
@@ -671,7 +671,7 @@ class block:
               if modifier.type in 'PARTICLE_SYSTEM':
 
                 # search
-                if search == '' or re.search(search, modifier.particle_system.name) or re.search(search, modifier.particle_system.settings.name):
+                if search == '' or re.search(search, modifier.particle_system.name, re.I) or re.search(search, modifier.particle_system.settings.name, re.I):
 
                   # particle
                   Particle(self, context, layout, modifier, object, option)
@@ -698,7 +698,7 @@ class block:
               textures = [tslot.texture.name for tslot in slot.material.texture_slots[:]]
 
               # search
-              if search == '' or re.search(search, slot.material.name) or [re.search(search, item) for item in textures]:
+              if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures]:
 
                 # material
                 Material(self, context, layout, slot, object, option)
@@ -711,7 +711,7 @@ class block:
                         if tslot.texture != None:
 
                           # search
-                          if search == '' or re.search(search, tslot.texture.name):
+                          if search == '' or re.search(search, tslot.texture.name, re.I):
 
                             # texture
                             Texture(self, context, layout, tslot, object, option)
@@ -747,7 +747,7 @@ class block:
           for group in object.vertex_groups[:]:
 
             # search
-            if search == '' or re.search(search, group.name):
+            if search == '' or re.search(search, group.name, re.I):
 
               # vertex group
               VertexGroup(self, context, layout, group, object, option)
@@ -768,7 +768,7 @@ class block:
             for key in object.data.shape_keys.key_blocks[:]:
 
               # search
-              if search == '' or re.search(search, key.name):
+              if search == '' or re.search(search, key.name, re.I):
 
                 # shapekey
                 Shapekey(self, context, layout, key, object, option)
@@ -788,7 +788,7 @@ class block:
           for uv in object.data.uv_textures[:]:
 
             # search
-            if search == '' or re.search(search, uv.name):
+            if search == '' or re.search(search, uv.name, re.I):
 
               # uv
               UV(self, context, layout, uv, object, option)
@@ -808,7 +808,7 @@ class block:
           for vertexColor in object.data.vertex_colors[:]:
 
             # search
-            if search == '' or re.search(search, vertexColor.name):
+            if search == '' or re.search(search, vertexColor.name, re.I):
 
               # vertex color
               VertexColor(self, context, layout, vertexColor, object, option)
@@ -832,7 +832,7 @@ class block:
               textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if tslot != None]
 
               # search
-              if search == '' or re.search(search, slot.material.name) or [re.search(search, item) for item in textures]:
+              if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures]:
 
                 # material
                 Material(self, context, layout, slot, object, option)
@@ -845,7 +845,7 @@ class block:
                         if tslot.texture != None:
 
                           # search
-                          if search == '' or re.search(search, tslot.texture.name):
+                          if search == '' or re.search(search, tslot.texture.name, re.I):
 
                             # texture
                             Texture(self, context, layout, tslot, object, option)
@@ -867,7 +867,7 @@ class block:
           for group in object.pose.bone_groups[:]:
 
             # search
-            if search == '' or re.search(search, group.name):
+            if search == '' or re.search(search, group.name, re.I):
 
               # bone group
               BoneGroup(self, context, layout, group, object)
@@ -891,7 +891,7 @@ class block:
         bone = context.active_bone
 
         # search
-        # if search == '' or re.search(search, bone.name) or [re.search(search, item) for item in constraints]:
+        # if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints]:
 
         # bone
         Bone(self, context, layout, bone, object, option)
@@ -903,7 +903,7 @@ class block:
             for constraint in bone.constraints[:]:
 
               # search
-              if search == '' or re.search(search, constraint.name):
+              if search == '' or re.search(search, constraint.name, re.I):
 
                 # constraint
                 Constraint(self, context, layout, constraint, object, bone, option)
@@ -943,7 +943,7 @@ class block:
               constraints = [constraint.name for constraint in object.pose.bones[bone[1].name].constraints[:]]
 
               # search
-              if search == '' or re.search(search, bone[1].name) or [re.search(search, item) for item in constraints]:
+              if search == '' or re.search(search, bone[1].name, re.I) or [re.search(search, item, re.I) for item in constraints]:
 
                 # bone
                 Bone(self, context, layout, bone[1], object, option)
@@ -954,7 +954,7 @@ class block:
                   for constraint in object.pose.bones[bone[1].name].constraints[:]:
 
                     # search
-                    if search == '' or re.search(search, constraint.name):
+                    if search == '' or re.search(search, constraint.name, re.I):
 
                       # constraint
                       Constraint(self, context, layout, constraint, object, bone[1], option)
@@ -985,7 +985,7 @@ def Object(self, context, layout, datablock, option):
 
     # row
     row = layout.row(align=True)
-    row.active = (search == '' or re.search(search, datablock.name) != None)
+    row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
     # template
     row.template_ID(context.scene.objects, 'active')
@@ -995,7 +995,7 @@ def Object(self, context, layout, datablock, option):
 
     # row
     row = layout.row(align=True)
-    row.active = (search == '' or re.search(search, datablock.name) != None)
+    row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
     # sub
     sub = row.row(align=True)
@@ -1074,7 +1074,7 @@ def GreasePencil(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
-  row.active = (search == '' or re.search(search, datablock.name) != None)
+  row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
   # sub
   sub = row.row()
@@ -1202,7 +1202,7 @@ def Modifier(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
-  row.active = (search == '' or re.search(search, datablock.name) != None)
+  row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
   # sub
   sub = row.row()
@@ -1255,7 +1255,7 @@ def ObjectData(self, context, layout, datablock, option):
 
   # row
   row = layout.row(align=True)
-  row.active = (search == '' or re.search(search, datablock.data.name) != None)
+  row.active = (search == '' or re.search(search, datablock.data.name, re.I) != None)
 
   # empty
   if datablock.type in 'EMPTY':
@@ -1432,7 +1432,7 @@ def Material(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
-  row.active = (search == '' or re.search(search, datablock.name) != None)
+  row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
   # sub
   sub = row.row()
@@ -1490,7 +1490,7 @@ def Particle(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
-  row.active = (search == '' or re.search(search, datablock.particle_system.name) != None)
+  row.active = (search == '' or re.search(search, datablock.particle_system.name, re.I) != None)
 
   # sub
   sub = row.row()
@@ -1505,7 +1505,7 @@ def Particle(self, context, layout, datablock, object, option):
   row.prop(datablock.particle_system, 'name', text='')
 
   # search
-  if search == '' or re.search(search, datablock.particle_system.settings.name):
+  if search == '' or re.search(search, datablock.particle_system.settings.name, re.I):
 
     # row
     row = layout.row(align=True)
@@ -1554,7 +1554,7 @@ def Bone(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
-  row.active = (search == '' or re.search(search, datablock.name) != None)
+  row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
   # sub
   sub = row.row(align=True)

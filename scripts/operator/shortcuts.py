@@ -21,8 +21,8 @@
 import bpy
 from bpy.types import Operator
 from bpy.props import StringProperty
-from ..interface.popups.constraints import ConstraintButtons
-from ..interface.popups.modifiers import ModifierButtons
+from ..interface.shortcuts.constraints import ConstraintButtons
+from ..interface.shortcuts.modifiers import ModifierButtons
 
 # constraints
 class constraint(ConstraintButtons, Operator):

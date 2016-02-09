@@ -60,7 +60,7 @@ class panel(PropertyGroup):
   # search
   search = StringProperty(
     name = 'Search',
-    description = 'Search filter. (case sensitive)',
+    description = 'Search filter.',
     default = ''
   )
 

@@ -23,7 +23,7 @@ from bpy.types import Operator
 from ..text import cheatsheet
 
 # generate cheatsheet
-class generateCheatsheet(Operator):
+class generate(Operator):
   '''
     Generate regular expression cheatsheet.
   '''

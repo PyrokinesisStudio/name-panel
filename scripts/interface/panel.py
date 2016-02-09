@@ -1127,10 +1127,10 @@ def Constraint(self, context, layout, datablock, object, bone, option):
   '''
 
   # enable popup
-  try:
-    popup = context.user_preferences.addons[addon].preferences['popups']
-  except:
-    popup = False
+  # try:
+  #   popup = context.user_preferences.addons[addon].preferences['popups']
+  # except:
+  #   popup = False
 
   # row
   row = layout.row(align=True)
@@ -1142,7 +1142,20 @@ def Constraint(self, context, layout, datablock, object, bone, option):
   sub.scale_x = 1.6
 
   # label
-  sub.label(text='', icon='CONSTRAINT')
+  # sub.label(text='', icon='CONSTRAINT')
+
+  if object.type in 'ARMATURE' and object.mode in 'POSE':
+    op = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
+    op.object = object.name
+    op.bone = bone.name
+    op.target = datablock.name
+
+  else:
+    op = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
+    op.object = object.name
+    op.bone = ''
+    op.target = datablock.name
+
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1171,18 +1184,18 @@ def Constraint(self, context, layout, datablock, object, bone, option):
     # mute
     row.prop(datablock, 'mute', text='', icon=iconView)
 
-    # popup
-    if popup:
-      if object.type in 'ARMATURE' and object.mode in 'POSE':
-        prop = row.operator('view3d.constraint_settings', text='', icon='COLLAPSEMENU')
-        prop.object = object.name
-        prop.bone = bone.name
-        prop.target = datablock.name
-      else:
-        prop = row.operator('view3d.constraint_settings', text='', icon='COLLAPSEMENU')
-        prop.object = object.name
-        prop.bone = ''
-        prop.target = datablock.name
+    # # popup
+    # if popup:
+    #   if object.type in 'ARMATURE' and object.mode in 'POSE':
+    #     prop = row.operator('view3d.constraint_settings', text='', icon='COLLAPSEMENU')
+    #     prop.object = object.name
+    #     prop.bone = bone.name
+    #     prop.target = datablock.name
+    #   else:
+    #     prop = row.operator('view3d.constraint_settings', text='', icon='COLLAPSEMENU')
+    #     prop.object = object.name
+    #     prop.bone = ''
+    #     prop.target = datablock.name
 
 # modifier
 def Modifier(self, context, layout, datablock, object, option):

@@ -66,10 +66,10 @@ class name(Panel):
     search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
 
     # member
-    member = {object.name: [] for object in context.selected_objects[:]} if search != '' else pass
+    member = {object.name: [] for object in context.selected_objects[:]}
 
     # member
-    member = gather(context, member) if search != '' else pass
+    member = gather(context, member)
     print(member)
 
     # objects
@@ -81,7 +81,7 @@ class name(Panel):
       if context.active_object:
 
         # search
-        if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if search != '']:
+        if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name]]:
 
           # populate
           populate(self, context, layout, context.active_object, option)
@@ -94,7 +94,7 @@ class name(Panel):
           if datablock[1] != context.active_object:
 
             # search
-            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name] if search != '']:
+            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name]]:
 
               # populate
               populate(self, context, layout, datablock[1], option)
@@ -104,7 +104,7 @@ class name(Panel):
       for datablock in sorted(selectedObjects):
 
         # search
-        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name] if search != '']:
+        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name]]:
 
           # populate
           populate(self, context, layout, datablock[1], option)
@@ -248,7 +248,7 @@ def gather(context, member):
         layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers]
 
         # search
-        if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers]:
+        if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers if re.search(search, item, re.I) != None]:
 
           # member
           member[object.name].append(object.grease_pencil.name)
@@ -278,15 +278,15 @@ def gather(context, member):
         if modifier.type in 'PARTICLE_SYSTEM':
 
           # particle
-          particle = modifier.particle_system.name
+          particle = [modifier.particle_system.name, modifier.particle_system.settings.name]
 
         else:
 
           # particle
-          particle = ''
+          particle = []
 
         # search
-        if search == '' or re.search(search, modifier.name, re.I) or re.search(search, particle, re.I):
+        if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle if re.search(search, item, re.I) != None]:
 
           # member
           member[object.name].append(modifier.name)
@@ -314,10 +314,8 @@ def gather(context, member):
           # textures
           textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
 
-          [print(i) for i in [re.search(search, item, re.I) for item in textures]]
-
           # search
-          if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures]:
+          if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
 
             # member
             member[object.name].append(slot.material.name)
@@ -408,13 +406,10 @@ def gather(context, member):
         bone = context.active_bone
 
         # constraints
-        if hasattr(bone, 'constraints'):
-          constraints = [constraint.name for constraint in bone.constraints]
-        else:
-          constraints = []
+        constraints = [constraint.name for constraint in bone.constraints if hasattr(bone, 'constraints')]
 
         # search
-        if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints]:
+        if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
           # member
           member[object.name].append(bone.name)
@@ -447,10 +442,10 @@ def gather(context, member):
             if bone.name != context.active_bone:
 
               # constraints
-              constraints = [constraint.name for constraint in object.pose.bones[bone.name].constraints[:]]
+              constraints = [constraint.name for constraint in object.pose.bones[bone.name].constraints[:] if hasattr(bone, 'constraints')]
 
               # search
-              if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints]:
+              if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
                 # member
                 member[object.name].append(bone.name)
@@ -607,7 +602,7 @@ class block:
           layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers[:]]
 
           # search
-          if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers]:
+          if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers if re.search(search, item, re.I) != None]:
 
             # grease pencil
             GreasePencil(self, context, layout, object.grease_pencil, object, option)
@@ -663,7 +658,7 @@ class block:
             particle = []
 
           # search
-          if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle]:
+          if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle if re.search(search, item, re.I) != None]:
 
             # modifier
             Modifier(self, context, layout, modifier, object, option)
@@ -697,10 +692,10 @@ class block:
             if slot.material != None:
 
               # textures
-              textures = [tslot.texture.name for tslot in slot.material.texture_slots[:]]
+              textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
 
               # search
-              if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures]:
+              if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
 
                 # material
                 Material(self, context, layout, slot, object, option)
@@ -831,10 +826,10 @@ class block:
             if slot.material != None:
 
               # textures
-              textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if tslot != None]
+              textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
 
               # search
-              if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures]:
+              if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
 
                 # material
                 Material(self, context, layout, slot, object, option)
@@ -892,23 +887,26 @@ class block:
         # bone
         bone = context.active_bone
 
+        # constraints
+        constraints = [item.name for item in bone.constraints[:] if hasattr(bone, 'constraints')]
+
         # search
-        # if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints]:
+        if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
-        # bone
-        Bone(self, context, layout, bone, object, option)
+          # bone
+          Bone(self, context, layout, bone, object, option)
 
-        # bone constraints
-        if option.boneConstraints:
-          if object.mode in 'POSE':
-            bone = context.active_pose_bone
-            for constraint in bone.constraints[:]:
+          # bone constraints
+          if option.boneConstraints:
+            if object.mode in 'POSE':
+              bone = context.active_pose_bone
+              for constraint in bone.constraints[:]:
 
-              # search
-              if search == '' or re.search(search, constraint.name, re.I):
+                # search
+                if search == '' or re.search(search, constraint.name, re.I):
 
-                # constraint
-                Constraint(self, context, layout, constraint, object, bone, option)
+                  # constraint
+                  Constraint(self, context, layout, constraint, object, bone, option)
 
         # selected bones
         if option.selectedBones:
@@ -942,30 +940,30 @@ class block:
             if bone[1] != context.active_bone:
 
               # constraints
-              constraints = [constraint.name for constraint in object.pose.bones[bone[1].name].constraints[:]]
+              constraints = [item.name for item in object.pose.bones[bone[1].name].constraints[:] if hasattr(object.pose.bones[bone[1].name], 'constraints')]
 
               # search
-              if search == '' or re.search(search, bone[1].name, re.I) or [re.search(search, item, re.I) for item in constraints]:
+              if search == '' or re.search(search, bone[1].name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
                 # bone
                 Bone(self, context, layout, bone[1], object, option)
 
-              # bone constraints
-              if option.boneConstraints:
-                if object.mode in 'POSE':
-                  for constraint in object.pose.bones[bone[1].name].constraints[:]:
+                # bone constraints
+                if option.boneConstraints:
+                  if object.mode in 'POSE':
+                    for constraint in object.pose.bones[bone[1].name].constraints[:]:
 
-                    # search
-                    if search == '' or re.search(search, constraint.name, re.I):
+                      # search
+                      if search == '' or re.search(search, constraint.name, re.I):
 
-                      # constraint
-                      Constraint(self, context, layout, constraint, object, bone[1], option)
+                        # constraint
+                        Constraint(self, context, layout, constraint, object, bone[1], option)
 
-              # row
-              row = layout.row()
+                # row
+                row = layout.row()
 
-              # separator
-              row.separator()
+                # separator
+                row.separator()
         else:
 
           # row

@@ -80,7 +80,7 @@ class name(Panel):
       if context.active_object:
 
         # search
-        if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name]]:
+        if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if re.search(search, item, re.I) != None]:
 
           # populate
           populate(self, context, layout, context.active_object, option)
@@ -93,7 +93,7 @@ class name(Panel):
           if datablock[1] != context.active_object:
 
             # search
-            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name]]:
+            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
 
               # populate
               populate(self, context, layout, datablock[1], option)
@@ -103,7 +103,7 @@ class name(Panel):
       for datablock in sorted(selectedObjects):
 
         # search
-        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[object.name]]:
+        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
 
           # populate
           populate(self, context, layout, datablock[1], option)

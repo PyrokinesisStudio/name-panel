@@ -1264,7 +1264,8 @@ def ObjectData(self, context, layout, datablock, option):
 
   # row
   row = layout.row(align=True)
-  row.active = (search == '' or re.search(search, datablock.data.name, re.I) != None)
+  if datablock.type != 'EMPTY':
+    row.active = (search == '' or re.search(search, datablock.data.name, re.I) != None)
 
   # empty
   if datablock.type in 'EMPTY':

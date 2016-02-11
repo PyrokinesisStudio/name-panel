@@ -51,10 +51,6 @@ class name(Panel):
     # option
     option = context.scene.NamePanel
 
-    # selected objects
-    selectedObjects = [
-      # [object.name, object]
-    ]
 
     # column
     column = layout.column(align=True)
@@ -66,14 +62,12 @@ class name(Panel):
     search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
 
     # member
-    member = {object.name: [] for object in context.selected_objects[:]}
+    member = gather(context, {object.name: [] for object in context.selected_objects[:]})
 
-    # member
-    member = gather(context, member)
+    print(member)
 
-    # objects
-    for object in context.selected_objects[:]:
-      selectedObjects.append([object.name, object])
+    # selected objects
+    selectedObjects = [[object.name, object] for object in context.selected_objects]
 
     # pin active object
     if option.pinActiveObject:
@@ -274,15 +268,9 @@ def gather(context, member):
     # modifiers
     if option.modifiers:
       for modifier in object.modifiers[:]:
-        if modifier.type in 'PARTICLE_SYSTEM':
 
-          # particle
-          particle = [modifier.particle_system.name, modifier.particle_system.settings.name]
-
-        else:
-
-          # particle
-          particle = []
+        # particle
+        particle = [modifier.particle_system.name, modifier.particle_system.settings.name] if modifier.type == 'PARTICLE_SYSTEM' else []
 
         # search
         if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle if re.search(search, item, re.I) != None]:
@@ -295,7 +283,7 @@ def gather(context, member):
             if modifier.type in 'PARTICLE_SYSTEM':
 
               # search
-              if search == '' or re.search(search, modifier.particle_system.name, re.I):
+              if search == '' or re.search(search, particle[0], re.I) or re.search(search, particle[1], re.I):
 
                 # member
                 member[object.name].append(modifier.particle_system.name)
@@ -642,15 +630,9 @@ class block:
       # modifiers
       if option.modifiers:
         for modifier in object.modifiers[:]:
-          if modifier.type in 'PARTICLE_SYSTEM':
 
-            # particle
-            particle = [modifier.particle_system.name, modifier.particle_system.settings.name]
-
-          else:
-
-            # particle
-            particle = []
+          # particle
+          particle = [modifier.particle_system.name, modifier.particle_system.settings.name] if modifier.type == 'PARTICLE_SYSTEM' else []
 
           # search
           if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle if re.search(search, item, re.I) != None]:
@@ -663,7 +645,7 @@ class block:
               if modifier.type in 'PARTICLE_SYSTEM':
 
                 # search
-                if search == '' or re.search(search, modifier.particle_system.name, re.I) or re.search(search, modifier.particle_system.settings.name, re.I):
+                if search == '' or re.search(search, particle[0], re.I) or re.search(search, particle[1], re.I):
 
                   # particle
                   Particle(self, context, layout, modifier, object, option)
@@ -1200,12 +1182,6 @@ def Modifier(self, context, layout, datablock, object, option):
   # search
   search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
 
-  # enable popup
-  # try:
-  #   popup = context.user_preferences.addons[addon].preferences['popups']
-  # except:
-  #   popup = False
-
   # row
   row = layout.row(align=True)
   row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
@@ -1217,7 +1193,6 @@ def Modifier(self, context, layout, datablock, object, option):
   sub.scale_x = 1.6
 
   # label
-  # sub.label(text='', icon=icon.modifier(datablock))
   prop = sub.operator('view3d.modifier_settings', text='', icon=icon.modifier(datablock), emboss=False)
   prop.object = object.name
   prop.target = datablock.name
@@ -1246,12 +1221,6 @@ def Modifier(self, context, layout, datablock, object, option):
 
       # show viewport
       row.prop(datablock, 'show_viewport', text='', icon=iconView)
-
-    # # popup
-    # if popup:
-    #   prop = row.operator('view3d.modifier_settings', text='', icon='COLLAPSEMENU')
-    #   prop.object = object.name
-    #   prop.target = datablock.name
 
 # object data
 def ObjectData(self, context, layout, datablock, option):

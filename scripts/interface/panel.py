@@ -64,8 +64,6 @@ class name(Panel):
     # member
     member = gather(context, {object.name: [] for object in context.selected_objects[:]})
 
-    print(member)
-
     # selected objects
     selectedObjects = [[object.name, object] for object in context.selected_objects]
 

@@ -405,7 +405,7 @@ def gather(context, member):
         constraints = [item.name for item in context.active_pose_bone.constraints[:]] if context.object.mode in 'POSE' else []
 
         # search
-        if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
+        if search == '' or re.search(search, context.active_bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
           # member
           member[object.name].append(context.active_bone.name)
@@ -413,8 +413,7 @@ def gather(context, member):
         # bone constraints
         if option.boneConstraints:
           if object.mode in 'POSE':
-            bone = context.active_pose_bone
-            for constraint in bone.constraints[:]:
+            for constraint in context.active_pose_bone.constraints[:]:
 
               # search
               if search == '' or re.search(search, constraint.name, re.I):
@@ -885,7 +884,7 @@ class block:
         constraints = [item.name for item in context.active_pose_bone.constraints[:]] if object.mode in 'POSE' else []
 
         # search
-        if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
+        if search == '' or re.search(search, context.active_bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
           # bone
           Bone(self, context, layout, context.active_bone, object, option)

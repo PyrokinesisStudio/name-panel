@@ -54,6 +54,14 @@ class constraint(ConstraintButtons, Operator):
     default = ''
   )
 
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
   # draw
   def draw(self, context):
     '''
@@ -96,14 +104,6 @@ class constraint(ConstraintButtons, Operator):
     '''
     return {'FINISHED'}
 
-  # # invoke
-  # def invoke(self, context, event):
-  #   '''
-  #     Invoke the operator panel/menu, control its width.
-  #   '''
-  #   context.window_manager.invoke_popup(self, width=300)
-  #   return {'RUNNING_MODAL'}
-
 # modifier modal
 class modifier(ModifierButtons, Operator):
   '''
@@ -127,6 +127,14 @@ class modifier(ModifierButtons, Operator):
     description = 'The modifier you wish to edit the settings of.',
     default = ''
   )
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
 
   # draw
   def draw(self, context):
@@ -161,11 +169,3 @@ class modifier(ModifierButtons, Operator):
       Execute the operator.
     '''
     return {'FINISHED'}
-
-  # # invoke
-  # def invoke(self, context, event):
-  #   '''
-  #     Invoke the operator panel/menu, control its width.
-  #   '''
-  #   context.window_manager.invoke_popup(self, width=300)
-  #   return {'RUNNING_MODAL'}

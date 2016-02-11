@@ -162,11 +162,11 @@ def filters(self, context, layout, option):
     # modifiers
     row.prop(option, 'modifiers', text='', icon='MODIFIER')
 
-    # bone groups
-    row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
-
     # bone constraints
     row.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
+
+    # bone groups
+    row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
 
     # row 2
     row = layout.row(align=True)
@@ -401,17 +401,14 @@ def gather(context, member):
     if object.type in 'ARMATURE':
       if object.mode in {'POSE', 'EDIT'}:
 
-        # bones
-        bone = context.active_bone
-
         # constraints
-        constraints = [constraint.name for constraint in bone.constraints if hasattr(bone, 'constraints')]
+        constraints = [item.name for item in context.active_pose_bone.constraints[:]] if context.object.mode in 'POSE' else []
 
         # search
         if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
           # member
-          member[object.name].append(bone.name)
+          member[object.name].append(context.active_bone.name)
 
         # bone constraints
         if option.boneConstraints:
@@ -883,17 +880,15 @@ class block:
 
         layout.separator()
 
-        # bone
-        bone = context.active_bone
 
         # constraints
-        constraints = [item.name for item in bone.constraints[:] if hasattr(bone, 'constraints')]
+        constraints = [item.name for item in context.active_pose_bone.constraints[:]] if object.mode in 'POSE' else []
 
         # search
         if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
           # bone
-          Bone(self, context, layout, bone, object, option)
+          Bone(self, context, layout, context.active_bone, object, option)
 
           # bone constraints
           if option.boneConstraints:
@@ -1659,4 +1654,4 @@ def Bone(self, context, layout, datablock, object, option):
         iconLock = 'UNLOCKED'
 
       # lock
-      row.prop(datablock, 'lock', text='', icon=iconLock)\
+      row.prop(datablock, 'lock', text='', icon=iconLock)

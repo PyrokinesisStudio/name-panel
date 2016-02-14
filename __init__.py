@@ -31,7 +31,7 @@ bl_info = {
   'author': 'Trentin Frederick (proxe)',
   'version': (1, 5),
   'blender': (2, 76, 0),
-  'location': '3D View → Toolshelf → Name Tab',
+  'location': '3D View → Tool or Property Shelf → Name',
   'description': 'An improved 3D view name panel with batch name tools.',
   'tracker_url': 'https://github.com/trentinfrederick/name-panel/issues',
   'category': '3D View'
@@ -39,18 +39,22 @@ bl_info = {
 
 # imports
 import bpy
+import os
 from bpy.types import AddonPreferences
 from bpy.props import *
 from .scripts import settings as PropertyGroup
 from .scripts.interface import button, icon, menu, panel
 from .scripts.operator import active, auto, batch, copy, shortcuts, select, settings, text
 
+# addon
+addon = bpy.context.user_preferences.addons.get(__name__)
+
 # preferences
 class preferences(AddonPreferences):
   '''
     Add-on user preferences.
   '''
-  bl_idname = __package__
+  bl_idname = __name__
 
   # dialogues
   dialogues = BoolProperty(
@@ -59,12 +63,23 @@ class preferences(AddonPreferences):
     default = True
   )
 
-  # # popups
-  # popups = BoolProperty(
-  # name = 'Enable Pop Ups (Experimental)',
-  # description = 'Experimental feature, only works for modifiers and constraints, if even then.',
-  # default = False
-  # )
+  # popups
+  popups = BoolProperty(
+    name = 'Enable Pop Ups (Experimental)',
+    description = 'Experimental feature, only works for modifiers and constraints, if even then.',
+    default = False
+  )
+
+  # location
+  location = EnumProperty(
+    name = 'Panel Location',
+    description = 'The 3D view shelf to use. (Requires Restart)',
+    items = [
+      ('TOOLS', 'Tool Shelf', 'Places the Name panel in the tool shelf under the tab labeled \'Name\''),
+      ('UI', 'Property Shelf', 'Places the Name panel in the property shelf.')
+    ],
+    default = 'UI'
+  )
 
   def draw(self, context):
 
@@ -74,6 +89,13 @@ class preferences(AddonPreferences):
     # enable popups
     # layout.prop(self, 'dialogues')
     # layout.prop(self, 'popups')
+
+    # row
+    row = layout.row()
+    row.prop(self, 'location', expand=True)
+
+    # label
+    layout.label(text='Links:')
 
     # split
     split = layout.split(align=True)
@@ -106,8 +128,17 @@ def register():
   # register module
   bpy.utils.register_module(__name__)
 
-  # pointer properties
+  # shelf position
+  # addon
+  if addon:
+    if addon.preferences['location'] == 0:
+      bpy.utils.unregister_class(panel.UIName)
+    else:
+      bpy.utils.unregister_class(panel.toolsName)
+  else:
+    bpy.utils.unregister_class(panel.toolsName)
 
+  # pointer properties
   # batch auto name settings
   bpy.types.Scene.BatchAutoName = PointerProperty(
     type = PropertyGroup.batch.auto.name,
@@ -172,15 +203,6 @@ def unregister():
   '''
     Unregister.
   '''
-
-  # preferences
-  bpy.utils.unregister_class(preferences)
-
-  # panel
-  bpy.utils.unregister_class(panel.name)
-
-  # menu
-  bpy.utils.unregister_class(menu.specials)
 
   # register module
   bpy.utils.unregister_module(__name__)

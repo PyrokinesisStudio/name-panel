@@ -131,9 +131,12 @@ def register():
   # shelf position
   # addon
   if addon:
-    if addon.preferences['location'] == 0:
-      bpy.utils.unregister_class(panel.UIName)
-    else:
+    try:
+      if addon.preferences['location'] == 0:
+        bpy.utils.unregister_class(panel.UIName)
+      else:
+        bpy.utils.unregister_class(panel.toolsName)
+    except:
       bpy.utils.unregister_class(panel.toolsName)
   else:
     bpy.utils.unregister_class(panel.toolsName)

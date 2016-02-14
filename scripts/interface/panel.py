@@ -25,14 +25,14 @@ from .. import storage
 from . import icon
 
 # addon
-addon = os.path.basename(os.path.dirname(os.path.dirname(os.path.dirname(__file__))))
+addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
 
 # name
-class name(Panel):
+class toolsName(Panel):
   '''
     Name panel.
   '''
-  bl_idname = 'VIEW3D_PT_name'
+  bl_idname = 'VIEW3D_PT_toolshelf_name'
   bl_space_type = 'VIEW_3D'
   bl_label = 'Name'
   bl_region_type = 'TOOLS'
@@ -45,60 +45,87 @@ class name(Panel):
       Name panel body.
     '''
 
-    # layout
-    layout = self.layout
+    # main
+    main(self, context)
 
-    # option
-    option = context.scene.NamePanel
+# name
+class UIName(Panel):
+  '''
+    Name panel.
+  '''
+  bl_idname = 'VIEW3D_PT_propertyshelf_name'
+  bl_space_type = 'VIEW_3D'
+  bl_label = 'Name'
+  bl_region_type = 'UI'
 
+  # draw
+  def draw(self, context):
+    '''
+      Name panel body.
+    '''
 
-    # column
-    column = layout.column(align=True)
+    # main
+    main(self, context)
 
-    # filter
-    filters(self, context, column, option)
+# main
+def main(self, context):
+  '''
+    Name panel main.
+  '''
 
-    # search
-    search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  # layout
+  layout = self.layout
 
-    # member
-    member = gather(context, {object.name: [] for object in context.selected_objects[:]})
+  # option
+  option = context.scene.NamePanel
 
-    # selected objects
-    selectedObjects = [[object.name, object] for object in context.selected_objects]
+  # column
+  column = layout.column(align=True)
 
-    # pin active object
-    if option.pinActiveObject:
-      if context.active_object:
+  # filter
+  filters(self, context, column, option)
 
-        # search
-        if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if re.search(search, item, re.I) != None]:
+  # search
+  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
 
-          # populate
-          populate(self, context, layout, context.active_object, option)
+  # member
+  member = gather(context, {object.name: [] for object in context.selected_objects[:]})
 
-      # selected
-      if option.selected:
+  # selected objects
+  selectedObjects = [[object.name, object] for object in context.selected_objects]
 
-        # sorted
-        for datablock in sorted(selectedObjects):
-          if datablock[1] != context.active_object:
+  # pin active object
+  if option.pinActiveObject:
+    if context.active_object:
 
-            # search
-            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
+      # search
+      if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if re.search(search, item, re.I) != None]:
 
-              # populate
-              populate(self, context, layout, datablock[1], option)
-    else:
+        # populate
+        populate(self, context, layout, context.active_object, option)
+
+    # selected
+    if option.selected:
 
       # sorted
       for datablock in sorted(selectedObjects):
+        if datablock[1] != context.active_object:
 
-        # search
-        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
+          # search
+          if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
 
-          # populate
-          populate(self, context, layout, datablock[1], option)
+            # populate
+            populate(self, context, layout, datablock[1], option)
+  else:
+
+    # sorted
+    for datablock in sorted(selectedObjects):
+
+      # search
+      if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
+
+        # populate
+        populate(self, context, layout, datablock[1], option)
 
 # filters
 def filters(self, context, layout, option):

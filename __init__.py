@@ -221,7 +221,7 @@ def unregister():
   del bpy.types.Scene.NamePanel
 
   # remove batch name button
-  bpy.types.OUTLINER_HT_header.remove(interface.button.batchName)
+  bpy.types.OUTLINER_HT_header.remove(button.batchName)
 
 if __name__ == '__main__':
   register()

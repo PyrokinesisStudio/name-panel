@@ -78,7 +78,7 @@ class preferences(AddonPreferences):
       ('TOOLS', 'Tool Shelf', 'Places the Name panel in the tool shelf under the tab labeled \'Name\''),
       ('UI', 'Property Shelf', 'Places the Name panel in the property shelf.')
     ],
-    default = 'UI'
+    default = 'TOOLS'
   )
 
   def draw(self, context):

@@ -23,6 +23,8 @@ import re
 from random import random
 from .. import storage
 
+tag = False
+
 # shared
 class shared:
   '''
@@ -52,7 +54,7 @@ def main(context):
   '''
     Process quick batch or send datablock values to sort then send collections to proces.
   '''
-  tag = False
+  global tag
 
   all = [
     # objects
@@ -2253,6 +2255,8 @@ def sort(context, datablock):
     Sort datablocks into proper storage list.
   '''
 
+  global tag
+
   # option
   option = context.scene.BatchName
 
@@ -2471,8 +2475,6 @@ def process(context, collection):
   '''
     Process collection, send names to name.
   '''
-
-  print(collection)
 
   if not collection == []:
 

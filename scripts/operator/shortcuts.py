@@ -31,7 +31,7 @@ class constraint(ConstraintButtons, Operator):
   '''
   bl_idname = 'view3d.constraint_settings'
   bl_label = 'Constraint'
-  bl_description = 'Adjust the options for this constraint.'
+  bl_description = 'Adjust the options for this constraint. (Experimental)'
   bl_options = {'REGISTER', 'UNDO'}
 
   # object
@@ -119,7 +119,7 @@ class modifier(ModifierButtons, Operator):
   '''
   bl_idname = 'view3d.modifier_settings'
   bl_label = 'Modifier'
-  bl_description = 'Adjust the options for this modifier.'
+  bl_description = 'Adjust the options for this modifier. (Experimental)'
   bl_options = {'REGISTER', 'UNDO'}
 
   # object

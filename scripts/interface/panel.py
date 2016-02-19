@@ -117,10 +117,7 @@ def main(self, context):
             populate(self, context, layout, datablock[1], option)
 
   else:
-    
-    if option.selected:
 
-<<<<<<< HEAD
     # selected
     if option.selected:
 
@@ -143,22 +140,6 @@ def main(self, context):
 
         # populate
         populate(self, context, layout, context.active_object, option)
-=======
-      # sorted
-      for datablock in sorted(selectedObjects):
-
-        # search
-        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
-
-          # populate
-          populate(self, context, layout, datablock[1], option)
-          
-    else:
-      # search
-        if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if re.search(search, item, re.I) != None]:
-          
-          populate(self, context, layout, context.active_object, option)
->>>>>>> 8d886d94babdf49b2e262fb9e5c4828a1132fd00
 
 # filters
 def filters(self, context, layout, option):

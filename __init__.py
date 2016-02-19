@@ -55,20 +55,6 @@ class preferences(AddonPreferences):
   '''
   bl_idname = __name__
 
-  # dialogues
-  dialogues = BoolProperty(
-    name = 'Enable Operator Confirm Dialogues',
-    description = 'Enable confirm dialogues for batch operators',
-    default = True
-  )
-
-  # popups
-  popups = BoolProperty(
-    name = 'Enable Pop Ups (Experimental)',
-    description = 'Experimental feature, only works for modifiers and constraints, if even then.',
-    default = False
-  )
-
   # location
   location = EnumProperty(
     name = 'Panel Location',

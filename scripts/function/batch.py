@@ -54,9 +54,13 @@ def main(context):
   '''
     Process quick batch or send datablock values to sort then send collections to proces.
   '''
+
+  # tag
   global tag
 
+  # all collections
   all = [
+
     # objects
     storage.batch.objects,
 
@@ -2255,6 +2259,7 @@ def sort(context, datablock):
     Sort datablocks into proper storage list.
   '''
 
+  # tag
   global tag
 
   # option

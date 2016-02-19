@@ -67,7 +67,7 @@ class panel(PropertyGroup):
   # regex
   regex = BoolProperty(
     name = 'Regular Expressions',
-    description = 'Use regular expressions.',
+    description = 'Enable regular expressions.',
     default = False
   )
 
@@ -1286,7 +1286,7 @@ class batch:
     # regex
     regex = BoolProperty(
       name = 'Regular Expressions',
-      description = 'Use regular expressions.',
+      description = 'Enable regular expressions.',
       default = False
     )
 

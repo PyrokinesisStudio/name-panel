@@ -105,7 +105,7 @@ class objects(Operator):
     Invoke the auto name object names dialogue.
   '''
   bl_idname = 'view3d.batch_auto_name_object_names'
-  bl_label = 'Object Names'
+  bl_label = 'Object Names:'
   bl_description = 'Change the names used for objects.'
   bl_options = {'REGISTER', 'UNDO'}
 
@@ -219,7 +219,7 @@ class constraints(Operator):
     Invoke the auto name constraint names dialogue.
   '''
   bl_idname = 'view3d.batch_auto_name_constraint_names'
-  bl_label = 'Constraint Names'
+  bl_label = 'Constraint Names:'
   bl_description = 'Change the names used for constraints.'
   bl_options = {'REGISTER', 'UNDO'}
 
@@ -419,7 +419,7 @@ class modifiers(Operator):
     Invoke the auto name modifier names dialogue.
   '''
   bl_idname = 'view3d.batch_auto_name_modifier_names'
-  bl_label = 'Modifier Names'
+  bl_label = 'Modifier Names:'
   bl_description = 'Change the names used for modifiers.'
   bl_options = {'REGISTER', 'UNDO'}
 
@@ -729,7 +729,7 @@ class objectData(Operator):
     Invoke the auto name object data names dialogue.
   '''
   bl_idname = 'view3d.batch_auto_name_object_data_names'
-  bl_label = 'Object Data Names'
+  bl_label = 'Object Data Names:'
   bl_description = 'Change the names used for objects data.'
   bl_options = {'REGISTER', 'UNDO'}
 

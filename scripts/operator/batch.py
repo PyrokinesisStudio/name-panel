@@ -19,6 +19,7 @@
 
 # imports
 import bpy
+from bpy.props import BoolProperty
 from bpy.types import Operator
 from ..function import batch
 
@@ -44,8 +45,15 @@ class name(Operator):
     # option
     option = context.scene.BatchName
 
+    # filter
+
+    # column
     column = layout.column(align=True)
 
+    # label
+    column.label(text='Filter:')
+
+    # row
     row = column.row(align=True)
 
     # batch type
@@ -53,8 +61,6 @@ class name(Operator):
 
     # column
     column = layout.column(align=True)
-
-    # object datablocks
 
     # row 1
     row = column.row(align=True)
@@ -88,8 +94,6 @@ class name(Operator):
     column.prop(option, 'constraintType', text='')
     column.prop(option, 'modifierType', text='')
 
-    # global datablocks
-
     # column
     column = layout.column(align=True)
 
@@ -119,11 +123,21 @@ class name(Operator):
     row.prop(option, 'nodeGroups', text='', icon='NODETREE')
     row.prop(option, 'texts', text='', icon='TEXT')
 
+    # input fields
+
     # row
     row = column.row()
     row.separator()
-
-    # input fields
+    row = column.row()
+    row.separator()
+    row = column.row()
+    row.separator()
+    row = column.row()
+    row.separator()
+    row = column.row()
+    row.separator()
+    row = column.row()
+    row.separator()
 
     # custom name
     column.prop(option, 'customName')
@@ -191,15 +205,6 @@ class name(Operator):
 
     # main
     batch.main(context)
-
-    # info messege
-    if batch.count != 1:
-      self.report({'INFO'}, str(batch.count) + ' datablocks were renamed.')
-    else:
-      self.report({'INFO'}, str(batch.count) + ' datablock was renamed.')
-
-    # reset batch count
-    batch.count = 0
 
     return {'FINISHED'}
 

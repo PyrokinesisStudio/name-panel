@@ -18,7 +18,6 @@
 # ##### END GPL LICENSE BLOCK #####
 
 import bpy
-import os
 import re
 from bpy.types import Panel
 from .. import storage
@@ -91,9 +90,6 @@ def main(self, context):
   # member
   member = gather(context, {object.name: [] for object in context.selected_objects[:]})
 
-  # selected objects
-  selectedObjects = [[object.name, object] for object in context.selected_objects]
-
   # pin active object
   if option.pinActiveObject:
     if context.active_object:
@@ -107,6 +103,9 @@ def main(self, context):
     # selected
     if option.selected:
 
+      # selected objects
+      selectedObjects = [[object.name, object] for object in context.selected_objects]
+
       # sorted
       for datablock in sorted(selectedObjects):
         if datablock[1] != context.active_object:
@@ -116,16 +115,31 @@ def main(self, context):
 
             # populate
             populate(self, context, layout, datablock[1], option)
+
   else:
 
-    # sorted
-    for datablock in sorted(selectedObjects):
+    # selected
+    if option.selected:
+
+      # selected objects
+      selectedObjects = [[object.name, object] for object in context.selected_objects]
+
+      # sorted
+      for datablock in sorted(selectedObjects):
+
+        # search
+        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
+
+          # populate
+          populate(self, context, layout, datablock[1], option)
+
+    else:
 
       # search
-      if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
+      if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if re.search(search, item, re.I) != None]:
 
         # populate
-        populate(self, context, layout, datablock[1], option)
+        populate(self, context, layout, context.active_object, option)
 
 # filters
 def filters(self, context, layout, option):
@@ -231,186 +245,205 @@ def gather(context, member):
   # option
   option = context.scene.NamePanel
 
+  # selected
+  if option.selected:
+    for object in context.selected_objects:
+      sort(context, member, object)
+  else:
+    sort(context, member, context.active_object)
+
+  return member
+
+# sort
+def sort(context, member, object):
+  '''
+    Sorts object related datablocks for panel population and feeds batch name operator.
+  '''
+
+  # option
+  option = context.scene.NamePanel
+
   # search
   search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
 
-  for object in context.selected_objects:
-
-    # group
-    if option.groups:
-      for group in bpy.data.groups[:]:
-        for groupobject in group.objects[:]:
-          if groupobject == object:
-
-            # search
-            if search == '' or re.search(search, group.name, re.I):
-
-              # member
-              member[object.name].append(group.name)
-
-    # action
-    if option.action:
-      if hasattr(object.animation_data, 'action'):
-        if hasattr(object.animation_data.action, 'name'):
+  # group
+  if option.groups:
+    for group in bpy.data.groups[:]:
+      for groupobject in group.objects[:]:
+        if groupobject == object:
 
           # search
-          if search == '' or re.search(search, object.animation_data.action.name, re.I):
-
-            member[object.name].append(object.animation_data.action.name)
-
-    # grease pencil
-    if option.greasePencil:
-      if hasattr(object.grease_pencil, 'name'):
-
-        # layers
-        layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers]
-
-        # search
-        if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers if re.search(search, item, re.I) != None]:
-
-          # member
-          member[object.name].append(object.grease_pencil.name)
-
-          # pencil layers
-          for layer in bpy.data.objects[object.name].grease_pencil.layers:
-
-            # search
-            if search == '' or re.search(search, layer.info, re.I):
-
-              # member
-              member[object.name].append(layer.info)
-
-    # constraints
-    if option.constraints:
-      for constraint in object.constraints[:]:
-
-        # search
-        if search == '' or re.search(search, constraint.name, re.I):
-
-          # member
-          member[object.name].append(constraint.name)
-
-    # modifiers
-    if option.modifiers:
-      for modifier in object.modifiers[:]:
-
-        # particle
-        particle = [modifier.particle_system.name, modifier.particle_system.settings.name] if modifier.type == 'PARTICLE_SYSTEM' else []
-
-        # search
-        if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle if re.search(search, item, re.I) != None]:
-
-          # member
-          member[object.name].append(modifier.name)
-
-          # particle systems
-          if option.particleSystems:
-            if modifier.type in 'PARTICLE_SYSTEM':
-
-              # search
-              if search == '' or re.search(search, particle[0], re.I) or re.search(search, particle[1], re.I):
-
-                # member
-                member[object.name].append(modifier.particle_system.name)
-
-                if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
-
-                  # member
-                  member[object.name].append(modifier.particle_system.settings.name)
-
-    # materials
-    if option.materials:
-      for slot in object.material_slots:
-        if slot.material != None:
-
-          # textures
-          textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
-
-          # search
-          if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
+          if search == '' or re.search(search, group.name, re.I):
 
             # member
-            member[object.name].append(slot.material.name)
+            member[object.name].append(group.name)
 
-            # textures
-            if option.textures:
-              if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-                for tslot in slot.material.texture_slots[:]:
-                  if hasattr(tslot, 'texture'):
-                    if tslot.texture != None:
+  # action
+  if option.action:
+    if hasattr(object.animation_data, 'action'):
+      if hasattr(object.animation_data.action, 'name'):
 
-                      # search
-                      if search == '' or re.search(search, tslot.texture.name, re.I):
+        # search
+        if search == '' or re.search(search, object.animation_data.action.name, re.I):
 
-                        # member
-                        member[object.name].append(tslot.texture.name)
+          # member
+          member[object.name].append(object.animation_data.action.name)
 
+  # grease pencil
+  if option.greasePencil:
+    if hasattr(object.grease_pencil, 'name'):
 
-    # object data
-    if object.type != 'EMPTY':
+      # layers
+      layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers]
 
-      if search == '' or re.search(search, object.data.name, re.I):
+      # search
+      if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers if re.search(search, item, re.I) != None]:
 
         # member
-        member[object.name].append(object.data.name)
+        member[object.name].append(object.grease_pencil.name)
 
-    # vertex groups
-    if option.vertexGroups:
-      if hasattr(object, 'vertex_groups'):
-        for group in object.vertex_groups[:]:
+        # pencil layers
+        for layer in bpy.data.objects[object.name].grease_pencil.layers:
 
           # search
-          if search == '' or re.search(search, group.name, re.I):
+          if search == '' or re.search(search, layer.info, re.I):
 
             # member
-            member[object.name].append(group.name)
+            member[object.name].append(layer.info)
 
-    # shapekeys
-    if option.shapekeys:
-      if hasattr(object.data, 'shape_keys'):
-        if hasattr(object.data.shape_keys, 'key_blocks'):
-          for key in object.data.shape_keys.key_blocks[:]:
+  # constraints
+  if option.constraints:
+    for constraint in object.constraints[:]:
+
+      # search
+      if search == '' or re.search(search, constraint.name, re.I):
+
+        # member
+        member[object.name].append(constraint.name)
+
+  # modifiers
+  if option.modifiers:
+    for modifier in object.modifiers[:]:
+
+      # particle
+      particle = [modifier.particle_system.name, modifier.particle_system.settings.name] if modifier.type == 'PARTICLE_SYSTEM' else []
+
+      # search
+      if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle if re.search(search, item, re.I) != None]:
+
+        # member
+        member[object.name].append(modifier.name)
+
+        # particle systems
+        if option.particleSystems:
+          if modifier.type in 'PARTICLE_SYSTEM':
 
             # search
-            if search == '' or re.search(search, key.name, re.I):
+            if search == '' or re.search(search, particle[0], re.I) or re.search(search, particle[1], re.I):
 
               # member
-              member[object.name].append(key.name)
+              member[object.name].append(modifier.particle_system.name)
 
-    # uvs
-    if option.uvs:
-      if object.type in 'MESH':
-        for uv in object.data.uv_textures[:]:
+              # search
+              if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
+
+                # member
+                member[object.name].append(modifier.particle_system.settings.name)
+
+  # materials
+  if option.materials:
+    for slot in object.material_slots:
+      if slot.material != None:
+
+        # textures
+        textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
+
+        # search
+        if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
+
+          # member
+          member[object.name].append(slot.material.name)
+
+          # textures
+          if option.textures:
+            if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
+              for tslot in slot.material.texture_slots[:]:
+                if hasattr(tslot, 'texture'):
+                  if tslot.texture != None:
+
+                    # search
+                    if search == '' or re.search(search, tslot.texture.name, re.I):
+
+                      # member
+                      member[object.name].append(tslot.texture.name)
+
+  # object data
+  if object.type != 'EMPTY':
+
+    # search
+    if search == '' or re.search(search, object.data.name, re.I):
+
+      # member
+      member[object.name].append(object.data.name)
+
+  # vertex groups
+  if option.vertexGroups:
+    if hasattr(object, 'vertex_groups'):
+      for group in object.vertex_groups[:]:
+
+        # search
+        if search == '' or re.search(search, group.name, re.I):
+
+          # member
+          member[object.name].append(group.name)
+
+  # shapekeys
+  if option.shapekeys:
+    if hasattr(object.data, 'shape_keys'):
+      if hasattr(object.data.shape_keys, 'key_blocks'):
+        for key in object.data.shape_keys.key_blocks[:]:
 
           # search
-          if search == '' or re.search(search, uv.name, re.I):
+          if search == '' or re.search(search, key.name, re.I):
 
             # member
-            member[object.name].append(uv.name)
+            member[object.name].append(key.name)
 
-    # vertex colors
-    if option.vertexColors:
-      if object.type in 'MESH':
-        for vertexColor in object.data.vertex_colors[:]:
+  # uvs
+  if option.uvs:
+    if object.type in 'MESH':
+      for uv in object.data.uv_textures[:]:
 
-          # search
-          if search == '' or re.search(search, vertexColor.name, re.I):
+        # search
+        if search == '' or re.search(search, uv.name, re.I):
 
-            # member
-            member[object.name].append(vertexColor.name)
+          # member
+          member[object.name].append(uv.name)
 
-    # bone groups
-    if option.boneGroups:
-      if object.type in 'ARMATURE':
-        for group in object.pose.bone_groups[:]:
+  # vertex colors
+  if option.vertexColors:
+    if object.type in 'MESH':
+      for vertexColor in object.data.vertex_colors[:]:
 
-          # search
-          if search == '' or re.search(search, group.name, re.I):
+        # search
+        if search == '' or re.search(search, vertexColor.name, re.I):
 
-            # member
-            member[object.name].append(group.name)
+          # member
+          member[object.name].append(vertexColor.name)
 
-    # bones
+  # bone groups
+  if option.boneGroups:
+    if object.type in 'ARMATURE':
+      for group in object.pose.bone_groups[:]:
+
+        # search
+        if search == '' or re.search(search, group.name, re.I):
+
+          # member
+          member[object.name].append(group.name)
+
+  # bones
+  if object == context.active_object:
     if object.type in 'ARMATURE':
       if object.mode in {'POSE', 'EDIT'}:
 
@@ -437,13 +470,17 @@ def gather(context, member):
         # selected bones
         if option.selectedBones:
 
-          # edit mode
-          if object.mode in 'POSE':
-            bones = object.data.bones[:]
-
           # pose mode
-          else:
+          if object.mode in 'POSE':
+            bones = object.pose.bones[:]
+
+          # edit mode
+          elif object.mode == 'EDIT':
             bones = object.data.edit_bones[:]
+
+          # other modes
+          else:
+            bones = object.data.bones[:]
 
           # sort and display
           for bone in bones:
@@ -461,7 +498,7 @@ def gather(context, member):
               # bone constraints
               if option.boneConstraints:
                 if object.mode in 'POSE':
-                  for constraint in object.pose.bones[bone.name].constraints[:]:
+                  for constraint in bone.constraints[:]:
 
                     # search
                     if search == '' or re.search(search, constraint.name, re.I):
@@ -1127,12 +1164,6 @@ def Constraint(self, context, layout, datablock, object, bone, option):
     The object or pose bone constraint.
   '''
 
-  # enable popup
-  # try:
-  #   popup = context.user_preferences.addons[addon].preferences['popups']
-  # except:
-  #   popup = False
-
   # row
   row = layout.row(align=True)
 
@@ -1184,19 +1215,6 @@ def Constraint(self, context, layout, datablock, object, bone, option):
 
     # mute
     row.prop(datablock, 'mute', text='', icon=iconView)
-
-    # # popup
-    # if popup:
-    #   if object.type in 'ARMATURE' and object.mode in 'POSE':
-    #     prop = row.operator('view3d.constraint_settings', text='', icon='COLLAPSEMENU')
-    #     prop.object = object.name
-    #     prop.bone = bone.name
-    #     prop.target = datablock.name
-    #   else:
-    #     prop = row.operator('view3d.constraint_settings', text='', icon='COLLAPSEMENU')
-    #     prop.object = object.name
-    #     prop.bone = ''
-    #     prop.target = datablock.name
 
 # modifier
 def Modifier(self, context, layout, datablock, object, option):

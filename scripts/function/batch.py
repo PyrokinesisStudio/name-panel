@@ -23,12 +23,6 @@ import re
 from random import random
 from .. import storage
 
-# count
-count = 0
-
-# tag
-tag = False
-
 # shared
 class shared:
   '''
@@ -56,9 +50,142 @@ class shared:
 # main
 def main(context):
   '''
-    Send datablock values to sort then send collections to process.
+    Process quick batch or send datablock values to sort then send collections to proces.
   '''
-  global tag
+  tag = False
+
+  all = [
+    # objects
+    storage.batch.objects,
+
+    # groups
+    storage.batch.groups,
+
+    # actions
+    storage.batch.actions,
+
+    # grease pencils
+    storage.batch.greasePencils,
+
+    # pencil layers
+    storage.batch.pencilLayers,
+
+    # constraints
+    storage.batch.constraints,
+
+    # modifiers
+    storage.batch.modifiers,
+
+    # cameras
+    storage.batch.cameras,
+
+    # meshes
+    storage.batch.meshes,
+
+    # curves
+    storage.batch.curves,
+
+    # lamps
+    storage.batch.lamps,
+
+    # lattices
+    storage.batch.lattices,
+
+    # metaballs
+    storage.batch.metaballs,
+
+    # speakers
+    storage.batch.speakers,
+
+    # armatures
+    storage.batch.armatures,
+
+    # bone groups
+    storage.batch.boneGroups,
+
+    # bones
+    storage.batch.bones,
+
+    # vertex groups
+    storage.batch.vertexGroups,
+
+    # shapekeys
+    storage.batch.shapekeys,
+
+    # uvs
+    storage.batch.uvs,
+
+    # vertex colors
+    storage.batch.vertexColors,
+
+    # materials
+    storage.batch.materials,
+
+    # textures
+    storage.batch.textures,
+
+    # particle systems
+    storage.batch.particleSystems,
+
+    # particle settings
+    storage.batch.particleSettings,
+
+    # scenes
+    storage.batch.scenes,
+
+    # render layers
+    storage.batch.renderLayers,
+
+    # worlds
+    storage.batch.worlds,
+
+    # libraries
+    storage.batch.libraries,
+
+    # images
+    storage.batch.images,
+
+    # masks
+    storage.batch.masks,
+
+    # sequences
+    storage.batch.sequences,
+
+    # movie clips
+    storage.batch.movieClips,
+
+    # sounds
+    storage.batch.sounds,
+
+    # screens
+    storage.batch.screens,
+
+    # keying sets
+    storage.batch.keyingSets,
+
+    # palettes
+    storage.batch.palettes,
+
+    # brushes
+    storage.batch.brushes,
+
+    # linestyles
+    storage.batch.linestyles,
+
+    # nodes
+    storage.batch.nodes,
+
+    # node labels
+    storage.batch.nodeLabels,
+
+    # node groups
+    storage.batch.nodeGroups,
+
+    # texts
+    storage.batch.texts
+  ]
+
+  [collection.clear() for collection in all]
 
   # option
   option = context.scene.BatchName
@@ -2345,10 +2472,9 @@ def process(context, collection):
     Process collection, send names to name.
   '''
 
-  if not collection == []:
+  print(collection)
 
-    # count
-    global count
+  if not collection == []:
 
     # option
     option = context.scene.BatchName
@@ -2393,43 +2519,35 @@ def process(context, collection):
     # randomize
     for item in collection[:]:
 
+      # sort
       if option.sort:
         if item[1][0] > 1:
 
-          # name
+          # randomize name
           if hasattr(item[1][1], 'name'):
             item[1][1].name = str(random())
           elif hasattr(item[1][1], 'info'):
             item[1][1].info = str(random())
           elif hasattr(item[1][1], 'bl_label'):
             item[1][1].bl_label = str(random())
-
-          # count
-          count += 1
         elif not option.sortOnly:
 
-          # name
+          # randomize name
           if hasattr(item[1][1], 'name'):
             item[1][1].name = str(random())
           elif hasattr(item[1][1], 'info'):
             item[1][1].info = str(random())
           elif hasattr(item[1][1], 'bl_label'):
             item[1][1].bl_label = str(random())
-
-          # count
-          count += 1
       else:
 
-        # name
+        # randomize name
         if hasattr(item[1][1], 'name'):
           item[1][1].name = str(random())
         elif hasattr(item[1][1], 'info'):
           item[1][1].info = str(random())
         elif hasattr(item[1][1], 'bl_label'):
           item[1][1].bl_label = str(random())
-
-        # count
-        count += 1
 
     # sort
     if option.sort:
@@ -2482,11 +2600,8 @@ def process(context, collection):
     # clear duplicates
     duplicates.clear()
 
-    # clear collection
-    collection.clear()
-
 # name
-def name(context, datablock):
+def name(context, oldName):
   '''
     Name datablocks received from process.
   '''
@@ -2495,7 +2610,7 @@ def name(context, datablock):
   option = context.scene.BatchName
 
   # name check
-  nameCheck = datablock
+  nameCheck = oldName
 
   # custom name
   if option.customName != '':
@@ -2505,7 +2620,7 @@ def name(context, datablock):
   else:
 
     # new name
-    newName = datablock
+    newName = oldName
 
   # trim start
   newName = newName[option.trimStart:]
@@ -2527,4 +2642,4 @@ def name(context, datablock):
   if nameCheck != newName:
     return newName
   else:
-    return datablock
+    return oldName

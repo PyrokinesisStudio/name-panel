@@ -39,7 +39,6 @@ bl_info = {
 
 # imports
 import bpy
-import os
 from bpy.types import AddonPreferences
 from bpy.props import *
 from .scripts import settings as PropertyGroup
@@ -78,7 +77,7 @@ class preferences(AddonPreferences):
       ('TOOLS', 'Tool Shelf', 'Places the Name panel in the tool shelf under the tab labeled \'Name\''),
       ('UI', 'Property Shelf', 'Places the Name panel in the property shelf.')
     ],
-    default = 'UI'
+    default = 'TOOLS'
   )
 
   def draw(self, context):
@@ -119,12 +118,6 @@ def register():
     Register.
   '''
 
-  # remove blender default panel
-  try:
-    bpy.utils.unregister_class(bpy.types.VIEW3D_PT_view3d_name)
-  except:
-    pass
-
   # register module
   bpy.utils.register_module(__name__)
 
@@ -135,6 +128,11 @@ def register():
       if addon.preferences['location'] == 0:
         bpy.utils.unregister_class(panel.UIName)
       else:
+        # remove blender default panel
+        try:
+          bpy.utils.unregister_class(bpy.types.VIEW3D_PT_view3d_name)
+        except:
+          pass
         bpy.utils.unregister_class(panel.toolsName)
     except:
       bpy.utils.unregister_class(panel.toolsName)

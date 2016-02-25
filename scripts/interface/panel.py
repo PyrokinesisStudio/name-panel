@@ -88,7 +88,7 @@ def main(self, context):
   search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
 
   # member
-  member = gather(context, {object.name: [] for object in context.selected_objects[:]})
+  member = gather(context, {object.name: [] for object in context.selected_objects[:]}) if option.search != '' else {}
 
   # pin active object
   if option.pinActiveObject:
@@ -448,7 +448,10 @@ def sort(context, member, object):
       if object.mode in {'POSE', 'EDIT'}:
 
         # constraints
-        constraints = [item.name for item in context.active_pose_bone.constraints[:]] if context.object.mode in 'POSE' else []
+        try:
+          constraints = [item.name for item in context.active_pose_bone.constraints[:]]
+        except:
+          constraints = []
 
         # search
         if search == '' or re.search(search, context.active_bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
@@ -487,7 +490,10 @@ def sort(context, member, object):
             if bone.name != context.active_bone:
 
               # constraints
-              constraints = [constraint.name for constraint in object.pose.bones[bone.name].constraints[:] if hasattr(bone, 'constraints')]
+              try:
+                constraints = [constraint.name for constraint in object.pose.bones[bone.name].constraints[:]]
+              except:
+                constraints = []
 
               # search
               if search == '' or re.search(search, bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:

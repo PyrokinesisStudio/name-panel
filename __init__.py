@@ -121,9 +121,9 @@ def register():
           pass
         bpy.utils.unregister_class(panel.toolsName)
     except:
-      bpy.utils.unregister_class(panel.toolsName)
+      bpy.utils.unregister_class(panel.UIName)
   else:
-    bpy.utils.unregister_class(panel.toolsName)
+    bpy.utils.unregister_class(panel.UIName)
 
   # pointer properties
   # batch auto name settings

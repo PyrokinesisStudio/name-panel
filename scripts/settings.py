@@ -1211,7 +1211,7 @@ class batch:
     # screens
     screens = BoolProperty(
       name = 'Screens',
-      description = 'Name screens.',
+      description = 'Name screens. (No undo support)',
       default = False
     )
 

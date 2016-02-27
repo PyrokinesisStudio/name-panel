@@ -191,7 +191,7 @@ def main(context):
     storage.batch.texts
   ]
 
-  [collection.clear() for collection in all]
+  [collection.clear() for collection in all if collection != []]
 
   # option
   option = context.scene.BatchName

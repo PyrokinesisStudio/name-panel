@@ -1005,7 +1005,7 @@ class batch:
     # groups
     groups = BoolProperty(
       name = 'Groups',
-      description = 'Name object groups. (Use \'Global\' for all)',
+      description = 'Name object groups.',
       default = False
     )
 

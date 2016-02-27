@@ -1005,119 +1005,119 @@ class batch:
     # groups
     groups = BoolProperty(
       name = 'Groups',
-      description = 'Name object groups.',
+      description = 'Name object groups. (Use \'Global\' for all)',
       default = False
     )
 
     # actions
     actions = BoolProperty(
       name = 'Actions',
-      description = 'Name actions.',
+      description = 'Name object actions. (Use \'Global\' for all)',
       default = False
     )
 
     # grease pencil
     greasePencil = BoolProperty(
       name = 'Grease Pencil',
-      description = 'Name grease pencils and layers.',
+      description = 'Name object grease pencils and layers. (Use \'Global\' for all)',
       default = False
     )
 
     # constraints
     constraints = BoolProperty(
       name = 'Object Constraints',
-      description = 'Name constraints.',
+      description = 'Name object constraints.',
       default = False
     )
 
     # modifiers
     modifiers = BoolProperty(
       name = 'Modifiers',
-      description = 'Name modifiers.',
+      description = 'Name object modifiers.',
       default = False
     )
 
     # object data
     objectData = BoolProperty(
       name = 'Object Data',
-      description = 'Name object data.',
+      description = 'Name object data. (Use \'Global\' for all)',
       default = False
     )
 
     # bone groups
     boneGroups = BoolProperty(
       name = 'Bone Groups',
-      description = 'Name bone groups.',
+      description = 'Name armature bone groups.',
       default = False
     )
 
     # bones
     bones = BoolProperty(
       name = 'Bones',
-      description = 'Name bones.',
+      description = 'Name armature bones.',
       default = False
     )
 
     # bone constraints
     boneConstraints = BoolProperty(
       name = 'Bone Constraints',
-      description = 'Name bone constraints.',
+      description = 'Name armature bone constraints.',
       default = False
     )
 
     # vertex groups
     vertexGroups = BoolProperty(
       name = 'Vertex Groups',
-      description = 'Name vertex groups.',
+      description = 'Name object vertex groups.',
       default = False
     )
 
     # shapekeys
     shapekeys = BoolProperty(
       name = 'Shapekeys',
-      description = 'Name shapekeys.',
+      description = 'Name object shapekeys.',
       default = False
     )
 
     # uvs
     uvs = BoolProperty(
       name = 'UV Maps',
-      description = 'Name uv maps.',
+      description = 'Name object uv maps.',
       default = False
     )
 
     # vertex colors
     vertexColors = BoolProperty(
       name = 'Vertex Colors',
-      description = 'Name vertex colors.',
+      description = 'Name object vertex colors.',
       default = False
     )
 
     # materials
     materials = BoolProperty(
       name = 'Materials',
-      description = 'Name materials.',
+      description = 'Name object materials. (Use \'Global\' for all)',
       default = False
     )
 
     # textures
     textures = BoolProperty(
       name = 'Textures',
-      description = 'Name material textures.',
+      description = 'Name object material textures. (Use \'Global\' for all)',
       default = False
     )
 
     # particle systems
     particleSystems = BoolProperty(
       name = 'Particle Systems',
-      description = 'Name particle systems.',
+      description = 'Name object particle systems. (Use \'Global\' for all)',
       default = False
     )
 
     # particle settings
     particleSettings = BoolProperty(
       name = 'Particle Settings',
-      description = 'Name particle settings.',
+      description = 'Name object particle system settings. (Use \'Global\' for all)',
       default = False
     )
 

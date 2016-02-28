@@ -257,7 +257,7 @@ def gather(context, member):
 # sort
 def sort(context, member, object):
   '''
-    Sorts object related datablocks for panel population and feeds batch name operator.
+    Sorts object related datablocks for search panel population.
   '''
 
   # option
@@ -1186,21 +1186,30 @@ def Constraint(self, context, layout, datablock, object, bone, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  # sub.label(text='', icon='CONSTRAINT')
+  try:
 
-  if object.type in 'ARMATURE' and object.mode in 'POSE':
-    prop = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
-    prop.object = object.name
-    prop.bone = bone.name
-    prop.target = datablock.name
+    # experimental
+    if addon.preferences['experimental'] == 1:
+      if object.type in 'ARMATURE' and object.mode in 'POSE':
+        prop = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
+        prop.object = object.name
+        prop.bone = bone.name
+        prop.target = datablock.name
 
-  else:
-    prop = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
-    prop.object = object.name
-    prop.bone = ''
-    prop.target = datablock.name
+      else:
+        prop = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
+        prop.object = object.name
+        prop.bone = ''
+        prop.target = datablock.name
+    else:
 
+      # label
+      sub.label(text='', icon='CONSTRAINT')
+
+  except:
+
+    # label
+    sub.label(text='', icon='CONSTRAINT')
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1248,10 +1257,22 @@ def Modifier(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  prop = sub.operator('view3d.modifier_settings', text='', icon=icon.modifier(datablock), emboss=False)
-  prop.object = object.name
-  prop.target = datablock.name
+  try:
+
+    # experimental
+    if addon.preferences['experimental'] == 1:
+      prop = sub.operator('view3d.modifier_settings', text='', icon=icon.modifier(datablock), emboss=False)
+      prop.object = object.name
+      prop.target = datablock.name
+    else:
+
+      # label
+      sub.label(text='', icon=icon.modifier(datablock))
+
+  except:
+
+    # label
+    sub.label(text='', icon=icon.modifier(datablock))
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1330,13 +1351,24 @@ def VertexGroup(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  # sub.label(text='', icon='GROUP_VERTEX')
+  try:
 
-  # select vertex group
-  prop = sub.operator('object.select_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
-  prop.object = object.name
-  prop.target = datablock.name
+    # experimental
+    if addon.preferences['experimental'] == 1:
+
+      # select vertex group
+      prop = sub.operator('object.select_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
+      prop.object = object.name
+      prop.target = datablock.name
+    else:
+
+      # label
+      sub.label(text='', icon='GROUP_VERTEX')
+
+  except:
+
+    # label
+    sub.label(text='', icon='GROUP_VERTEX')
 
   # name
   row.prop(datablock, 'name', text='')

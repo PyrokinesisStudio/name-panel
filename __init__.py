@@ -55,10 +55,17 @@ class preferences(AddonPreferences):
   '''
   bl_idname = __name__
 
+  # experimental
+  experimental = BoolProperty(
+    name = 'Experimental Features',
+    description = 'Enable experimental features for this addon',
+    default = False
+  )
+
   # location
   location = EnumProperty(
     name = 'Panel Location',
-    description = 'The 3D view shelf to use. (Requires Restart)',
+    description = 'The 3D view shelf to use. (Save user settings and restart Blender)',
     items = [
       ('TOOLS', 'Tool Shelf', 'Places the Name panel in the tool shelf under the tab labeled \'Name\''),
       ('UI', 'Property Shelf', 'Places the Name panel in the property shelf.')
@@ -71,9 +78,11 @@ class preferences(AddonPreferences):
     # layout
     layout = self.layout
 
-    # enable popups
-    # layout.prop(self, 'dialogues')
-    # layout.prop(self, 'popups')
+    # experimental
+    layout.prop(self, 'experimental')
+
+    # label
+    layout.label(text='Location:')
 
     # row
     row = layout.row()

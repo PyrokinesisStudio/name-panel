@@ -199,6 +199,8 @@ class batch:
     ]
 
   # lists
+
+  # structure
   # list = [
   #  [datablock.name, [count, datablock]
   # ]

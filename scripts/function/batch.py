@@ -2724,13 +2724,23 @@ def process(context, collection):
       for item in collection[:]:
         if item[0] not in duplicates:
 
+          # suffix last
+          if option.suffixLast:
+
+            # rename
+            rename = item[0] + option.suffix
+          else:
+
+            # rename
+            rename = item[0]
+
           # name
           if hasattr(item[1][1], 'name'):
-            item[1][1].name = item[0]
+            item[1][1].name = rename
           elif hasattr(item[1][1], 'info'):
-            item[1][1].info = item[0]
+            item[1][1].info = rename
           elif hasattr(item[1][1], 'bl_label'):
-            item[1][1].bl_label = item[0]
+            item[1][1].bl_label = rename
 
     # clear counter
     counter.clear()

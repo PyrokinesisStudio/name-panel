@@ -59,139 +59,6 @@ def main(context):
   global tag
 
   # all collections
-  all = [
-
-    # objects
-    storage.batch.objects,
-
-    # groups
-    storage.batch.groups,
-
-    # actions
-    storage.batch.actions,
-
-    # grease pencils
-    storage.batch.greasePencils,
-
-    # pencil layers
-    storage.batch.pencilLayers,
-
-    # constraints
-    storage.batch.constraints,
-
-    # modifiers
-    storage.batch.modifiers,
-
-    # cameras
-    storage.batch.cameras,
-
-    # meshes
-    storage.batch.meshes,
-
-    # curves
-    storage.batch.curves,
-
-    # lamps
-    storage.batch.lamps,
-
-    # lattices
-    storage.batch.lattices,
-
-    # metaballs
-    storage.batch.metaballs,
-
-    # speakers
-    storage.batch.speakers,
-
-    # armatures
-    storage.batch.armatures,
-
-    # bone groups
-    storage.batch.boneGroups,
-
-    # bones
-    storage.batch.bones,
-
-    # vertex groups
-    storage.batch.vertexGroups,
-
-    # shapekeys
-    storage.batch.shapekeys,
-
-    # uvs
-    storage.batch.uvs,
-
-    # vertex colors
-    storage.batch.vertexColors,
-
-    # materials
-    storage.batch.materials,
-
-    # textures
-    storage.batch.textures,
-
-    # particle systems
-    storage.batch.particleSystems,
-
-    # particle settings
-    storage.batch.particleSettings,
-
-    # scenes
-    storage.batch.scenes,
-
-    # render layers
-    storage.batch.renderLayers,
-
-    # worlds
-    storage.batch.worlds,
-
-    # libraries
-    storage.batch.libraries,
-
-    # images
-    storage.batch.images,
-
-    # masks
-    storage.batch.masks,
-
-    # sequences
-    storage.batch.sequences,
-
-    # movie clips
-    storage.batch.movieClips,
-
-    # sounds
-    storage.batch.sounds,
-
-    # screens
-    storage.batch.screens,
-
-    # keying sets
-    storage.batch.keyingSets,
-
-    # palettes
-    storage.batch.palettes,
-
-    # brushes
-    storage.batch.brushes,
-
-    # linestyles
-    storage.batch.linestyles,
-
-    # nodes
-    storage.batch.nodes,
-
-    # node labels
-    storage.batch.nodeLabels,
-
-    # node groups
-    storage.batch.nodeGroups,
-
-    # texts
-    storage.batch.texts
-  ]
-
-  [collection.clear() for collection in all if collection != []]
 
   # option
   option = context.scene.BatchName
@@ -236,6 +103,9 @@ def main(context):
 
       # process
       process(context, storage.batch.objects)
+
+      # clear collection
+      storage.batch.objects.clear()
 
     # groups
     if option.groups:
@@ -457,11 +327,17 @@ def main(context):
           # process
           process(context, storage.batch.pencilLayers)
 
+          # clear collection
+          storage.batch.pencilLayers.clear()
+
       # clear shared
       shared.greasePencils.clear()
 
       # process
       process(context, storage.batch.greasePencils)
+
+      # clear collection
+      storage.batch.greasePencils.clear()
 
     # constraints
     if option.constraints:
@@ -503,6 +379,9 @@ def main(context):
         # process
         process(context, storage.batch.constraints)
 
+        # clear collection
+        storage.batch.constraints.clear()
+
     # modifiers
     if option.modifiers:
       for object in bpy.data.objects[:]:
@@ -542,6 +421,9 @@ def main(context):
 
         # process
         process(context, storage.batch.modifiers)
+
+        # clear collection
+        storage.batch.modifiers.clear()
 
     # object data
     if option.objectData:
@@ -659,6 +541,9 @@ def main(context):
         # process
         process(context, storage.batch.boneGroups)
 
+        # clear collection
+        storage.batch.boneGroups.clear()
+
     # bones
     if option.bones:
       for object in bpy.data.objects[:]:
@@ -704,6 +589,9 @@ def main(context):
           # process
           process(context, storage.batch.bones)
 
+          # clear collection
+          storage.batch.bones.clear()
+
     # bone constraints
     if option.boneConstraints:
       for object in bpy.data.objects[:]:
@@ -731,6 +619,9 @@ def main(context):
                   # process
                   process(context, storage.batch.constraints)
 
+                  # clear collection
+                  storage.batch.constraints.clear()
+
           # batch type
           else:
             for bone in object.pose.bones[:]:
@@ -750,6 +641,9 @@ def main(context):
 
               # process
               process(context, storage.batch.constraints)
+
+              # clear collection
+              storage.batch.constraints.clear()
 
     # vertex groups
     if option.vertexGroups:
@@ -776,6 +670,9 @@ def main(context):
               # process
               process(context, storage.batch.vertexGroups)
 
+              # clear collection
+              storage.batch.vertexGroups.clear()
+
           # batch type
           else:
             for group in object.vertex_groups[:]:
@@ -794,6 +691,9 @@ def main(context):
 
             # process
             process(context, storage.batch.vertexGroups)
+
+            # clear collection
+            storage.batch.vertexGroups.clear()
 
 
     # shapekeys
@@ -838,6 +738,9 @@ def main(context):
             # process
             process(context, storage.batch.shapekeys)
 
+            # clear collection
+            storage.batch.shapekeys.clear()
+
     # uvs
     if option.uvs:
       for object in bpy.data.objects[:]:
@@ -861,6 +764,9 @@ def main(context):
           # process
           process(context, storage.batch.uvs)
 
+          # clear collection
+          storage.batch.uvs.clear()
+
     # vertex colors
     if option.vertexColors:
       for object in bpy.data.objects[:]:
@@ -883,6 +789,9 @@ def main(context):
 
           # process
           process(context, storage.batch.vertexColors)
+
+          # clear collection
+          storage.batch.vertexColors.clear()
 
     # materials
     if option.materials:
@@ -946,6 +855,9 @@ def main(context):
 
       # process
       process(context, storage.batch.materials)
+
+      # clear collection
+      storage.batch.materials.clear()
 
     # textures
     if option.textures:
@@ -1073,6 +985,9 @@ def main(context):
       # process
       process(context, storage.batch.textures)
 
+      # clear collection
+      storage.batch.textures.clear()
+
     # particle systems
     if option.particleSystems:
       for object in bpy.data.objects[:]:
@@ -1113,6 +1028,9 @@ def main(context):
 
           # process
           process(context, storage.batch.particleSystems)
+
+          # clear collection
+          storage.batch.particleSystems.clear()
 
     # particle settings
     if option.particleSettings:
@@ -1194,6 +1112,9 @@ def main(context):
       # process
       process(context, storage.batch.particleSettings)
 
+      # clear collection
+      storage.batch.particleSettings.clear()
+
   # batch type
   if option.batchType in 'SCENE':
 
@@ -1215,6 +1136,9 @@ def main(context):
 
       # process
       process(context, storage.batch.objects)
+
+      # clear collection
+      storage.batch.objects.clear()
 
     # groups
     if option.groups:
@@ -1332,11 +1256,17 @@ def main(context):
           # process
           process(context, storage.batch.pencilLayers)
 
+          # clear collection
+          storage.batch.pencilLayers.clear()
+
       # clear shared
       shared.greasePencils.clear()
 
       # process
       process(context, storage.batch.greasePencils)
+
+      # clear collection
+      storage.batch.greasePencils.clear()
 
     # constraints
     if option.constraints:
@@ -1358,6 +1288,9 @@ def main(context):
         # process
         process(context, storage.batch.constraints)
 
+        # clear collection
+        storage.batch.constraints.clear()
+
     # modifiers
     if option.modifiers:
       for object in context.scene.objects[:]:
@@ -1377,6 +1310,9 @@ def main(context):
 
         # process
         process(context, storage.batch.modifiers)
+
+        # clear collection
+        storage.batch.modifiers.clear()
 
     # object data
     if option.objectData:
@@ -1444,6 +1380,9 @@ def main(context):
         # process
         process(context, storage.batch.boneGroups)
 
+        # clear collection
+        storage.batch.boneGroups.clear()
+
     # bones
     if option.bones:
       for object in context.scene.objects[:]:
@@ -1465,6 +1404,9 @@ def main(context):
 
           # process
           process(context, storage.batch.bones)
+
+          # clear collection
+          storage.batch.bones.clear()
 
     # bone constraints
     if option.boneConstraints:
@@ -1488,6 +1430,9 @@ def main(context):
             # process
             process(context, storage.batch.constraints)
 
+            # clear collection
+            storage.batch.constraints.clear()
+
     # vertex groups
     if option.vertexGroups:
       for object in context.scene.objects[:]:
@@ -1508,6 +1453,9 @@ def main(context):
 
           # process
           process(context, storage.batch.vertexGroups)
+
+          # clear collection
+          storage.batch.vertexGroups.clear()
 
     # shapekeys
     if option.shapekeys:
@@ -1531,6 +1479,9 @@ def main(context):
             # process
             process(context, storage.batch.shapekeys)
 
+            # clear collection
+            storage.batch.shapekeys.clear()
+
     # uvs
     if option.uvs:
       for object in context.scene.objects[:]:
@@ -1543,6 +1494,9 @@ def main(context):
           # process
           process(context, storage.batch.uvs)
 
+          # clear collection
+          storage.batch.uvs.clear()
+
     # vertex colors
     if option.vertexColors:
       for object in context.scene.objects[:]:
@@ -1554,6 +1508,9 @@ def main(context):
 
           # process
           process(context, storage.batch.vertexColors)
+
+          # clear collection
+          storage.batch.vertexColors.clear()
 
     # materials
     if option.materials:
@@ -1587,6 +1544,9 @@ def main(context):
 
       # process
       process(context, storage.batch.materials)
+
+      # clear collection
+      storage.batch.materials.clear()
 
     # textures
     if option.textures:
@@ -1653,6 +1613,9 @@ def main(context):
       # process
       process(context, storage.batch.textures)
 
+      # clear collection
+      storage.batch.textures.clear()
+
     # particle systems
     if option.particleSystems:
       for object in context.scene.objects[:]:
@@ -1673,6 +1636,9 @@ def main(context):
 
           # process
           process(context, storage.batch.particleSystems)
+
+          # clear collection
+          storage.batch.particleSystems.clear()
 
     # particle settings
     if option.particleSettings:
@@ -1716,6 +1682,9 @@ def main(context):
       # process
       process(context, storage.batch.particleSettings)
 
+      # clear collection
+      storage.batch.particleSettings.clear()
+
   # batch type
   elif option.batchType in 'GLOBAL':
 
@@ -1729,6 +1698,9 @@ def main(context):
       # process
       process(context, storage.batch.objects)
 
+      # clear collection
+      storage.batch.objects.clear()
+
     # groups
     if option.groups:
       for group in bpy.data.groups[:]:
@@ -1739,6 +1711,9 @@ def main(context):
       # process
       process(context, storage.batch.groups)
 
+      # clear collection
+      storage.batch.groups.clear()
+
     # actions
     if option.actions:
       for action in bpy.data.actions[:]:
@@ -1748,6 +1723,9 @@ def main(context):
 
       # process
       process(context, storage.batch.actions)
+
+      # clear collection
+      storage.batch.actions.clear()
 
     # grease pencil
     if option.greasePencil:
@@ -1764,7 +1742,13 @@ def main(context):
 
       # process
       process(context, storage.batch.pencilLayers)
+
+      # clear collection
+      storage.batch.pencilLayers.clear()
       process(context, storage.batch.greasePencils)
+
+      # clear collection
+      storage.batch.greasePencils.clear()
 
     # constraints
     if option.constraints:
@@ -1777,6 +1761,9 @@ def main(context):
         # process
         process(context, storage.batch.constraints)
 
+        # clear collection
+        storage.batch.constraints.clear()
+
     # modifiers
     if option.modifiers:
       for object in bpy.data.objects[:]:
@@ -1787,6 +1774,9 @@ def main(context):
 
         # process
         process(context, storage.batch.modifiers)
+
+        # clear collection
+        storage.batch.modifiers.clear()
 
     # object data
     if option.objectData:
@@ -1800,6 +1790,9 @@ def main(context):
       # process
       process(context, storage.batch.cameras)
 
+      # clear collection
+      storage.batch.cameras.clear()
+
       # meshes
       for mesh in bpy.data.meshes[:]:
 
@@ -1808,6 +1801,9 @@ def main(context):
 
       # process
       process(context, storage.batch.meshes)
+
+      # clear collection
+      storage.batch.meshes.clear()
 
       # curves
       for curve in bpy.data.curves[:]:
@@ -1818,6 +1814,9 @@ def main(context):
       # process
       process(context, storage.batch.curves)
 
+      # clear collection
+      storage.batch.curves.clear()
+
       # lamps
       for lamp in bpy.data.lamps[:]:
 
@@ -1826,6 +1825,9 @@ def main(context):
 
       # process
       process(context, storage.batch.lamps)
+
+      # clear collection
+      storage.batch.lamps.clear()
 
       # lattices
       for lattice in bpy.data.lattices[:]:
@@ -1836,6 +1838,9 @@ def main(context):
       # process
       process(context, storage.batch.lattices)
 
+      # clear collection
+      storage.batch.lattices.clear()
+
       # metaballs
       for metaball in bpy.data.metaballs[:]:
 
@@ -1844,6 +1849,9 @@ def main(context):
 
       # process
       process(context, storage.batch.metaballs)
+
+      # clear collection
+      storage.batch.metaballs.clear()
 
       # speakers
       for speaker in bpy.data.speakers[:]:
@@ -1854,6 +1862,9 @@ def main(context):
       # process
       process(context, storage.batch.speakers)
 
+      # clear collection
+      storage.batch.speakers.clear()
+
       # armatures
       for armature in bpy.data.armatures[:]:
 
@@ -1862,6 +1873,9 @@ def main(context):
 
       # process
       process(context, storage.batch.armatures)
+
+      # clear collection
+      storage.batch.armatures.clear()
 
     # bone groups
     if option.boneGroups:
@@ -1875,6 +1889,9 @@ def main(context):
           # process
           process(context, storage.batch.boneGroups)
 
+          # clear collection
+          storage.batch.boneGroups.clear()
+
     # bones
     if option.bones:
       for armature in bpy.data.armatures[:]:
@@ -1885,6 +1902,9 @@ def main(context):
 
         # process
         process(context, storage.batch.bones)
+
+        # clear collection
+        storage.batch.bones.clear()
 
     # bone constraints
     if option.boneConstraints:
@@ -1899,6 +1919,9 @@ def main(context):
             # process
             process(context, storage.batch.constraints)
 
+            # clear collection
+            storage.batch.constraints.clear()
+
     # vertex groups
     if option.vertexGroups:
       for object in bpy.data.objects[:]:
@@ -1910,6 +1933,9 @@ def main(context):
 
           # process
           process(context, storage.batch.vertexGroups)
+
+          # clear collection
+          storage.batch.vertexGroups.clear()
 
     # shape keys
     if option.shapekeys:
@@ -1925,6 +1951,9 @@ def main(context):
           # process
           process(context, storage.batch.shapekeys)
 
+          # clear collection
+          storage.batch.shapekeys.clear()
+
     # uvs
     if option.uvs:
       for object in bpy.data.objects[:]:
@@ -1936,6 +1965,9 @@ def main(context):
 
           # process
           process(context, storage.batch.uvs)
+
+          # clear collection
+          storage.batch.uvs.clear()
 
     # vertex colors
     if option.vertexColors:
@@ -1949,6 +1981,9 @@ def main(context):
           # process
           process(context, storage.batch.vertexColors)
 
+          # clear collection
+          storage.batch.vertexColors.clear()
+
     # materials
     if option.materials:
       for material in bpy.data.materials[:]:
@@ -1959,6 +1994,9 @@ def main(context):
       # process
       process(context, storage.batch.materials)
 
+      # clear collection
+      storage.batch.materials.clear()
+
     # textures
     if option.textures:
       for texture in bpy.data.textures[:]:
@@ -1968,6 +2006,9 @@ def main(context):
 
       # process
       process(context, storage.batch.textures)
+
+      # clear collection
+      storage.batch.textures.clear()
 
     # particles systems
     if option.particleSystems:
@@ -1981,6 +2022,9 @@ def main(context):
           # process
           process(context, storage.batch.particleSystems)
 
+          # clear collection
+          storage.batch.particleSystems.clear()
+
     # particles settings
     if option.particleSettings:
       for settings in bpy.data.particles[:]:
@@ -1991,6 +2035,9 @@ def main(context):
       # process
       process(context, storage.batch.particleSettings)
 
+      # clear collection
+      storage.batch.particleSettings.clear()
+
   # scenes
   if option.scenes:
     for scene in bpy.data.scenes[:]:
@@ -2000,6 +2047,9 @@ def main(context):
 
     # process
     process(context, storage.batch.scenes)
+
+    # clear collection
+    storage.batch.scenes.clear()
 
   # render layers
   if option.renderLayers:
@@ -2012,6 +2062,9 @@ def main(context):
       # process
       process(context, storage.batch.renderLayers)
 
+      # clear collection
+      storage.batch.renderLayers.clear()
+
   # worlds
   if option.worlds:
     for world in bpy.data.worlds[:]:
@@ -2021,6 +2074,9 @@ def main(context):
 
     # process
     process(context, storage.batch.worlds)
+
+    # clear collection
+    storage.batch.worlds.clear()
 
   # libraries
   if option.libraries:
@@ -2032,6 +2088,9 @@ def main(context):
     # process
     process(context, storage.batch.libraries)
 
+    # clear collection
+    storage.batch.libraries.clear()
+
   # images
   if option.images:
     for image in bpy.data.images[:]:
@@ -2042,6 +2101,9 @@ def main(context):
     # process
     process(context, storage.batch.images)
 
+    # clear collection
+    storage.batch.images.clear()
+
   # masks
   if option.masks:
     for mask in bpy.data.masks[:]:
@@ -2051,6 +2113,9 @@ def main(context):
 
     # process
     process(context, storage.batch.masks)
+
+    # clear collection
+    storage.batch.masks.clear()
 
   # sequences
   if option.sequences:
@@ -2064,6 +2129,9 @@ def main(context):
         # process
         process(context, storage.batch.sequences)
 
+        # clear collection
+        storage.batch.sequences.clear()
+
   # movie clips
   if option.movieClips:
     for clip in bpy.data.movieclips[:]:
@@ -2073,6 +2141,9 @@ def main(context):
 
     # process
     process(context, storage.batch.movieClips)
+
+    # clear collection
+    storage.batch.movieClips.clear()
 
   # sounds
   if option.sounds:
@@ -2084,6 +2155,9 @@ def main(context):
     # process
     process(context, storage.batch.sounds)
 
+    # clear collection
+    storage.batch.sounds.clear()
+
   # screens
   if option.screens:
     for screen in bpy.data.screens[:]:
@@ -2093,6 +2167,9 @@ def main(context):
 
     # process
     process(context, storage.batch.screens)
+
+    # clear collection
+    storage.batch.screens.clear()
 
   # keying sets
   if option.keyingSets:
@@ -2105,6 +2182,9 @@ def main(context):
       # process
       process(context, storage.batch.keyingSets)
 
+      # clear collection
+      storage.batch.keyingSets.clear()
+
   # palettes
   if option.palettes:
     for palette in bpy.data.palettes[:]:
@@ -2114,6 +2194,9 @@ def main(context):
 
     # process
     process(context, storage.batch.palettes)
+
+    # clear collection
+    storage.batch.palettes.clear()
 
   # brushes
   if option.brushes:
@@ -2125,6 +2208,9 @@ def main(context):
     # process
     process(context, storage.batch.brushes)
 
+    # clear collection
+    storage.batch.brushes.clear()
+
   # line styles
   if option.linestyles:
     for style in bpy.data.linestyles[:]:
@@ -2134,6 +2220,9 @@ def main(context):
 
     # process
     process(context, storage.batch.linestyles)
+
+    # clear collection
+    storage.batch.linestyles.clear()
 
   # nodes
   if option.nodes:
@@ -2149,6 +2238,9 @@ def main(context):
         # process
         process(context, storage.batch.nodes)
 
+        # clear collection
+        storage.batch.nodes.clear()
+
     # compositing
     for scene in bpy.data.scenes[:]:
       if hasattr(scene.node_tree, 'nodes'):
@@ -2159,6 +2251,9 @@ def main(context):
 
         # process
         process(context, storage.batch.nodes)
+
+        # clear collection
+        storage.batch.nodes.clear()
 
     # texture
     for texture in bpy.data.textures[:]:
@@ -2171,6 +2266,9 @@ def main(context):
         # process
         process(context, storage.batch.nodes)
 
+        # clear collection
+        storage.batch.nodes.clear()
+
     # groups
     for group in bpy.data.node_groups[:]:
       for node in group.nodes[:]:
@@ -2180,6 +2278,9 @@ def main(context):
 
       # process
       process(context, storage.batch.nodes)
+
+      # clear collection
+      storage.batch.nodes.clear()
 
   # node labels
   if option.nodeLabels:
@@ -2198,6 +2299,9 @@ def main(context):
         # process
         process(context, storage.batch.nodeLabels)
 
+        # clear collection
+        storage.batch.nodeLabels.clear()
+
     # compositing
     for scene in bpy.data.scenes[:]:
       if hasattr(scene.node_tree, 'nodes'):
@@ -2208,6 +2312,9 @@ def main(context):
 
         # process
         process(context, storage.batch.nodeLabels)
+
+        # clear collection
+        storage.batch.nodeLabels.clear()
 
     # texture
     for texture in bpy.data.textures[:]:
@@ -2220,6 +2327,9 @@ def main(context):
         # process
         process(context, storage.batch.nodeLabels)
 
+        # clear collection
+        storage.batch.nodeLabels.clear()
+
     # groups
     for group in bpy.data.node_groups[:]:
       for node in group.nodes[:]:
@@ -2229,6 +2339,9 @@ def main(context):
 
       # process
       process(context, storage.batch.nodeLabels)
+
+      # clear collection
+      storage.batch.nodeLabels.clear()
 
     # batch tag
     tag = False
@@ -2243,6 +2356,9 @@ def main(context):
     # process
     process(context, storage.batch.nodeGroups)
 
+    # clear collection
+    storage.batch.nodeGroups.clear()
+
   # texts
   if option.texts:
     for text in bpy.data.texts[:]:
@@ -2252,6 +2368,9 @@ def main(context):
 
     # process
     process(context, storage.batch.texts)
+
+    # clear collection
+    storage.batch.texts.clear()
 
 # sort
 def sort(context, datablock):

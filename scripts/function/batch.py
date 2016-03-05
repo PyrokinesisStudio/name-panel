@@ -2695,13 +2695,23 @@ def process(context, collection):
           # duplicates
           if collection[item[1]][0] not in duplicates:
 
+            # suffix last
+            if option.suffixLast:
+
+              # rename
+              rename = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0]))) + option.suffix
+            else:
+
+              # rename
+              rename = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
+
             # name
             if hasattr(collection[item[1]][1][1], 'name'):
-              collection[item[1]][1][1].name = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
+              collection[item[1]][1][1].name = rename
             elif hasattr(collection[item[1]][1][1], 'info'):
-              collection[item[1]][1][1].info = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
+              collection[item[1]][1][1].info = rename
             elif hasattr(collection[item[1]][1][1], 'bl_label'):
-              collection[item[1]][1][1].bl_label = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
+              collection[item[1]][1][1].bl_label = rename
             i += 1
           if i == collection[item[1]][1][0]:
             i = 0
@@ -2767,7 +2777,7 @@ def name(context, oldName):
     newName = re.sub(re.escape(option.find), option.replace, newName)
 
   # prefix & suffix
-  newName = option.prefix + newName + option.suffix
+  newName = option.prefix + newName + option.suffix if not option.suffixLast else option.prefix + newName
 
   # name check
   if nameCheck != newName:

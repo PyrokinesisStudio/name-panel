@@ -1308,6 +1308,13 @@ class batch:
       description = 'Place this text at the end of the name.'
     )
 
+    # suffix last
+    suffixLast = BoolProperty(
+      name = 'Suffix Last',
+      description = 'Force the suffix to be placed last even when recounting duplicate names.',
+      default = False
+    )
+
     # trim start
     trimStart = IntProperty(
       name = 'Trim Start',

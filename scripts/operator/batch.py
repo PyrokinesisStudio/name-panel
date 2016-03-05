@@ -125,22 +125,12 @@ class name(Operator):
 
     # input fields
 
-    # row
-    row = column.row()
-    row.separator()
-    row = column.row()
-    row.separator()
-    row = column.row()
-    row.separator()
-    row = column.row()
-    row.separator()
-    row = column.row()
-    row.separator()
-    row = column.row()
-    row.separator()
+    column.separator()
+    column.separator()
 
     # custom name
     column.prop(option, 'customName')
+    column.separator()
     column.separator()
 
     # find
@@ -157,13 +147,19 @@ class name(Operator):
     # replace
     column.prop(option, 'replace', icon='FILE_REFRESH')
     column.separator()
+    column.separator()
 
     # prefix
     column.prop(option, 'prefix', icon='LOOP_BACK')
     column.separator()
 
+    # row
+    row = column.row(align=True)
+
     # suffix
-    column.prop(option, 'suffix', icon='LOOP_FORWARDS')
+    row.prop(option, 'suffix', icon='LOOP_FORWARDS')
+    row.prop(option, 'suffixLast', text='', icon='FORWARD')
+    column.separator()
     column.separator()
     row = column.row()
 
@@ -176,14 +172,10 @@ class name(Operator):
     # trim end
     row.label(text='Trim End:')
     row.prop(option, 'trimEnd', text='')
-
-    # row
-    row = column.row()
-
-    # separator
-    row.separator()
+    column.separator()
 
     # sort duplicates
+    column.separator()
 
     # row
     row = column.row(align=True)

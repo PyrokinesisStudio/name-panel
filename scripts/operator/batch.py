@@ -97,6 +97,9 @@ class name(Operator):
     # column
     column = layout.column(align=True)
 
+    # label
+    column.label(text='Global:')
+
     # row 1
     row = column.row(align=True)
     row.scale_x = 5 # hack: forces buttons to line up correctly
@@ -125,6 +128,9 @@ class name(Operator):
 
     # input fields
 
+    # separators
+    column.separator()
+    column.separator()
     column.separator()
     column.separator()
 

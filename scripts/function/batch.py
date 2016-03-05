@@ -511,10 +511,15 @@ def main(context):
         storage.batch.speakers,
         storage.batch.armatures
       ]
+
+      # process collection
       for collection in objectData:
 
         # process
         process(context, collection)
+
+        # clear collection
+        collection.clear()
 
     # bone groups
     if option.boneGroups:
@@ -2409,7 +2414,7 @@ def sort(context, datablock):
       storage.batch.pencilLayers.append([datablock.info, [1, datablock]])
 
   # constraints
-  if option.constraints:
+  if option.constraints or option.boneConstraints:
     if hasattr(datablock.rna_type.base, 'identifier'):
       if datablock.rna_type.base.identifier == 'Constraint':
         storage.batch.constraints.append([datablock.name, [1, datablock]])

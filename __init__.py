@@ -43,7 +43,7 @@ from bpy.types import AddonPreferences
 from bpy.props import *
 from .scripts import settings as PropertyGroup
 from .scripts.interface import button, icon, menu, panel
-from .scripts.operator import active, auto, batch, copy, shortcuts, select, settings, text
+from .scripts.operator import auto, batch, copy, icon, settings, text
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__)

@@ -47,7 +47,8 @@ class object(Operator):
   # properties
   properties = BoolProperty(
     name = 'Properties',
-    description = 'Change any property window\'s context to object.'
+    description = 'Change any property window\'s context to object.',
+    default = True
   )
 
   # poll
@@ -107,7 +108,7 @@ class bone(Operator):
   properties = BoolProperty(
     name = 'Properties',
     description = 'Change any property window\s context to bone.',
-    default = False
+    default = True
   )
 
   # poll
@@ -204,7 +205,7 @@ class vertexGroup(Operator):
   properties = BoolProperty(
     name = 'Properties',
     description = 'Change any property window\'s context to mesh data',
-    default = False
+    default = True
   )
 
   # poll
@@ -321,7 +322,7 @@ class constraint(ConstraintButtons, Operator):
   properties = BoolProperty(
     name = 'Properties',
     description = 'Change any property window\'s context to constraint',
-    default = False
+    default = True
   )
 
   # poll
@@ -408,7 +409,7 @@ class modifier(ModifierButtons, Operator):
   properties = BoolProperty(
     name = 'Properties',
     description = 'Change any property window\'s context to modifier',
-    default = False
+    default = True
   )
 
   # poll

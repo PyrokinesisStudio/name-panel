@@ -22,8 +22,8 @@ import bpy
 import bmesh
 from bpy.types import Operator
 from bpy.props import BoolProperty, StringProperty
-from ..interface.pop-ups.constraints import ConstraintButtons
-from ..interface.pop-ups.modifiers import ModifierButtons
+from ..interface.popup.constraints import ConstraintButtons
+from ..interface.popup.modifiers import ModifierButtons
 
 # active
 
@@ -163,7 +163,7 @@ class bone(Operator):
     if self.properties:
       for area in context.screen.areas:
         if area.type in 'PROPERTIES':
-          area.space.active.context = 'BONE'
+          area.spaces.active.context = 'BONE'
 
     return {'FINISHED'}
 
@@ -281,7 +281,7 @@ class vertexGroup(Operator):
     if self.properties:
       for area in context.screen.areas:
         if area.type in 'PROPERTIES':
-          area.space.active.context = 'DATA'
+          area.spaces.active.context = 'DATA'
 
     return {'FINISHED'}
 
@@ -365,11 +365,11 @@ class constraint(ConstraintButtons, Operator):
       for area in context.screen.areas:
         if area.type in 'PROPERTIES':
           if self.bone == '':
-            area.space.active.context = 'CONSTRAINT'
+            area.spaces.active.context = 'CONSTRAINT'
           elif context.mode == 'POSE':
-            area.space.active.context = 'BONE_CONSTRAINT'
+            area.spaces.active.context = 'BONE_CONSTRAINT'
           else:
-            area.space.active.context = 'CONSTRAINT'
+            area.spaces.active.context = 'CONSTRAINT'
     return {'FINISHED'}
 
   # invoke
@@ -448,7 +448,7 @@ class modifier(ModifierButtons, Operator):
     if self.properties:
       for area in context.screen.areas:
         if area.type in 'PROPERTIES':
-          area.space.active.context = 'MODIFIER'
+          area.spaces.active.context = 'MODIFIER'
 
     return {'FINISHED'}
 

@@ -99,17 +99,17 @@ class name(Operator):
     # column
     column = layout.column(align=True)
 
-    # label
-    column.label(text='Freestyle:')
-
-    # row
-    row = column.row(align=True)
-    row.prop(option, 'linestyles', text='', icon='LINE_DATA')
-    row.prop(option, 'modifiers', text='', icon='MODIFIER')
-    row.prop(option, 'modifierType', text='')
-
-    # column
-    column = layout.column(align=True)
+    # # label
+    # column.label(text='Freestyle:')
+    #
+    # # row
+    # row = column.row(align=True)
+    # row.prop(option, 'linestyles', text='', icon='LINE_DATA')
+    # row.prop(option, 'modifiers', text='', icon='MODIFIER')
+    # row.prop(option, 'modifierType', text='')
+    #
+    # # column
+    # column = layout.column(align=True)
 
     # label
     column.label(text='Global:')

@@ -132,6 +132,7 @@ class name(Operator):
     row.scale_x = 5 # hack: forces buttons to line up correctly
     row.prop(option, 'screens', text='', icon='SPLITSCREEN')
     row.prop(option, 'keyingSets', text='', icon='KEYINGSET')
+    row.prop(option, 'linestyles', text='', icon='LINE_DATA')
     row.prop(option, 'palettes', text='', icon='COLOR')
     row.prop(option, 'brushes', text='', icon='BRUSH_DATA')
     row.prop(option, 'nodes', text='', icon='NODE_SEL')

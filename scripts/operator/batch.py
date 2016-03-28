@@ -65,10 +65,10 @@ class name(Operator):
     # row 1
     row = column.row(align=True)
     row.scale_x = 5 # hack: forces buttons to line up correctly
-    row.prop(option, 'objects', text='', icon='OBJECT_DATA')
-    row.prop(option, 'groups', text='', icon='GROUP')
     row.prop(option, 'actions', text='', icon='ACTION')
     row.prop(option, 'greasePencil', text='', icon='GREASEPENCIL')
+    row.prop(option, 'objects', text='', icon='OBJECT_DATA')
+    row.prop(option, 'groups', text='', icon='GROUP')
     row.prop(option, 'constraints', text='', icon='CONSTRAINT')
     row.prop(option, 'modifiers', text='', icon='MODIFIER')
     row.prop(option, 'objectData', text='', icon='MESH_DATA')
@@ -79,6 +79,8 @@ class name(Operator):
     # row 2
     row = column.row(align=True)
     row.scale_x = 5 # hack: forces buttons to line up correctly
+    row.prop(option, 'actionGroups', text='', icon='NLA')
+    row.prop(option, 'pencilLayers', text='', icon='OOPS')
     row.prop(option, 'vertexGroups', text='', icon='GROUP_VERTEX')
     row.prop(option, 'shapekeys', text='', icon='SHAPEKEY_DATA')
     row.prop(option, 'uvs', text='', icon='GROUP_UVS')
@@ -93,6 +95,18 @@ class name(Operator):
     column.prop(option, 'objectType', text='')
     column.prop(option, 'constraintType', text='')
     column.prop(option, 'modifierType', text='')
+
+    # column
+    column = layout.column(align=True)
+
+    # label
+    column.label(text='Freestyle:')
+
+    # row
+    row = column.row(align=True)
+    row.prop(option, 'linestyles', text='', icon='LINE_DATA')
+    row.prop(option, 'modifiers', text='', icon='MODIFIER')
+    row.prop(option, 'modifierType', text='')
 
     # column
     column = layout.column(align=True)
@@ -120,15 +134,12 @@ class name(Operator):
     row.prop(option, 'keyingSets', text='', icon='KEYINGSET')
     row.prop(option, 'palettes', text='', icon='COLOR')
     row.prop(option, 'brushes', text='', icon='BRUSH_DATA')
-    row.prop(option, 'linestyles', text='', icon='LINE_DATA')
     row.prop(option, 'nodes', text='', icon='NODE_SEL')
     row.prop(option, 'nodeLabels', text='', icon='NODE')
     row.prop(option, 'nodeGroups', text='', icon='NODETREE')
     row.prop(option, 'texts', text='', icon='TEXT')
 
     # input fields
-
-    # separators
     column.separator()
     column.separator()
     column.separator()

@@ -52,112 +52,17 @@ class shared:
 # main
 def main(context):
   '''
-    Process quick batch or send datablock values to sort then send collections to proces.
+    Send datablock values to sort then send collections to process, action group names are sent to name.
   '''
 
   # tag
   global tag
-
-  # all collections
 
   # option
   option = context.scene.BatchName
 
   # batch type
   if option.batchType in {'SELECTED', 'OBJECTS'}:
-
-    # objects
-    if option.objects:
-      for object in bpy.data.objects[:]:
-
-        # batch type
-        if option.batchType in 'SELECTED':
-          if object.select:
-
-            # object type
-            if option.objectType in 'ALL':
-
-              # sort
-              sort(context, object)
-
-            # object type
-            elif option.objectType in object.type:
-
-              # sort
-              sort(context, object)
-
-        # batch type
-        else:
-
-          # object type
-          if option.objectType in 'ALL':
-
-            # sort
-            sort(context, object)
-
-          # object type
-          elif option.objectType in object.type:
-
-            # sort
-            sort(context, object)
-
-      # process
-      process(context, storage.batch.objects)
-
-      # clear collection
-      storage.batch.objects.clear()
-
-    # groups
-    if option.groups:
-      for object in bpy.data.objects[:]:
-
-        # batch type
-        if option.batchType in 'SELECTED':
-          if object.select:
-
-            # object type
-            if option.objectType in 'ALL':
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
-
-                  # sort
-                  sort(context, group)
-
-
-            # object type
-            elif option.objectType in object.type:
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
-
-                  # sort
-                  sort(context, group)
-
-        # batch type
-        else:
-
-            # object type
-            if option.objectType in 'ALL':
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
-
-                  # sort
-                  sort(context, group)
-
-            # object type
-            elif option.objectType in object.type:
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
-
-                  # sort
-                  sort(context, group)
-
-      # clear duplicates
-      objectGroups = []
-      [objectGroups.append(item) for item in storage.batch.groups if item not in objectGroups]
-      storage.batch.groups.clear()
-
-      # process
-      process(context, objectGroups)
 
     # actions
     if option.actions:
@@ -204,6 +109,53 @@ def main(context):
       # process
       process(context, actions)
 
+    # action groups
+    if option.actionGroups:
+      for object in bpy.data.objects[:]:
+        if hasattr(object.animation_data, 'action'):
+          if hasattr(object.animation_data.action, 'name'):
+
+            # batch type
+            if option.batchType in 'SELECTED':
+              if object.select:
+
+                # object type
+                if option.objectType in 'ALL':
+
+                  # sort
+                  sort(context, object.animation_data.action)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # sort
+                  sort(context, object.animation_data.action)
+
+            # batch type
+            else:
+
+              # object type
+              if option.objectType in 'ALL':
+
+                # sort
+                sort(context, object.animation_data.action)
+
+              # object type
+              elif option.objectType in object.type:
+
+                # sort
+                sort(context, object.animation_data.action)
+
+      # clear duplicates
+      actions = []
+      [actions.append(item) for item in storage.batch.actions if item not in actions]
+      storage.batch.actions.clear()
+
+      # name action groups
+      for action in actions:
+        for group in action[1][1].groups:
+          group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
+
     # grease pencil
     if option.greasePencil:
       for object in bpy.data.objects[:]:
@@ -219,6 +171,85 @@ def main(context):
 
                   # sort
                   sort(context, object.grease_pencil)
+                else:
+
+                  # shared
+                  if object.grease_pencil not in shared.greasePencils[:]:
+                    shared.greasePencils.append(object.grease_pencil)
+
+                    # sort
+                    sort(context, object.grease_pencil)
+
+              # object type
+              elif option.objectType in object.type:
+                if object.grease_pencil.users == 1:
+
+                  # sort
+                  sort(context, object.grease_pencil)
+                else:
+
+                  # shared
+                  if object.grease_pencil not in shared.greasePencils[:]:
+                    shared.greasePencils.append(object.grease_pencil)
+
+                    # sort
+                    sort(context, object.grease_pencil)
+
+          # batch type
+          else:
+
+            # object type
+            if option.objectType in 'ALL':
+              if object.grease_pencil.users == 1:
+
+                # sort
+                sort(context, object.grease_pencil)
+              else:
+
+                # shared
+                if object.grease_pencil not in shared.greasePencils[:]:
+                  shared.greasePencils.append(object.grease_pencil)
+
+                  # sort
+                  sort(context, object.grease_pencil)
+
+            # object type
+            elif option.objectType in object.type:
+              if object.grease_pencil.users == 1:
+
+                # sort
+                sort(context, object.grease_pencil)
+
+              else:
+
+                # shared
+                if object.grease_pencil not in shared.greasePencils[:]:
+                  shared.greasePencils.append(object.grease_pencil)
+
+                  # sort
+                  sort(context, object.grease_pencil)
+
+      # clear shared
+      shared.greasePencils.clear()
+
+      # process
+      process(context, storage.batch.greasePencils)
+
+      # clear collection
+      storage.batch.greasePencils.clear()
+
+    # pencil layers
+    if option.pencilLayers:
+      for object in bpy.data.objects[:]:
+        if hasattr(object.grease_pencil, 'name'):
+
+          # batch type
+          if option.batchType in 'SELECTED':
+            if object.select:
+
+              # object type
+              if option.objectType in 'ALL':
+                if object.grease_pencil.users == 1:
 
                   # layers
                   for layer in object.grease_pencil.layers[:]:
@@ -230,9 +261,6 @@ def main(context):
                   # shared
                   if object.grease_pencil not in shared.greasePencils[:]:
                     shared.greasePencils.append(object.grease_pencil)
-
-                    # sort
-                    sort(context, object.grease_pencil)
 
                     # layers
                     for layer in object.grease_pencil.layers[:]:
@@ -244,9 +272,6 @@ def main(context):
               elif option.objectType in object.type:
                 if object.grease_pencil.users == 1:
 
-                  # sort
-                  sort(context, object.grease_pencil)
-
                   # layers
                   for layer in object.grease_pencil.layers[:]:
 
@@ -257,9 +282,6 @@ def main(context):
                   # shared
                   if object.grease_pencil not in shared.greasePencils[:]:
                     shared.greasePencils.append(object.grease_pencil)
-
-                    # sort
-                    sort(context, object.grease_pencil)
 
                     # layers
                     for layer in object.grease_pencil.layers[:]:
@@ -274,9 +296,6 @@ def main(context):
             if option.objectType in 'ALL':
               if object.grease_pencil.users == 1:
 
-                # sort
-                sort(context, object.grease_pencil)
-
                 # layers
                 for layer in object.grease_pencil.layers[:]:
 
@@ -287,9 +306,6 @@ def main(context):
                 # shared
                 if object.grease_pencil not in shared.greasePencils[:]:
                   shared.greasePencils.append(object.grease_pencil)
-
-                  # sort
-                  sort(context, object.grease_pencil)
 
                   # layers
                   for layer in object.grease_pencil.layers[:]:
@@ -301,9 +317,6 @@ def main(context):
             elif option.objectType in object.type:
               if object.grease_pencil.users == 1:
 
-                # sort
-                sort(context, object.grease_pencil)
-
                 # layers
                 for layer in object.grease_pencil.layers[:]:
 
@@ -315,9 +328,6 @@ def main(context):
                 if object.grease_pencil not in shared.greasePencils[:]:
                   shared.greasePencils.append(object.grease_pencil)
 
-                  # sort
-                  sort(context, object.grease_pencil)
-
                   # layers
                   for layer in object.grease_pencil.layers[:]:
 
@@ -327,17 +337,106 @@ def main(context):
           # process
           process(context, storage.batch.pencilLayers)
 
+          print(storage.batch.pencilLayers)
+
           # clear collection
           storage.batch.pencilLayers.clear()
 
       # clear shared
       shared.greasePencils.clear()
 
+    # objects
+    if option.objects:
+      for object in bpy.data.objects[:]:
+
+        # batch type
+        if option.batchType in 'SELECTED':
+          if object.select:
+
+            # object type
+            if option.objectType in 'ALL':
+
+              # sort
+              sort(context, object)
+
+            # object type
+            elif option.objectType in object.type:
+
+              # sort
+              sort(context, object)
+
+            # batch type
+            else:
+
+              # object type
+              if option.objectType in 'ALL':
+
+                # sort
+                sort(context, object)
+
+              # object type
+              elif option.objectType in object.type:
+
+                # sort
+                sort(context, object)
+
       # process
-      process(context, storage.batch.greasePencils)
+      process(context, storage.batch.objects)
 
       # clear collection
-      storage.batch.greasePencils.clear()
+      storage.batch.objects.clear()
+
+    # groups
+    if option.groups:
+      for object in bpy.data.objects[:]:
+
+        # batch type
+        if option.batchType in 'SELECTED':
+          if object.select:
+
+            # object type
+            if option.objectType in 'ALL':
+              for group in bpy.data.groups[:]:
+                if object in group.objects[:]:
+
+                  # sort
+                  sort(context, group)
+
+
+                  # object type
+                elif option.objectType in object.type:
+                  for group in bpy.data.groups[:]:
+                    if object in group.objects[:]:
+
+                      # sort
+                      sort(context, group)
+
+                      # batch type
+                    else:
+
+                      # object type
+                      if option.objectType in 'ALL':
+                        for group in bpy.data.groups[:]:
+                          if object in group.objects[:]:
+
+                            # sort
+                            sort(context, group)
+
+                            # object type
+                          elif option.objectType in object.type:
+                            for group in bpy.data.groups[:]:
+                              if object in group.objects[:]:
+
+                                # sort
+                                sort(context, group)
+
+      # clear duplicates
+      objectGroups = []
+      [objectGroups.append(item) for item in storage.batch.groups if item not in objectGroups]
+      storage.batch.groups.clear()
+
+      # process
+      process(context, objectGroups)
 
     # constraints
     if option.constraints:
@@ -1123,6 +1222,162 @@ def main(context):
   # batch type
   if option.batchType in 'SCENE':
 
+    # actions
+    if option.actions:
+      for object in context.scene.objects[:]:
+        if hasattr(object.animation_data, 'action'):
+          if hasattr(object.animation_data.action, 'name'):
+
+            # object type
+            if option.objectType in 'ALL':
+
+              # sort
+              sort(context, object.animation_data.action)
+
+            # object type
+            elif option.objectType in object.type:
+
+              # sort
+              sort(context, object.animation_data.action)
+
+      # clear duplicates
+      actions = []
+      [actions.append(item) for item in storage.batch.actions if item not in actions]
+      storage.batch.actions.clear()
+
+      # process
+      process(context, actions)
+
+    # action groups
+    if option.actionGroups:
+      for object in context.scene.objects[:]:
+        if hasattr(object.animation_data, 'action'):
+          if hasattr(object.animation_data.action, 'name'):
+
+            # object type
+            if option.objectType in 'ALL':
+
+              # sort
+              sort(context, object.animation_data.action)
+
+            # object type
+            elif option.objectType in object.type:
+
+              # sort
+              sort(context, object.animation_data.action)
+
+      # clear duplicates
+      actions = []
+      [actions.append(item) for item in storage.batch.actions if item not in actions]
+      storage.batch.actions.clear()
+
+      # name action groups
+      for action in actions:
+        for group in action[1][1].groups:
+          group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
+
+    # grease pencil
+    if option.greasePencil:
+      for object in context.scene.objects[:]:
+        if hasattr(object.grease_pencil, 'name'):
+
+          # object type
+          if option.objectType in 'ALL':
+            if object.grease_pencil.users == 1:
+
+              # sort
+              sort(context, object.grease_pencil)
+
+            else:
+
+              # shared
+              if object.grease_pencil not in shared.greasePencils[:]:
+                shared.greasePencils.append(object.grease_pencil)
+
+                # sort
+                sort(context, object.grease_pencil)
+
+          # object type
+          elif option.objectType in object.type:
+            if object.grease_pencil.users == 1:
+
+              # sort
+              sort(context, object.grease_pencil)
+
+            else:
+
+              # shared
+              if object.grease_pencil not in shared.greasePencils[:]:
+                shared.greasePencils.append(object.grease_pencil)
+
+                # sort
+                sort(context, object.grease_pencil)
+
+      # clear shared
+      shared.greasePencils.clear()
+
+      # process
+      process(context, storage.batch.greasePencils)
+
+      # clear collection
+      storage.batch.greasePencils.clear()
+
+    # pencil layers
+    if option.pencilLayers:
+      for object in context.scene.objects[:]:
+        if hasattr(object.grease_pencil, 'name'):
+
+          # object type
+          if option.objectType in 'ALL':
+            if object.grease_pencil.users == 1:
+
+              # layers
+              for layer in object.grease_pencil.layers[:]:
+
+                # sort
+                sort(context, layer)
+            else:
+
+              # shared
+              if object.grease_pencil not in shared.greasePencils[:]:
+                shared.greasePencils.append(object.grease_pencil)
+
+                # layers
+                for layer in object.grease_pencil.layers[:]:
+
+                  # sort
+                  sort(context, layer)
+
+          # object type
+          elif option.objectType in object.type:
+            if object.grease_pencil.users == 1:
+
+              # layers
+              for layer in object.grease_pencil.layers[:]:
+
+                # sort
+                sort(context, layer)
+            else:
+
+              # shared
+              if object.grease_pencil not in shared.greasePencils[:]:
+                shared.greasePencils.append(object.grease_pencil)
+
+                # layers
+                for layer in object.grease_pencil.layers[:]:
+
+                  # sort
+                  sort(context, layer)
+
+          # process
+          process(context, storage.batch.pencilLayers)
+
+          # clear collection
+          storage.batch.pencilLayers.clear()
+
+      # clear shared
+      shared.greasePencils.clear()
+
     # objects
     if option.objects:
       for object in context.scene.objects[:]:
@@ -1172,106 +1427,6 @@ def main(context):
 
       # process
       process(context, objectGroups)
-
-    # actions
-    if option.actions:
-      for object in context.scene.objects[:]:
-        if hasattr(object.animation_data, 'action'):
-          if hasattr(object.animation_data.action, 'name'):
-
-            # object type
-            if option.objectType in 'ALL':
-
-              # sort
-              sort(context, object.animation_data.action)
-
-            # object type
-            elif option.objectType in object.type:
-
-              # sort
-              sort(context, object.animation_data.action)
-
-      # clear duplicates
-      actions = []
-      [actions.append(item) for item in storage.batch.actions if item not in actions]
-      storage.batch.actions.clear()
-
-      # process
-      process(context, actions)
-
-    # grease pencil
-    if option.greasePencil:
-      for object in context.scene.objects[:]:
-        if hasattr(object.grease_pencil, 'name'):
-
-          # object type
-          if option.objectType in 'ALL':
-            if object.grease_pencil.users == 1:
-
-              # sort
-              sort(context, object.grease_pencil)
-
-              # layers
-              for layer in object.grease_pencil.layers[:]:
-
-                # sort
-                sort(context, layer)
-            else:
-
-              # shared
-              if object.grease_pencil not in shared.greasePencils[:]:
-                shared.greasePencils.append(object.grease_pencil)
-
-                # sort
-                sort(context, object.grease_pencil)
-
-                # layers
-                for layer in object.grease_pencil.layers[:]:
-
-                  # sort
-                  sort(context, layer)
-
-          # object type
-          elif option.objectType in object.type:
-            if object.grease_pencil.users == 1:
-
-              # sort
-              sort(context, object.grease_pencil)
-
-              # layers
-              for layer in object.grease_pencil.layers[:]:
-
-                # sort
-                sort(context, layer)
-            else:
-
-              # shared
-              if object.grease_pencil not in shared.greasePencils[:]:
-                shared.greasePencils.append(object.grease_pencil)
-
-                # sort
-                sort(context, object.grease_pencil)
-
-                # layers
-                for layer in object.grease_pencil.layers[:]:
-
-                  # sort
-                  sort(context, layer)
-
-          # process
-          process(context, storage.batch.pencilLayers)
-
-          # clear collection
-          storage.batch.pencilLayers.clear()
-
-      # clear shared
-      shared.greasePencils.clear()
-
-      # process
-      process(context, storage.batch.greasePencils)
-
-      # clear collection
-      storage.batch.greasePencils.clear()
 
     # constraints
     if option.constraints:
@@ -1693,6 +1848,63 @@ def main(context):
   # batch type
   elif option.batchType in 'GLOBAL':
 
+    # actions
+    if option.actions:
+      for action in bpy.data.actions[:]:
+
+        # sort
+        sort(context, action)
+
+      # process
+      process(context, storage.batch.actions)
+
+      # clear collection
+      storage.batch.actions.clear()
+
+    # action groups
+    if option.actionGroups:
+      for action in bpy.data.actions[:]:
+
+        # sort
+        sort(context, action)
+
+      # process
+      for action in storage.batch.actions:
+        for group in action[1][1].groups:
+          group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
+
+      # clear collection
+      storage.batch.actions.clear()
+
+    # grease pencil
+    if option.greasePencil:
+      for pencil in bpy.data.grease_pencil[:]:
+
+        # sort
+        sort(context, pencil)
+
+      # process
+      process(context, storage.batch.greasePencils)
+
+      # clear collection
+      storage.batch.greasePencils.clear()
+
+    # pencil layers
+    if option.pencilLayers:
+      for pencil in bpy.data.grease_pencil[:]:
+
+        # layers
+        for layer in pencil.layers[:]:
+
+          # sort
+          sort(context, layer)
+
+        # process
+        process(context, storage.batch.pencilLayers)
+
+        # clear collection
+        storage.batch.pencilLayers.clear()
+
     # objects
     if option.objects:
       for object in bpy.data.objects[:]:
@@ -1718,42 +1930,6 @@ def main(context):
 
       # clear collection
       storage.batch.groups.clear()
-
-    # actions
-    if option.actions:
-      for action in bpy.data.actions[:]:
-
-        # sort
-        sort(context, action)
-
-      # process
-      process(context, storage.batch.actions)
-
-      # clear collection
-      storage.batch.actions.clear()
-
-    # grease pencil
-    if option.greasePencil:
-      for pencil in bpy.data.grease_pencil[:]:
-
-        # sort
-        sort(context, pencil)
-
-        # layers
-        for layer in pencil.layers[:]:
-
-          # sort
-          sort(context, layer)
-
-      # process
-      process(context, storage.batch.pencilLayers)
-
-      # clear collection
-      storage.batch.pencilLayers.clear()
-      process(context, storage.batch.greasePencils)
-
-      # clear collection
-      storage.batch.greasePencils.clear()
 
     # constraints
     if option.constraints:
@@ -2400,7 +2576,7 @@ def sort(context, datablock):
       storage.batch.groups.append([datablock.name, [1, datablock]])
 
   # actions
-  if option.actions:
+  if option.actions or option.actionGroups:
     if datablock.rna_type.identifier == 'Action':
       storage.batch.actions.append([datablock.name, [1, datablock]])
 
@@ -2409,7 +2585,8 @@ def sort(context, datablock):
     if datablock.rna_type.identifier == 'GreasePencil':
       storage.batch.greasePencils.append([datablock.name, [1, datablock]])
 
-    # pencil layers
+  # pencil layers
+  if option.pencilLayers:
     if datablock.rna_type.identifier == 'GPencilLayer':
       storage.batch.pencilLayers.append([datablock.info, [1, datablock]])
 

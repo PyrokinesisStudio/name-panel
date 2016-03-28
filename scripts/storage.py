@@ -205,20 +205,23 @@ class batch:
   #  [datablock.name, [count, datablock]
   # ]
 
-  # objects
-  objects = []
-
-  # groups
-  groups = []
-
   # actions
   actions = []
+
+  # action groups
+  actionsGroups = []
 
   # grease pencils
   greasePencils = []
 
   # pencil layers
   pencilLayers = []
+
+  # objects
+  objects = []
+
+  # groups
+  groups = []
 
   # constraints
   constraints = []

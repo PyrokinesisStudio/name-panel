@@ -995,6 +995,27 @@ class batch:
       default = 'SELECTED'
     )
 
+    # actions
+    actions = BoolProperty(
+      name = 'Actions',
+      description = 'Name object actions. (Use \'Global\' for all)',
+      default = False
+    )
+
+    # grease pencil
+    greasePencil = BoolProperty(
+      name = 'Grease Pencil',
+      description = 'Name object grease pencils. (Use \'Global\' for all)',
+      default = False
+    )
+
+    # pencil layers
+    pencilLayers = BoolProperty(
+      name = 'Grease Pencil Layers',
+      description = 'Name object grease pencil layers. (Use \'Global\' for all)',
+      default = False
+    )
+
     # objects
     objects = BoolProperty(
       name = 'Objects',
@@ -1006,20 +1027,6 @@ class batch:
     groups = BoolProperty(
       name = 'Groups',
       description = 'Name object groups.',
-      default = False
-    )
-
-    # actions
-    actions = BoolProperty(
-      name = 'Actions',
-      description = 'Name object actions. (Use \'Global\' for all)',
-      default = False
-    )
-
-    # grease pencil
-    greasePencil = BoolProperty(
-      name = 'Grease Pencil',
-      description = 'Name object grease pencils and layers. (Use \'Global\' for all)',
       default = False
     )
 
@@ -1062,6 +1069,20 @@ class batch:
     boneConstraints = BoolProperty(
       name = 'Bone Constraints',
       description = 'Name armature bone constraints.',
+      default = False
+    )
+
+    # action groups
+    actionGroups = BoolProperty(
+      name = 'Action Groups',
+      description = 'Name action groups.',
+      default = False
+    )
+
+    # grease pencil layers
+    greasePencilLayers = BoolProperty(
+      name = 'Grease Pencil Layers',
+      description = 'Name grease pencil layers.',
       default = False
     )
 
@@ -1311,7 +1332,7 @@ class batch:
     # suffix last
     suffixLast = BoolProperty(
       name = 'Suffix Last',
-      description = 'Force the suffix to be placed last even when recounting duplicate names.',
+      description = 'Force the suffix to be placed last when recounting duplicate names.',
       default = False
     )
 

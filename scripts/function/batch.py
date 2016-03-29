@@ -52,7 +52,7 @@ class shared:
 # main
 def main(context):
   '''
-    Send datablock values to sort then send collections to process, action group names are sent to name.
+    Send datablock values to sort then send collections to process, action group & lineset names are sent to name.
   '''
 
   # tag
@@ -1909,8 +1909,17 @@ def main(context):
     if option.objects:
       for object in bpy.data.objects[:]:
 
-        # sort
-        sort(context, object)
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          sort(context, object)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          sort(context, object)
 
       # process
       process(context, storage.batch.objects)
@@ -1936,8 +1945,35 @@ def main(context):
       for object in bpy.data.objects[:]:
         for constraint in object.constraints[:]:
 
-          # sort
-          sort(context, constraint)
+          # object type
+          if option.objectType in 'ALL':
+
+            # constraint type
+            if option.constraintType in 'ALL':
+
+              # sort
+              sort(context, constraint)
+
+            # constraint type
+            elif option.constraintType in constraint.type:
+
+              # sort
+              sort(context, constraint)
+
+          # object type
+          elif option.objectType in object.type:
+
+            # constraint type
+            if option.constraintType in 'ALL':
+
+              # sort
+              sort(context, constraint)
+
+              # constraint type
+            elif option.constraintType in constraint.type:
+
+              # sort
+              sort(context, constraint)
 
         # process
         process(context, storage.batch.constraints)
@@ -1950,8 +1986,35 @@ def main(context):
       for object in bpy.data.objects[:]:
         for modifier in object.modifiers[:]:
 
-          # sort
-          sort(context, modifier)
+          # object type
+          if option.objectType in 'ALL':
+
+            # modifier type
+            if option.modifierType in 'ALL':
+
+              # sort
+              sort(context, modifier)
+
+            # modifier type
+            elif option.modifierType in modifier.type:
+
+              # sort
+              sort(context, modifier)
+
+          # object type
+          elif option.objectType in object.type:
+
+            # modifier type
+            if option.modifierType in 'ALL':
+
+              # sort
+              sort(context, modifier)
+
+            # modifier type
+            elif option.modifierType in modifier.type:
+
+              # sort
+              sort(context, modifier)
 
         # process
         process(context, storage.batch.modifiers)
@@ -2219,6 +2282,119 @@ def main(context):
       # clear collection
       storage.batch.particleSettings.clear()
 
+  # line sets
+  if option.lineSets:
+    for scene in bpy.data.scenes[:]:
+      for layer in scene.render.layers[:]:
+        for lineset in layer.freestyle_settings.linesets[:]:
+          if hasattr(lineset, 'name'):
+            lineset.name = name(context, lineset.name) if not option.suffixLast else name(context, lineset.name) + option.suffix
+
+  # linestyles
+  if option.linestyles:
+    for style in bpy.data.linestyles[:]:
+
+      # sort
+      sort(context, style)
+
+    # process
+    process(context, storage.batch.linestyles)
+
+    # clear collection
+    storage.batch.linestyles.clear()
+
+  # linestyle modifiers
+  if option.linestyleModifiers:
+    for style in bpy.data.linestyles[:]:
+
+
+      # color
+      for modifier in style.color_modifiers[:]:
+
+        # linestyle modifier type
+        if option.linestyleModifierType in 'ALL':
+
+          # sort
+          sort(context, modifier)
+
+        # linestyle modifier type
+        elif option.linestyleModifierType in modifier.type:
+
+          # sort
+          sort(context, modifier)
+
+      # process
+      process(context, storage.batch.modifiers)
+
+      # clear storage
+      storage.batch.modifiers.clear()
+
+
+      # alpha
+      for modifier in style.alpha_modifiers[:]:
+
+        # linestyle modifier type
+        if option.linestyleModifierType in 'ALL':
+
+          # sort
+          sort(context, modifier)
+
+        # linestyle modifier type
+        elif option.linestyleModifierType in modifier.type:
+
+          # sort
+          sort(context, modifier)
+
+      # process
+      process(context, storage.batch.modifiers)
+
+      # clear storage
+      storage.batch.modifiers.clear()
+
+
+      # thickness
+      for modifier in style.thickness_modifiers[:]:
+
+        # linestyle modifier type
+        if option.linestyleModifierType in 'ALL':
+
+          # sort
+          sort(context, modifier)
+
+        # linestyle modifier type
+        elif option.linestyleModifierType in modifier.type:
+
+          # sort
+          sort(context, modifier)
+
+      # process
+      process(context, storage.batch.modifiers)
+
+      # clear storage
+      storage.batch.modifiers.clear()
+
+
+      # geometry
+      for modifier in style.geometry_modifiers[:]:
+
+        # linestyle modifier type
+        if option.linestyleModifierType in 'ALL':
+
+          # sort
+          sort(context, modifier)
+
+        # linestyle modifier type
+        elif option.linestyleModifierType in modifier.type:
+
+          # sort
+          sort(context, modifier)
+
+      # process
+      process(context, storage.batch.modifiers)
+
+      # clear storage
+      storage.batch.modifiers.clear()
+
   # scenes
   if option.scenes:
     for scene in bpy.data.scenes[:]:
@@ -2391,19 +2567,6 @@ def main(context):
 
     # clear collection
     storage.batch.brushes.clear()
-
-  # line styles
-  if option.linestyles:
-    for style in bpy.data.linestyles[:]:
-
-      # sort
-      sort(context, style)
-
-    # process
-    process(context, storage.batch.linestyles)
-
-    # clear collection
-    storage.batch.linestyles.clear()
 
   # nodes
   if option.nodes:
@@ -2684,6 +2847,17 @@ def sort(context, datablock):
     if datablock.rna_type.identifier == 'ParticleSettings':
       storage.batch.particleSettings.append([datablock.name, [1, datablock]])
 
+  # line style
+  if option.linestyles:
+    if datablock.rna_type.identifier == 'FreestyleLineStyle':
+      storage.batch.linestyles.append([datablock.name, [1, datablock]])
+
+  # line style modifiers
+  if option.linestyleModifiers:
+    if hasattr(datablock.rna_type.base.base, 'identifier'):
+      if datablock.rna_type.base.base.identifier == 'LineStyleModifier':
+        storage.batch.modifiers.append([datablock.name, [1, datablock]])
+
   # scenes
   if option.scenes:
     if datablock.rna_type.identifier == 'Scene':
@@ -2749,11 +2923,6 @@ def sort(context, datablock):
   if option.brushes:
     if datablock.rna_type.identifier == 'Brush':
       storage.batch.brushes.append([datablock.name, [1, datablock]])
-
-  # linestyles
-  if option.linestyles:
-    if datablock.rna_type.identifier == 'FreestyleLineStyle':
-      storage.batch.linestyles.append([datablock.name, [1, datablock]])
 
   # nodes
   if option.nodes:

@@ -99,17 +99,19 @@ class name(Operator):
     # column
     column = layout.column(align=True)
 
-    # # label
-    # column.label(text='Freestyle:')
-    #
-    # # row
-    # row = column.row(align=True)
-    # row.prop(option, 'linestyles', text='', icon='LINE_DATA')
-    # row.prop(option, 'modifiers', text='', icon='MODIFIER')
-    # row.prop(option, 'modifierType', text='')
-    #
-    # # column
-    # column = layout.column(align=True)
+    # label
+    column.label(text='Freestyle:')
+
+    # row
+    row = column.row(align=True)
+    row.scale_x = 1.5
+    row.prop(option, 'lineSets', text='', icon='BRUSH_TEXDRAW')
+    row.prop(option, 'linestyles', text='', icon='LINE_DATA')
+    row.prop(option, 'linestyleModifiers', text='', icon='MODIFIER')
+    row.prop(option, 'linestyleModifierType', text='')
+
+    # column
+    column = layout.column(align=True)
 
     # label
     column.label(text='Global:')
@@ -132,7 +134,6 @@ class name(Operator):
     row.scale_x = 5 # hack: forces buttons to line up correctly
     row.prop(option, 'screens', text='', icon='SPLITSCREEN')
     row.prop(option, 'keyingSets', text='', icon='KEYINGSET')
-    row.prop(option, 'linestyles', text='', icon='LINE_DATA')
     row.prop(option, 'palettes', text='', icon='COLOR')
     row.prop(option, 'brushes', text='', icon='BRUSH_DATA')
     row.prop(option, 'nodes', text='', icon='NODE_SEL')

@@ -1219,6 +1219,141 @@ def main(context):
       # clear collection
       storage.batch.particleSettings.clear()
 
+  # sensors
+  if option.sensors:
+    for object in bpy.data.objects[:]:
+
+      # batch type
+      if option.batchType in 'SELECTED':
+        if object.select:
+
+          # object type
+          if option.objectType in 'ALL':
+
+            # sort
+            for sensor in object.game.sensors[:]:
+              sort(context, sensor)
+
+          # object type
+          elif option.objectType in object.type:
+
+            # sort
+            for sensor in object.game.sensors[:]:
+              sort(context, sensor)
+
+      # batch type
+      else:
+
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          for sensor in object.game.sensors[:]:
+            sort(context, sensor)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          for sensor in object.game.sensors[:]:
+            sort(context, sensor)
+
+      # process
+      process(context, storage.batch.sensors)
+
+      # clear collection
+      storage.batch.sensors.clear()
+
+  # controllers
+  if option.controllers:
+    for object in bpy.data.objects[:]:
+
+      # batch type
+      if option.batchType in 'SELECTED':
+        if object.select:
+
+          # object type
+          if option.objectType in 'ALL':
+
+            # sort
+            for controller in object.game.controllers[:]:
+              sort(context, controller)
+
+          # object type
+          elif option.objectType in object.type:
+
+            # sort
+            for controller in object.game.controllers[:]:
+              sort(context, controller)
+
+      # batch type
+      else:
+
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          for controller in object.game.controllers[:]:
+            sort(context, controller)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          for controller in object.game.controllers[:]:
+            sort(context, controller)
+
+      # process
+      process(context, storage.batch.controllers)
+
+      # clear collection
+      storage.batch.controllers.clear()
+
+  # actuators
+  if option.actuators:
+    for object in bpy.data.objects[:]:
+
+      # batch type
+      if option.batchType in 'SELECTED':
+        if object.select:
+
+          # object type
+          if option.objectType in 'ALL':
+
+            # sort
+            for actuator in object.game.actuators[:]:
+              sort(context, actuator)
+
+          # object type
+          elif option.objectType in object.type:
+
+            # sort
+            for actuator in object.game.actuators[:]:
+              sort(context, actuator)
+
+      # batch type
+      else:
+
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          for actuator in object.game.actuators[:]:
+            sort(context, actuator)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          for actuator in object.game.actuators[:]:
+            sort(context, actuator)
+
+      # process
+      process(context, storage.batch.actuators)
+
+      # clear collection
+      storage.batch.actuators.clear()
+
   # batch type
   if option.batchType in 'SCENE':
 
@@ -1845,6 +1980,78 @@ def main(context):
       # clear collection
       storage.batch.particleSettings.clear()
 
+    # sensors
+    if option.sensors:
+      for object in context.scene.objects[:]:
+
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          for sensor in object.game.sensors[:]:
+            sort(context, sensor)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          for sensor in object.game.sensors[:]:
+            sort(context, sensor)
+
+        # process
+        process(context, storage.batch.sensors)
+
+        # clear collection
+        storage.batch.sensors.clear()
+
+    # controllers
+    if option.controllers:
+      for object in context.scene.objects[:]:
+
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          for controller in object.game.controllers[:]:
+            sort(context, controller)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          for controller in object.game.controllers[:]:
+            sort(context, controller)
+
+        # process
+        process(context, storage.batch.controllers)
+
+        # clear collection
+        storage.batch.controllers.clear()
+
+    # actuators
+    if option.actuators:
+      for object in context.scene.objects[:]:
+
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          for actuator in object.game.actuators[:]:
+            sort(context, actuator)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          for actuator in object.game.actuators[:]:
+            sort(context, actuator)
+
+        # process
+        process(context, storage.batch.actuators)
+
+        # clear collection
+        storage.batch.actuators.clear()
+
   # batch type
   elif option.batchType in 'GLOBAL':
 
@@ -2281,6 +2488,78 @@ def main(context):
 
       # clear collection
       storage.batch.particleSettings.clear()
+
+    # sensors
+    if option.sensors:
+      for object in bpy.data.objects[:]:
+
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          for sensor in object.game.sensors[:]:
+            sort(context, sensor)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          for sensor in object.game.sensors[:]:
+            sort(context, sensor)
+
+        # process
+        process(context, storage.batch.sensors)
+
+        # clear collection
+        storage.batch.sensors.clear()
+
+    # controllers
+    if option.controllers:
+      for object in bpy.data.objects[:]:
+
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          for controller in object.game.controllers[:]:
+            sort(context, controller)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          for controller in object.game.controllers[:]:
+            sort(context, controller)
+
+        # process
+        process(context, storage.batch.controllers)
+
+        # clear collection
+        storage.batch.controllers.clear()
+
+    # actuators
+    if option.actuators:
+      for object in bpy.data.objects[:]:
+
+        # object type
+        if option.objectType in 'ALL':
+
+          # sort
+          for actuator in object.game.actuators[:]:
+            sort(context, actuator)
+
+        # object type
+        elif option.objectType in object.type:
+
+          # sort
+          for actuator in object.game.actuators[:]:
+            sort(context, actuator)
+
+        # process
+        process(context, storage.batch.actuators)
+
+        # clear collection
+        storage.batch.actuators.clear()
 
   # line sets
   if option.lineSets:
@@ -2854,9 +3133,28 @@ def sort(context, datablock):
 
   # line style modifiers
   if option.linestyleModifiers:
-    if hasattr(datablock.rna_type.base.base, 'identifier'):
-      if datablock.rna_type.base.base.identifier == 'LineStyleModifier':
-        storage.batch.modifiers.append([datablock.name, [1, datablock]])
+    if hasattr(datablock.rna_type.base, 'identifier'):
+      if hasattr(datablock.rna_type.base.base, 'identifier'):
+        if datablock.rna_type.base.base.identifier == 'LineStyleModifier':
+          storage.batch.modifiers.append([datablock.name, [1, datablock]])
+
+  # sensors
+  if option.sensors:
+    if hasattr(datablock.rna_type.base, 'identifier'):
+      if datablock.rna_type.base.identifier == 'Sensor':
+        storage.batch.sensors.append([datablock.name, [1, datablock]])
+
+  # controllers
+  if option.controllers:
+    if hasattr(datablock.rna_type.base, 'identifier'):
+      if datablock.rna_type.base.identifier == 'Controller':
+        storage.batch.controllers.append([datablock.name, [1, datablock]])
+
+  # actuators
+  if option.actuators:
+    if hasattr(datablock.rna_type.base, 'identifier'):
+      if datablock.rna_type.base.identifier == 'Actuator':
+        storage.batch.actuators.append([datablock.name, [1, datablock]])
 
   # scenes
   if option.scenes:

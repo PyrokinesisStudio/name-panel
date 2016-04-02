@@ -310,6 +310,18 @@ class batch:
   # particle settings
   particleSettings = []
 
+  # linestyles
+  linestyles = []
+
+  # sensors
+  sensors = []
+
+  # controllers
+  controllers = []
+
+  # actuators
+  actuators = []
+
   # scenes
   scenes = []
 
@@ -349,8 +361,6 @@ class batch:
   # brushes
   brushes = []
 
-  # linestyles
-  linestyles = []
 
   # nodes
   nodes = []

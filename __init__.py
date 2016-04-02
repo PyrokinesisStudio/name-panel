@@ -99,7 +99,7 @@ class preferences(AddonPreferences):
     # prop.url = ''
 
     prop = split.operator('wm.url_open', text='BlenderArtists')
-    prop.url = 'http://blenderartists.org/forum/showthread.php?272086-Addon-Item-Panel-amp-Batch-Naming-1-5'
+    prop.url = 'http://blenderartists.org/forum/showthread.php?272086'
 
     # prop = split.operator('wm.url_open', text='BlendSwap')
     # prop.url = 'http://www.blendswap.com/blends/view/82472'
@@ -124,8 +124,8 @@ def register():
         bpy.utils.unregister_class(panel.UIName)
       else:
         # remove blender default panel
-        try:
-          bpy.utils.unregister_class(bpy.types.VIEW3D_PT_view3d_name)
+        # try:
+        #   bpy.utils.unregister_class(bpy.types.VIEW3D_PT_view3d_name)
         except:
           pass
         bpy.utils.unregister_class(panel.toolsName)

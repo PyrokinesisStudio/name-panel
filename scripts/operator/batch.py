@@ -114,6 +114,18 @@ class name(Operator):
     column = layout.column(align=True)
 
     # label
+    column.label(text='Game Engine:')
+
+    # row
+    row = column.row(align=True)
+    row.prop(option, 'sensors', text='Sensors', toggle=True)
+    row.prop(option, 'controllers', text='Controllers', toggle=True)
+    row.prop(option, 'actuators', text='Actuators', toggle=True)
+
+    # column
+    column = layout.column(align=True)
+
+    # label
     column.label(text='Global:')
 
     # row 1

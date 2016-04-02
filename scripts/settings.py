@@ -1167,6 +1167,28 @@ class batch:
       default = 'ALL'
     )
 
+    # sensors
+    sensors = BoolProperty(
+      name = 'Sensors',
+      description = 'Name object game sensors.',
+      default = False
+    )
+
+
+    # controllers
+    controllers = BoolProperty(
+      name = 'Controllers',
+      description = 'Name object game controllers',
+      default = False
+    )
+
+    # actuators
+    actuators = BoolProperty(
+      name = 'Actuators',
+      description = 'Name object game actuators',
+      default = False
+    )
+
     # lineSet
     lineSets = BoolProperty(
       name = 'Line Sets',

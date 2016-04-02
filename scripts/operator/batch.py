@@ -100,6 +100,18 @@ class name(Operator):
     column = layout.column(align=True)
 
     # label
+    column.label(text='Game Engine:')
+
+    # row
+    row = column.row(align=True)
+    row.prop(option, 'sensors', text='Sensors', toggle=True)
+    row.prop(option, 'controllers', text='Controllers', toggle=True)
+    row.prop(option, 'actuators', text='Actuators', toggle=True)
+
+    # column
+    column = layout.column(align=True)
+
+    # label
     column.label(text='Freestyle:')
 
     # row
@@ -109,18 +121,6 @@ class name(Operator):
     row.prop(option, 'linestyles', text='', icon='LINE_DATA')
     row.prop(option, 'linestyleModifiers', text='', icon='MODIFIER')
     row.prop(option, 'linestyleModifierType', text='')
-
-    # column
-    column = layout.column(align=True)
-
-    # label
-    column.label(text='Game Engine:')
-
-    # row
-    row = column.row(align=True)
-    row.prop(option, 'sensors', text='Sensors', toggle=True)
-    row.prop(option, 'controllers', text='Controllers', toggle=True)
-    row.prop(option, 'actuators', text='Actuators', toggle=True)
 
     # column
     column = layout.column(align=True)

@@ -180,14 +180,14 @@ def filters(self, context, layout, option):
     # scale
     row.scale_x = 5 # hack: forces buttons to line up correctly
 
-    # groups
-    row.prop(option, 'groups', text='', icon='GROUP')
-
     # action
     row.prop(option, 'action', text='', icon='ACTION')
 
     # grease pencil
     row.prop(option, 'greasePencil', text='', icon='GREASEPENCIL')
+
+    # groups
+    row.prop(option, 'groups', text='', icon='GROUP')
 
     # constraints
     row.prop(option, 'constraints', text='', icon='CONSTRAINT')
@@ -235,6 +235,8 @@ def filters(self, context, layout, option):
   row.prop(option, 'search', text='', icon='VIEWZOOM')
   row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
   row.prop(option, 'regex', text='', icon='SCRIPTPLUGINS')
+  op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
+  op.quickBatch = True
 
 # gather
 def gather(context, member):
@@ -607,8 +609,8 @@ class block:
       # groups
       if option.groups:
         for group in bpy.data.groups[:]:
-          for groupobject in group.objects[:]:
-            if groupobject == object:
+          for groupObject in group.objects[:]:
+            if groupObject == object:
 
               # search
               if search == '' or re.search(search, group.name, re.I):

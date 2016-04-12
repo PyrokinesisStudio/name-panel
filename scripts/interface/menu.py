@@ -43,7 +43,7 @@ class specials(Menu):
     layout.operator('view3d.batch_auto_name', icon='AUTO')
 
     # bath name
-    layout.operator('wm.batch_name', icon='SORTALPHA')
+    layout.operator('wm.batch_name', icon='SORTALPHA').quickBatch = False
 
     # batch copy
     layout.operator('view3d.batch_copy_name', icon='COPYDOWN')

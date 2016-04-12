@@ -61,13 +61,6 @@ class panel(PropertyGroup):
     default = 'SELECTED'
   )
 
-  # selected
-  # selected = BoolProperty(
-  #   name = 'Selected',
-  #   description = 'Display all possible object related datablock names within your current selection inside the name panel.',
-  #   default = False
-  # )
-
   # pin active object
   pinActiveObject = BoolProperty(
     name = 'Pin Active Object',
@@ -1051,7 +1044,7 @@ class batch:
     # groups
     groups = BoolProperty(
       name = 'Groups',
-      description = 'Name object groups.',
+      description = 'Name object groups. (Use \'Global\' for all)',
       default = False
     )
 

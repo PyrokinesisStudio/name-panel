@@ -661,8 +661,6 @@ def main(context, quickBatch):
             if object.data.rna_type.identifier == 'Armature':
               storage.batch.armatures.append([object.data.name, [1, object.data]])
 
-
-
           # vertex groups
           if panel.vertexGroups:
             if hasattr(object, 'vertex_groups'):
@@ -794,7 +792,7 @@ def main(context, quickBatch):
             storage.batch.particleSystems.clear()
             storage.batch.particleSettings.clear()
 
-          # all
+        # all
         all = [
           # object
           storage.batch.objects,
@@ -1076,7 +1074,6 @@ def main(context, quickBatch):
               if object.data.rna_type.identifier == 'Armature':
                 storage.batch.armatures.append([object.data.name, [1, object.data]])
 
-
             # vertex groups
             if panel.vertexGroups:
               if hasattr(object, 'vertex_groups'):
@@ -1208,7 +1205,7 @@ def main(context, quickBatch):
               storage.batch.particleSystems.clear()
               storage.batch.particleSettings.clear()
 
-
+        # all
         all = [
           # object
           storage.batch.objects,

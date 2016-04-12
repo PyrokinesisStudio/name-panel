@@ -296,8 +296,7 @@ def filters(self, context, layout, option):
   row.prop(option, 'search', text='', icon='VIEWZOOM')
   row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
   row.prop(option, 'regex', text='', icon='SCRIPTPLUGINS')
-  op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
-  op.quickBatch = True
+  row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
 
 # gather
 def gather(context, member):

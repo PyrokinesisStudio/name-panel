@@ -43,12 +43,30 @@ class panel(PropertyGroup):
     default = False
   )
 
-  # selected
-  selected = BoolProperty(
-    name = 'Selected',
-    description = 'Display all possible object related datablock names within your current selection inside the name panel.',
+  # display names
+  displayNames = BoolProperty(
+    name = 'Display Names',
+    description = 'Display additional object names in the name panel.',
     default = False
   )
+
+  # mode
+  mode = EnumProperty(
+    name = 'Mode',
+    description = 'Mode option for additional names displayed.',
+    items = [
+      ('SELECTED', 'Selected', 'Display selected objects.'),
+      ('LAYERS', 'Layers', 'Display objects in the active scene layers.')
+    ],
+    default = 'SELECTED'
+  )
+
+  # selected
+  # selected = BoolProperty(
+  #   name = 'Selected',
+  #   description = 'Display all possible object related datablock names within your current selection inside the name panel.',
+  #   default = False
+  # )
 
   # pin active object
   pinActiveObject = BoolProperty(

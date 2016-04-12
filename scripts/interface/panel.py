@@ -87,8 +87,17 @@ def main(self, context):
   # search
   search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
 
-  # member
-  member = gather(context, {object.name: [] for object in context.selected_objects[:]}) if option.search != '' else {}
+  # mode
+  if option.mode == 'SELECTED':
+
+    # member
+    member = gather(context, {object.name: [] for object in context.selected_objects}) if option.search != '' else {}
+
+  # mode
+  else:
+
+    # member
+    member = gather(context, {object.name: [] for object in context.scene.objects}) if option.search != '' else {}
 
   # pin active object
   if option.pinActiveObject:
@@ -100,15 +109,55 @@ def main(self, context):
         # populate
         populate(self, context, layout, context.active_object, option)
 
-    # selected
-    if option.selected:
+    # display names
+    if option.displayNames:
 
-      # selected objects
-      selectedObjects = [[object.name, object] for object in context.selected_objects]
+      # mode
+      if option.mode == 'SELECTED':
 
-      # sorted
-      for datablock in sorted(selectedObjects):
-        if datablock[1] != context.active_object:
+        # objects
+        objects = [[object.name, object] for object in context.selected_objects]
+
+        # sorted
+        for datablock in sorted(objects):
+          if datablock[1] != context.active_object:
+
+            # search
+            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
+
+              # populate
+              populate(self, context, layout, datablock[1], option)
+
+      # mode
+      else:
+
+        # objects
+        objects = [[object.name, object] for object in context.scene.objects if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]]
+
+        # sorted
+        for datablock in sorted(objects):
+          if datablock[1] != context.active_object:
+
+            # search
+            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
+
+              # populate
+              populate(self, context, layout, datablock[1], option)
+
+  # pin active object
+  else:
+
+    # display names
+    if option.diplayNames:
+
+      # mode
+      if option.mode == 'SELECTED':
+
+        # objects
+        objects = [[object.name, object] for object in context.selected_objects]
+
+        # sorted
+        for datablock in sorted(objects):
 
           # search
           if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
@@ -116,23 +165,20 @@ def main(self, context):
             # populate
             populate(self, context, layout, datablock[1], option)
 
-  else:
+      # mode
+      else:
 
-    # selected
-    if option.selected:
+        # objects
+        objects = [[object.name, object] for object in context.scene.objects if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]]
 
-      # selected objects
-      selectedObjects = [[object.name, object] for object in context.selected_objects]
+        # sorted
+        for datablock in sorted(objects):
 
-      # sorted
-      for datablock in sorted(selectedObjects):
+          # search
+          if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
 
-        # search
-        if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
-
-          # populate
-          populate(self, context, layout, datablock[1], option)
-
+            # populate
+            populate(self, context, layout, datablock[1], option)
     else:
 
       # search
@@ -162,12 +208,6 @@ def filters(self, context, layout, option):
   # filters
   row.prop(option, 'filters', text='Filters', icon=iconToggle, toggle=True)
 
-  # options
-  row.prop(option, 'options', text='', icon='SETTINGS')
-
-  # selected
-  row.prop(option, 'selected', text='', icon='OOPS')
-
   # operator menu
   row.menu('VIEW3D_MT_name_panel_specials', text='', icon='COLLAPSEMENU')
 
@@ -175,6 +215,27 @@ def filters(self, context, layout, option):
   if option.filters:
 
     # row 1
+    row = layout.row(align=True)
+
+    # scale
+    row.scale_x = 1.4
+
+    # display names
+    row.prop(option, 'displayNames', text='', icon='ZOOM_SELECTED')
+
+    # sub
+    sub = row.row(align=True)
+
+    # enabled
+    sub.enabled = option.displayNames
+
+    # mode
+    sub.prop(option, 'mode', expand=True)
+
+    # options
+    row.prop(option, 'options', text='', icon='SETTINGS')
+
+    # row 2
     row = layout.row(align=True)
 
     # scale
@@ -201,7 +262,7 @@ def filters(self, context, layout, option):
     # bone groups
     row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
 
-    # row 2
+    # row 3
     row = layout.row(align=True)
 
     # scale
@@ -248,9 +309,15 @@ def gather(context, member):
   option = context.scene.NamePanel
 
   # selected
-  if option.selected:
-    for object in context.selected_objects:
-      sort(context, member, object)
+  if option.displayNames:
+    if option.mode == 'SELECTED':
+      for object in context.selected_objects:
+        sort(context, member, object)
+
+    else:
+      for object in context.scene.objects:
+        if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]:
+          sort(context, member, object)
   else:
     sort(context, member, context.active_object)
 
@@ -1335,8 +1402,16 @@ def ObjectData(self, context, layout, datablock, option):
     # selected
     else:
 
+      # sub
+      sub = row.row(align=True)
+      sub.scale_x = 1.6
+
+      # object data
+      op = sub.operator('view3d.active_object_data', text='', icon=icon.objectData(datablock))
+      op.target = datablock.name
+
       # name
-      row.prop(datablock.data, 'name', text='', icon=icon.objectData(datablock))
+      row.prop(datablock.data, 'name', text='')
 
 # vertex group
 def VertexGroup(self, context, layout, datablock, object, option):

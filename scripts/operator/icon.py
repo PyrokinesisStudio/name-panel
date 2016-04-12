@@ -25,8 +25,6 @@ from bpy.props import BoolProperty, StringProperty
 from ..interface.popup.constraints import ConstraintButtons
 from ..interface.popup.modifiers import ModifierButtons
 
-# active
-
 # object
 class object(Operator):
   '''
@@ -87,27 +85,27 @@ class object(Operator):
 
     return {'FINISHED'}
 
-# bone
-class bone(Operator):
+# object data
+class objectData(Operator):
   '''
-    Assigns an active bone.
+    Assigns an active object.
   '''
-  bl_idname = 'view3d.active_bone'
-  bl_label = 'Make Active Bone'
-  bl_description = 'Make this bone the active bone.'
+  bl_idname = 'view3d.active_object_data'
+  bl_label = 'Make Active Object Data'
+  bl_description = 'Make this object the active object.'
   bl_options = {'REGISTER', 'UNDO'}
 
   # target
   target = StringProperty(
     name = 'Target',
-    description = 'The target bone that will become the active object.',
+    description = 'The target object that will become the active object.',
     default = ''
   )
 
   # properties
   properties = BoolProperty(
     name = 'Properties',
-    description = 'Change any property window\s context to bone.',
+    description = 'Change any property window\'s context to object.',
     default = False
   )
 
@@ -115,9 +113,9 @@ class bone(Operator):
   @classmethod
   def poll(cls, context):
     '''
-      Space data type must be in 3D view and there must be an active bone.
+      Space data type must be in 3D view and there must be an active object.
     '''
-    return context.space_data.type in 'VIEW_3D' and context.active_bone or context.active_pose_bone
+    return context.space_data.type in 'VIEW_3D' and context.active_object
 
   # execute
   def execute(self, context):
@@ -126,35 +124,14 @@ class bone(Operator):
     '''
     try:
 
-      # edit mode
-      if context.object.mode in 'EDIT':
+      # select
+      bpy.data.objects[context.active_object.name].select = True
 
-        # select
-        context.active_object.data.edit_bones.active.select = True
+      # mode set
+      bpy.ops.object.mode_set(mode='OBJECT')
 
-        # select head
-        context.active_object.data.edit_bones.active.select_head = True
-
-        # select tail
-        context.active_object.data.edit_bones.active.select_tail = True
-
-        # active bone
-        context.scene.objects[context.active_object.name].data.edit_bones.active = bpy.data.armatures[context.active_object.data.name].edit_bones[self.target]
-
-        # select head
-        context.active_object.data.edit_bones.active.select_head = True
-
-        # select tail
-        context.active_object.data.edit_bones.active.select_tail = True
-
-      # pose mode
-      else:
-
-        # select
-        context.active_object.data.bones.active.select = True
-
-        # target
-        context.scene.objects[context.active_object.name].data.bones.active = bpy.data.armatures[context.active_object.data.name].bones[self.target]
+      # target
+      context.scene.objects.active = bpy.data.objects[self.target]
     except:
 
       # warning messege
@@ -164,11 +141,13 @@ class bone(Operator):
     if self.properties:
       for area in context.screen.areas:
         if area.type in 'PROPERTIES':
-          area.spaces.active.context = 'BONE'
+          area.spaces.active.context = 'DATA'
 
     return {'FINISHED'}
 
-# select
+# groups
+# actions
+# grease pencil
 
 # vertex group
 class vertexGroup(Operator):
@@ -285,6 +264,95 @@ class vertexGroup(Operator):
           area.spaces.active.context = 'DATA'
 
     return {'FINISHED'}
+
+# shapekey
+# uv map
+# vertex colors
+# materials
+# textures
+
+# bone
+class bone(Operator):
+  '''
+    Assigns an active bone.
+  '''
+  bl_idname = 'view3d.active_bone'
+  bl_label = 'Make Active Bone'
+  bl_description = 'Make this bone the active bone.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The target bone that will become the active object.',
+    default = ''
+  )
+
+  # properties
+  properties = BoolProperty(
+    name = 'Properties',
+    description = 'Change any property window\s context to bone.',
+    default = False
+  )
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view and there must be an active bone.
+    '''
+    return context.space_data.type in 'VIEW_3D' and context.active_bone or context.active_pose_bone
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+    try:
+
+      # edit mode
+      if context.object.mode in 'EDIT':
+
+        # select
+        context.active_object.data.edit_bones.active.select = True
+
+        # select head
+        context.active_object.data.edit_bones.active.select_head = True
+
+        # select tail
+        context.active_object.data.edit_bones.active.select_tail = True
+
+        # active bone
+        context.scene.objects[context.active_object.name].data.edit_bones.active = bpy.data.armatures[context.active_object.data.name].edit_bones[self.target]
+
+        # select head
+        context.active_object.data.edit_bones.active.select_head = True
+
+        # select tail
+        context.active_object.data.edit_bones.active.select_tail = True
+
+      # pose mode
+      else:
+
+        # select
+        context.active_object.data.bones.active.select = True
+
+        # target
+        context.scene.objects[context.active_object.name].data.bones.active = bpy.data.armatures[context.active_object.data.name].bones[self.target]
+    except:
+
+      # warning messege
+      self.report({'WARNING'}, 'Invalid target.')
+
+    # properties
+    if self.properties:
+      for area in context.screen.areas:
+        if area.type in 'PROPERTIES':
+          area.spaces.active.context = 'BONE'
+
+    return {'FINISHED'}
+
+
 
 # pop-ups
 

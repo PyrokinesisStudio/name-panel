@@ -996,9 +996,6 @@ class block:
     if object.type in 'ARMATURE':
       if object.mode in {'POSE', 'EDIT'}:
 
-        layout.separator()
-
-
         # constraints
         try:
           constraints = [item.name for item in context.active_pose_bone.constraints[:]]
@@ -1029,9 +1026,6 @@ class block:
 
           # row
           row = layout.row()
-
-          # separator
-          row.separator()
 
           # edit mode
           if object.mode in 'POSE':
@@ -1077,19 +1071,6 @@ class block:
 
                           # constraint
                           Constraint(self, context, layout, constraint, object, bone[1], option)
-
-                  # row
-                  row = layout.row()
-
-                  # separator
-                  row.separator()
-        else:
-
-          # row
-          row = layout.row()
-
-          # separator
-          row.separator()
 
 # object
 def Object(self, context, layout, datablock, option):

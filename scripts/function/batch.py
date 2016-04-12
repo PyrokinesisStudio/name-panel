@@ -161,6 +161,23 @@ def main(context, quickBatch):
         # clear
         storage.batch.modifiers.clear()
 
+      # bone groups
+      if panel.boneGroups:
+        if object.type in 'ARMATURE':
+          for group in object.pose.bone_groups[:]:
+
+            # search
+            if search == '' or re.search(search, group.name, re.I):
+
+              # sort
+              storage.batch.boneGroups.append([group.name, [1, group]])
+
+          # process
+          process(context, storage.batch.boneGroups)
+
+          # clear
+          storage.batch.boneGroups.clear()
+
       # bones
       if object.type == 'ARMATURE':
 
@@ -220,9 +237,8 @@ def main(context, quickBatch):
               # name
               context.active_pose_bone.name = name(context, context.active_pose_bone.name) if option.suffixLast else name(context, context.active_pose_bone) + option.suffix
 
-      # bone constraints
-      if panel.boneConstraints:
-        if object.type == 'ARMATURE':
+        # bone constraints
+        if panel.boneConstraints:
           if context.mode == 'POSE':
 
               # selected bones
@@ -258,23 +274,6 @@ def main(context, quickBatch):
                 # clear
                 storage.batch.constraints.clear()
 
-      # bone groups
-      if panel.boneGroups:
-        if object.type in 'ARMATURE':
-          for group in object.pose.bone_groups[:]:
-
-            # search
-            if search == '' or re.search(search, group.name, re.I):
-
-              # sort
-              storage.batch.boneGroups.append([group.name, [1, group]])
-
-          # process
-          process(context, storage.batch.boneGroups)
-
-          # clear
-          storage.batch.boneGroups.clear()
-
       # object data
 
       # search
@@ -299,7 +298,6 @@ def main(context, quickBatch):
 
           # clear
           storage.batch.vertexGroups.clear()
-
 
       # shapekeys
       if panel.shapekeys:
@@ -528,6 +526,103 @@ def main(context, quickBatch):
               # clear
               storage.batch.boneGroups.clear()
 
+          # bones
+          if object == context.active_object:
+            if object.type == 'ARMATURE':
+
+              # selected bones
+              if panel.selectedBones:
+
+                # mode
+                if object.mode == 'EDIT':
+                  for bone in context.selected_bones[:]:
+
+                    # search
+                    if search == '' or re.search(search, bone.name, re.I):
+
+                      # append
+                      storage.batch.bones.append([bone.name, [1, bone]])
+
+                  # process
+                  process(context, storage.batch.bones)
+
+                  # clear
+                  storage.batch.bones.clear()
+
+                # mode
+                elif object.mode == 'POSE':
+                  for bone in context.selected_pose_bones[:]:
+
+                    # search
+                    if search == '' or re.search(search, bone.name, re.I):
+
+                      # append
+                      storage.batch.bones.append([bone.name, [1, bone]])
+
+                  # process
+                  process(context, storage.batch.bones)
+
+                  # clear
+                  storage.batch.bones.clear()
+
+              # selected bones
+              else:
+
+                # mode
+                if object.mode == 'EDIT':
+
+                  # search
+                  if search == '' or re.search(search, context.active_bone, re.I):
+
+                    # name
+                    context.active_bone.name = name(context, context.active_bone.name) if option.suffixLast else name(context, context.active_bone) + option.suffix
+
+                # mode
+                elif object.mode == 'POSE':
+
+                  # search
+                  if search == '' or re.search(search, context.active_pose_bone, re.I):
+
+                    # name
+                    context.active_pose_bone.name = name(context, context.active_pose_bone.name) if option.suffixLast else name(context, context.active_pose_bone) + option.suffix
+
+              # bone constraints
+              if panel.boneConstraints:
+                if context.mode == 'POSE':
+
+                    # selected bones
+                    if panel.selectedBones:
+                      for bone in context.selected_pose_bones[:]:
+                        for constraint in bone.constraints[:]:
+
+                          # search
+                          if search == '' or re.search(search, constraint.name):
+
+                            # append
+                            storage.batch.constraints.append([constraint.name, [1, constraint]])
+
+                        # process
+                        process(context, storage.batch.constraints)
+
+                        # clear
+                        storage.batch.constraints.clear()
+
+                    # selected bones
+                    else:
+                      for constraint in context.active_pose_bone.constraints[:]:
+
+                        # search
+                        if search == '' or re.search(search, constraint.name):
+
+                          # append
+                          storage.batch.constraints.append([constraint.name, [1, constraint]])
+
+                      # process
+                      process(context, storage.batch.constraints)
+
+                      # clear
+                      storage.batch.constraints.clear()
+
           # object data
 
           # search
@@ -566,7 +661,41 @@ def main(context, quickBatch):
             if object.data.rna_type.identifier == 'Armature':
               storage.batch.armatures.append([object.data.name, [1, object.data]])
 
+            all = [
+              # object
+              storage.batch.objects,
 
+              # cameras
+              storage.batch.cameras,
+
+              # meshes
+              storage.batch.meshes,
+
+              # curves
+              storage.batch.curves,
+
+              # lamps
+              storage.batch.lamps,
+
+              # lattices
+              storage.batch.lattices,
+
+              # metaballs
+              storage.batch.metaballs,
+
+              # speakers
+              storage.batch.speakers,
+
+              # armatures
+              storage.batch.armatures,
+            ]
+            for collection in all:
+
+              # process
+              process(context, collection)
+
+              # clear
+              collection.clear()
 
           # vertex groups
           if panel.vertexGroups:
@@ -699,42 +828,6 @@ def main(context, quickBatch):
             storage.batch.particleSystems.clear()
             storage.batch.particleSettings.clear()
 
-        all = [
-          # object
-          storage.batch.objects,
-
-          # cameras
-          storage.batch.cameras,
-
-          # meshes
-          storage.batch.meshes,
-
-          # curves
-          storage.batch.curves,
-
-          # lamps
-          storage.batch.lamps,
-
-          # lattices
-          storage.batch.lattices,
-
-          # metaballs
-          storage.batch.metaballs,
-
-          # speakers
-          storage.batch.speakers,
-
-          # armatures
-          storage.batch.armatures,
-        ]
-        for collection in all:
-
-          # process
-          process(context, collection)
-
-          # clear
-          collection.clear()
-
       # mode
       else:
         for object in context.scene.objects[:]:
@@ -845,6 +938,103 @@ def main(context, quickBatch):
                 # clear
                 storage.batch.boneGroups.clear()
 
+            # bones
+            if object == context.active_object:
+              if object.type == 'ARMATURE':
+
+                # selected bones
+                if panel.selectedBones:
+
+                  # mode
+                  if object.mode == 'EDIT':
+                    for bone in context.selected_bones[:]:
+
+                      # search
+                      if search == '' or re.search(search, bone.name, re.I):
+
+                        # append
+                        storage.batch.bones.append([bone.name, [1, bone]])
+
+                    # process
+                    process(context, storage.batch.bones)
+
+                    # clear
+                    storage.batch.bones.clear()
+
+                  # mode
+                  elif object.mode == 'POSE':
+                    for bone in context.selected_pose_bones[:]:
+
+                      # search
+                      if search == '' or re.search(search, bone.name, re.I):
+
+                        # append
+                        storage.batch.bones.append([bone.name, [1, bone]])
+
+                    # process
+                    process(context, storage.batch.bones)
+
+                    # clear
+                    storage.batch.bones.clear()
+
+                # selected bones
+                else:
+
+                  # mode
+                  if object.mode == 'EDIT':
+
+                    # search
+                    if search == '' or re.search(search, context.active_bone, re.I):
+
+                      # name
+                      context.active_bone.name = name(context, context.active_bone.name) if option.suffixLast else name(context, context.active_bone) + option.suffix
+
+                  # mode
+                  elif object.mode == 'POSE':
+
+                    # search
+                    if search == '' or re.search(search, context.active_pose_bone, re.I):
+
+                      # name
+                      context.active_pose_bone.name = name(context, context.active_pose_bone.name) if option.suffixLast else name(context, context.active_pose_bone) + option.suffix
+
+                # bone constraints
+                if panel.boneConstraints:
+                  if context.mode == 'POSE':
+
+                      # selected bones
+                      if panel.selectedBones:
+                        for bone in context.selected_pose_bones[:]:
+                          for constraint in bone.constraints[:]:
+
+                            # search
+                            if search == '' or re.search(search, constraint.name):
+
+                              # append
+                              storage.batch.constraints.append([constraint.name, [1, constraint]])
+
+                          # process
+                          process(context, storage.batch.constraints)
+
+                          # clear
+                          storage.batch.constraints.clear()
+
+                      # selected bones
+                      else:
+                        for constraint in context.active_pose_bone.constraints[:]:
+
+                          # search
+                          if search == '' or re.search(search, constraint.name):
+
+                            # append
+                            storage.batch.constraints.append([constraint.name, [1, constraint]])
+
+                        # process
+                        process(context, storage.batch.constraints)
+
+                        # clear
+                        storage.batch.constraints.clear()
+
             # object data
 
             # search
@@ -882,6 +1072,42 @@ def main(context, quickBatch):
               # armatures
               if object.data.rna_type.identifier == 'Armature':
                 storage.batch.armatures.append([object.data.name, [1, object.data]])
+
+              all = [
+                # object
+                storage.batch.objects,
+
+                # cameras
+                storage.batch.cameras,
+
+                # meshes
+                storage.batch.meshes,
+
+                # curves
+                storage.batch.curves,
+
+                # lamps
+                storage.batch.lamps,
+
+                # lattices
+                storage.batch.lattices,
+
+                # metaballs
+                storage.batch.metaballs,
+
+                # speakers
+                storage.batch.speakers,
+
+                # armatures
+                storage.batch.armatures,
+              ]
+              for collection in all:
+
+                # process
+                process(context, collection)
+
+                # clear
+                collection.clear()
 
             # vertex groups
             if panel.vertexGroups:
@@ -1013,42 +1239,6 @@ def main(context, quickBatch):
               # clear
               storage.batch.particleSystems.clear()
               storage.batch.particleSettings.clear()
-
-        all = [
-          # object
-          storage.batch.objects,
-
-          # cameras
-          storage.batch.cameras,
-
-          # meshes
-          storage.batch.meshes,
-
-          # curves
-          storage.batch.curves,
-
-          # lamps
-          storage.batch.lamps,
-
-          # lattices
-          storage.batch.lattices,
-
-          # metaballs
-          storage.batch.metaballs,
-
-          # speakers
-          storage.batch.speakers,
-
-          # armatures
-          storage.batch.armatures,
-        ]
-        for collection in all:
-
-          # process
-          process(context, collection)
-
-          # clear
-          collection.clear()
 
   # quick batch
   else:

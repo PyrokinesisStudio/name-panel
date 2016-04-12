@@ -637,8 +637,11 @@ def populate(self, context, layout, object, option):
   # bone group
   block.objectData.boneGroup(self, context, column, object, option)
 
-  # bones
-  block.bone(self, context, column, object, option)
+  # object
+  if object == context.active_object:
+
+    # bone
+    block.bone(self, context, column, object, option)
 
 # block
 class block:
@@ -1692,10 +1695,6 @@ def Bone(self, context, layout, datablock, object, option):
 
     # selected bones
     sub.prop(option, 'selectedBones', text='', icon='BONE_DATA')
-
-  # selected
-  # else:
-  #   sub.label(text='', icon='BONE_DATA')
 
   # pose mode
   if object.mode in 'POSE':

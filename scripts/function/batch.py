@@ -661,41 +661,7 @@ def main(context, quickBatch):
             if object.data.rna_type.identifier == 'Armature':
               storage.batch.armatures.append([object.data.name, [1, object.data]])
 
-            all = [
-              # object
-              storage.batch.objects,
 
-              # cameras
-              storage.batch.cameras,
-
-              # meshes
-              storage.batch.meshes,
-
-              # curves
-              storage.batch.curves,
-
-              # lamps
-              storage.batch.lamps,
-
-              # lattices
-              storage.batch.lattices,
-
-              # metaballs
-              storage.batch.metaballs,
-
-              # speakers
-              storage.batch.speakers,
-
-              # armatures
-              storage.batch.armatures,
-            ]
-            for collection in all:
-
-              # process
-              process(context, collection)
-
-              # clear
-              collection.clear()
 
           # vertex groups
           if panel.vertexGroups:
@@ -827,6 +793,43 @@ def main(context, quickBatch):
             # clear
             storage.batch.particleSystems.clear()
             storage.batch.particleSettings.clear()
+
+          # all
+        all = [
+          # object
+          storage.batch.objects,
+
+          # cameras
+          storage.batch.cameras,
+
+          # meshes
+          storage.batch.meshes,
+
+          # curves
+          storage.batch.curves,
+
+          # lamps
+          storage.batch.lamps,
+
+          # lattices
+          storage.batch.lattices,
+
+          # metaballs
+          storage.batch.metaballs,
+
+          # speakers
+          storage.batch.speakers,
+
+          # armatures
+          storage.batch.armatures,
+        ]
+        for collection in all:
+
+          # process
+          process(context, collection)
+
+          # clear
+          collection.clear()
 
       # mode
       else:
@@ -1073,41 +1076,6 @@ def main(context, quickBatch):
               if object.data.rna_type.identifier == 'Armature':
                 storage.batch.armatures.append([object.data.name, [1, object.data]])
 
-              all = [
-                # object
-                storage.batch.objects,
-
-                # cameras
-                storage.batch.cameras,
-
-                # meshes
-                storage.batch.meshes,
-
-                # curves
-                storage.batch.curves,
-
-                # lamps
-                storage.batch.lamps,
-
-                # lattices
-                storage.batch.lattices,
-
-                # metaballs
-                storage.batch.metaballs,
-
-                # speakers
-                storage.batch.speakers,
-
-                # armatures
-                storage.batch.armatures,
-              ]
-              for collection in all:
-
-                # process
-                process(context, collection)
-
-                # clear
-                collection.clear()
 
             # vertex groups
             if panel.vertexGroups:
@@ -1239,6 +1207,43 @@ def main(context, quickBatch):
               # clear
               storage.batch.particleSystems.clear()
               storage.batch.particleSettings.clear()
+
+
+        all = [
+          # object
+          storage.batch.objects,
+
+          # cameras
+          storage.batch.cameras,
+
+          # meshes
+          storage.batch.meshes,
+
+          # curves
+          storage.batch.curves,
+
+          # lamps
+          storage.batch.lamps,
+
+          # lattices
+          storage.batch.lattices,
+
+          # metaballs
+          storage.batch.metaballs,
+
+          # speakers
+          storage.batch.speakers,
+
+          # armatures
+          storage.batch.armatures,
+        ]
+        for collection in all:
+
+          # process
+          process(context, collection)
+
+          # clear
+          collection.clear()
 
   # quick batch
   else:

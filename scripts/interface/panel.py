@@ -637,6 +637,12 @@ def populate(self, context, layout, object, option):
   # bone group
   block.objectData.boneGroup(self, context, column, object, option)
 
+  # row
+  row = column.row()
+
+  # separator
+  row.separator()
+
   # object
   if object == context.active_object:
 
@@ -1121,18 +1127,6 @@ def Object(self, context, layout, datablock, option):
       # hide render
       row.prop(datablock, 'hide_render', text='')
 
-  # empty
-  if datablock.type == 'EMPTY':
-
-    # empty draw type
-    if datablock.empty_draw_type != 'IMAGE':
-
-      # row
-      row = layout.row()
-
-      # separator
-      row.separator()
-
 # group
 def Group(self, context, layout, datablock, object):
   '''
@@ -1405,12 +1399,6 @@ def ObjectData(self, context, layout, datablock, option):
 
       # name
       row.prop(datablock.data, 'name', text='')
-
-  # row
-  row = layout.row()
-
-  # separator
-  row.separator()
 
 # vertex group
 def VertexGroup(self, context, layout, datablock, object, option):
@@ -1697,6 +1685,8 @@ def Bone(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
+
+  # enabled
   row.enabled = (search == '' or re.search(search, datablock.name, re.I) != None)
 
   # sub
@@ -1714,14 +1704,19 @@ def Bone(self, context, layout, datablock, object, option):
   # pose mode
   if object.mode in 'POSE':
 
-    # name
+    # datablock
     if not datablock == context.active_bone:
 
       # make active bone
       sub.operator('view3d.active_bone', text='', icon='BONE_DATA').target = datablock.name
 
+      # name
       row.prop(datablock, 'name', text='')
+
+    # datablock
     else:
+
+      # name
       row.prop(datablock, 'name', text='')
 
     # options
@@ -1753,6 +1748,8 @@ def Bone(self, context, layout, datablock, object, option):
 
       # make active bone
       sub.operator('view3d.active_bone', text='', icon='BONE_DATA').target = datablock.name
+
+    # name
     row.prop(datablock, 'name', text='')
 
     # options

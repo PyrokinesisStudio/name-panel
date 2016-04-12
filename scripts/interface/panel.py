@@ -1027,9 +1027,6 @@ class block:
         # selected bones
         if option.selectedBones:
 
-          # row
-          row = layout.row()
-
           # edit mode
           if object.mode in 'POSE':
             bones = object.data.bones[:]
@@ -1123,6 +1120,18 @@ def Object(self, context, layout, datablock, option):
 
       # hide render
       row.prop(datablock, 'hide_render', text='')
+
+  # empty
+  if datablock.type == 'EMPTY':
+
+    # empty draw type
+    if datablock.empty_draw_type != 'IMAGE':
+
+      # row
+      row = layout.row()
+
+      # separator
+      row.separator()
 
 # group
 def Group(self, context, layout, datablock, object):
@@ -1396,6 +1405,12 @@ def ObjectData(self, context, layout, datablock, option):
 
       # name
       row.prop(datablock.data, 'name', text='')
+
+  # row
+  row = layout.row()
+
+  # separator
+  row.separator()
 
 # vertex group
 def VertexGroup(self, context, layout, datablock, object, option):
@@ -1769,3 +1784,9 @@ def Bone(self, context, layout, datablock, object, option):
 
       # lock
       row.prop(datablock, 'lock', text='', icon=iconLock)
+
+  # row
+  row = layout.row()
+
+  # separator
+  row.separator()

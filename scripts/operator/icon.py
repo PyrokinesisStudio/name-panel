@@ -65,7 +65,7 @@ class object(Operator):
     try:
 
       # select
-      bpy.data.objects[context.active_object.name].select = True
+      # bpy.data.objects[context.active_object.name].select = True
 
       # mode set
       bpy.ops.object.mode_set(mode='OBJECT')
@@ -125,7 +125,7 @@ class objectData(Operator):
     try:
 
       # select
-      bpy.data.objects[context.active_object.name].select = True
+      # bpy.data.objects[context.active_object.name].select = True
 
       # mode set
       bpy.ops.object.mode_set(mode='OBJECT')
@@ -204,7 +204,7 @@ class vertexGroup(Operator):
       if bpy.data.objects[self.object] != context.scene.objects.active:
 
         # select
-        context.scene.objects.active.select = True
+        # context.scene.objects.active.select = True
 
         # mode set
         bpy.ops.object.mode_set(mode='OBJECT')

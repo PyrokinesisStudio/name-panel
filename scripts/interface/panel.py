@@ -148,7 +148,7 @@ def main(self, context):
   else:
 
     # display names
-    if option.diplayNames:
+    if option.displayNames:
 
       # mode
       if option.mode == 'SELECTED':

@@ -208,34 +208,22 @@ def filters(self, context, layout, option):
   # filters
   row.prop(option, 'filters', text='Filters', icon=iconToggle, toggle=True)
 
-  # operator menu
+  # display names
+  row.prop(option, 'displayNames', text='', icon='ZOOM_SELECTED')
+
+  # options
+  row.prop(option, 'options', text='', icon='SETTINGS')
+
+  # # operator menu
   row.menu('VIEW3D_MT_name_panel_specials', text='', icon='COLLAPSEMENU')
 
   # filters
   if option.filters:
 
-    # row 1
-    row = layout.row(align=True)
+    # separator
+    layout.separator()
 
-    # scale
-    row.scale_x = 1.4
-
-    # display names
-    row.prop(option, 'displayNames', text='', icon='ZOOM_SELECTED')
-
-    # sub
-    sub = row.row(align=True)
-
-    # enabled
-    sub.enabled = option.displayNames
-
-    # mode
-    sub.prop(option, 'mode', expand=True)
-
-    # options
-    row.prop(option, 'options', text='', icon='SETTINGS')
-
-    # row 2
+    # row
     row = layout.row(align=True)
 
     # scale
@@ -262,7 +250,7 @@ def filters(self, context, layout, option):
     # bone groups
     row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
 
-    # row 3
+    # row
     row = layout.row(align=True)
 
     # scale
@@ -289,6 +277,9 @@ def filters(self, context, layout, option):
     # particles systems
     row.prop(option, 'particleSystems', text='', icon='PARTICLES')
 
+    # separator
+    layout.separator()
+
   # row
   row = layout.row(align=True)
 
@@ -297,6 +288,18 @@ def filters(self, context, layout, option):
   row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
   row.prop(option, 'regex', text='', icon='SCRIPTPLUGINS')
   row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
+
+  # enabled
+  if option.displayNames:
+
+    # separator()
+    layout.separator()
+
+    # row
+    row = layout.row()
+
+    # mode
+    row.prop(option, 'mode', expand=True)
 
 # gather
 def gather(context, member):

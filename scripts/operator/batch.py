@@ -133,7 +133,7 @@ class name(Operator):
       row.prop(option, 'linestyleModifierType', text='')
 
       # column
-      column = layout.column(align=True)
+      column = layout.column()
 
       # label
       column.label(text='Global:')
@@ -170,6 +170,7 @@ class name(Operator):
       column.separator()
 
     # custom name
+    column = layout.column(align=True)
     column.prop(option, 'customName')
     column.separator()
     column.separator()

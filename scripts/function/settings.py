@@ -569,7 +569,7 @@ def reset(context, panel, auto, names, name, copy):
     batchNameOption.linestyleModifiers = False
 
     # linestyle modifier type
-    BatchNameOption.linestyleModifierType = 'ALL'
+    batchNameOption.linestyleModifierType = 'ALL'
 
     # scenes
     batchNameOption.scenes = False
@@ -641,7 +641,7 @@ def reset(context, panel, auto, names, name, copy):
     batchNameOption.suffix = ''
 
     # suffix last
-    BatchNameOption.suffixLast = False
+    batchNameOption.suffixLast = False
 
     # trim start
     batchNameOption.trimStart = 0
@@ -650,7 +650,7 @@ def reset(context, panel, auto, names, name, copy):
     batchNameOption.trimEnd = 0
 
     # sort
-    batchNameOption.sort = False
+    batchNameOption.sort = True
 
     # start
     batchNameOption.start = 1
@@ -708,11 +708,11 @@ def transfer(context, panel, auto, names, name, copy):
     for scene in bpy.data.scenes[:]:
       if scene != context.scene:
 
-        # pin active object
-        scene.NamePanel.pinActiveObject = namePanelOption.pinActiveObject
-
         # name panel option
         namePanelOption = context.scene.NamePanel
+
+        # pin active object
+        scene.NamePanel.pinActiveObject = namePanelOption.pinActiveObject
 
         # filters
         scene.NamePanel.filters = namePanelOption.filters
@@ -1132,16 +1132,16 @@ def transfer(context, panel, auto, names, name, copy):
         scene.BatchName.batchType = batchNameOption.batchType
 
         # actions
-        scene.NamePanel.actions = namePanelOption.actions
+        scene.BatchName.actions = batchNameOption.actions
 
         # action groups
-        scene.NamePanel.actionGroups = namePanelOption.actionGroups
+        scene.BatchName.actionGroups = batchNameOption.actionGroups
 
         # grease pencil
-        scene.NamePanel.greasePencil = namePanelOption.greasePencil
+        scene.BatchName.greasePencil = batchNameOption.greasePencil
 
         # pencil layers
-        scene.NamePanel.pencilLayers = namePanelOption.pencilLayers
+        scene.BatchName.pencilLayers = batchNameOption.pencilLayers
 
         # objects
         scene.BatchName.objects = batchNameOption.objects
@@ -1159,7 +1159,7 @@ def transfer(context, panel, auto, names, name, copy):
         scene.BatchName.objectData = batchNameOption.objectData
 
         # bone groups
-        scene.NamePanel.boneGroups = namePanelOption.boneGroups
+        scene.BatchName.boneGroups = batchNameOption.boneGroups
 
         # bones
         scene.BatchName.bones = batchNameOption.bones
@@ -1201,25 +1201,25 @@ def transfer(context, panel, auto, names, name, copy):
         scene.BatchName.modifierType = batchNameOption.modifierType
 
         # sensors
-        scene.NamePanel.sensors = namePanelOption.sensors
+        scene.BatchName.sensors = batchNameOption.sensors
 
         # controllers
-        scene.NamePanel.controllers = namePanelOption.controllers
+        scene.BatchName.controllers = batchNameOption.controllers
 
         # actuators
-        scene.NamePanel.actuators = namePanelOption.actuators
+        scene.BatchName.actuators = batchNameOption.actuators
 
         # line sets
-        scene.NamePanel.lineSets = namePanelOption.lineSets
+        scene.BatchName.lineSets = batchNameOption.lineSets
 
         # linestyles
-        scene.NamePanel.linestyles = namePanelOption.linestyles
+        scene.BatchName.linestyles = batchNameOption.linestyles
 
         # linestyle modifiers
-        scene.NamePanel.linestyleModifiers = namePanelOption.linestyleModifiers
+        scene.BatchName.linestyleModifiers = batchNameOption.linestyleModifiers
 
         # linestyle modifier type
-        scene.NamePanel.linestyleModifierType = namePanelOption.linestyleModifierType
+        scene.BatchName.linestyleModifierType = batchNameOption.linestyleModifierType
 
         # scenes
         scene.BatchName.scenes = batchNameOption.scenes
@@ -1294,7 +1294,7 @@ def transfer(context, panel, auto, names, name, copy):
         scene.BatchName.suffix = batchNameOption.suffix
 
         # suffix last
-        scene.NamePanel.suffixLast = namePanelOption.suffixLast
+        scene.BatchName.suffixLast = batchNameOption.suffixLast
 
         # trim start
         scene.BatchName.trimStart = batchNameOption.trimStart

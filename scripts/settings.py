@@ -29,6 +29,13 @@ class panel(PropertyGroup):
     Properties that effect how name panel displays the datablocks within the users current selection.
   '''
 
+  # pin active object
+  pinActiveObject = BoolProperty(
+    name = 'Pin Active Object',
+    description = 'Keeps the active object at the top of the stack.',
+    default = True
+  )
+
   # filters
   filters = BoolProperty(
     name = 'Filters',
@@ -56,16 +63,9 @@ class panel(PropertyGroup):
     description = 'Mode option for additional names displayed.',
     items = [
       ('SELECTED', 'Selected', 'Display selected objects.'),
-      ('LAYERS', 'Layers', 'Display objects in the active scene layers.')
+      ('LAYERS', 'Layers', 'Display objects in visible scene layers.')
     ],
     default = 'SELECTED'
-  )
-
-  # pin active object
-  pinActiveObject = BoolProperty(
-    name = 'Pin Active Object',
-    description = 'Keeps the active object at the top of the stack.',
-    default = True
   )
 
   # search
@@ -1090,14 +1090,6 @@ class batch:
       default = False
     )
 
-
-    # grease pencil layers
-    greasePencilLayers = BoolProperty(
-      name = 'Grease Pencil Layers',
-      description = 'Name grease pencil layers.',
-      default = False
-    )
-
     # vertex groups
     vertexGroups = BoolProperty(
       name = 'Vertex Groups',
@@ -1185,7 +1177,6 @@ class batch:
       default = False
     )
 
-
     # controllers
     controllers = BoolProperty(
       name = 'Controllers',
@@ -1200,7 +1191,7 @@ class batch:
       default = False
     )
 
-    # lineSet
+    # line sets
     lineSets = BoolProperty(
       name = 'Line Sets',
       description = 'Name line sets.',

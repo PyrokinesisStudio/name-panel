@@ -1423,7 +1423,7 @@ def VertexGroup(self, context, layout, datablock, object, option):
     if addon.preferences['experimental'] == 1:
 
       # select vertex group
-      prop = sub.operator('object.select_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
+      prop = sub.operator('view3d.active_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
       prop.object = object.name
       prop.target = datablock.name
     else:

@@ -33,7 +33,7 @@ def reset(context, panel, auto, names, name, copy):
     namePanelOption = context.scene.NamePanel
 
     # pin active object
-    namePanelOption.pinActiveObject = True
+    namePanelOption.pinActiveObject = False
 
     # filters
     namePanelOption.filters = False

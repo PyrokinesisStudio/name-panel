@@ -270,263 +270,263 @@ class objectData(Operator):
     return {'FINISHED'}
 
 # group
-class group(Operator):
-  '''
-    Assigns an active group.
-  '''
-  bl_idname = 'view3d.active_group'
-  bl_label = 'Active Group'
-  bl_description = 'Make this the active group.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    # extend
-    if self.extend:
-      bpy.data.objects[context.active_object.name].select = True
-
-    # extend
-    else:
-
-      # object
-      for object in context.scene.objects[:]:
-
-        # deselect
-        object.select = False
-
-    # select
-    bpy.data.objects[self.target].select = True
-
-    # active object
-    context.scene.objects.active = bpy.data.objects[self.target]
-
-    # properties
-    if self.properties:
-
-      # screen
-      if self.screen != '':
-
-        # area
-        for area in bpy.data.screens[self.screen].areas:
-
-          # type
-          if area.type in 'PROPERTIES':
-
-            # context
-            area.spaces.active.context = 'OBJECT'
-
-      # screen
-      else:
-
-        # area
-        for area in context.window.screen.areas:
-
-          # type
-          if area.type in 'PROPERTIES':
-
-            # context
-            area.spaces.active.context = 'OBJECT'
-
-    # layout
-    if self.layout:
-
-      # screen
-      if self.screen != '':
-
-        # active screen
-        context.window.screen = bpy.data.screens[self.screen]
-
-    return {'FINISHED'}
+# class group(Operator):
+#   '''
+#     Assigns an active group.
+#   '''
+#   bl_idname = 'view3d.active_group'
+#   bl_label = 'Active Group'
+#   bl_description = 'Make this the active group.'
+#   bl_options = {'REGISTER', 'UNDO'}
+#
+#   # object
+#   object = StringProperty(
+#     name = 'Object',
+#     description = 'The group object.',
+#     default = ''
+#   )
+#
+#   # target
+#   target = StringProperty(
+#     name = 'Target',
+#     description = 'The target group',
+#     default = ''
+#   )
+#
+#   # extend
+#   extend = BoolProperty(
+#     name = 'Extend Selection',
+#     description = 'Extend the selection.',
+#     default = False
+#   )
+#
+#   # properties
+#   properties = BoolProperty(
+#     name = 'Properties',
+#     description = 'Change any property window\'s context to object.',
+#     default = True
+#   )
+#
+#   # layout
+#   layout = BoolProperty(
+#     name = 'Change Layout',
+#     description = 'Change the current screen layout to an alternate',
+#     default = True
+#   )
+#
+#   # screen
+#   screen = StringProperty(
+#     name = 'Screen',
+#     description = 'The screen to change to.',
+#     default = ''
+#   )
+#
+#   # poll
+#   @classmethod
+#   def poll(cls, context):
+#     '''
+#       Space data type must be in 3D view.
+#     '''
+#     return context.space_data.type in 'VIEW_3D'
+#
+#   # execute
+#   def execute(self, context):
+#     '''
+#       Execute the operator.
+#     '''
+#
+#     # extend
+#     if self.extend:
+#       bpy.data.objects[context.active_object.name].select = True
+#
+#     # extend
+#     else:
+#
+#       # object
+#       for object in context.scene.objects[:]:
+#
+#         # deselect
+#         object.select = False
+#
+#     # select
+#     bpy.data.objects[self.target].select = True
+#
+#     # active object
+#     context.scene.objects.active = bpy.data.objects[self.target]
+#
+#     # properties
+#     if self.properties:
+#
+#       # screen
+#       if self.screen != '':
+#
+#         # area
+#         for area in bpy.data.screens[self.screen].areas:
+#
+#           # type
+#           if area.type in 'PROPERTIES':
+#
+#             # context
+#             area.spaces.active.context = 'OBJECT'
+#
+#       # screen
+#       else:
+#
+#         # area
+#         for area in context.window.screen.areas:
+#
+#           # type
+#           if area.type in 'PROPERTIES':
+#
+#             # context
+#             area.spaces.active.context = 'OBJECT'
+#
+#     # layout
+#     if self.layout:
+#
+#       # screen
+#       if self.screen != '':
+#
+#         # active screen
+#         context.window.screen = bpy.data.screens[self.screen]
+#
+#     return {'FINISHED'}
 
 # action
-class action(Operator):
-  '''
-    Assigns an active action.
-  '''
-  bl_idname = 'view3d.active_action'
-  bl_label = 'Active Action'
-  bl_description = 'Make this the active action.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The object the action is in.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target action',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    return {'FINISHED'}
+# class action(Operator):
+#   '''
+#     Assigns an active action.
+#   '''
+#   bl_idname = 'view3d.active_action'
+#   bl_label = 'Active Action'
+#   bl_description = 'Make this the active action.'
+#   bl_options = {'REGISTER', 'UNDO'}
+#
+#   # object
+#   object = StringProperty(
+#     name = 'Object',
+#     description = 'The object the action is in.',
+#     default = ''
+#   )
+#
+#   # target
+#   target = StringProperty(
+#     name = 'Target',
+#     description = 'The target action',
+#     default = ''
+#   )
+#
+#   # extend
+#   extend = BoolProperty(
+#     name = 'Extend Selection',
+#     description = 'Extend the selection.',
+#     default = False
+#   )
+#
+#   # properties
+#   properties = BoolProperty(
+#     name = 'Properties',
+#     description = 'Change any property window\'s context to object.',
+#     default = True
+#   )
+#
+#   # layout
+#   layout = BoolProperty(
+#     name = 'Change Layout',
+#     description = 'Change the current screen layout to an alternate',
+#     default = True
+#   )
+#
+#   # screen
+#   screen = StringProperty(
+#     name = 'Screen',
+#     description = 'The screen to change to.',
+#     default = ''
+#   )
+#
+#   # poll
+#   @classmethod
+#   def poll(cls, context):
+#     '''
+#       Space data type must be in 3D view.
+#     '''
+#     return context.space_data.type in 'VIEW_3D'
+#
+#   # execute
+#   def execute(self, context):
+#     '''
+#       Execute the operator.
+#     '''
+#
+#     return {'FINISHED'}
 
 # grease pencil
-class greasePencil(Operator):
-  '''
-    Assigns an active grease pencil.
-  '''
-  bl_idname = 'view3d.active_grease_pencil'
-  bl_label = 'Active Group'
-  bl_description = 'Make this the active group.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    return {'FINISHED'}
+# class greasePencil(Operator):
+#   '''
+#     Assigns an active grease pencil.
+#   '''
+#   bl_idname = 'view3d.active_grease_pencil'
+#   bl_label = 'Active Group'
+#   bl_description = 'Make this the active group.'
+#   bl_options = {'REGISTER', 'UNDO'}
+#
+#   # object
+#   object = StringProperty(
+#     name = 'Object',
+#     description = 'The group object.',
+#     default = ''
+#   )
+#
+#   # target
+#   target = StringProperty(
+#     name = 'Target',
+#     description = 'The target group',
+#     default = ''
+#   )
+#
+#   # extend
+#   extend = BoolProperty(
+#     name = 'Extend Selection',
+#     description = 'Extend the selection.',
+#     default = False
+#   )
+#
+#   # properties
+#   properties = BoolProperty(
+#     name = 'Properties',
+#     description = 'Change any property window\'s context to object.',
+#     default = True
+#   )
+#
+#   # layout
+#   layout = BoolProperty(
+#     name = 'Change Layout',
+#     description = 'Change the current screen layout to an alternate',
+#     default = True
+#   )
+#
+#   # screen
+#   screen = StringProperty(
+#     name = 'Screen',
+#     description = 'The screen to change to.',
+#     default = ''
+#   )
+#
+#   # poll
+#   @classmethod
+#   def poll(cls, context):
+#     '''
+#       Space data type must be in 3D view.
+#     '''
+#     return context.space_data.type in 'VIEW_3D'
+#
+#   # execute
+#   def execute(self, context):
+#     '''
+#       Execute the operator.
+#     '''
+#
+#     return {'FINISHED'}
 
 # vertex group
 class vertexGroup(Operator):
@@ -645,345 +645,345 @@ class vertexGroup(Operator):
     return {'FINISHED'}
 
 # shapekey
-class groups(Operator):
-  '''
-    Assigns an active group.
-  '''
-  bl_idname = 'view3d.active_group'
-  bl_label = 'Active Group'
-  bl_description = 'Make this the active group.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    return {'FINISHED'}
+# class groups(Operator):
+#   '''
+#     Assigns an active group.
+#   '''
+#   bl_idname = 'view3d.active_group'
+#   bl_label = 'Active Group'
+#   bl_description = 'Make this the active group.'
+#   bl_options = {'REGISTER', 'UNDO'}
+#
+#   # object
+#   object = StringProperty(
+#     name = 'Object',
+#     description = 'The group object.',
+#     default = ''
+#   )
+#
+#   # target
+#   target = StringProperty(
+#     name = 'Target',
+#     description = 'The target group',
+#     default = ''
+#   )
+#
+#   # extend
+#   extend = BoolProperty(
+#     name = 'Extend Selection',
+#     description = 'Extend the selection.',
+#     default = False
+#   )
+#
+#   # properties
+#   properties = BoolProperty(
+#     name = 'Properties',
+#     description = 'Change any property window\'s context to object.',
+#     default = True
+#   )
+#
+#   # layout
+#   layout = BoolProperty(
+#     name = 'Change Layout',
+#     description = 'Change the current screen layout to an alternate',
+#     default = True
+#   )
+#
+#   # screen
+#   screen = StringProperty(
+#     name = 'Screen',
+#     description = 'The screen to change to.',
+#     default = ''
+#   )
+#
+#   # poll
+#   @classmethod
+#   def poll(cls, context):
+#     '''
+#       Space data type must be in 3D view.
+#     '''
+#     return context.space_data.type in 'VIEW_3D'
+#
+#   # execute
+#   def execute(self, context):
+#     '''
+#       Execute the operator.
+#     '''
+#
+#     return {'FINISHED'}
 
 # uv map
-class groups(Operator):
-  '''
-    Assigns an active group.
-  '''
-  bl_idname = 'view3d.active_group'
-  bl_label = 'Active Group'
-  bl_description = 'Make this the active group.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    return {'FINISHED'}
+# class groups(Operator):
+#   '''
+#     Assigns an active group.
+#   '''
+#   bl_idname = 'view3d.active_group'
+#   bl_label = 'Active Group'
+#   bl_description = 'Make this the active group.'
+#   bl_options = {'REGISTER', 'UNDO'}
+#
+#   # object
+#   object = StringProperty(
+#     name = 'Object',
+#     description = 'The group object.',
+#     default = ''
+#   )
+#
+#   # target
+#   target = StringProperty(
+#     name = 'Target',
+#     description = 'The target group',
+#     default = ''
+#   )
+#
+#   # extend
+#   extend = BoolProperty(
+#     name = 'Extend Selection',
+#     description = 'Extend the selection.',
+#     default = False
+#   )
+#
+#   # properties
+#   properties = BoolProperty(
+#     name = 'Properties',
+#     description = 'Change any property window\'s context to object.',
+#     default = True
+#   )
+#
+#   # layout
+#   layout = BoolProperty(
+#     name = 'Change Layout',
+#     description = 'Change the current screen layout to an alternate',
+#     default = True
+#   )
+#
+#   # screen
+#   screen = StringProperty(
+#     name = 'Screen',
+#     description = 'The screen to change to.',
+#     default = ''
+#   )
+#
+#   # poll
+#   @classmethod
+#   def poll(cls, context):
+#     '''
+#       Space data type must be in 3D view.
+#     '''
+#     return context.space_data.type in 'VIEW_3D'
+#
+#   # execute
+#   def execute(self, context):
+#     '''
+#       Execute the operator.
+#     '''
+#
+#     return {'FINISHED'}
 
 
 # vertex colors
-class groups(Operator):
-  '''
-    Assigns an active group.
-  '''
-  bl_idname = 'view3d.active_group'
-  bl_label = 'Active Group'
-  bl_description = 'Make this the active group.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    return {'FINISHED'}
+# class groups(Operator):
+#   '''
+#     Assigns an active group.
+#   '''
+#   bl_idname = 'view3d.active_group'
+#   bl_label = 'Active Group'
+#   bl_description = 'Make this the active group.'
+#   bl_options = {'REGISTER', 'UNDO'}
+#
+#   # object
+#   object = StringProperty(
+#     name = 'Object',
+#     description = 'The group object.',
+#     default = ''
+#   )
+#
+#   # target
+#   target = StringProperty(
+#     name = 'Target',
+#     description = 'The target group',
+#     default = ''
+#   )
+#
+#   # extend
+#   extend = BoolProperty(
+#     name = 'Extend Selection',
+#     description = 'Extend the selection.',
+#     default = False
+#   )
+#
+#   # properties
+#   properties = BoolProperty(
+#     name = 'Properties',
+#     description = 'Change any property window\'s context to object.',
+#     default = True
+#   )
+#
+#   # layout
+#   layout = BoolProperty(
+#     name = 'Change Layout',
+#     description = 'Change the current screen layout to an alternate',
+#     default = True
+#   )
+#
+#   # screen
+#   screen = StringProperty(
+#     name = 'Screen',
+#     description = 'The screen to change to.',
+#     default = ''
+#   )
+#
+#   # poll
+#   @classmethod
+#   def poll(cls, context):
+#     '''
+#       Space data type must be in 3D view.
+#     '''
+#     return context.space_data.type in 'VIEW_3D'
+#
+#   # execute
+#   def execute(self, context):
+#     '''
+#       Execute the operator.
+#     '''
+#
+#     return {'FINISHED'}
 
 # materials
-class groups(Operator):
-  '''
-    Assigns an active group.
-  '''
-  bl_idname = 'view3d.active_group'
-  bl_label = 'Active Group'
-  bl_description = 'Make this the active group.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    return {'FINISHED'}
+# class groups(Operator):
+#   '''
+#     Assigns an active group.
+#   '''
+#   bl_idname = 'view3d.active_group'
+#   bl_label = 'Active Group'
+#   bl_description = 'Make this the active group.'
+#   bl_options = {'REGISTER', 'UNDO'}
+#
+#   # object
+#   object = StringProperty(
+#     name = 'Object',
+#     description = 'The group object.',
+#     default = ''
+#   )
+#
+#   # target
+#   target = StringProperty(
+#     name = 'Target',
+#     description = 'The target group',
+#     default = ''
+#   )
+#
+#   # extend
+#   extend = BoolProperty(
+#     name = 'Extend Selection',
+#     description = 'Extend the selection.',
+#     default = False
+#   )
+#
+#   # properties
+#   properties = BoolProperty(
+#     name = 'Properties',
+#     description = 'Change any property window\'s context to object.',
+#     default = True
+#   )
+#
+#   # layout
+#   layout = BoolProperty(
+#     name = 'Change Layout',
+#     description = 'Change the current screen layout to an alternate',
+#     default = True
+#   )
+#
+#   # screen
+#   screen = StringProperty(
+#     name = 'Screen',
+#     description = 'The screen to change to.',
+#     default = ''
+#   )
+#
+#   # poll
+#   @classmethod
+#   def poll(cls, context):
+#     '''
+#       Space data type must be in 3D view.
+#     '''
+#     return context.space_data.type in 'VIEW_3D'
+#
+#   # execute
+#   def execute(self, context):
+#     '''
+#       Execute the operator.
+#     '''
+#
+#     return {'FINISHED'}
 
 # textures
-class groups(Operator):
-  '''
-    Assigns an active group.
-  '''
-  bl_idname = 'view3d.active_group'
-  bl_label = 'Active Group'
-  bl_description = 'Make this the active group.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    return {'FINISHED'}
+# class groups(Operator):
+#   '''
+#     Assigns an active group.
+#   '''
+#   bl_idname = 'view3d.active_group'
+#   bl_label = 'Active Group'
+#   bl_description = 'Make this the active group.'
+#   bl_options = {'REGISTER', 'UNDO'}
+#
+#   # object
+#   object = StringProperty(
+#     name = 'Object',
+#     description = 'The group object.',
+#     default = ''
+#   )
+#
+#   # target
+#   target = StringProperty(
+#     name = 'Target',
+#     description = 'The target group',
+#     default = ''
+#   )
+#
+#   # extend
+#   extend = BoolProperty(
+#     name = 'Extend Selection',
+#     description = 'Extend the selection.',
+#     default = False
+#   )
+#
+#   # properties
+#   properties = BoolProperty(
+#     name = 'Properties',
+#     description = 'Change any property window\'s context to object.',
+#     default = True
+#   )
+#
+#   # layout
+#   layout = BoolProperty(
+#     name = 'Change Layout',
+#     description = 'Change the current screen layout to an alternate',
+#     default = True
+#   )
+#
+#   # screen
+#   screen = StringProperty(
+#     name = 'Screen',
+#     description = 'The screen to change to.',
+#     default = ''
+#   )
+#
+#   # poll
+#   @classmethod
+#   def poll(cls, context):
+#     '''
+#       Space data type must be in 3D view.
+#     '''
+#     return context.space_data.type in 'VIEW_3D'
+#
+#   # execute
+#   def execute(self, context):
+#     '''
+#       Execute the operator.
+#     '''
+#
+#     return {'FINISHED'}
 
 # bone
 class bone(Operator):

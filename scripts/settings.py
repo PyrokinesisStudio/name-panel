@@ -33,7 +33,7 @@ class panel(PropertyGroup):
   pinActiveObject = BoolProperty(
     name = 'Pin Active Object',
     description = 'Keeps the active object at the top of the stack.',
-    default = True
+    default = False
   )
 
   # filters

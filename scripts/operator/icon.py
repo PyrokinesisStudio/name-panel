@@ -102,11 +102,18 @@ class object(Operator):
     # mode set
     bpy.ops.object.mode_set(mode='OBJECT')
 
-    # select
-    bpy.data.objects[self.target].select = True
+    # warning
+    try:
 
-    # active object
-    context.scene.objects.active = bpy.data.objects[self.target]
+      # select
+      bpy.data.objects[self.target].select = True
+
+      # active object
+      context.scene.objects.active = bpy.data.objects[self.target]
+
+    # report
+    except:
+      self.report({'WARNING'}, 'Invalid target')
 
     # properties
     if self.properties:
@@ -114,14 +121,22 @@ class object(Operator):
       # screen
       if self.screen != '':
 
-        # area
-        for area in bpy.data.screens[self.screen].areas:
+        # warning
+        try:
 
-          # type
-          if area.type in 'PROPERTIES':
+          # area
+          for area in bpy.data.screens[self.screen].areas:
 
-            # context
-            area.spaces.active.context = 'OBJECT'
+            # type
+            if area.type in 'PROPERTIES':
+
+              # context
+              area.spaces.active.context = 'OBJECT'
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
+
 
       # screen
       else:
@@ -141,8 +156,15 @@ class object(Operator):
       # screen
       if self.screen != '':
 
-        # active screen
-        context.window.screen = bpy.data.screens[self.screen]
+        # warning
+        try:
+
+          # active screen
+          context.window.screen = bpy.data.screens[self.screen]
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
 
 
     return {'FINISHED'}
@@ -237,14 +259,21 @@ class objectData(Operator):
       # screen
       if self.screen != '':
 
-        # area
-        for area in bpy.data.screens[self.screen].areas:
+        # warning
+        try:
 
-          # type
-          if area.type in 'PROPERTIES':
+          # area
+          for area in bpy.data.screens[self.screen].areas:
 
-            # context
-            area.spaces.active.context = 'DATA'
+            # type
+            if area.type in 'PROPERTIES':
+
+              # context
+              area.spaces.active.context = 'DATA'
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
 
       # screen
       else:
@@ -264,8 +293,15 @@ class objectData(Operator):
       # screen
       if self.screen != '':
 
-        # active screen
-        context.window.screen = bpy.data.screens[self.screen]
+        # warning
+        try:
+
+          # active screen
+          context.window.screen = bpy.data.screens[self.screen]
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
 
     return {'FINISHED'}
 
@@ -579,62 +615,60 @@ class vertexGroup(Operator):
     '''
       Execute the operator.
     '''
-    try:
-      if bpy.data.objects[self.object] != context.scene.objects.active:
 
-        # select
-        # context.scene.objects.active.select = True
+    # not active
+    if bpy.data.objects[self.object] != context.scene.objects.active:
 
-        # mode set
-        bpy.ops.object.mode_set(mode='OBJECT')
+      # select
+      context.scene.objects.active.select = True
 
-        # active object
-        context.scene.objects.active = bpy.data.objects[self.object]
-      if not context.object.mode in 'EDIT':
+      # mode set
+      bpy.ops.object.mode_set(mode='OBJECT')
 
-        # mode set
-        bpy.ops.object.mode_set(mode='EDIT')
+      # active object
+      context.scene.objects.active = bpy.data.objects[self.object]
 
-      # bmesh
-      mesh = bmesh.from_edit_mesh(context.active_object.data)
+    # not edit
+    if not context.object.mode in 'EDIT':
 
-      # extend
-      if not self.extend:
+      # mode set
+      bpy.ops.object.mode_set(mode='EDIT')
 
-        # clear vertex
-        for vertex in mesh.verts:
-          vertex.select = False
+    # bmesh
+    mesh = bmesh.from_edit_mesh(context.active_object.data)
 
-        # clear edge
-        for edge in mesh.edges:
-          edge.select = False
+    # extend
+    if not self.extend:
 
-        # clear face
-        for face in mesh.faces:
-          face.select = False
-
-      # group index
-      groupIndex = context.active_object.vertex_groups[self.target].index
-
-      # deform layer
-      deformLayer = mesh.verts.layers.deform.active
-
-      # select vertices
+      # clear vertex
       for vertex in mesh.verts:
-        deformVertex = vertex[deformLayer]
-        if groupIndex in deformVertex:
-          vertex.select = True
+        vertex.select = False
 
-      # flush selection
-      mesh.select_flush(True)
+      # clear edge
+      for edge in mesh.edges:
+        edge.select = False
 
-      # update viewport
-      context.scene.objects.active = context.scene.objects.active
+      # clear face
+      for face in mesh.faces:
+        face.select = False
 
-    except:
+    # group index
+    groupIndex = context.active_object.vertex_groups[self.target].index
 
-      # warning messege
-      self.report({'WARNING'}, 'Invalid target.')
+    # deform layer
+    deformLayer = mesh.verts.layers.deform.active
+
+    # select vertices
+    for vertex in mesh.verts:
+      deformVertex = vertex[deformLayer]
+      if groupIndex in deformVertex:
+        vertex.select = True
+
+    # flush selection
+    mesh.select_flush(True)
+
+    # update viewport
+    context.scene.objects.active = context.scene.objects.active
 
     # properties
     if self.properties:

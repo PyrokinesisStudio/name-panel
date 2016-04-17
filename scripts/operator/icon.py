@@ -602,6 +602,20 @@ class vertexGroup(Operator):
     default = False
   )
 
+  # layout
+  layout = BoolProperty(
+    name = 'Change Layout',
+    description = 'Change the current screen layout to an alternate',
+    default = True
+  )
+
+  # screen
+  screen = StringProperty(
+    name = 'Screen',
+    description = 'The screen to change to.',
+    default = ''
+  )
+
   # poll
   @classmethod
   def poll(cls, context):
@@ -616,22 +630,36 @@ class vertexGroup(Operator):
       Execute the operator.
     '''
 
+    # object mode
+    if context.mode != 'OBJECT':
+      bpy.ops.object.mode_set(mode='OBJECT')
+
     # not active
     if bpy.data.objects[self.object] != context.scene.objects.active:
 
-      # select
-      context.scene.objects.active.select = True
+      # extend
+      if self.extend:
 
-      # mode set
-      bpy.ops.object.mode_set(mode='OBJECT')
+        # select
+        context.scene.objects.active.select = True
+
+      # extend
+      else:
+
+        # object
+        for object in context.scene.objects[:]:
+
+          # deselect
+          object.select = False
+
+      # select
+      bpy.data.objects[self.object].select = True
 
       # active object
       context.scene.objects.active = bpy.data.objects[self.object]
 
-    # not edit
-    if not context.object.mode in 'EDIT':
-
-      # mode set
+    # edit mode
+    if context.mode != 'EDIT':
       bpy.ops.object.mode_set(mode='EDIT')
 
     # bmesh
@@ -672,9 +700,53 @@ class vertexGroup(Operator):
 
     # properties
     if self.properties:
-      for area in context.screen.areas:
-        if area.type in 'PROPERTIES':
-          area.spaces.active.context = 'DATA'
+
+      # screen
+      if self.screen != '':
+
+        # warning
+        try:
+
+          # area
+          for area in bpy.data.screens[self.screen].areas:
+
+            # type
+            if area.type in 'PROPERTIES':
+
+              # context
+              area.spaces.active.context = 'DATA'
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
+
+      # screen
+      else:
+
+        # area
+        for area in context.window.screen.areas:
+
+          # type
+          if area.type in 'PROPERTIES':
+
+            # context
+            area.spaces.active.context = 'DATA'
+
+    # layout
+    if self.layout:
+
+      # screen
+      if self.screen != '':
+
+        # warning
+        try:
+
+          # active screen
+          context.window.screen = bpy.data.screens[self.screen]
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
 
     return {'FINISHED'}
 

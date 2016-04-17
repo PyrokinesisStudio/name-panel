@@ -55,11 +55,10 @@ class preferences(AddonPreferences):
   '''
   bl_idname = __name__
 
-  # experimental
-  experimental = BoolProperty(
-    name = 'Experimental Features',
-    description = 'Enable experimental features for this addon',
-    default = False
+  # popups
+  popups = BoolProperty(
+    name = 'Pop-ups',
+    description = 'Enable settings pop-up for modifiers and constraints. (icon)'
   )
 
   # location
@@ -95,15 +94,11 @@ class preferences(AddonPreferences):
     split = layout.split(align=True)
     split.scale_y = 2
 
-    # prop = split.operator('wm.url_open', text='BlenderMarket')
-    # prop.url = ''
-
+    # blender artists
     prop = split.operator('wm.url_open', text='BlenderArtists')
     prop.url = 'http://blenderartists.org/forum/showthread.php?272086'
 
-    # prop = split.operator('wm.url_open', text='BlendSwap')
-    # prop.url = 'http://www.blendswap.com/blends/view/82472'
-
+    # github
     prop = split.operator('wm.url_open', text='Github')
     prop.url = 'https://github.com/trentinfrederick/name-panel'
 
@@ -123,11 +118,6 @@ def register():
       if addon.preferences['location'] == 0:
         bpy.utils.unregister_class(panel.UIName)
       else:
-        # remove blender default panel
-        # try:
-        #   bpy.utils.unregister_class(bpy.types.VIEW3D_PT_view3d_name)
-        # except:
-        #   pass
         bpy.utils.unregister_class(panel.toolsName)
     except:
       bpy.utils.unregister_class(panel.UIName)

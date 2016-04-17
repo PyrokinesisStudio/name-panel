@@ -822,9 +822,12 @@ class vertexGroup(Operator):
 
     # select vertices
     for vertex in mesh.verts:
-      deformVertex = vertex[deformLayer]
-      if groupIndex in deformVertex:
-        vertex.select = True
+      try:
+        deformVertex = vertex[deformLayer]
+        if groupIndex in deformVertex:
+          vertex.select = True
+      except:
+        pass
 
     # flush selection
     mesh.select_flush(True)

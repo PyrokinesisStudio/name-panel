@@ -634,29 +634,36 @@ class vertexGroup(Operator):
     if context.mode != 'OBJECT':
       bpy.ops.object.mode_set(mode='OBJECT')
 
-    # not active
-    if bpy.data.objects[self.object] != context.scene.objects.active:
+    # warning
+    try:
 
-      # extend
-      if self.extend:
+      # not active
+      if bpy.data.objects[self.object] != context.scene.objects.active:
+
+        # extend
+        if self.extend:
+
+          # select
+          context.scene.objects.active.select = True
+
+        # extend
+        else:
+
+          # object
+          for object in context.scene.objects[:]:
+
+            # deselect
+            object.select = False
 
         # select
-        context.scene.objects.active.select = True
+        bpy.data.objects[self.object].select = True
 
-      # extend
-      else:
+        # active object
+        context.scene.objects.active = bpy.data.objects[self.object]
 
-        # object
-        for object in context.scene.objects[:]:
-
-          # deselect
-          object.select = False
-
-      # select
-      bpy.data.objects[self.object].select = True
-
-      # active object
-      context.scene.objects.active = bpy.data.objects[self.object]
+    # report
+    except:
+      self.report({'WARNING'}, 'Invalid object.')
 
     # edit mode
     if context.mode != 'EDIT':
@@ -680,8 +687,15 @@ class vertexGroup(Operator):
       for face in mesh.faces:
         face.select = False
 
-    # group index
-    groupIndex = context.active_object.vertex_groups[self.target].index
+    # warning
+    try:
+
+      # group index
+      groupIndex = context.active_object.vertex_groups[self.target].index
+
+    # report
+    except:
+      self.report({'WARNING'}, 'Invalid target.')
 
     # deform layer
     deformLayer = mesh.verts.layers.deform.active

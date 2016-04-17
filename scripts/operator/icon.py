@@ -814,6 +814,8 @@ class bone(Operator):
 
     return {'FINISHED'}
 
+# bone constraints
+
 # pop-ups
 
 # constraint

@@ -1112,7 +1112,7 @@ def Object(self, context, layout, datablock, option):
     sub.scale_x = 1.6
 
     # make active
-    sub.operator('view3d.active_object', text='', icon=icon.object(datablock)).target = datablock.name
+    sub.operator('view3d.np_active_object', text='', icon=icon.object(datablock)).target = datablock.name
 
     # object
     row.prop(datablock, 'name', text='')
@@ -1144,8 +1144,13 @@ def Group(self, context, layout, datablock, object):
   # scale
   sub.scale_x = 1.6
 
+  # active vertex group
+  prop = sub.operator('view3d.np_active_group', text='', icon='GROUP', emboss=False)
+  prop.object = object.name
+  prop.target = datablock.name
+
   # label
-  sub.label(text='', icon='GROUP')
+  # sub.label(text='', icon='GROUP')
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1165,8 +1170,10 @@ def Action(self, context, layout, datablock, object):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  sub.label(text='', icon='ACTION')
+  # active action
+  prop = sub.operator('view3d.np_active_action', text='', icon='ACTION', emboss=False)
+  prop.object = object.name
+  prop.target = datablock.name
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1190,8 +1197,10 @@ def GreasePencil(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  sub.label(text='', icon='GREASEPENCIL')
+  # active grease pencil
+  prop = sub.operator('view3d.np_active_grease_pencil', text='', icon='GREASEPENCIL', emboss=False)
+  prop.object = object.name
+  prop.target = datablock.name
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1402,7 +1411,7 @@ def ObjectData(self, context, layout, datablock, option):
       sub.scale_x = 1.6
 
       # object data
-      op = sub.operator('view3d.active_object_data', text='', icon=icon.objectData(datablock))
+      op = sub.operator('view3d.np_active_object_data', text='', icon=icon.objectData(datablock))
       op.target = datablock.name
 
       # name
@@ -1424,7 +1433,7 @@ def VertexGroup(self, context, layout, datablock, object, option):
   sub.scale_x = 1.6
 
   # active vertex group
-  prop = sub.operator('view3d.active_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
+  prop = sub.operator('view3d.np_active_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
   prop.object = object.name
   prop.target = datablock.name
 
@@ -1702,7 +1711,7 @@ def Bone(self, context, layout, datablock, object, option):
     if not datablock == context.active_bone:
 
       # make active bone
-      sub.operator('view3d.active_bone', text='', icon='BONE_DATA').target = datablock.name
+      sub.operator('view3d.np_active_bone', text='', icon='BONE_DATA').target = datablock.name
 
       # name
       row.prop(datablock, 'name', text='')
@@ -1741,7 +1750,7 @@ def Bone(self, context, layout, datablock, object, option):
     if not datablock == context.active_bone:
 
       # make active bone
-      sub.operator('view3d.active_bone', text='', icon='BONE_DATA').target = datablock.name
+      sub.operator('view3d.np_active_bone', text='', icon='BONE_DATA').target = datablock.name
 
     # name
     row.prop(datablock, 'name', text='')

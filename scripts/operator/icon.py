@@ -30,7 +30,7 @@ class object(Operator):
   '''
     Assigns an active object.
   '''
-  bl_idname = 'view3d.active_object'
+  bl_idname = 'view3d.np_active_object'
   bl_label = 'Active Object'
   bl_description = 'Make this object the active object.'
   bl_options = {'REGISTER', 'UNDO'}
@@ -167,7 +167,6 @@ class object(Operator):
         except:
           self.report({'WARNING'}, 'Invalid screen')
 
-
     return {'FINISHED'}
 
 # group
@@ -175,7 +174,7 @@ class group(Operator):
   '''
     Assigns an active group.
   '''
-  bl_idname = 'view3d.active_group'
+  bl_idname = 'view3d.np_active_group'
   bl_label = 'Active Group'
   bl_description = 'Make this the active group.'
   bl_options = {'REGISTER', 'UNDO'}
@@ -236,90 +235,37 @@ class group(Operator):
       Execute the operator.
     '''
 
-    # warning
-    try:
+    # extend
+    if self.extend:
 
-      # not active
-      if bpy.data.objects[self.object] != context.scene.objects.active:
-
-        # object mode
-        if context.mode != 'OBJECT':
-          bpy.ops.object.mode_set(mode='OBJECT')
-
-        # extend
-        if self.extend:
-
-          # select
-          context.scene.objects.active.select = True
-
-        # extend
-        else:
-
-          # object
-          for object in context.scene.objects[:]:
-
-            # deselect
-            object.select = False
-
-        # select
-        bpy.data.objects[self.object].select = True
-
-        # active object
-        context.scene.objects.active = bpy.data.objects[self.object]
-
-    # report
-    except:
-      self.report({'WARNING'}, 'Invalid object.')
-
-    # edit mode
-    if context.mode != 'EDIT':
-      bpy.ops.object.mode_set(mode='EDIT')
-
-    # bmesh
-    mesh = bmesh.from_edit_mesh(context.active_object.data)
+      # select
+      bpy.data.objects[context.active_object.name].select = True
 
     # extend
-    if not self.extend:
+    else:
 
-      # clear vertex
-      for vertex in mesh.verts:
-        vertex.select = False
+      # object
+      for object in context.scene.objects[:]:
 
-      # clear edge
-      for edge in mesh.edges:
-        edge.select = False
+        # deselect
+        object.select = False
 
-      # clear face
-      for face in mesh.faces:
-        face.select = False
+    # mode set
+    if context.mode != 'OBJECT':
+      bpy.ops.object.mode_set(mode='OBJECT')
 
     # warning
     try:
 
-      # group index
-      groupIndex = context.active_object.vertex_groups[self.target].index
+      # select
+      bpy.data.objects[self.object].select = True
 
-      # active index
-      context.active_object.vertex_groups.active_index = groupIndex
+      # active object
+      context.scene.objects.active = bpy.data.objects[self.object]
 
     # report
     except:
-      self.report({'WARNING'}, 'Invalid target.')
-
-    # deform layer
-    deformLayer = mesh.verts.layers.deform.active
-
-    # select vertices
-    for vertex in mesh.verts:
-      deformVertex = vertex[deformLayer]
-      if groupIndex in deformVertex:
-        vertex.select = True
-
-    # flush selection
-    mesh.select_flush(True)
-
-    # update viewport
-    context.scene.objects.active = context.scene.objects.active
+      self.report({'WARNING'}, 'Invalid target')
 
     # properties
     if self.properties:
@@ -337,7 +283,7 @@ class group(Operator):
             if area.type in 'PROPERTIES':
 
               # context
-              area.spaces.active.context = 'DATA'
+              area.spaces.active.context = 'OBJECT'
 
         # report
         except:
@@ -353,7 +299,7 @@ class group(Operator):
           if area.type in 'PROPERTIES':
 
             # context
-            area.spaces.active.context = 'DATA'
+            area.spaces.active.context = 'OBJECT'
 
     # layout
     if self.layout:
@@ -374,8 +320,222 @@ class group(Operator):
     return {'FINISHED'}
 
 # action
+class action(Operator):
+  '''
+    Assigns an active action.
+  '''
+  bl_idname = 'view3d.np_active_action'
+  bl_label = 'Active Group'
+  bl_description = 'Make this the active action.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # object
+  object = StringProperty(
+    name = 'Object',
+    description = 'The group object.',
+    default = ''
+  )
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The target group',
+    default = ''
+  )
+
+  # extend
+  extend = BoolProperty(
+    name = 'Extend Selection',
+    description = 'Extend the selection.',
+    default = False
+  )
+
+  # layout
+  layout = BoolProperty(
+    name = 'Change Layout',
+    description = 'Change the current screen layout to an alternate',
+    default = True
+  )
+
+  # screen
+  screen = StringProperty(
+    name = 'Screen',
+    description = 'The screen to change to.',
+    default = ''
+  )
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+
+    # extend
+    if self.extend:
+
+      # select
+      bpy.data.objects[context.active_object.name].select = True
+
+    # extend
+    else:
+
+      # object
+      for object in context.scene.objects[:]:
+
+        # deselect
+        object.select = False
+
+    # mode set
+    if context.mode != 'OBJECT':
+      bpy.ops.object.mode_set(mode='OBJECT')
+
+    # warning
+    try:
+
+      # select
+      bpy.data.objects[self.object].select = True
+
+      # active object
+      context.scene.objects.active = bpy.data.objects[self.object]
+
+    # report
+    except:
+      self.report({'WARNING'}, 'Invalid target')
+
+    # layout
+    if self.layout:
+
+      # screen
+      if self.screen != '':
+
+        # warning
+        try:
+
+          # active screen
+          context.window.screen = bpy.data.screens[self.screen]
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
+
+    return {'FINISHED'}
 
 # grease pencil
+class greasePencil(Operator):
+  '''
+    Assigns an active grease pencil.
+  '''
+  bl_idname = 'view3d.np_active_grease_pencil'
+  bl_label = 'Active Grease Pencil'
+  bl_description = 'Make this the active grease pencil.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # object
+  object = StringProperty(
+    name = 'Object',
+    description = 'The group object.',
+    default = ''
+  )
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The target group',
+    default = ''
+  )
+
+  # extend
+  extend = BoolProperty(
+    name = 'Extend Selection',
+    description = 'Extend the selection.',
+    default = False
+  )
+
+  # layout
+  layout = BoolProperty(
+    name = 'Change Layout',
+    description = 'Change the current screen layout to an alternate',
+    default = True
+  )
+
+  # screen
+  screen = StringProperty(
+    name = 'Screen',
+    description = 'The screen to change to.',
+    default = ''
+  )
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+
+    # extend
+    if self.extend:
+
+      # select
+      bpy.data.objects[context.active_object.name].select = True
+
+    # extend
+    else:
+
+      # object
+      for object in context.scene.objects[:]:
+
+        # deselect
+        object.select = False
+
+    # mode set
+    if context.mode != 'OBJECT':
+      bpy.ops.object.mode_set(mode='OBJECT')
+
+    # warning
+    try:
+
+      # select
+      bpy.data.objects[self.object].select = True
+
+      # active object
+      context.scene.objects.active = bpy.data.objects[self.object]
+
+    # report
+    except:
+      self.report({'WARNING'}, 'Invalid target')
+
+    # layout
+    if self.layout:
+
+      # screen
+      if self.screen != '':
+
+        # warning
+        try:
+
+          # active screen
+          context.window.screen = bpy.data.screens[self.screen]
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
+
+    return {'FINISHED'}
 
 # constraint
 
@@ -388,7 +548,7 @@ class objectData(Operator):
   '''
     Assigns active object data.
   '''
-  bl_idname = 'view3d.active_object_data'
+  bl_idname = 'view3d.np_active_object_data'
   bl_label = 'Active Object Data'
   bl_description = 'Make this the active object data.'
   bl_options = {'REGISTER', 'UNDO'}
@@ -526,7 +686,7 @@ class vertexGroup(Operator):
   '''
     Assigns an active vertex group.
   '''
-  bl_idname = 'view3d.active_vertex_group'
+  bl_idname = 'view3d.np_active_vertex_group'
   bl_label = 'Active Vertex Group'
   bl_description = 'Make this the active vertex group.'
   bl_options = {'REGISTER', 'UNDO'}
@@ -586,6 +746,7 @@ class vertexGroup(Operator):
     '''
       Execute the operator.
     '''
+
     # warning
     try:
 
@@ -738,7 +899,7 @@ class bone(Operator):
   '''
     Assigns an active bone.
   '''
-  bl_idname = 'view3d.active_bone'
+  bl_idname = 'view3d.np_active_bone'
   bl_label = 'Active Bone'
   bl_description = 'Make this bone the active bone.'
   bl_options = {'REGISTER', 'UNDO'}

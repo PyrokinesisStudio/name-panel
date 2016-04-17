@@ -1244,10 +1244,11 @@ def Constraint(self, context, layout, datablock, object, bone, option):
   # scale
   sub.scale_x = 1.6
 
+  # popups
   try:
 
-    # experimental
-    if addon.preferences['experimental'] == 1:
+    # popups
+    if addon.preferences['popups'] == 1:
       if object.type in 'ARMATURE' and object.mode in 'POSE':
         prop = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
         prop.object = object.name
@@ -1259,11 +1260,14 @@ def Constraint(self, context, layout, datablock, object, bone, option):
         prop.object = object.name
         prop.bone = ''
         prop.target = datablock.name
+
+    # label
     else:
 
       # label
       sub.label(text='', icon='CONSTRAINT')
 
+  # label
   except:
 
     # label
@@ -1315,10 +1319,11 @@ def Modifier(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
+  # popups
   try:
 
     # experimental
-    if addon.preferences['experimental'] == 1:
+    if addon.preferences['popups'] == 1:
       prop = sub.operator('view3d.modifier_settings', text='', icon=icon.modifier(datablock), emboss=False)
       prop.object = object.name
       prop.target = datablock.name
@@ -1327,6 +1332,7 @@ def Modifier(self, context, layout, datablock, object, option):
       # label
       sub.label(text='', icon=icon.modifier(datablock))
 
+  # label
   except:
 
     # label

@@ -58,7 +58,8 @@ class preferences(AddonPreferences):
   # popups
   popups = BoolProperty(
     name = 'Pop-ups',
-    description = 'Enable settings pop-up for modifiers and constraints. (icon)'
+    description = 'Enable settings pop-up for modifiers and constraints. (icon)',
+    default = False
   )
 
   # location
@@ -78,7 +79,7 @@ class preferences(AddonPreferences):
     layout = self.layout
 
     # experimental
-    layout.prop(self, 'experimental')
+    layout.prop(self, 'popups')
 
     # label
     layout.label(text='Location:')

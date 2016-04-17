@@ -100,7 +100,8 @@ class object(Operator):
         object.select = False
 
     # mode set
-    bpy.ops.object.mode_set(mode='OBJECT')
+    if context.mode != 'OBJECT':
+      bpy.ops.object.mode_set(mode='OBJECT')
 
     # warning
     try:
@@ -241,7 +242,8 @@ class objectData(Operator):
         object.select = False
 
     # mode set
-    bpy.ops.object.mode_set(mode='OBJECT')
+    if context.mode != 'OBJECT':
+      bpy.ops.object.mode_set(mode='OBJECT')
 
     # select
     bpy.data.objects[self.target].select = True
@@ -250,8 +252,9 @@ class objectData(Operator):
     context.scene.objects.active = bpy.data.objects[self.target]
 
     # edit mode
-    if bpy.data.objects[self.target].type not in {'EMPTY', 'SPEAKER', 'CAMERA', 'LAMP'}:
-      bpy.ops.object.mode_set(mode='EDIT')
+    if context.mode != 'EDIT':
+      if bpy.data.objects[self.target].type not in {'EMPTY', 'SPEAKER', 'CAMERA', 'LAMP'}:
+        bpy.ops.object.mode_set(mode='EDIT')
 
     # properties
     if self.properties:
@@ -306,127 +309,207 @@ class objectData(Operator):
     return {'FINISHED'}
 
 # group
-# class group(Operator):
-#   '''
-#     Assigns an active group.
-#   '''
-#   bl_idname = 'view3d.active_group'
-#   bl_label = 'Active Group'
-#   bl_description = 'Make this the active group.'
-#   bl_options = {'REGISTER', 'UNDO'}
-#
-#   # object
-#   object = StringProperty(
-#     name = 'Object',
-#     description = 'The group object.',
-#     default = ''
-#   )
-#
-#   # target
-#   target = StringProperty(
-#     name = 'Target',
-#     description = 'The target group',
-#     default = ''
-#   )
-#
-#   # extend
-#   extend = BoolProperty(
-#     name = 'Extend Selection',
-#     description = 'Extend the selection.',
-#     default = False
-#   )
-#
-#   # properties
-#   properties = BoolProperty(
-#     name = 'Properties',
-#     description = 'Change any property window\'s context to object.',
-#     default = True
-#   )
-#
-#   # layout
-#   layout = BoolProperty(
-#     name = 'Change Layout',
-#     description = 'Change the current screen layout to an alternate',
-#     default = True
-#   )
-#
-#   # screen
-#   screen = StringProperty(
-#     name = 'Screen',
-#     description = 'The screen to change to.',
-#     default = ''
-#   )
-#
-#   # poll
-#   @classmethod
-#   def poll(cls, context):
-#     '''
-#       Space data type must be in 3D view.
-#     '''
-#     return context.space_data.type in 'VIEW_3D'
-#
-#   # execute
-#   def execute(self, context):
-#     '''
-#       Execute the operator.
-#     '''
-#
-#     # extend
-#     if self.extend:
-#       bpy.data.objects[context.active_object.name].select = True
-#
-#     # extend
-#     else:
-#
-#       # object
-#       for object in context.scene.objects[:]:
-#
-#         # deselect
-#         object.select = False
-#
-#     # select
-#     bpy.data.objects[self.target].select = True
-#
-#     # active object
-#     context.scene.objects.active = bpy.data.objects[self.target]
-#
-#     # properties
-#     if self.properties:
-#
-#       # screen
-#       if self.screen != '':
-#
-#         # area
-#         for area in bpy.data.screens[self.screen].areas:
-#
-#           # type
-#           if area.type in 'PROPERTIES':
-#
-#             # context
-#             area.spaces.active.context = 'OBJECT'
-#
-#       # screen
-#       else:
-#
-#         # area
-#         for area in context.window.screen.areas:
-#
-#           # type
-#           if area.type in 'PROPERTIES':
-#
-#             # context
-#             area.spaces.active.context = 'OBJECT'
-#
-#     # layout
-#     if self.layout:
-#
-#       # screen
-#       if self.screen != '':
-#
-#         # active screen
-#         context.window.screen = bpy.data.screens[self.screen]
-#
-#     return {'FINISHED'}
+class group(Operator):
+  '''
+    Assigns an active group.
+  '''
+  bl_idname = 'view3d.active_group'
+  bl_label = 'Active Group'
+  bl_description = 'Make this the active group.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # object
+  object = StringProperty(
+    name = 'Object',
+    description = 'The group object.',
+    default = ''
+  )
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The target group',
+    default = ''
+  )
+
+  # extend
+  extend = BoolProperty(
+    name = 'Extend Selection',
+    description = 'Extend the selection.',
+    default = False
+  )
+
+  # properties
+  properties = BoolProperty(
+    name = 'Properties',
+    description = 'Change any property window\'s context to object.',
+    default = True
+  )
+
+  # layout
+  layout = BoolProperty(
+    name = 'Change Layout',
+    description = 'Change the current screen layout to an alternate',
+    default = True
+  )
+
+  # screen
+  screen = StringProperty(
+    name = 'Screen',
+    description = 'The screen to change to.',
+    default = ''
+  )
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+
+    # warning
+    try:
+
+      # not active
+      if bpy.data.objects[self.object] != context.scene.objects.active:
+
+        # object mode
+        if context.mode != 'OBJECT':
+          bpy.ops.object.mode_set(mode='OBJECT')
+
+        # extend
+        if self.extend:
+
+          # select
+          context.scene.objects.active.select = True
+
+        # extend
+        else:
+
+          # object
+          for object in context.scene.objects[:]:
+
+            # deselect
+            object.select = False
+
+        # select
+        bpy.data.objects[self.object].select = True
+
+        # active object
+        context.scene.objects.active = bpy.data.objects[self.object]
+
+    # report
+    except:
+      self.report({'WARNING'}, 'Invalid object.')
+
+    # edit mode
+    if context.mode != 'EDIT':
+      bpy.ops.object.mode_set(mode='EDIT')
+
+    # bmesh
+    mesh = bmesh.from_edit_mesh(context.active_object.data)
+
+    # extend
+    if not self.extend:
+
+      # clear vertex
+      for vertex in mesh.verts:
+        vertex.select = False
+
+      # clear edge
+      for edge in mesh.edges:
+        edge.select = False
+
+      # clear face
+      for face in mesh.faces:
+        face.select = False
+
+    # warning
+    try:
+
+      # group index
+      groupIndex = context.active_object.vertex_groups[self.target].index
+
+      # active index
+      context.active_object.vertex_groups.active_index = groupIndex
+
+    # report
+    except:
+      self.report({'WARNING'}, 'Invalid target.')
+
+    # deform layer
+    deformLayer = mesh.verts.layers.deform.active
+
+    # select vertices
+    for vertex in mesh.verts:
+      deformVertex = vertex[deformLayer]
+      if groupIndex in deformVertex:
+        vertex.select = True
+
+    # flush selection
+    mesh.select_flush(True)
+
+    # update viewport
+    context.scene.objects.active = context.scene.objects.active
+
+    # properties
+    if self.properties:
+
+      # screen
+      if self.screen != '':
+
+        # warning
+        try:
+
+          # area
+          for area in bpy.data.screens[self.screen].areas:
+
+            # type
+            if area.type in 'PROPERTIES':
+
+              # context
+              area.spaces.active.context = 'DATA'
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
+
+      # screen
+      else:
+
+        # area
+        for area in context.window.screen.areas:
+
+          # type
+          if area.type in 'PROPERTIES':
+
+            # context
+            area.spaces.active.context = 'DATA'
+
+    # layout
+    if self.layout:
+
+      # screen
+      if self.screen != '':
+
+        # warning
+        try:
+
+          # active screen
+          context.window.screen = bpy.data.screens[self.screen]
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
+
+    return {'FINISHED'}
 
 # action
 # class action(Operator):
@@ -599,7 +682,7 @@ class vertexGroup(Operator):
   properties = BoolProperty(
     name = 'Properties',
     description = 'Change any property window\'s context to mesh data',
-    default = False
+    default = True
   )
 
   # layout
@@ -629,16 +712,15 @@ class vertexGroup(Operator):
     '''
       Execute the operator.
     '''
-
-    # object mode
-    if context.mode != 'OBJECT':
-      bpy.ops.object.mode_set(mode='OBJECT')
-
     # warning
     try:
 
       # not active
       if bpy.data.objects[self.object] != context.scene.objects.active:
+
+        # object mode
+        if context.mode != 'OBJECT':
+          bpy.ops.object.mode_set(mode='OBJECT')
 
         # extend
         if self.extend:
@@ -692,6 +774,9 @@ class vertexGroup(Operator):
 
       # group index
       groupIndex = context.active_object.vertex_groups[self.target].index
+
+      # active index
+      context.active_object.vertex_groups.active_index = groupIndex
 
     # report
     except:

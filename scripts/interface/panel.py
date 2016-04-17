@@ -1388,7 +1388,7 @@ def ObjectData(self, context, layout, datablock, option):
       # name
       row.template_ID(datablock, 'data')
 
-    # selected
+    # active
     else:
 
       # sub
@@ -1417,24 +1417,10 @@ def VertexGroup(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  try:
-
-    # experimental
-    if addon.preferences['experimental'] == 1:
-
-      # select vertex group
-      prop = sub.operator('view3d.active_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
-      prop.object = object.name
-      prop.target = datablock.name
-    else:
-
-      # label
-      sub.label(text='', icon='GROUP_VERTEX')
-
-  except:
-
-    # label
-    sub.label(text='', icon='GROUP_VERTEX')
+  # active vertex group
+  prop = sub.operator('object.active_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
+  prop.object = object.name
+  prop.target = datablock.name
 
   # name
   row.prop(datablock, 'name', text='')

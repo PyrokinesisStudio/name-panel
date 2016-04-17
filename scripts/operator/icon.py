@@ -170,144 +170,6 @@ class object(Operator):
 
     return {'FINISHED'}
 
-# object data
-class objectData(Operator):
-  '''
-    Assigns an active object.
-  '''
-  bl_idname = 'view3d.active_object_data'
-  bl_label = 'Active Object Data'
-  bl_description = 'Make this the active object data.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target object that will become the active object.',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object data.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    # extend
-    if self.extend:
-      bpy.data.objects[context.active_object.name].select = True
-
-    # extend
-    else:
-
-      # object
-      for object in context.scene.objects[:]:
-
-        # deselect
-        object.select = False
-
-    # mode set
-    if context.mode != 'OBJECT':
-      bpy.ops.object.mode_set(mode='OBJECT')
-
-    # select
-    bpy.data.objects[self.target].select = True
-
-    # active object
-    context.scene.objects.active = bpy.data.objects[self.target]
-
-    # edit mode
-    if context.mode != 'EDIT':
-      if bpy.data.objects[self.target].type not in {'EMPTY', 'SPEAKER', 'CAMERA', 'LAMP'}:
-        bpy.ops.object.mode_set(mode='EDIT')
-
-    # properties
-    if self.properties:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # area
-          for area in bpy.data.screens[self.screen].areas:
-
-            # type
-            if area.type in 'PROPERTIES':
-
-              # context
-              area.spaces.active.context = 'DATA'
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
-
-      # screen
-      else:
-
-        # area
-        for area in context.window.screen.areas:
-
-          # type
-          if area.type in 'PROPERTIES':
-
-            # context
-            area.spaces.active.context = 'DATA'
-
-    # layout
-    if self.layout:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # active screen
-          context.window.screen = bpy.data.screens[self.screen]
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
-
-    return {'FINISHED'}
-
 # group
 class group(Operator):
   '''
@@ -646,6 +508,144 @@ class group(Operator):
 #     '''
 #
 #     return {'FINISHED'}
+
+# object data
+class objectData(Operator):
+  '''
+    Assigns active object data.
+  '''
+  bl_idname = 'view3d.active_object_data'
+  bl_label = 'Active Object Data'
+  bl_description = 'Make this the active object data.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'The target object that will become the active object.',
+    default = ''
+  )
+
+  # extend
+  extend = BoolProperty(
+    name = 'Extend Selection',
+    description = 'Extend the selection.',
+    default = False
+  )
+
+  # properties
+  properties = BoolProperty(
+    name = 'Properties',
+    description = 'Change any property window\'s context to object data.',
+    default = True
+  )
+
+  # layout
+  layout = BoolProperty(
+    name = 'Change Layout',
+    description = 'Change the current screen layout to an alternate',
+    default = True
+  )
+
+  # screen
+  screen = StringProperty(
+    name = 'Screen',
+    description = 'The screen to change to.',
+    default = ''
+  )
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+
+    # extend
+    if self.extend:
+      bpy.data.objects[context.active_object.name].select = True
+
+    # extend
+    else:
+
+      # object
+      for object in context.scene.objects[:]:
+
+        # deselect
+        object.select = False
+
+    # mode set
+    if context.mode != 'OBJECT':
+      bpy.ops.object.mode_set(mode='OBJECT')
+
+    # select
+    bpy.data.objects[self.target].select = True
+
+    # active object
+    context.scene.objects.active = bpy.data.objects[self.target]
+
+    # edit mode
+    if context.mode != 'EDIT':
+      if bpy.data.objects[self.target].type not in {'EMPTY', 'SPEAKER', 'CAMERA', 'LAMP'}:
+        bpy.ops.object.mode_set(mode='EDIT')
+
+    # properties
+    if self.properties:
+
+      # screen
+      if self.screen != '':
+
+        # warning
+        try:
+
+          # area
+          for area in bpy.data.screens[self.screen].areas:
+
+            # type
+            if area.type in 'PROPERTIES':
+
+              # context
+              area.spaces.active.context = 'DATA'
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
+
+      # screen
+      else:
+
+        # area
+        for area in context.window.screen.areas:
+
+          # type
+          if area.type in 'PROPERTIES':
+
+            # context
+            area.spaces.active.context = 'DATA'
+
+    # layout
+    if self.layout:
+
+      # screen
+      if self.screen != '':
+
+        # warning
+        try:
+
+          # active screen
+          context.window.screen = bpy.data.screens[self.screen]
+
+        # report
+        except:
+          self.report({'WARNING'}, 'Invalid screen')
+
+    return {'FINISHED'}
 
 # vertex group
 class vertexGroup(Operator):

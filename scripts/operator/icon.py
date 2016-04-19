@@ -394,54 +394,6 @@ class operator(Operator):
 
     return {'FINISHED'}
 
-# bone
-class bone(Operator):
-  '''
-    Assigns an active bone.
-  '''
-  bl_idname = 'view3d.name_panel_active_bone'
-  bl_label = 'Active Bone'
-  bl_description = 'Make this bone the active bone.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target bone that will become the active object.',
-    default = ''
-  )
-
-  # view
-  view = BoolProperty(
-    name = 'Center View',
-    description = 'Center the 3D view on the bone.',
-    default = True
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\s context to bone.',
-    default = False
-  )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view and there must be an active bone.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-
-    return {'FINISHED'}
-
 # pop up constraint
 class constraint(ConstraintButtons, Operator):
   '''

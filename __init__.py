@@ -62,6 +62,13 @@ class preferences(AddonPreferences):
     default = False
   )
 
+  # icon actions
+  iconActions = BoolProperty(
+    name = 'Icon Actions',
+    description = 'Enable icon actions.',
+    default = True
+  )
+
   # location
   location = EnumProperty(
     name = 'Panel Location',
@@ -78,8 +85,11 @@ class preferences(AddonPreferences):
     # layout
     layout = self.layout
 
-    # experimental
+    # pop ups
     layout.prop(self, 'popups')
+
+    # icon actions
+    layout.prop(self, 'iconActions')
 
     # label
     layout.label(text='Location:')

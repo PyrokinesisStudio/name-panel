@@ -35,41 +35,6 @@ class object(Operator):
   bl_description = 'Make this object the active object.'
   bl_options = {'REGISTER', 'UNDO'}
 
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target object that will become the active object.',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties Context',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
   # poll
   @classmethod
   def poll(cls, context):
@@ -83,89 +48,6 @@ class object(Operator):
     '''
       Execute the operator.
     '''
-
-    # extend
-    if self.extend:
-
-      # select
-      bpy.data.objects[context.active_object.name].select = True
-
-    # extend
-    else:
-
-      # object
-      for object in context.scene.objects[:]:
-
-        # deselect
-        object.select = False
-
-    # mode set
-    if context.mode != 'OBJECT':
-      bpy.ops.object.mode_set(mode='OBJECT')
-
-    # warning
-    try:
-
-      # select
-      bpy.data.objects[self.target].select = True
-
-      # active object
-      context.scene.objects.active = bpy.data.objects[self.target]
-
-    # report
-    except:
-      self.report({'WARNING'}, 'Invalid target')
-
-    # properties
-    if self.properties:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # area
-          for area in bpy.data.screens[self.screen].areas:
-
-            # type
-            if area.type in 'PROPERTIES':
-
-              # context
-              area.spaces.active.context = 'OBJECT'
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
-
-
-      # screen
-      else:
-
-        # area
-        for area in context.window.screen.areas:
-
-          # type
-          if area.type in 'PROPERTIES':
-
-            # context
-            area.spaces.active.context = 'OBJECT'
-
-    # layout
-    if self.layout:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # active screen
-          context.window.screen = bpy.data.screens[self.screen]
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
 
     return {'FINISHED'}
 
@@ -179,48 +61,6 @@ class group(Operator):
   bl_description = 'Make this the active group.'
   bl_options = {'REGISTER', 'UNDO'}
 
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
   # poll
   @classmethod
   def poll(cls, context):
@@ -234,88 +74,6 @@ class group(Operator):
     '''
       Execute the operator.
     '''
-
-    # extend
-    if self.extend:
-
-      # select
-      bpy.data.objects[context.active_object.name].select = True
-
-    # extend
-    else:
-
-      # object
-      for object in context.scene.objects[:]:
-
-        # deselect
-        object.select = False
-
-    # mode set
-    if context.mode != 'OBJECT':
-      bpy.ops.object.mode_set(mode='OBJECT')
-
-    # warning
-    try:
-
-      # select
-      bpy.data.objects[self.object].select = True
-
-      # active object
-      context.scene.objects.active = bpy.data.objects[self.object]
-
-    # report
-    except:
-      self.report({'WARNING'}, 'Invalid target')
-
-    # properties
-    if self.properties:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # area
-          for area in bpy.data.screens[self.screen].areas:
-
-            # type
-            if area.type in 'PROPERTIES':
-
-              # context
-              area.spaces.active.context = 'OBJECT'
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
-
-      # screen
-      else:
-
-        # area
-        for area in context.window.screen.areas:
-
-          # type
-          if area.type in 'PROPERTIES':
-
-            # context
-            area.spaces.active.context = 'OBJECT'
-
-    # layout
-    if self.layout:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # active screen
-          context.window.screen = bpy.data.screens[self.screen]
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
 
     return {'FINISHED'}
 
@@ -329,41 +87,6 @@ class action(Operator):
   bl_description = 'Make this the active action.'
   bl_options = {'REGISTER', 'UNDO'}
 
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
   # poll
   @classmethod
   def poll(cls, context):
@@ -377,54 +100,6 @@ class action(Operator):
     '''
       Execute the operator.
     '''
-
-    # extend
-    if self.extend:
-
-      # select
-      bpy.data.objects[context.active_object.name].select = True
-
-    # extend
-    else:
-
-      # object
-      for object in context.scene.objects[:]:
-
-        # deselect
-        object.select = False
-
-    # mode set
-    if context.mode != 'OBJECT':
-      bpy.ops.object.mode_set(mode='OBJECT')
-
-    # warning
-    try:
-
-      # select
-      bpy.data.objects[self.object].select = True
-
-      # active object
-      context.scene.objects.active = bpy.data.objects[self.object]
-
-    # report
-    except:
-      self.report({'WARNING'}, 'Invalid target')
-
-    # layout
-    if self.layout:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # active screen
-          context.window.screen = bpy.data.screens[self.screen]
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
 
     return {'FINISHED'}
 
@@ -438,40 +113,31 @@ class greasePencil(Operator):
   bl_description = 'Make this the active grease pencil.'
   bl_options = {'REGISTER', 'UNDO'}
 
-  # object
-  object = StringProperty(
-    name = 'Object',
-    description = 'The group object.',
-    default = ''
-  )
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
 
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target group',
-    default = ''
-  )
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
 
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
+    return {'FINISHED'}
 
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
+# constraint
+class constraint(Operator):
+  '''
+    Assigns an active constraint.
+  '''
+  bl_idname = 'view3d.np_active_contraint'
+  bl_label = 'Active Constraint'
+  bl_description = 'Make this the active constraint.'
+  bl_options = {'REGISTER', 'UNDO'}
 
   # poll
   @classmethod
@@ -487,61 +153,33 @@ class greasePencil(Operator):
       Execute the operator.
     '''
 
-    # extend
-    if self.extend:
-
-      # select
-      bpy.data.objects[context.active_object.name].select = True
-
-    # extend
-    else:
-
-      # object
-      for object in context.scene.objects[:]:
-
-        # deselect
-        object.select = False
-
-    # mode set
-    if context.mode != 'OBJECT':
-      bpy.ops.object.mode_set(mode='OBJECT')
-
-    # warning
-    try:
-
-      # select
-      bpy.data.objects[self.object].select = True
-
-      # active object
-      context.scene.objects.active = bpy.data.objects[self.object]
-
-    # report
-    except:
-      self.report({'WARNING'}, 'Invalid target')
-
-    # layout
-    if self.layout:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # active screen
-          context.window.screen = bpy.data.screens[self.screen]
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
-
     return {'FINISHED'}
 
-# constraint
-
 # modifier
+class modifier(Operator):
+  '''
+    Assigns an active modifier.
+  '''
+  bl_idname = 'view3d.np_active_modifier'
+  bl_label = 'Active Modifier'
+  bl_description = 'Make this the active modifier.'
+  bl_options = {'REGISTER', 'UNDO'}
 
-# bone constraint
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+
+    return {'FINISHED'}
 
 # object data
 class objectData(Operator):
@@ -553,41 +191,6 @@ class objectData(Operator):
   bl_description = 'Make this the active object data.'
   bl_options = {'REGISTER', 'UNDO'}
 
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target object that will become the active object.',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to object data.',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
-
   # poll
   @classmethod
   def poll(cls, context):
@@ -600,84 +203,6 @@ class objectData(Operator):
     '''
       Execute the operator.
     '''
-
-    # extend
-    if self.extend:
-      bpy.data.objects[context.active_object.name].select = True
-
-    # extend
-    else:
-
-      # object
-      for object in context.scene.objects[:]:
-
-        # deselect
-        object.select = False
-
-    # mode set
-    if context.mode != 'OBJECT':
-      bpy.ops.object.mode_set(mode='OBJECT')
-
-    # select
-    bpy.data.objects[self.target].select = True
-
-    # active object
-    context.scene.objects.active = bpy.data.objects[self.target]
-
-    # edit mode
-    if context.mode != 'EDIT':
-      if bpy.data.objects[self.target].type not in {'EMPTY', 'SPEAKER', 'CAMERA', 'LAMP'}:
-        bpy.ops.object.mode_set(mode='EDIT')
-
-    # properties
-    if self.properties:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # area
-          for area in bpy.data.screens[self.screen].areas:
-
-            # type
-            if area.type in 'PROPERTIES':
-
-              # context
-              area.spaces.active.context = 'DATA'
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
-
-      # screen
-      else:
-
-        # area
-        for area in context.window.screen.areas:
-
-          # type
-          if area.type in 'PROPERTIES':
-
-            # context
-            area.spaces.active.context = 'DATA'
-
-    # layout
-    if self.layout:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # active screen
-          context.window.screen = bpy.data.screens[self.screen]
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
 
     return {'FINISHED'}
 
@@ -690,48 +215,6 @@ class vertexGroup(Operator):
   bl_label = 'Active Vertex Group'
   bl_description = 'Make this the active vertex group.'
   bl_options = {'REGISTER', 'UNDO'}
-
-  # object
-  object  = StringProperty(
-    name = 'Object',
-    description = 'The object the vertex group is in.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'The target vertex group.',
-    default = ''
-  )
-
-  # extend
-  extend = BoolProperty(
-    name = 'Extend Selection',
-    description = 'Extend the selection.',
-    default = False
-  )
-
-  # properties
-  properties = BoolProperty(
-    name = 'Properties',
-    description = 'Change any property window\'s context to mesh data',
-    default = True
-  )
-
-  # layout
-  layout = BoolProperty(
-    name = 'Change Layout',
-    description = 'Change the current screen layout to an alternate',
-    default = True
-  )
-
-  # screen
-  screen = StringProperty(
-    name = 'Screen',
-    description = 'The screen to change to.',
-    default = ''
-  )
 
   # poll
   @classmethod
@@ -835,6 +318,10 @@ class vertexGroup(Operator):
     # update viewport
     context.scene.objects.active = context.scene.objects.active
 
+    # view
+    if self.view:
+      bpy.ops.view3d.view_selected()
+
     # properties
     if self.properties:
 
@@ -888,14 +375,134 @@ class vertexGroup(Operator):
     return {'FINISHED'}
 
 # shapekey
+class shapekey(Operator):
+  '''
+  Assigns an active shapekey.
+  '''
+  bl_idname = 'view3d.np_active_shapekey'
+  bl_label = 'Active Shapekey'
+  bl_description = 'Make this the active shapekey.'
+  bl_options = {'REGISTER', 'UNDO'}
 
-# uv map
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view and there must be an active bone.
+    '''
+    return context.space_data.type in 'VIEW_3D'
 
-# vertex colors
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
 
-# materials
+    return {'FINISHED'}
 
-# textures
+# uv
+class uv(Operator):
+  '''
+  Assigns an uv map.
+  '''
+  bl_idname = 'view3d.np_active_uv_map'
+  bl_label = 'Active UV Map'
+  bl_description = 'Make this the active uv map.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+    Space data type must be in 3D view and there must be an active bone.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+    # execute
+    def execute(self, context):
+      '''
+      Execute the operator.
+      '''
+
+      return {'FINISHED'}
+
+# vertex color
+class vertexColor(Operator):
+  '''
+  Assigns an vertex color.
+  '''
+  bl_idname = 'view3d.np_active_vertex_color'
+  bl_label = 'Active vertex color'
+  bl_description = 'Make this the active vertex color.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+    Space data type must be in 3D view and there must be an active bone.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+    # execute
+    def execute(self, context):
+      '''
+      Execute the operator.
+      '''
+
+      return {'FINISHED'}
+
+# material
+class material(Operator):
+  '''
+  Assigns an active material.
+  '''
+  bl_idname = 'view3d.np_active_material'
+  bl_label = 'Active Material'
+  bl_description = 'Make this the active material.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+    Space data type must be in 3D view and there must be an active bone.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+    # execute
+    def execute(self, context):
+      '''
+      Execute the operator.
+      '''
+
+      return {'FINISHED'}
+
+# texture
+class texture(Operator):
+  '''
+  Assigns an active texture.
+  '''
+  bl_idname = 'view3d.np_active_texture'
+  bl_label = 'Active Shapekey'
+  bl_description = 'Make this the active texture.'
+  bl_options = {'REGISTER', 'UNDO'}
+
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+    Space data type must be in 3D view and there must be an active bone.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+    # execute
+    def execute(self, context):
+      '''
+      Execute the operator.
+      '''
+
+      return {'FINISHED'}
 
 # bone
 class bone(Operator):
@@ -912,6 +519,13 @@ class bone(Operator):
     name = 'Target',
     description = 'The target bone that will become the active object.',
     default = ''
+  )
+
+  # view
+  view = BoolProperty(
+    name = 'Center View',
+    description = 'Center the 3D view on the bone.',
+    default = True
   )
 
   # properties
@@ -970,6 +584,10 @@ class bone(Operator):
       # warning messege
       self.report({'WARNING'}, 'Invalid target.')
 
+    # view
+    if self.view:
+      bpy.ops.view3d.view_selected()
+
     # properties
     if self.properties:
       for area in context.screen.areas:
@@ -978,16 +596,39 @@ class bone(Operator):
 
     return {'FINISHED'}
 
-# bone constraints
+# bone constraint
+class boneConstraint(Operator):
+  '''
+    Assigns an active bone constraint.
+  '''
+  bl_idname = 'view3d.np_active_bone_constraint'
+  bl_label = 'Active Constraint'
+  bl_description = 'Make this the active constraint.'
+  bl_options = {'REGISTER', 'UNDO'}
 
-# pop-ups
 
-# constraint
-class constraint(ConstraintButtons, Operator):
+  # poll
+  @classmethod
+  def poll(cls, context):
+    '''
+      Space data type must be in 3D view.
+    '''
+    return context.space_data.type in 'VIEW_3D'
+
+  # execute
+  def execute(self, context):
+    '''
+      Execute the operator.
+    '''
+
+    return {'FINISHED'}# pop-ups
+
+# pop up constraint
+class pu_constraint(ConstraintButtons, Operator):
   '''
     This is operator is used to create the required pop-up panel.
   '''
-  bl_idname = 'view3d.constraint_settings'
+  bl_idname = 'view3d.np_pu_constraint_settings'
   bl_label = 'Constraint'
   bl_description = 'Adjust the options for this constraint. (Experimental)'
   bl_options = {'REGISTER', 'UNDO'}
@@ -1068,11 +709,11 @@ class constraint(ConstraintButtons, Operator):
     return {'RUNNING_MODAL'}
 
 # modifier
-class modifier(ModifierButtons, Operator):
+class pu_modifier(ModifierButtons, Operator):
   '''
     This is operator is used to create the required pop-up panel.
   '''
-  bl_idname = 'view3d.modifier_settings'
+  bl_idname = 'view3d.np_pu_modifier_settings'
   bl_label = 'Modifier'
   bl_description = 'Adjust the options for this modifier. (Experimental)'
   bl_options = {'REGISTER', 'UNDO'}

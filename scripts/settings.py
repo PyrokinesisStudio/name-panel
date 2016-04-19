@@ -1519,3 +1519,38 @@ class batch:
       description = 'Use the names available from the active object to paste to the other datablock names.',
       default = False
     )
+
+# icon
+class icon:
+  '''
+    Contains Classes;
+      object (PropertyGroup)
+      group (PropertyGroup)
+      action (PropertyGroup)
+      constraint (PropertyGroup)
+      modifier (PropertyGroup)
+      objectData (PropertyGroup)
+      vertexGroup (PropertyGroup)
+      shapekey (PropertyGroup)
+      uv (PropertyGroup)
+      vertexColor (PropertyGroup)
+      material (PropertyGroup)
+      texture (PropertyGroup)
+      bone (PropertyGroup)
+      boneConstraint (PropertyGroup)
+  '''
+
+  # object
+  # group
+  # action
+  # constraint
+  # modifier
+  # object data
+  # vertex group
+  # shapekey
+  # uv
+  # vertex color
+  # material
+  # texture
+  # bone
+  # bone constraint

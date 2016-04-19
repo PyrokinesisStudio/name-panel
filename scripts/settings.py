@@ -1541,6 +1541,17 @@ class icon:
   '''
 
   # object
+  # 'ARMATURE'
+  # 'CURVE'
+  # 'CAMERA'
+  # 'EMPTY'
+  # 'LATTICE'
+  # 'META'
+  # 'MESH'
+  # 'LAMP'
+  # 'SPEAKER'
+  # 'SURFACE'
+  # 'FONT'
   # group
   # action
   # constraint

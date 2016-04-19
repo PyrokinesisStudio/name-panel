@@ -25,15 +25,70 @@ from bpy.props import BoolProperty, StringProperty, EnumProperty
 from ..interface.popup.constraints import ConstraintButtons
 from ..interface.popup.modifiers import ModifierButtons
 
-# object
-class object(Operator):
+# operator
+class operator(Operator):
   '''
     Assigns an active object.
   '''
-  bl_idname = 'view3d.np_active_object'
-  bl_label = 'Active Object'
-  bl_description = 'Make this object the active object.'
+  bl_idname = 'view3d.name_panel_icon'
+  bl_label = 'Name Panel Icon'
+  bl_description = 'Changes active object.'
   bl_options = {'REGISTER', 'UNDO'}
+
+  # owner
+  owner = StringProperty(
+    name = 'Owner',
+    description = 'The owner of the target datablock.',
+    default = ''
+  )
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'Datablock target belonging to the object.',
+    default = ''
+  )
+
+  # extend
+  extend = BoolProperty(
+    name = 'Extend',
+    description = 'Keep old selection.',
+    default = True
+  )
+
+  # view
+  view = BoolProperty(
+    name = 'View',
+    description = 'Center the 3D view on the object.',
+    default = False
+  )
+
+  # type
+  type = EnumProperty(
+    name = 'Type',
+    description = 'The type of datablock for the icon.',
+    items = [
+      ('OBJECT', 'Object', '', 'OBJECT_DATA', 0),
+      ('GROUP', 'Group', '', 'GROUP', 1),
+      ('ACTION', 'Action', '', 'ACTION', 2),
+      ('GREASE_PENCIL', 'Grease Pencil', '', 'GREASEPENCIL', 3),
+      ('CONSTRAINT', 'Constraint', '', 'CONSTRAINT', 4),
+      ('MODIFIER', 'Modifier', '', 'MODIFIER', 5),
+      ('OBJECT_DATA', 'Object Data', '', 'MESH_DATA', 6),
+      ('BONE_GROUP', 'Bone Group', '', 'GROUP_BONE', 7),
+      ('BONE', 'Bone', '', 'BONE_DATA', 8),
+      ('BONE_CONSTRAINT', 'Bone Constraint', '', 'CONSTRAINT_BONE', 9),
+      ('VERTEX_GROUP', 'Vertex Group', '', 'GROUP_VERTEX', 10),
+      ('SHAPEKEY', 'Shapekey', '', 'SHAPEKEY_DATA', 11),
+      ('UV', 'UV Map', '', 'GROUP_UVS', 12),
+      ('VERTEX_COLOR', 'Vertex Colors', '', 'GROUP_VCOL', 13),
+      ('MATERIAL', 'Material', '', 'MATERIAL', 14),
+      ('TEXTURE', 'Texture', '', 'TEXTURE', 15),
+      ('PARTICLE_SYSTEM', 'Particle System', '', 'PARTICLES', 16),
+      ('PARTICLE_SETTING', 'Particle Settings', '', 'DOT', 17)
+    ],
+    default = 'OBJECT'
+  )
 
   # poll
   @classmethod
@@ -43,473 +98,308 @@ class object(Operator):
     '''
     return context.space_data.type in 'VIEW_3D'
 
-  # execute
-  def execute(self, context):
+  # draw
+  def draw(self, context):
     '''
-      Execute the operator.
+      Operator options.
     '''
 
-    return {'FINISHED'}
+    # layout
+    layout = self.layout
 
-# group
-class group(Operator):
-  '''
-    Assigns an active group.
-  '''
-  bl_idname = 'view3d.np_active_group'
-  bl_label = 'Active Group'
-  bl_description = 'Make this the active group.'
-  bl_options = {'REGISTER', 'UNDO'}
+    # extend
+    layout.prop(self, 'extend')
 
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
+    # view
+    layout.prop(self, 'view')
 
   # execute
   def execute(self, context):
     '''
       Execute the operator.
     '''
+    # object
+    if self.type not in {'BONE', 'BONE_CONSTRAINT'}: # temporary
 
-    return {'FINISHED'}
+      # extend
+      if self.extend:
 
-# action
-class action(Operator):
-  '''
-    Assigns an active action.
-  '''
-  bl_idname = 'view3d.np_active_action'
-  bl_label = 'Active Group'
-  bl_description = 'Make this the active action.'
-  bl_options = {'REGISTER', 'UNDO'}
+        # select active
+        context.active_object.select = True
 
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
+        # extend
+      else:
 
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
+        # deselect all
+        for object in context.scene.objects[:]:
+          object.select = False
 
-    return {'FINISHED'}
+      # active object
+      context.scene.objects.active = bpy.data.objects[self.owner]
 
-# grease pencil
-class greasePencil(Operator):
-  '''
-    Assigns an active grease pencil.
-  '''
-  bl_idname = 'view3d.np_active_grease_pencil'
-  bl_label = 'Active Grease Pencil'
-  bl_description = 'Make this the active grease pencil.'
-  bl_options = {'REGISTER', 'UNDO'}
+      # select objects
+      context.active_object.select = True
 
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
+      # view
+      if self.view:
 
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
+        # view selected
+        bpy.ops.view3d.view_selected()
 
-    return {'FINISHED'}
+    # group
+    # action
+    # grease pencil
 
-# constraint
-class constraint(Operator):
-  '''
-    Assigns an active constraint.
-  '''
-  bl_idname = 'view3d.np_active_contraint'
-  bl_label = 'Active Constraint'
-  bl_description = 'Make this the active constraint.'
-  bl_options = {'REGISTER', 'UNDO'}
+    # constraint
+    if self.type == 'BONE_CONSTRAINT':
 
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
+      # extend
+      if self.extend:
 
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
+        # select active
+        context.active_object.data.bones.active.select = True
 
-    return {'FINISHED'}
+      else:
 
-# modifier
-class modifier(Operator):
-  '''
-    Assigns an active modifier.
-  '''
-  bl_idname = 'view3d.np_active_modifier'
-  bl_label = 'Active Modifier'
-  bl_description = 'Make this the active modifier.'
-  bl_options = {'REGISTER', 'UNDO'}
+        for bone in context.selected_pose_bones[:]:
+          bone.bone.select = False
 
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
+      # target
+      context.scene.objects[context.active_object.name].data.bones.active = bpy.data.armatures[context.active_object.data.name].bones[self.owner]
 
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
+      # select
+      context.active_object.data.bones.active.select = True
 
-    return {'FINISHED'}
+      # view
+      if self.view:
+        bpy.ops.view3d.view_selected()
 
-# object data
-class objectData(Operator):
-  '''
-    Assigns active object data.
-  '''
-  bl_idname = 'view3d.np_active_object_data'
-  bl_label = 'Active Object Data'
-  bl_description = 'Make this the active object data.'
-  bl_options = {'REGISTER', 'UNDO'}
+    # modifier
+    # object data
 
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
+    # bone
+    if self.type == 'BONE': # temporary
 
-    return {'FINISHED'}
+      # edit mode
+      if context.object.mode in 'EDIT':
 
-# vertex group
-class vertexGroup(Operator):
-  '''
-    Assigns an active vertex group.
-  '''
-  bl_idname = 'view3d.np_active_vertex_group'
-  bl_label = 'Active Vertex Group'
-  bl_description = 'Make this the active vertex group.'
-  bl_options = {'REGISTER', 'UNDO'}
+        # extend
+        if self.extend:
+          # select
+          context.active_object.data.edit_bones.active.select = True
 
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
+          # select head
+          context.active_object.data.edit_bones.active.select_head = True
 
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
+          # select tail
+          context.active_object.data.edit_bones.active.select_tail = True
 
-    # warning
-    try:
+        # extend
+        else:
+          for bone in context.selected_editable_bones[:]:
 
-      # not active
-      if bpy.data.objects[self.object] != context.scene.objects.active:
+            # deselect
+            bone.select = False
 
-        # object mode
-        if context.mode != 'OBJECT':
-          bpy.ops.object.mode_set(mode='OBJECT')
+            # deselect head
+            bone.select_head = False
+
+            # deselect tail
+            bone.select_tail = False
+
+        # active bone
+        context.scene.objects[context.active_object.name].data.edit_bones.active = bpy.data.armatures[context.active_object.data.name].edit_bones[self.target]
+
+        # select
+        context.active_object.data.edit_bones.active.select = True
+
+        # select head
+        context.active_object.data.edit_bones.active.select_head = True
+
+        # select tail
+        context.active_object.data.edit_bones.active.select_tail = True
+
+      # pose mode
+      else:
 
         # extend
         if self.extend:
 
-          # select
-          context.scene.objects.active.select = True
+          # select active
+          context.active_object.data.bones.active.select = True
 
         # extend
         else:
 
-          # object
-          for object in context.scene.objects[:]:
+          for bone in context.selected_pose_bones[:]:
+            bone.bone.select = False
 
-            # deselect
-            object.select = False
+        # target
+        context.scene.objects[context.active_object.name].data.bones.active = bpy.data.armatures[context.active_object.data.name].bones[self.target]
 
         # select
-        bpy.data.objects[self.object].select = True
+        context.active_object.data.bones.active.select = True
 
-        # active object
-        context.scene.objects.active = bpy.data.objects[self.object]
+      # view
+      if self.view:
+        bpy.ops.view3d.view_selected()
 
-    # report
-    except:
-      self.report({'WARNING'}, 'Invalid object.')
 
-    # edit mode
-    if context.mode != 'EDIT':
-      bpy.ops.object.mode_set(mode='EDIT')
-
-    # bmesh
-    mesh = bmesh.from_edit_mesh(context.active_object.data)
-
-    # extend
-    if not self.extend:
-
-      # clear vertex
-      for vertex in mesh.verts:
-        vertex.select = False
-
-      # clear edge
-      for edge in mesh.edges:
-        edge.select = False
-
-      # clear face
-      for face in mesh.faces:
-        face.select = False
-
+    # vertex group
     # warning
-    try:
+    # try:
+    #
+    #   # not active
+    #   if bpy.data.objects[self.object] != context.scene.objects.active:
+    #
+    #     # object mode
+    #     if context.mode != 'OBJECT':
+    #       bpy.ops.object.mode_set(mode='OBJECT')
+    #
+    #     # extend
+    #     if self.extend:
+    #
+    #       # select
+    #       context.scene.objects.active.select = True
+    #
+    #     # extend
+    #     else:
+    #
+    #       # object
+    #       for object in context.scene.objects[:]:
+    #
+    #         # deselect
+    #         object.select = False
+    #
+    #     # select
+    #     bpy.data.objects[self.object].select = True
+    #
+    #     # active object
+    #     context.scene.objects.active = bpy.data.objects[self.object]
+    #
+    # # report
+    # except:
+    #   self.report({'WARNING'}, 'Invalid object.')
+    #
+    # # edit mode
+    # if context.mode != 'EDIT':
+    #   bpy.ops.object.mode_set(mode='EDIT')
+    #
+    # # bmesh
+    # mesh = bmesh.from_edit_mesh(context.active_object.data)
+    #
+    # # extend
+    # if not self.extend:
+    #
+    #   # clear vertex
+    #   for vertex in mesh.verts:
+    #     vertex.select = False
+    #
+    #   # clear edge
+    #   for edge in mesh.edges:
+    #     edge.select = False
+    #
+    #   # clear face
+    #   for face in mesh.faces:
+    #     face.select = False
+    #
+    # # warning
+    # try:
+    #
+    #   # group index
+    #   groupIndex = context.active_object.vertex_groups[self.target].index
+    #
+    #   # active index
+    #   context.active_object.vertex_groups.active_index = groupIndex
+    #
+    # # report
+    # except:
+    #   self.report({'WARNING'}, 'Invalid target.')
+    #
+    # # deform layer
+    # deformLayer = mesh.verts.layers.deform.active
+    #
+    # # select vertices
+    # for vertex in mesh.verts:
+    #   try:
+    #     deformVertex = vertex[deformLayer]
+    #     if groupIndex in deformVertex:
+    #       vertex.select = True
+    #   except:
+    #     pass
+    #
+    # # flush selection
+    # mesh.select_flush(True)
+    #
+    # # update viewport
+    # context.scene.objects.active = context.scene.objects.active
+    #
+    # # properties
+    # if self.properties:
+    #
+    #   # screen
+    #   if self.screen != '':
+    #
+    #     # warning
+    #     try:
+    #
+    #       # area
+    #       for area in bpy.data.screens[self.screen].areas:
+    #
+    #         # type
+    #         if area.type in 'PROPERTIES':
+    #
+    #           # context
+    #           area.spaces.active.context = 'DATA'
+    #
+    #     # report
+    #     except:
+    #       self.report({'WARNING'}, 'Invalid screen')
+    #
+    #   # screen
+    #   else:
+    #
+    #     # area
+    #     for area in context.window.screen.areas:
+    #
+    #       # type
+    #       if area.type in 'PROPERTIES':
+    #
+    #         # context
+    #         area.spaces.active.context = 'DATA'
+    #
+    # # layout
+    # if self.layout:
+    #
+    #   # screen
+    #   if self.screen != '':
+    #
+    #     # warning
+    #     try:
+    #
+    #       # active screen
+    #       context.window.screen = bpy.data.screens[self.screen]
+    #
+    #     # report
+    #     except:
+    #       self.report({'WARNING'}, 'Invalid screen')
 
-      # group index
-      groupIndex = context.active_object.vertex_groups[self.target].index
-
-      # active index
-      context.active_object.vertex_groups.active_index = groupIndex
-
-    # report
-    except:
-      self.report({'WARNING'}, 'Invalid target.')
-
-    # deform layer
-    deformLayer = mesh.verts.layers.deform.active
-
-    # select vertices
-    for vertex in mesh.verts:
-      try:
-        deformVertex = vertex[deformLayer]
-        if groupIndex in deformVertex:
-          vertex.select = True
-      except:
-        pass
-
-    # flush selection
-    mesh.select_flush(True)
-
-    # update viewport
-    context.scene.objects.active = context.scene.objects.active
-
-    # view
-    if self.view:
-      bpy.ops.view3d.view_selected()
-
-    # properties
-    if self.properties:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # area
-          for area in bpy.data.screens[self.screen].areas:
-
-            # type
-            if area.type in 'PROPERTIES':
-
-              # context
-              area.spaces.active.context = 'DATA'
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
-
-      # screen
-      else:
-
-        # area
-        for area in context.window.screen.areas:
-
-          # type
-          if area.type in 'PROPERTIES':
-
-            # context
-            area.spaces.active.context = 'DATA'
-
-    # layout
-    if self.layout:
-
-      # screen
-      if self.screen != '':
-
-        # warning
-        try:
-
-          # active screen
-          context.window.screen = bpy.data.screens[self.screen]
-
-        # report
-        except:
-          self.report({'WARNING'}, 'Invalid screen')
+    # shapekey
+    # uv
+    # vertex color
+    # material
+    # texture
+    # particle system
+    # particle setting
 
     return {'FINISHED'}
-
-# shapekey
-class shapekey(Operator):
-  '''
-  Assigns an active shapekey.
-  '''
-  bl_idname = 'view3d.np_active_shapekey'
-  bl_label = 'Active Shapekey'
-  bl_description = 'Make this the active shapekey.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view and there must be an active bone.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    return {'FINISHED'}
-
-# uv
-class uv(Operator):
-  '''
-  Assigns an uv map.
-  '''
-  bl_idname = 'view3d.np_active_uv_map'
-  bl_label = 'Active UV Map'
-  bl_description = 'Make this the active uv map.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-    Space data type must be in 3D view and there must be an active bone.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-    # execute
-    def execute(self, context):
-      '''
-      Execute the operator.
-      '''
-
-      return {'FINISHED'}
-
-# vertex color
-class vertexColor(Operator):
-  '''
-  Assigns an vertex color.
-  '''
-  bl_idname = 'view3d.np_active_vertex_color'
-  bl_label = 'Active vertex color'
-  bl_description = 'Make this the active vertex color.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-    Space data type must be in 3D view and there must be an active bone.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-    # execute
-    def execute(self, context):
-      '''
-      Execute the operator.
-      '''
-
-      return {'FINISHED'}
-
-# material
-class material(Operator):
-  '''
-  Assigns an active material.
-  '''
-  bl_idname = 'view3d.np_active_material'
-  bl_label = 'Active Material'
-  bl_description = 'Make this the active material.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-    Space data type must be in 3D view and there must be an active bone.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-    # execute
-    def execute(self, context):
-      '''
-      Execute the operator.
-      '''
-
-      return {'FINISHED'}
-
-# texture
-class texture(Operator):
-  '''
-  Assigns an active texture.
-  '''
-  bl_idname = 'view3d.np_active_texture'
-  bl_label = 'Active Shapekey'
-  bl_description = 'Make this the active texture.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-    Space data type must be in 3D view and there must be an active bone.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-    # execute
-    def execute(self, context):
-      '''
-      Execute the operator.
-      '''
-
-      return {'FINISHED'}
 
 # bone
 class bone(Operator):
   '''
     Assigns an active bone.
   '''
-  bl_idname = 'view3d.np_active_bone'
+  bl_idname = 'view3d.name_panel_active_bone'
   bl_label = 'Active Bone'
   bl_description = 'Make this bone the active bone.'
   bl_options = {'REGISTER', 'UNDO'}
@@ -548,87 +438,16 @@ class bone(Operator):
     '''
       Execute the operator.
     '''
-    try:
 
-      # edit mode
-      if context.object.mode in 'EDIT':
-
-        # select
-        context.active_object.data.edit_bones.active.select = True
-
-        # select head
-        context.active_object.data.edit_bones.active.select_head = True
-
-        # select tail
-        context.active_object.data.edit_bones.active.select_tail = True
-
-        # active bone
-        context.scene.objects[context.active_object.name].data.edit_bones.active = bpy.data.armatures[context.active_object.data.name].edit_bones[self.target]
-
-        # select head
-        context.active_object.data.edit_bones.active.select_head = True
-
-        # select tail
-        context.active_object.data.edit_bones.active.select_tail = True
-
-      # pose mode
-      else:
-
-        # select
-        context.active_object.data.bones.active.select = True
-
-        # target
-        context.scene.objects[context.active_object.name].data.bones.active = bpy.data.armatures[context.active_object.data.name].bones[self.target]
-    except:
-
-      # warning messege
-      self.report({'WARNING'}, 'Invalid target.')
-
-    # view
-    if self.view:
-      bpy.ops.view3d.view_selected()
-
-    # properties
-    if self.properties:
-      for area in context.screen.areas:
-        if area.type in 'PROPERTIES':
-          area.spaces.active.context = 'BONE'
 
     return {'FINISHED'}
 
-# bone constraint
-class boneConstraint(Operator):
-  '''
-    Assigns an active bone constraint.
-  '''
-  bl_idname = 'view3d.np_active_bone_constraint'
-  bl_label = 'Active Constraint'
-  bl_description = 'Make this the active constraint.'
-  bl_options = {'REGISTER', 'UNDO'}
-
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
-  # execute
-  def execute(self, context):
-    '''
-      Execute the operator.
-    '''
-
-    return {'FINISHED'}# pop-ups
-
 # pop up constraint
-class pu_constraint(ConstraintButtons, Operator):
+class constraint(ConstraintButtons, Operator):
   '''
     This is operator is used to create the required pop-up panel.
   '''
-  bl_idname = 'view3d.np_pu_constraint_settings'
+  bl_idname = 'view3d.name_panel_constraint_settings'
   bl_label = 'Constraint'
   bl_description = 'Adjust the options for this constraint. (Experimental)'
   bl_options = {'REGISTER', 'UNDO'}
@@ -708,12 +527,12 @@ class pu_constraint(ConstraintButtons, Operator):
     context.window_manager.invoke_popup(self, width=350)
     return {'RUNNING_MODAL'}
 
-# modifier
-class pu_modifier(ModifierButtons, Operator):
+# pop up modifier
+class modifier(ModifierButtons, Operator):
   '''
     This is operator is used to create the required pop-up panel.
   '''
-  bl_idname = 'view3d.np_pu_modifier_settings'
+  bl_idname = 'view3d.name_panel_modifier_settings'
   bl_label = 'Modifier'
   bl_description = 'Adjust the options for this modifier. (Experimental)'
   bl_options = {'REGISTER', 'UNDO'}

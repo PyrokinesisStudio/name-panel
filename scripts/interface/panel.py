@@ -1032,14 +1032,23 @@ class block:
                     # constraint
                     Constraint(self, context, layout, constraint, object, bone, option)
 
+                # constraints
+                if constraints != []:
+
+                  # row
+                  row = layout.row()
+
+                  # separator
+                  row.separator()
+
         # selected bones
         if option.selectedBones:
 
-          # edit mode
+          # pose mode
           if object.mode in 'POSE':
             bones = object.data.bones[:]
 
-          # pose mode
+          # edit mode
           else:
             bones = object.data.edit_bones[:]
 
@@ -1080,6 +1089,15 @@ class block:
                           # constraint
                           Constraint(self, context, layout, constraint, object, bone[1], option)
 
+                      # constraints
+                      if constraints != []:
+
+                        # row
+                        row = layout.row()
+
+                        # separator
+                        row.separator()
+
 # object
 def Object(self, context, layout, datablock, option):
   '''
@@ -1111,8 +1129,11 @@ def Object(self, context, layout, datablock, option):
     # scale
     sub.scale_x = 1.6
 
-    # make active
-    sub.operator('view3d.np_active_object', text='', icon=icon.object(datablock)).target = datablock.name
+    # icon
+    op = sub.operator('view3d.name_panel_icon', text='', icon=icon.object(datablock))
+    op.owner = datablock.name
+    op.target = datablock.name
+    op.type = 'OBJECT'
 
     # object
     row.prop(datablock, 'name', text='')
@@ -1144,10 +1165,11 @@ def Group(self, context, layout, datablock, object):
   # scale
   sub.scale_x = 1.6
 
-  # active vertex group
-  prop = sub.operator('view3d.np_active_group', text='', icon='GROUP', emboss=False)
-  prop.object = object.name
-  prop.target = datablock.name
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'GROUP'
 
   # label
   # sub.label(text='', icon='GROUP')
@@ -1170,10 +1192,11 @@ def Action(self, context, layout, datablock, object):
   # scale
   sub.scale_x = 1.6
 
-  # active action
-  prop = sub.operator('view3d.np_active_action', text='', icon='ACTION', emboss=False)
-  prop.object = object.name
-  prop.target = datablock.name
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='ACTION', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'ACTION'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1197,10 +1220,11 @@ def GreasePencil(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # active grease pencil
-  prop = sub.operator('view3d.np_active_grease_pencil', text='', icon='GREASEPENCIL', emboss=False)
-  prop.object = object.name
-  prop.target = datablock.name
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='GREASEPENCIL', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'GREASE_PENCIL'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1253,34 +1277,40 @@ def Constraint(self, context, layout, datablock, object, bone, option):
   # scale
   sub.scale_x = 1.6
 
-  # popups
   try:
 
     # popups
     if addon.preferences['popups'] == 1:
       if object.type in 'ARMATURE' and object.mode in 'POSE':
-        prop = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
-        prop.object = object.name
-        prop.bone = bone.name
-        prop.target = datablock.name
+
+        # icon
+        op = sub.operator('view3d.name_panel_constraint_settings', text='', icon='CONSTRAINT', emboss=False)
+        op.object = object.name
+        op.bone = bone.name
+        op.target = datablock.name
 
       else:
-        prop = sub.operator('view3d.constraint_settings', text='', icon='CONSTRAINT', emboss=False)
-        prop.object = object.name
-        prop.bone = ''
-        prop.target = datablock.name
 
-    # label
+        # icon
+        op = sub.operator('view3d.name_panel_constraint_settings', text='', icon='CONSTRAINT', emboss=False)
+        op.object = object.name
+        op.target = datablock.name
+
     else:
 
-      # label
-      sub.label(text='', icon='CONSTRAINT')
+      # icon
+      op = sub.operator('view3d.name_panel_icon', text='', icon='CONSTRAINT', emboss=False)
+      op.owner = object.name if not bone else bone.name
+      op.target = datablock.name
+      op.type = 'CONSTRAINT' if not bone else 'BONE_CONSTRAINT'
 
-  # label
   except:
 
-    # label
-    sub.label(text='', icon='CONSTRAINT')
+    # icon
+    op = sub.operator('view3d.name_panel_icon', text='', icon='CONSTRAINT', emboss=False)
+    op.owner = object.name if not bone else bone.name
+    op.target = datablock.name
+    op.type = 'CONSTRAINT' if not bone else 'BONE_CONSTRAINT'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1331,21 +1361,29 @@ def Modifier(self, context, layout, datablock, object, option):
   # popups
   try:
 
-    # experimental
+    # pop ups
     if addon.preferences['popups'] == 1:
-      prop = sub.operator('view3d.modifier_settings', text='', icon=icon.modifier(datablock), emboss=False)
-      prop.object = object.name
-      prop.target = datablock.name
+
+      # icon
+      op = sub.operator('view3d.name_panel_modifier_settings', text='', icon=icon.modifier(datablock), emboss=False)
+      op.object = object.name
+      op.target = datablock.name
+
     else:
 
-      # label
-      sub.label(text='', icon=icon.modifier(datablock))
+      # icon
+      op = sub.operator('view3d.name_panel_icon', text='', icon=icon.modifier(datablock), emboss=False)
+      op.owner = object.name
+      op.target = datablock.name
+      op.type = 'MODIFIER'
 
-  # label
   except:
 
-    # label
-    sub.label(text='', icon=icon.modifier(datablock))
+    # icon
+    op = sub.operator('view3d.name_panel_icon', text='', icon=icon.modifier(datablock), emboss=False)
+    op.owner = object.name
+    op.target = datablock.name
+    op.type = 'MODIFIER'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1397,22 +1435,22 @@ def ObjectData(self, context, layout, datablock, option):
 
   else:
 
-    # active
     if datablock == context.active_object:
 
       # name
       row.template_ID(datablock, 'data')
 
-    # active
     else:
 
       # sub
       sub = row.row(align=True)
       sub.scale_x = 1.6
 
-      # object data
-      op = sub.operator('view3d.np_active_object_data', text='', icon=icon.objectData(datablock))
+      # icon
+      op = sub.operator('view3d.name_panel_icon', text='', icon=icon.objectData(datablock))
+      op.owner = datablock.name
       op.target = datablock.name
+      op.type = 'OBJECT_DATA'
 
       # name
       row.prop(datablock.data, 'name', text='')
@@ -1432,10 +1470,11 @@ def VertexGroup(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # active vertex group
-  prop = sub.operator('view3d.np_active_vertex_group', text='', icon='GROUP_VERTEX', emboss=False)
-  prop.object = object.name
-  prop.target = datablock.name
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP_VERTEX', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'VERTEX_GROUP'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1467,8 +1506,11 @@ def Shapekey(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  sub.label(text='', icon='SHAPEKEY_DATA')
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='SHAPEKEY_DATA', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'SHAPEKEY'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1504,8 +1546,11 @@ def UV(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  sub.label(text='', icon='GROUP_UVS')
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP_UVS', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'UV'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1537,8 +1582,11 @@ def VertexColor(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  sub.label(text='', icon='GROUP_VCOL')
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP_VCOL', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'VERTEX_COLOR'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1574,8 +1622,11 @@ def Material(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  sub.label(text='', icon='MATERIAL')
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='MATERIAL', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'MATERIAL'
 
   # name
   row.prop(datablock.material, 'name', text='')
@@ -1595,8 +1646,11 @@ def Texture(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  sub.label(text='', icon='TEXTURE')
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='TEXTURE', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'TEXTURE'
 
   # name
   row.prop(datablock.texture, 'name', text='')
@@ -1632,8 +1686,11 @@ def Particle(self, context, layout, datablock, object, option):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  sub.label(text='', icon='PARTICLES')
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='PARTICLES', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'PARTICLE_SYSTEM'
 
   # name
   row.prop(datablock.particle_system, 'name', text='')
@@ -1650,8 +1707,11 @@ def Particle(self, context, layout, datablock, object, option):
     # scale
     sub.scale_x = 1.6
 
-    # label
-    sub.label(text='', icon='DOT')
+    # icon
+    op = sub.operator('view3d.name_panel_icon', text='', icon='DOT', emboss=False)
+    op.owner = object.name
+    op.target = datablock.name
+    op.type = 'PARTICLE_SETTING'
 
     # name
     row.prop(datablock.particle_system.settings, 'name', text='')
@@ -1671,8 +1731,11 @@ def BoneGroup(self, context, layout, datablock, object):
   # scale
   sub.scale_x = 1.6
 
-  # label
-  sub.label(text='', icon='GROUP_BONE')
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP_BONE', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'BONE_GROUP'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1710,8 +1773,11 @@ def Bone(self, context, layout, datablock, object, option):
     # datablock
     if not datablock == context.active_bone:
 
-      # make active bone
-      sub.operator('view3d.np_active_bone', text='', icon='BONE_DATA').target = datablock.name
+      # icon
+      op = sub.operator('view3d.name_panel_icon', text='', icon='BONE_DATA')
+      op.owner = object.name
+      op.target = datablock.name
+      op.type = 'BONE'
 
       # name
       row.prop(datablock, 'name', text='')
@@ -1749,8 +1815,11 @@ def Bone(self, context, layout, datablock, object, option):
     # name
     if not datablock == context.active_bone:
 
-      # make active bone
-      sub.operator('view3d.np_active_bone', text='', icon='BONE_DATA').target = datablock.name
+      # icon
+      op = sub.operator('view3d.name_panel_icon', text='', icon='BONE_DATA')
+      op.owner = object.name
+      op.target = datablock.name
+      op.type = 'BONE'
 
     # name
     row.prop(datablock, 'name', text='')
@@ -1785,8 +1854,21 @@ def Bone(self, context, layout, datablock, object, option):
       # lock
       row.prop(datablock, 'lock', text='', icon=iconLock)
 
-  # row
-  row = layout.row()
+  if object.mode in 'EDIT':
+    # row
+    row = layout.row()
 
-  # separator
-  row.separator()
+    # separator
+    row.separator()
+
+  elif object.mode in 'POSE':
+
+    constraints = [item.name for item in bpy.data.objects[object.name].pose.bones[datablock.name].constraints]
+
+    if constraints == [] or not option.boneConstraints:
+
+      # row
+      row = layout.row()
+
+      # separator
+      row.separator()

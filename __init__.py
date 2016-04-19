@@ -58,7 +58,7 @@ class preferences(AddonPreferences):
   # popups
   popups = BoolProperty(
     name = 'Pop-ups',
-    description = 'Enable settings pop-up for modifiers and constraints. (icon)',
+    description = 'Enable settings pop-up for modifiers and constraints. (Experimental!)',
     default = False
   )
 

@@ -67,732 +67,18 @@ def main(context, quickBatch):
   # quick batch
   if quickBatch:
 
-    # search
-    search = panel.search if panel.regex else re.escape(panel.search)
-
     # display names
-    if not panel.displayNames:
-
-      object = context.active_object
-
-      # search
-      if search == '' or re.search(search, object.name, re.I):
-
-        # name
-        object.name = name(context, object.name) if not option.suffixLast else name(context, object.name) + option.suffix
-
-      # actions
-      if panel.action:
-        if hasattr(object.animation_data, 'action'):
-          if hasattr(object.animation_data.action, 'name'):
-
-            # search
-            if search == '' or re.search(search, object.animation_data.action.name, re.I):
-
-              # name
-              object.animation_data.action.name = name(context, object.animation_data.action.name) if not option.suffixLast else name(object.animation_data.action.name) + option.suffix
-
-      # grease pencils
-      if panel.greasePencil:
-        if hasattr(object.grease_pencil, 'name'):
-
-          # search
-          if search == '' or re.search(search, object.grease_pencil.name, re.I):
-
-            # name
-            object.grease_pencil.name = name(context, object.grease_pencil.name) if not option.suffixLast else name(context, object.grease_pencil.name) + option.suffix
-
-          # layers
-          for layer in object.grease_pencil.layers[:]:
-
-            # search
-            if search == '' or re.search(search, layer.info, re.I):
-
-              # append
-              storage.batch.pencilLayers.append([layer.info, [1, layer]])
-
-          # process
-          process(context, storage.batch.pencilLayers)
-
-          # clear
-          storage.batch.pencilLayers.clear()
-
-      # groups
-      if panel.groups:
-        for group in bpy.data.groups[:]:
-          for groupObject in group.objects[:]:
-            if groupObject == object:
-
-              # search
-              if search == '' or re.search(search, group.name, re.I):
-
-                # name
-                group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
-
-      # constraints
-      if panel.constraints:
-        for constraint in object.constraints[:]:
-
-          # search
-          if search == '' or re.search(search, constraint.name, re.I):
-
-            # append
-            storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-        # process
-        process(context, storage.batch.constraints)
-
-        # clear
-        storage.batch.constraints.clear()
-
-      # modifiers
-      if panel.modifiers:
-        for modifier in object.modifiers[:]:
-
-          # search
-          if search == '' or re.search(search, modifier.name, re.I):
-
-            # append
-            storage.batch.modifiers.append([modifier.name, [1, modifier]])
-
-        # process
-        process(context, storage.batch.modifiers)
-
-        # clear
-        storage.batch.modifiers.clear()
-
-      # bone groups
-      if panel.boneGroups:
-        if object.type in 'ARMATURE':
-          for group in object.pose.bone_groups[:]:
-
-            # search
-            if search == '' or re.search(search, group.name, re.I):
-
-              # sort
-              storage.batch.boneGroups.append([group.name, [1, group]])
-
-          # process
-          process(context, storage.batch.boneGroups)
-
-          # clear
-          storage.batch.boneGroups.clear()
-
-      # bones
-      if object.type == 'ARMATURE':
-
-        # selected bones
-        if panel.selectedBones:
-
-          # mode
-          if object.mode == 'EDIT':
-            for bone in context.selected_bones[:]:
-
-              # search
-              if search == '' or re.search(search, bone.name, re.I):
-
-                # append
-                storage.batch.bones.append([bone.name, [1, bone]])
-
-            # process
-            process(context, storage.batch.bones)
-
-            # clear
-            storage.batch.bones.clear()
-
-          # mode
-          elif object.mode == 'POSE':
-            for bone in context.selected_pose_bones[:]:
-
-              # search
-              if search == '' or re.search(search, bone.name, re.I):
-
-                # append
-                storage.batch.bones.append([bone.name, [1, bone]])
-
-            # process
-            process(context, storage.batch.bones)
-
-            # clear
-            storage.batch.bones.clear()
-
-        # selected bones
-        else:
-
-          # mode
-          if object.mode == 'EDIT':
-
-            # search
-            if search == '' or re.search(search, context.active_bone, re.I):
-
-              # name
-              context.active_bone.name = name(context, context.active_bone.name) if option.suffixLast else name(context, context.active_bone) + option.suffix
-
-          # mode
-          elif object.mode == 'POSE':
-
-            # search
-            if search == '' or re.search(search, context.active_pose_bone, re.I):
-
-              # name
-              context.active_pose_bone.name = name(context, context.active_pose_bone.name) if option.suffixLast else name(context, context.active_pose_bone) + option.suffix
-
-        # bone constraints
-        if panel.boneConstraints:
-          if context.mode == 'POSE':
-
-              # selected bones
-              if panel.selectedBones:
-                for bone in context.selected_pose_bones[:]:
-                  for constraint in bone.constraints[:]:
-
-                    # search
-                    if search == '' or re.search(search, constraint.name):
-
-                      # append
-                      storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-                  # process
-                  process(context, storage.batch.constraints)
-
-                  # clear
-                  storage.batch.constraints.clear()
-
-              # selected bones
-              else:
-                for constraint in context.active_pose_bone.constraints[:]:
-
-                  # search
-                  if search == '' or re.search(search, constraint.name):
-
-                    # append
-                    storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-                # process
-                process(context, storage.batch.constraints)
-
-                # clear
-                storage.batch.constraints.clear()
-
-      # object data
-
-      # search
-      if search == '' or re.search(search, object.data.name, re.I):
-
-        # name
-        object.data.name = name(context, object.data.name) if option.suffixLast else name(context, object.data.name) + option.suffix
-
-      # vertex groups
-      if panel.vertexGroups:
-        if hasattr(object, 'vertex_groups'):
-          for group in object.vertex_groups[:]:
-
-            # search
-            if search == '' or re.search(search, group.name, re.I):
-
-              # sort
-              storage.batch.vertexGroups.append([group.name, [1, group]])
-
-          # process
-          process(context, storage.batch.vertexGroups)
-
-          # clear
-          storage.batch.vertexGroups.clear()
-
-      # shapekeys
-      if panel.shapekeys:
-        if hasattr(object.data, 'shape_keys'):
-          if hasattr(object.data.shape_keys, 'key_blocks'):
-            for key in object.data.shape_keys.key_blocks[:]:
-
-              # search
-              if search == '' or re.search(search, key.name, re.I):
-
-                # sort
-                storage.batch.shapekeys.append([key.name, [1, key]])
-
-            # process
-            process(context, storage.batch.shapekeys)
-
-            # clear
-            storage.batch.shapekeys.clear()
-
-      # uv maps
-      if panel.uvs:
-        if object.type in 'MESH':
-          for uv in object.data.uv_textures[:]:
-
-            # search
-            if search == '' or re.search(search, uv.name, re.I):
-
-              # append
-              storage.batch.uvs.append([uv.name, [1, uv]])
-
-          # process
-          process(context, storage.batch.uvs)
-
-          # clear
-          storage.batch.uvs.clear()
-
-      # vertex colors
-      if panel.vertexColors:
-        if object.type in 'MESH':
-          for vertexColor in object.data.vertex_colors[:]:
-
-            # search
-            if search == '' or re.search(search, vertexColor.name, re.I):
-
-              # append
-              storage.batch.vertexColors.append([vertexColor.name, [1, vertexColor]])
-
-          # process
-          process(context, storage.batch.vertexColors)
-
-          # clear
-          storage.batch.vertexColors.clear()
-
-      # materials
-      if panel.materials:
-        for slot in object.material_slots:
-          if slot.material != None:
-
-            # search
-            if search == '' or re.search(search, slot.material.name, re.I):
-
-              # append
-              storage.batch.materials.append([slot.material.name, [1, slot.material]])
-
-        # process
-        process(context, storage.batch.materials)
-
-        # clear
-        storage.batch.materials.clear()
-
-      # textures
-      if panel.textures:
-        for slot in object.material_slots:
-          if slot.material != None:
-            if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-              for tslot in slot.material.texture_slots[:]:
-                if hasattr(tslot, 'texture'):
-                  if tslot.texture != None:
-
-                    # search
-                    if search == '' or re.search(search, tslot.texture.name, re.I):
-
-                      # append
-                      storage.batch.textures.append([tslot.texture.name, [1, tslot.texture]])
-
-              # process
-              process(context, storage.batch.textures)
-
-              # clear
-              storage.batch.textures.clear()
-
-      # particleSystems
-      if panel.particleSystems:
-        for modifier in object.modifiers[:]:
-          if modifier.type in 'PARTICLE_SYSTEM':
-
-            # search
-            if search == '' or re.search(search, modifier.particle_system.name, re.I):
-
-              # append
-              storage.batch.particleSystems.append([modifier.particle_system.name, [1, modifier.particle_system]])
-
-            if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
-
-              # append
-              storage.batch.particleSettings.append([modifier.particle_system.settings.name, [1, modifier.particle_system.settings]])
-
-        # process
-        process(context, storage.batch.particleSystems)
-        process(context, storage.batch.particleSettings)
-
-        # clear
-        storage.batch.particleSystems.clear()
-        storage.batch.particleSettings.clear()
-
-    # display names
-    else:
+    if panel.displayNames:
 
       # mode
       if panel.mode == 'SELECTED':
 
         for object in context.selected_objects[:]:
 
-          # object
+          # quick
+          quick(context, object, panel, option)
 
-          # search
-          if search == '' or re.search(search, object.name, re.I):
-
-            # append
-            storage.batch.objects.append([object.name, [1, object]])
-
-          # actions
-          if panel.action:
-            if hasattr(object.animation_data, 'action'):
-              if hasattr(object.animation_data.action, 'name'):
-
-                # search
-                if search == '' or re.search(search, object.animation_data.action.name, re.I):
-
-                  # name
-                  object.animation_data.action.name = name(context, object.animation_data.action.name) if not option.suffixLast else name(object.animation_data.action.name) + option.suffix
-
-          # grease pencils
-          if panel.greasePencil:
-            if hasattr(object.grease_pencil, 'name'):
-
-              # search
-              if search == '' or re.search(search, object.grease_pencil.name, re.I):
-
-                # name
-                object.grease_pencil.name = name(context, object.grease_pencil.name) if not option.suffixLast else name(context, object.grease_pencil.name) + option.suffix
-
-              # layers
-              for layer in object.grease_pencil.layers[:]:
-
-                # search
-                if search == '' or re.search(search, layer.info, re.I):
-
-                  # append
-                  storage.batch.pencilLayers.append([layer.info, [1, layer]])
-
-              # process
-              process(context, storage.batch.pencilLayers)
-
-              # clear
-              storage.batch.pencilLayers.clear()
-
-          # groups
-          if panel.groups:
-            for group in bpy.data.groups[:]:
-              for groupObject in group.objects[:]:
-                if groupObject == object:
-
-                  # search
-                  if search == '' or re.search(search, group.name, re.I):
-
-                    # name
-                    group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
-
-          # constraints
-          if panel.constraints:
-            for constraint in object.constraints[:]:
-
-              # search
-              if search == '' or re.search(search, constraint.name, re.I):
-
-                # append
-                storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-            # process
-            process(context, storage.batch.constraints)
-
-            # clear
-            storage.batch.constraints.clear()
-
-          # modifiers
-          if panel.modifiers:
-            for modifier in object.modifiers[:]:
-
-              # search
-              if search == '' or re.search(search, modifier.name, re.I):
-
-                # append
-                storage.batch.modifiers.append([modifier.name, [1, modifier]])
-
-            # process
-            process(context, storage.batch.modifiers)
-
-            # clear
-            storage.batch.modifiers.clear()
-
-          # bone groups
-          if panel.boneGroups:
-            if object.type in 'ARMATURE':
-              for group in object.pose.bone_groups[:]:
-
-                # search
-                if search == '' or re.search(search, group.name, re.I):
-
-                  # sort
-                  storage.batch.boneGroups.append([group.name, [1, group]])
-
-              # process
-              process(context, storage.batch.boneGroups)
-
-              # clear
-              storage.batch.boneGroups.clear()
-
-          # bones
-          if object == context.active_object:
-            if object.type == 'ARMATURE':
-
-              # selected bones
-              if panel.selectedBones:
-
-                # mode
-                if object.mode == 'EDIT':
-                  for bone in context.selected_bones[:]:
-
-                    # search
-                    if search == '' or re.search(search, bone.name, re.I):
-
-                      # append
-                      storage.batch.bones.append([bone.name, [1, bone]])
-
-                  # process
-                  process(context, storage.batch.bones)
-
-                  # clear
-                  storage.batch.bones.clear()
-
-                # mode
-                elif object.mode == 'POSE':
-                  for bone in context.selected_pose_bones[:]:
-
-                    # search
-                    if search == '' or re.search(search, bone.name, re.I):
-
-                      # append
-                      storage.batch.bones.append([bone.name, [1, bone]])
-
-                  # process
-                  process(context, storage.batch.bones)
-
-                  # clear
-                  storage.batch.bones.clear()
-
-              # selected bones
-              else:
-
-                # mode
-                if object.mode == 'EDIT':
-
-                  # search
-                  if search == '' or re.search(search, context.active_bone, re.I):
-
-                    # name
-                    context.active_bone.name = name(context, context.active_bone.name) if option.suffixLast else name(context, context.active_bone) + option.suffix
-
-                # mode
-                elif object.mode == 'POSE':
-
-                  # search
-                  if search == '' or re.search(search, context.active_pose_bone, re.I):
-
-                    # name
-                    context.active_pose_bone.name = name(context, context.active_pose_bone.name) if option.suffixLast else name(context, context.active_pose_bone) + option.suffix
-
-              # bone constraints
-              if panel.boneConstraints:
-                if context.mode == 'POSE':
-
-                    # selected bones
-                    if panel.selectedBones:
-                      for bone in context.selected_pose_bones[:]:
-                        for constraint in bone.constraints[:]:
-
-                          # search
-                          if search == '' or re.search(search, constraint.name):
-
-                            # append
-                            storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-                        # process
-                        process(context, storage.batch.constraints)
-
-                        # clear
-                        storage.batch.constraints.clear()
-
-                    # selected bones
-                    else:
-                      for constraint in context.active_pose_bone.constraints[:]:
-
-                        # search
-                        if search == '' or re.search(search, constraint.name):
-
-                          # append
-                          storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-                      # process
-                      process(context, storage.batch.constraints)
-
-                      # clear
-                      storage.batch.constraints.clear()
-
-          # object data
-
-          # search
-          if search == '' or re.search(search, object.data.name, re.I):
-
-            # cameras
-            if object.data.rna_type.identifier == 'Camera':
-              storage.batch.cameras.append([object.data.name, [1, object.data]])
-
-            # meshes
-            if object.data.rna_type.identifier == 'Mesh':
-              storage.batch.meshes.append([object.data.name, [1, object.data]])
-
-            # curves
-            if object.data.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-              storage.batch.curves.append([object.data.name, [1, object.data]])
-
-            # lamps
-            if hasattr(object.data.rna_type.base, 'identifier'):
-              if object.data.rna_type.base.identifier == 'Lamp':
-                storage.batch.lamps.append([object.data.name, [1, object.data]])
-
-            # lattices
-            if object.data.rna_type.identifier == 'Lattice':
-              storage.batch.lattices.append([object.data.name, [1, object.data]])
-
-            # metaballs
-            if object.data.rna_type.identifier == 'MetaBall':
-              storage.batch.metaballs.append([object.data.name, [1, object.data]])
-
-            # speakers
-            if object.data.rna_type.identifier == 'Speaker':
-              storage.batch.speakers.append([object.data.name, [1, object.data]])
-
-            # armatures
-            if object.data.rna_type.identifier == 'Armature':
-              storage.batch.armatures.append([object.data.name, [1, object.data]])
-
-          # vertex groups
-          if panel.vertexGroups:
-            if hasattr(object, 'vertex_groups'):
-              for group in object.vertex_groups[:]:
-
-                # search
-                if search == '' or re.search(search, group.name, re.I):
-
-                  # sort
-                  storage.batch.vertexGroups.append([group.name, [1, group]])
-
-              # process
-              process(context, storage.batch.vertexGroups)
-
-              # clear
-              storage.batch.vertexGroups.clear()
-
-          # shapekeys
-          if panel.shapekeys:
-            if hasattr(object.data, 'shape_keys'):
-              if hasattr(object.data.shape_keys, 'key_blocks'):
-                for key in object.data.shape_keys.key_blocks[:]:
-
-                  # search
-                  if search == '' or re.search(search, key.name, re.I):
-
-                    # sort
-                    storage.batch.shapekeys.append([key.name, [1, key]])
-
-                # process
-                process(context, storage.batch.shapekeys)
-
-                # clear
-                storage.batch.shapekeys.clear()
-
-          # uv maps
-          if panel.uvs:
-            if object.type in 'MESH':
-              for uv in object.data.uv_textures[:]:
-
-                # search
-                if search == '' or re.search(search, uv.name, re.I):
-
-                  # append
-                  storage.batch.uvs.append([uv.name, [1, uv]])
-
-              # process
-              process(context, storage.batch.uvs)
-
-              # clear
-              storage.batch.uvs.clear()
-
-          # vertex colors
-          if panel.vertexColors:
-            if object.type in 'MESH':
-              for vertexColor in object.data.vertex_colors[:]:
-
-                # search
-                if search == '' or re.search(search, vertexColor.name, re.I):
-
-                  # append
-                  storage.batch.vertexColors.append([vertexColor.name, [1, vertexColor]])
-
-              # process
-              process(context, storage.batch.vertexColors)
-
-              # clear
-              storage.batch.vertexColors.clear()
-
-          # materials
-          if panel.materials:
-            for slot in object.material_slots:
-              if slot.material != None:
-
-                # search
-                if search == '' or re.search(search, slot.material.name, re.I):
-
-                  # append
-                  storage.batch.materials.append([slot.material.name, [1, slot.material]])
-
-            # process
-            process(context, storage.batch.materials)
-
-            # clear
-            storage.batch.materials.clear()
-
-          # textures
-          if panel.textures:
-            for slot in object.material_slots:
-              if slot.material != None:
-                if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-                  for tslot in slot.material.texture_slots[:]:
-                    if hasattr(tslot, 'texture'):
-                      if tslot.texture != None:
-
-                        # search
-                        if search == '' or re.search(search, tslot.texture.name, re.I):
-
-                          # append
-                          storage.batch.textures.append([tslot.texture.name, [1, tslot.texture]])
-
-                  # process
-                  process(context, storage.batch.textures)
-
-                  # clear
-                  storage.batch.textures.clear()
-
-          # particleSystems
-          if panel.particleSystems:
-            for modifier in object.modifiers[:]:
-              if modifier.type in 'PARTICLE_SYSTEM':
-
-                # search
-                if search == '' or re.search(search, modifier.particle_system.name, re.I):
-
-                  # append
-                  storage.batch.particleSystems.append([modifier.particle_system.name, [1, modifier.particle_system]])
-
-                if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
-
-                  # append
-                  storage.batch.particleSettings.append([modifier.particle_system.settings.name, [1, modifier.particle_system.settings]])
-
-            # process
-            process(context, storage.batch.particleSystems)
-            process(context, storage.batch.particleSettings)
-
-            # clear
-            storage.batch.particleSystems.clear()
-            storage.batch.particleSettings.clear()
-
-        # all
+          # all
         all = [
           # object
           storage.batch.objects,
@@ -820,7 +106,7 @@ def main(context, quickBatch):
 
           # armatures
           storage.batch.armatures,
-        ]
+          ]
         for collection in all:
 
           # process
@@ -829,381 +115,13 @@ def main(context, quickBatch):
           # clear
           collection.clear()
 
-      # mode
+        # mode
       else:
         for object in context.scene.objects[:]:
           if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]:
 
-            # object
-
-            # search
-            if search == '' or re.search(search, object.name, re.I):
-
-              # append
-              storage.batch.objects.append([object.name, [1, object]])
-
-            # actions
-            if panel.action:
-              if hasattr(object.animation_data, 'action'):
-                if hasattr(object.animation_data.action, 'name'):
-
-                  # search
-                  if search == '' or re.search(search, object.animation_data.action.name, re.I):
-
-                    # name
-                    object.animation_data.action.name = name(context, object.animation_data.action.name) if not option.suffixLast else name(object.animation_data.action.name) + option.suffix
-
-            # grease pencils
-            if panel.greasePencil:
-              if hasattr(object.grease_pencil, 'name'):
-
-                # search
-                if search == '' or re.search(search, object.grease_pencil.name, re.I):
-
-                  # name
-                  object.grease_pencil.name = name(context, object.grease_pencil.name) if not option.suffixLast else name(context, object.grease_pencil.name) + option.suffix
-
-                # layers
-                for layer in object.grease_pencil.layers[:]:
-
-                  # search
-                  if search == '' or re.search(search, layer.info, re.I):
-
-                    # append
-                    storage.batch.pencilLayers.append([layer.info, [1, layer]])
-
-                # process
-                process(context, storage.batch.pencilLayers)
-
-                # clear
-                storage.batch.pencilLayers.clear()
-
-            # groups
-            if panel.groups:
-              for group in bpy.data.groups[:]:
-                for groupObject in group.objects[:]:
-                  if groupObject == object:
-
-                    # search
-                    if search == '' or re.search(search, group.name, re.I):
-
-                      # name
-                      group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
-
-            # constraints
-            if panel.constraints:
-              for constraint in object.constraints[:]:
-
-                # search
-                if search == '' or re.search(search, constraint.name, re.I):
-
-                  # append
-                  storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-              # process
-              process(context, storage.batch.constraints)
-
-              # clear
-              storage.batch.constraints.clear()
-
-            # modifiers
-            if panel.modifiers:
-              for modifier in object.modifiers[:]:
-
-                # search
-                if search == '' or re.search(search, modifier.name, re.I):
-
-                  # append
-                  storage.batch.modifiers.append([modifier.name, [1, modifier]])
-
-              # process
-              process(context, storage.batch.modifiers)
-
-              # clear
-              storage.batch.modifiers.clear()
-
-            # bone groups
-            if panel.boneGroups:
-              if object.type in 'ARMATURE':
-                for group in object.pose.bone_groups[:]:
-
-                  # search
-                  if search == '' or re.search(search, group.name, re.I):
-
-                    # sort
-                    storage.batch.boneGroups.append([group.name, [1, group]])
-
-                # process
-                process(context, storage.batch.boneGroups)
-
-                # clear
-                storage.batch.boneGroups.clear()
-
-            # bones
-            if object == context.active_object:
-              if object.type == 'ARMATURE':
-
-                # selected bones
-                if panel.selectedBones:
-
-                  # mode
-                  if object.mode == 'EDIT':
-                    for bone in context.selected_bones[:]:
-
-                      # search
-                      if search == '' or re.search(search, bone.name, re.I):
-
-                        # append
-                        storage.batch.bones.append([bone.name, [1, bone]])
-
-                    # process
-                    process(context, storage.batch.bones)
-
-                    # clear
-                    storage.batch.bones.clear()
-
-                  # mode
-                  elif object.mode == 'POSE':
-                    for bone in context.selected_pose_bones[:]:
-
-                      # search
-                      if search == '' or re.search(search, bone.name, re.I):
-
-                        # append
-                        storage.batch.bones.append([bone.name, [1, bone]])
-
-                    # process
-                    process(context, storage.batch.bones)
-
-                    # clear
-                    storage.batch.bones.clear()
-
-                # selected bones
-                else:
-
-                  # mode
-                  if object.mode == 'EDIT':
-
-                    # search
-                    if search == '' or re.search(search, context.active_bone, re.I):
-
-                      # name
-                      context.active_bone.name = name(context, context.active_bone.name) if option.suffixLast else name(context, context.active_bone) + option.suffix
-
-                  # mode
-                  elif object.mode == 'POSE':
-
-                    # search
-                    if search == '' or re.search(search, context.active_pose_bone, re.I):
-
-                      # name
-                      context.active_pose_bone.name = name(context, context.active_pose_bone.name) if option.suffixLast else name(context, context.active_pose_bone) + option.suffix
-
-                # bone constraints
-                if panel.boneConstraints:
-                  if context.mode == 'POSE':
-
-                      # selected bones
-                      if panel.selectedBones:
-                        for bone in context.selected_pose_bones[:]:
-                          for constraint in bone.constraints[:]:
-
-                            # search
-                            if search == '' or re.search(search, constraint.name):
-
-                              # append
-                              storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-                          # process
-                          process(context, storage.batch.constraints)
-
-                          # clear
-                          storage.batch.constraints.clear()
-
-                      # selected bones
-                      else:
-                        for constraint in context.active_pose_bone.constraints[:]:
-
-                          # search
-                          if search == '' or re.search(search, constraint.name):
-
-                            # append
-                            storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-                        # process
-                        process(context, storage.batch.constraints)
-
-                        # clear
-                        storage.batch.constraints.clear()
-
-            # object data
-
-            # search
-            if search == '' or re.search(search, object.data.name, re.I):
-
-              # cameras
-              if object.data.rna_type.identifier == 'Camera':
-                storage.batch.cameras.append([object.data.name, [1, object.data]])
-
-              # meshes
-              if object.data.rna_type.identifier == 'Mesh':
-                storage.batch.meshes.append([object.data.name, [1, object.data]])
-
-              # curves
-              if object.data.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-                storage.batch.curves.append([object.data.name, [1, object.data]])
-
-              # lamps
-              if hasattr(object.data.rna_type.base, 'identifier'):
-                if object.data.rna_type.base.identifier == 'Lamp':
-                  storage.batch.lamps.append([object.data.name, [1, object.data]])
-
-              # lattices
-              if object.data.rna_type.identifier == 'Lattice':
-                storage.batch.lattices.append([object.data.name, [1, object.data]])
-
-              # metaballs
-              if object.data.rna_type.identifier == 'MetaBall':
-                storage.batch.metaballs.append([object.data.name, [1, object.data]])
-
-              # speakers
-              if object.data.rna_type.identifier == 'Speaker':
-                storage.batch.speakers.append([object.data.name, [1, object.data]])
-
-              # armatures
-              if object.data.rna_type.identifier == 'Armature':
-                storage.batch.armatures.append([object.data.name, [1, object.data]])
-
-            # vertex groups
-            if panel.vertexGroups:
-              if hasattr(object, 'vertex_groups'):
-                for group in object.vertex_groups[:]:
-
-                  # search
-                  if search == '' or re.search(search, group.name, re.I):
-
-                    # sort
-                    storage.batch.vertexGroups.append([group.name, [1, group]])
-
-                # process
-                process(context, storage.batch.vertexGroups)
-
-                # clear
-                storage.batch.vertexGroups.clear()
-
-            # shapekeys
-            if panel.shapekeys:
-              if hasattr(object.data, 'shape_keys'):
-                if hasattr(object.data.shape_keys, 'key_blocks'):
-                  for key in object.data.shape_keys.key_blocks[:]:
-
-                    # search
-                    if search == '' or re.search(search, key.name, re.I):
-
-                      # sort
-                      storage.batch.shapekeys.append([key.name, [1, key]])
-
-                  # process
-                  process(context, storage.batch.shapekeys)
-
-                  # clear
-                  storage.batch.shapekeys.clear()
-
-            # uv maps
-            if panel.uvs:
-              if object.type in 'MESH':
-                for uv in object.data.uv_textures[:]:
-
-                  # search
-                  if search == '' or re.search(search, uv.name, re.I):
-
-                    # append
-                    storage.batch.uvs.append([uv.name, [1, uv]])
-
-                # process
-                process(context, storage.batch.uvs)
-
-                # clear
-                storage.batch.uvs.clear()
-
-            # vertex colors
-            if panel.vertexColors:
-              if object.type in 'MESH':
-                for vertexColor in object.data.vertex_colors[:]:
-
-                  # search
-                  if search == '' or re.search(search, vertexColor.name, re.I):
-
-                    # append
-                    storage.batch.vertexColors.append([vertexColor.name, [1, vertexColor]])
-
-                # process
-                process(context, storage.batch.vertexColors)
-
-                # clear
-                storage.batch.vertexColors.clear()
-
-            # materials
-            if panel.materials:
-              for slot in object.material_slots:
-                if slot.material != None:
-
-                  # search
-                  if search == '' or re.search(search, slot.material.name, re.I):
-
-                    # append
-                    storage.batch.materials.append([slot.material.name, [1, slot.material]])
-
-              # process
-              process(context, storage.batch.materials)
-
-              # clear
-              storage.batch.materials.clear()
-
-            # textures
-            if panel.textures:
-              for slot in object.material_slots:
-                if slot.material != None:
-                  if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-                    for tslot in slot.material.texture_slots[:]:
-                      if hasattr(tslot, 'texture'):
-                        if tslot.texture != None:
-
-                          # search
-                          if search == '' or re.search(search, tslot.texture.name, re.I):
-
-                            # append
-                            storage.batch.textures.append([tslot.texture.name, [1, tslot.texture]])
-
-                    # process
-                    process(context, storage.batch.textures)
-
-                    # clear
-                    storage.batch.textures.clear()
-
-            # particleSystems
-            if panel.particleSystems:
-              for modifier in object.modifiers[:]:
-                if modifier.type in 'PARTICLE_SYSTEM':
-
-                  # search
-                  if search == '' or re.search(search, modifier.particle_system.name, re.I):
-
-                    # append
-                    storage.batch.particleSystems.append([modifier.particle_system.name, [1, modifier.particle_system]])
-
-                  if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
-
-                    # append
-                    storage.batch.particleSettings.append([modifier.particle_system.settings.name, [1, modifier.particle_system.settings]])
-
-              # process
-              process(context, storage.batch.particleSystems)
-              process(context, storage.batch.particleSettings)
-
-              # clear
-              storage.batch.particleSystems.clear()
-              storage.batch.particleSettings.clear()
+            # quick
+            quick(context, object, panel, option)
 
         # all
         all = [
@@ -1233,7 +151,7 @@ def main(context, quickBatch):
 
           # armatures
           storage.batch.armatures,
-        ]
+          ]
         for collection in all:
 
           # process
@@ -1241,6 +159,13 @@ def main(context, quickBatch):
 
           # clear
           collection.clear()
+
+    # display names
+    else:
+
+      # quick
+      quick(context, context.active_object, panel, option)
+
 
   # quick batch
   else:
@@ -4176,6 +3101,435 @@ def main(context, quickBatch):
 
       # clear collection
       storage.batch.texts.clear()
+
+# quick
+def quick(context, object, panel, option):
+  '''
+    Quick batch mode for main.
+  '''
+
+  # search
+  search = panel.search if panel.regex else re.escape(panel.search)
+
+  # search
+  if search == '' or re.search(search, object.name, re.I):
+
+    # storage
+    storage.batch.objects.append([object.name, [1, object]])
+
+  # action
+  if panel.action:
+    if hasattr(object.animation_data, 'action'):
+      if hasattr(object.animation_data.action, 'name'):
+
+        # search
+        if search == '' or re.search(search, object.animation_data.action.name, re.I):
+
+          # name
+          object.animation_data.action.name = name(context, object.animation_data.action.name) if not option.suffixLast else name(object.animation_data.action.name) + option.suffix
+
+  # grease pencils
+  if panel.greasePencil:
+    if hasattr(object.grease_pencil, 'name'):
+
+      # search
+      if search == '' or re.search(search, object.grease_pencil.name, re.I):
+
+        # name
+        object.grease_pencil.name = name(context, object.grease_pencil.name) if not option.suffixLast else name(context, object.grease_pencil.name) + option.suffix
+
+      # layers
+      for layer in object.grease_pencil.layers[:]:
+
+        # search
+        if search == '' or re.search(search, layer.info, re.I):
+
+          # append
+          storage.batch.pencilLayers.append([layer.info, [1, layer]])
+
+      # process
+      process(context, storage.batch.pencilLayers)
+
+      # clear
+      storage.batch.pencilLayers.clear()
+
+  # groups
+  if panel.groups:
+    for group in bpy.data.groups[:]:
+      for groupObject in group.objects[:]:
+        if groupObject == object:
+
+          # search
+          if search == '' or re.search(search, group.name, re.I):
+
+            # name
+            group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
+
+  # constraints
+  if panel.constraints:
+    for constraint in object.constraints[:]:
+
+      # search
+      if search == '' or re.search(search, constraint.name, re.I):
+
+        # append
+        storage.batch.constraints.append([constraint.name, [1, constraint]])
+
+    # process
+    process(context, storage.batch.constraints)
+
+    # clear
+    storage.batch.constraints.clear()
+
+  # modifiers
+  if panel.modifiers:
+    for modifier in object.modifiers[:]:
+
+      # search
+      if search == '' or re.search(search, modifier.name, re.I):
+
+        # append
+        storage.batch.modifiers.append([modifier.name, [1, modifier]])
+
+    # process
+    process(context, storage.batch.modifiers)
+
+    # clear
+    storage.batch.modifiers.clear()
+
+  # bone groups
+  if panel.boneGroups:
+    if object.type in 'ARMATURE':
+      for group in object.pose.bone_groups[:]:
+
+        # search
+        if search == '' or re.search(search, group.name, re.I):
+
+          # sort
+          storage.batch.boneGroups.append([group.name, [1, group]])
+
+      # process
+      process(context, storage.batch.boneGroups)
+
+      # clear
+      storage.batch.boneGroups.clear()
+
+  # bones
+  if object == context.active_object:
+    if object.type == 'ARMATURE':
+      if object.mode in {'POSE', 'EDIT'}:
+
+        # display bones
+        if panel.displayBones:
+
+          # bone mode
+          if panel.boneMode == 'SELECTED':
+
+            # pose
+            if object.mode == 'POSE':
+
+              # bones
+              bones = context.selected_pose_bones[:]
+
+            # edit
+            elif object.mode == 'EDIT':
+
+              # bones
+              bones = context.selected_bones[:]
+
+            # bone
+            for bone in bones:
+
+              # search
+              if search == '' or re.search(search, bone.name, re.I):
+
+                # append
+                storage.batch.bones.append([bone.name, [1, bone]])
+
+            # process
+            process(context, storage.batch.bones)
+
+            # clear
+            storage.batch.bones.clear()
+
+          # bone mode
+          else:
+
+            # pose
+            if object.mode == 'POSE':
+
+              # bones
+              bones = [bone for bone in object.data.bones if True in [x&y for (x, y) in zip(bone.layers, object.data.layers)]]
+
+              # edit
+            elif object.mode == 'EDIT':
+
+              # bones
+              bones = [bone for bone in object.data.edit_bones if True in [x&y for (x, y) in zip(bone.layers, object.data.layers)]]
+
+            # bone
+            for bone in bones:
+
+              # search
+              if search == '' or re.search(search, bone.name, re.I):
+
+                # append
+                storage.batch.bones.append([bone.name, [1, bone]])
+
+            # process
+            process(context, storage.batch.bones)
+
+            # clear
+            storage.batch.bones.clear()
+
+        # display bones
+        else:
+
+          # mode
+          if object.mode == 'EDIT':
+
+            # search
+            if search == '' or re.search(search, context.active_bone, re.I):
+
+              # name
+              context.active_bone.name = name(context, context.active_bone.name) if option.suffixLast else name(context, context.active_bone.name) + option.suffix
+
+          # mode
+          elif object.mode == 'POSE':
+
+            # search
+            if search == '' or re.search(search, context.active_pose_bone, re.I):
+
+              # name
+              context.active_pose_bone.name = name(context, context.active_pose_bone.name) if option.suffixLast else name(context, context.active_pose_bone.name) + option.suffix
+
+        # bone constraints
+        if panel.boneConstraints:
+          if object.mode == 'POSE':
+
+            # display bones
+            if panel.displayBones:
+
+              # bone mode
+              if panel.boneMode == 'SELECTED':
+                for bone in context.selected_pose_bones[:]:
+                  for constraint in bone.constraints[:]:
+
+                    # search
+                    if search == '' or re.search(search, constraint.name):
+
+                      # append
+                      storage.batch.constraints.append([constraint.name, [1, constraint]])
+
+                  # process
+                  process(context, storage.batch.constraints)
+
+                  # clear
+                  storage.batch.constraints.clear()
+
+              # bone mode
+              else:
+                for bone in object.pose.bones[:]:
+                  if True in [x&y for (x, y) in zip(bone.bone.layers, object.data.layers)]:
+                    for constraint in bone.constraints[:]:
+
+                      # search
+                      if search == '' or re.search(search, constraint.name):
+
+                        # append
+                        storage.batch.constraints.append([constraint.name, [1, constraint]])
+
+                    # process
+                    process(context, storage.batch.constraints)
+
+                    # clear
+                    storage.batch.constraints.clear()
+
+            # display bones
+            else:
+              for constraint in context.active_pose_bone.constraints[:]:
+
+                # search
+                if search == '' or re.search(search, constraint.name):
+
+                  # append
+                  storage.batch.constraints.append([constraint.name, [1, constraint]])
+
+              # process
+              process(context, storage.batch.constraints)
+
+              # clear
+              storage.batch.constraints.clear()
+
+  # object data
+  if object.type != 'EMPTY':
+
+    # search
+    if search == '' or re.search(search, object.data.name, re.I):
+
+      # cameras
+      if object.data.rna_type.identifier == 'Camera':
+        storage.batch.cameras.append([object.data.name, [1, object.data]])
+
+      # meshes
+      if object.data.rna_type.identifier == 'Mesh':
+        storage.batch.meshes.append([object.data.name, [1, object.data]])
+
+      # curves
+      if object.data.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
+        storage.batch.curves.append([object.data.name, [1, object.data]])
+
+      # lamps
+      if hasattr(object.data.rna_type.base, 'identifier'):
+        if object.data.rna_type.base.identifier == 'Lamp':
+          storage.batch.lamps.append([object.data.name, [1, object.data]])
+
+      # lattices
+      if object.data.rna_type.identifier == 'Lattice':
+        storage.batch.lattices.append([object.data.name, [1, object.data]])
+
+      # metaballs
+      if object.data.rna_type.identifier == 'MetaBall':
+        storage.batch.metaballs.append([object.data.name, [1, object.data]])
+
+      # speakers
+      if object.data.rna_type.identifier == 'Speaker':
+        storage.batch.speakers.append([object.data.name, [1, object.data]])
+
+      # armatures
+      if object.data.rna_type.identifier == 'Armature':
+        storage.batch.armatures.append([object.data.name, [1, object.data]])
+
+  # vertex groups
+  if panel.vertexGroups:
+    if hasattr(object, 'vertex_groups'):
+      for group in object.vertex_groups[:]:
+
+        # search
+        if search == '' or re.search(search, group.name, re.I):
+
+          # sort
+          storage.batch.vertexGroups.append([group.name, [1, group]])
+
+      # process
+      process(context, storage.batch.vertexGroups)
+
+      # clear
+      storage.batch.vertexGroups.clear()
+
+  # shapekeys
+  if panel.shapekeys:
+    if hasattr(object.data, 'shape_keys'):
+      if hasattr(object.data.shape_keys, 'key_blocks'):
+        for key in object.data.shape_keys.key_blocks[:]:
+
+          # search
+          if search == '' or re.search(search, key.name, re.I):
+
+            # sort
+            storage.batch.shapekeys.append([key.name, [1, key]])
+
+        # process
+        process(context, storage.batch.shapekeys)
+
+        # clear
+        storage.batch.shapekeys.clear()
+
+  # uv maps
+  if panel.uvs:
+    if object.type in 'MESH':
+      for uv in object.data.uv_textures[:]:
+
+        # search
+        if search == '' or re.search(search, uv.name, re.I):
+
+          # append
+          storage.batch.uvs.append([uv.name, [1, uv]])
+
+      # process
+      process(context, storage.batch.uvs)
+
+      # clear
+      storage.batch.uvs.clear()
+
+  # vertex colors
+  if panel.vertexColors:
+    if object.type in 'MESH':
+      for vertexColor in object.data.vertex_colors[:]:
+
+        # search
+        if search == '' or re.search(search, vertexColor.name, re.I):
+
+          # append
+          storage.batch.vertexColors.append([vertexColor.name, [1, vertexColor]])
+
+      # process
+      process(context, storage.batch.vertexColors)
+
+      # clear
+      storage.batch.vertexColors.clear()
+
+  # materials
+  if panel.materials:
+    for slot in object.material_slots:
+      if slot.material != None:
+
+        # search
+        if search == '' or re.search(search, slot.material.name, re.I):
+
+          # append
+          storage.batch.materials.append([slot.material.name, [1, slot.material]])
+
+    # process
+    process(context, storage.batch.materials)
+
+    # clear
+    storage.batch.materials.clear()
+
+  # textures
+  if panel.textures:
+    for slot in object.material_slots:
+      if slot.material != None:
+        if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
+          for tslot in slot.material.texture_slots[:]:
+            if hasattr(tslot, 'texture'):
+              if tslot.texture != None:
+
+                # search
+                if search == '' or re.search(search, tslot.texture.name, re.I):
+
+                  # append
+                  storage.batch.textures.append([tslot.texture.name, [1, tslot.texture]])
+
+          # process
+          process(context, storage.batch.textures)
+
+          # clear
+          storage.batch.textures.clear()
+
+  # particleSystems
+  if panel.particleSystems:
+    for modifier in object.modifiers[:]:
+      if modifier.type in 'PARTICLE_SYSTEM':
+
+        # search
+        if search == '' or re.search(search, modifier.particle_system.name, re.I):
+
+          # append
+          storage.batch.particleSystems.append([modifier.particle_system.name, [1, modifier.particle_system]])
+
+        if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
+
+          # append
+          storage.batch.particleSettings.append([modifier.particle_system.settings.name, [1, modifier.particle_system.settings]])
+
+    # process
+    process(context, storage.batch.particleSystems)
+    process(context, storage.batch.particleSettings)
+
+    # clear
+    storage.batch.particleSystems.clear()
+    storage.batch.particleSettings.clear()
 
 # sort
 def sort(context, datablock):

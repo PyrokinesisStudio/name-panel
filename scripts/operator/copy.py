@@ -30,7 +30,7 @@ class name(Operator):
   bl_idname = 'view3d.batch_copy_name'
   bl_label = 'Batch Name Copy'
   bl_description = 'Copy names from some types of datablocks to others.'
-  bl_options = {'REGISTER', 'UNDO'}
+  bl_options = {'UNDO'}
 
   # poll
   @classmethod

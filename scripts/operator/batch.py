@@ -31,7 +31,7 @@ class name(Operator):
   bl_idname = 'wm.batch_name'
   bl_label = 'Batch Name'
   bl_description = 'Batch name datablocks.'
-  bl_options = {'REGISTER', 'UNDO'}
+  bl_options = {'UNDO'}
 
   # quick batch
   quickBatch = BoolProperty(

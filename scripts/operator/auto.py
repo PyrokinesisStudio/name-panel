@@ -30,7 +30,7 @@ class name(Operator):
   bl_idname = 'view3d.batch_auto_name'
   bl_label = 'Auto Name'
   bl_description = 'Automatically name datablocks based on type.'
-  bl_options = {'REGISTER', 'UNDO'}
+  bl_options = {'UNDO'}
 
   # poll
   @classmethod

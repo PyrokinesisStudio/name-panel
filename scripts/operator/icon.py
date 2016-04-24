@@ -33,7 +33,7 @@ class operator(Operator):
   bl_idname = 'view3d.name_panel_icon'
   bl_label = 'Name Panel Icon'
   bl_description = 'Changes active object.'
-  bl_options = {'REGISTER', 'UNDO'}
+  bl_options = {'UNDO'}
 
   # owner
   owner = StringProperty(

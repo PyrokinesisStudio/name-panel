@@ -95,8 +95,11 @@ def reset(context, panel, auto, names, name, copy):
     # particle systems
     namePanelOption.particleSystems = False
 
-    # selected bones
-    namePanelOption.selectedBones = False
+    # display bones
+    namePanelOption.displayBones = False
+
+    # bone mode
+    namePanelOption.boneMode = 'SELECTED'
 
   # auto
   if auto:
@@ -774,8 +777,11 @@ def transfer(context, panel, auto, names, name, copy):
         # particels systems
         scene.NamePanel.particleSystems = namePanelOption.particleSystems
 
-        # selected bones
-        scene.NamePanel.selectedBones = namePanelOption.selectedBones
+        # display bones
+        scene.NamePanel.displayBones = namePanelOption.displayBones
+
+        # bone mode
+        scene.NamePanel.boneMode = namePanelOption.boneMode
 
   # auto
   if auto:

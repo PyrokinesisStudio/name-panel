@@ -97,7 +97,7 @@ def main(self, context):
   else:
 
     # member
-    member = gather(context, {object.name: [] for object in context.scene.objects}) if option.search != '' else {}
+    member = gather(context, {object.name: [] for object in context.scene.objects if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]}) if option.search != '' else {}
 
   # pin active object
   if option.pinActiveObject:
@@ -541,8 +541,8 @@ def sort(context, member, object):
                 # member
                 member[object.name].append(constraint.name)
 
-        # selected bones
-        if option.selectedBones:
+        # display bones
+        if option.displayBones:
 
           # pose mode
           if object.mode in 'POSE':
@@ -1013,6 +1013,15 @@ class block:
         except:
           constraints = []
 
+        # display bones
+        if option.displayBones:
+
+          row = layout.row()
+
+          row.prop(option, 'boneMode', expand=True)
+
+          layout.separator()
+
         # search
         if search == '' or re.search(search, context.active_bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
@@ -1041,62 +1050,68 @@ class block:
                   # separator
                   row.separator()
 
-        # selected bones
-        if option.selectedBones:
+        # display bones
+        if option.displayBones:
 
           # pose mode
           if object.mode in 'POSE':
+
+            # bones
             bones = object.data.bones[:]
 
           # edit mode
           else:
+
+            # bones
             bones = object.data.edit_bones[:]
 
-          # selected bones
-          selectedBones = [
-            # [name, object]
-          ]
+          # selected
+          if option.boneMode == 'SELECTED':
 
-          for bone in bones:
+            # bones
+            bones = [[bone.name, bone] for bone in bones if bone.select]
 
-            if bone.select:
-              selectedBones.append([bone.name, bone])
+          # layers
+          else:
+
+            # bones
+            bones = [[bone.name, bone] for bone in bones if True in [x&y for (x, y) in zip(bone.layers, object.data.layers)]]
 
           # sort and display
-          for bone in sorted(selectedBones):
+          for bone in sorted(bones):
             if bone[1] != context.active_bone:
-              if bone[1]:
-                # constraints
-                try:
-                  constraints = [item.name for item in object.pose.bones[bone[1].name].constraints[:]]
-                except:
-                  constraints = []
 
-                # search
-                if search == '' or re.search(search, bone[1].name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
+              # constraints
+              try:
+                constraints = [item.name for item in object.pose.bones[bone[1].name].constraints[:]]
+              except:
+                constraints = []
 
-                  # bone
-                  Bone(self, context, layout, bone[1], object, option)
+              # search
+              if search == '' or re.search(search, bone[1].name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
-                  # bone constraints
-                  if option.boneConstraints:
-                    if object.mode in 'POSE':
-                      for constraint in object.pose.bones[bone[1].name].constraints[:]:
+                # bone
+                Bone(self, context, layout, bone[1], object, option)
 
-                        # search
-                        if search == '' or re.search(search, constraint.name, re.I):
+                # bone constraints
+                if option.boneConstraints:
+                  if object.mode in 'POSE':
+                    for constraint in object.pose.bones[bone[1].name].constraints[:]:
 
-                          # constraint
-                          Constraint(self, context, layout, constraint, object, bone[1], option)
+                      # search
+                      if search == '' or re.search(search, constraint.name, re.I):
 
-                      # constraints
-                      if constraints != []:
+                        # constraint
+                        Constraint(self, context, layout, constraint, object, bone[1], option)
 
-                        # row
-                        row = layout.row()
+                    # constraints
+                    if constraints != []:
 
-                        # separator
-                        row.separator()
+                      # row
+                      row = layout.row()
+
+                      # separator
+                      row.separator()
 
 # object
 def Object(self, context, layout, datablock, option):
@@ -1764,8 +1779,8 @@ def Bone(self, context, layout, datablock, object, option):
   # active
   if datablock == context.active_bone:
 
-    # selected bones
-    sub.prop(option, 'selectedBones', text='', icon='BONE_DATA')
+    # display bones
+    sub.prop(option, 'displayBones', text='', icon='BONE_DATA')
 
   # pose mode
   if object.mode in 'POSE':
@@ -1862,10 +1877,7 @@ def Bone(self, context, layout, datablock, object, option):
     row.separator()
 
   elif object.mode in 'POSE':
-
-    constraints = [item.name for item in bpy.data.objects[object.name].pose.bones[datablock.name].constraints]
-
-    if constraints == [] or not option.boneConstraints:
+    if not option.boneConstraints or bpy.data.objects[object.name].pose.bones[datablock.name].constraints[:] == []:
 
       # row
       row = layout.row()

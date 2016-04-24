@@ -33,7 +33,7 @@ class panel(PropertyGroup):
   pinActiveObject = BoolProperty(
     name = 'Pin Active Object',
     description = 'Keeps the active object at the top of the stack.',
-    default = False
+    default = True
   )
 
   # filters
@@ -53,19 +53,8 @@ class panel(PropertyGroup):
   # display names
   displayNames = BoolProperty(
     name = 'Display Names',
-    description = 'Display additional object names in the name panel.',
+    description = 'Display additional object names in the name stack.',
     default = False
-  )
-
-  # mode
-  mode = EnumProperty(
-    name = 'Mode',
-    description = 'Mode option for additional names displayed.',
-    items = [
-      ('SELECTED', 'Selected', 'Display selected objects.'),
-      ('LAYERS', 'Layers', 'Display objects in visible scene layers.')
-    ],
-    default = 'SELECTED'
   )
 
   # search
@@ -80,6 +69,17 @@ class panel(PropertyGroup):
     name = 'Regular Expressions',
     description = 'Enable regular expressions.',
     default = False
+  )
+
+  # mode
+  mode = EnumProperty(
+    name = 'Mode',
+    description = 'Mode option for additional object related names displayed.',
+    items = [
+      ('SELECTED', 'Selected', 'Display selected objects.'),
+      ('LAYERS', 'Layers', 'Display objects in active scene layers.')
+    ],
+    default = 'SELECTED'
   )
 
   # groups
@@ -180,10 +180,21 @@ class panel(PropertyGroup):
     default = False
   )
 
-  # selected bones
-  selectedBones = BoolProperty(
-    name = 'Selected',
-    description = 'Display selected bone names.',
+  # boneMode
+  boneMode = EnumProperty(
+    name = 'Bone Mode',
+    description = 'The display mode for bones.',
+    items = [
+      ('SELECTED', 'Selected', 'Display the selected bones.'),
+      ('LAYER', 'Layer', 'Display bones in active armature layers.',)
+    ],
+    default = 'SELECTED'
+  )
+
+  # display bones
+  displayBones = BoolProperty(
+    name = 'Display Bones',
+    description = 'Display additional bone names.',
     default = False
   )
 

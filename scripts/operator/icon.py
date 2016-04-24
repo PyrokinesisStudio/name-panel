@@ -53,7 +53,7 @@ class operator(Operator):
   extend = BoolProperty(
     name = 'Extend',
     description = 'Keep old selection.',
-    default = True
+    default = False
   )
 
   # view
@@ -114,10 +114,32 @@ class operator(Operator):
     layout.prop(self, 'view')
 
   # execute
-  def execute(self, context):
+  def invoke(self, context, event):
     '''
-      Execute the operator.
+      Invoke the operator.
     '''
+
+    # shift
+    if event.shift:
+
+      # extend
+      self.extend = True
+
+    # shift
+    else:
+
+      self.extend = False
+
+    # ctrl
+    if event.ctrl:
+
+      self.view = True
+
+    # ctrl
+    else:
+
+      self.view = False
+
     # object
     if self.type not in {'BONE', 'BONE_CONSTRAINT'}: # temporary
 

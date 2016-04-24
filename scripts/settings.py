@@ -39,7 +39,7 @@ class panel(PropertyGroup):
   # hide search
   hideSearch = BoolProperty(
     name = 'Hide Search',
-    description = 'Only display the search field in the name panel when the the filters option is toggled on.',
+    description = 'Only display the search field in the name panel when the filters option is toggled on.',
     default = True
   )
 

@@ -166,6 +166,43 @@ def main(context, quickBatch):
       # quick
       quick(context, context.active_object, panel, option)
 
+      # all
+      all = [
+        # object
+        storage.batch.objects,
+
+        # cameras
+        storage.batch.cameras,
+
+        # meshes
+        storage.batch.meshes,
+
+        # curves
+        storage.batch.curves,
+
+        # lamps
+        storage.batch.lamps,
+
+        # lattices
+        storage.batch.lattices,
+
+        # metaballs
+        storage.batch.metaballs,
+
+        # speakers
+        storage.batch.speakers,
+
+        # armatures
+        storage.batch.armatures,
+        ]
+      for collection in all:
+
+        # process
+        process(context, collection)
+
+        # clear
+        collection.clear()
+
 
   # quick batch
   else:

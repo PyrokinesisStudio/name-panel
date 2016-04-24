@@ -186,7 +186,7 @@ class panel(PropertyGroup):
     description = 'The display mode for bones.',
     items = [
       ('SELECTED', 'Selected', 'Display the selected bones.'),
-      ('LAYER', 'Layer', 'Display bones in active armature layers.',)
+      ('LAYERS', 'Layers', 'Display bones in active armature layers.',)
     ],
     default = 'SELECTED'
   )

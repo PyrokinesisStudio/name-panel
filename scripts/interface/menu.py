@@ -61,6 +61,9 @@ class specials(Menu):
     # pin active object
     layout.prop(option, 'pinActiveObject')
 
+    # hide search
+    layout.prop(option, 'hideSearch')
+
     # serparator
     # layout.separator()
 

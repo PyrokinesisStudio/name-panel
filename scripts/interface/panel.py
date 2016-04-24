@@ -280,14 +280,29 @@ def filters(self, context, layout, option):
     # separator
     layout.separator()
 
-  # row
-  row = layout.row(align=True)
+    # hide search
+    if option.hideSearch:
 
-  # search
-  row.prop(option, 'search', text='', icon='VIEWZOOM')
-  row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
-  row.prop(option, 'regex', text='', icon='SCRIPTPLUGINS')
-  row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
+      # row
+      row = layout.row(align=True)
+
+      # search
+      row.prop(option, 'search', text='', icon='VIEWZOOM')
+      row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
+      row.prop(option, 'regex', text='', icon='SCRIPTPLUGINS')
+      row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
+
+  # hide search
+  if not option.hideSearch:
+
+    # row
+    row = layout.row(align=True)
+
+    # search
+    row.prop(option, 'search', text='', icon='VIEWZOOM')
+    row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
+    row.prop(option, 'regex', text='', icon='SCRIPTPLUGINS')
+    row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
 
   # enabled
   if option.displayNames:

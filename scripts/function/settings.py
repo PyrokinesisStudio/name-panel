@@ -35,6 +35,9 @@ def reset(context, panel, auto, names, name, copy):
     # pin active object
     namePanelOption.pinActiveObject = False
 
+    # hide search
+    namePanelOption.hideSearch = True
+
     # filters
     namePanelOption.filters = False
 
@@ -716,6 +719,9 @@ def transfer(context, panel, auto, names, name, copy):
 
         # pin active object
         scene.NamePanel.pinActiveObject = namePanelOption.pinActiveObject
+
+        # hide search
+        scene.NamePanel.hideSearch = namePanelOption.hideSearch
 
         # filters
         scene.NamePanel.filters = namePanelOption.filters

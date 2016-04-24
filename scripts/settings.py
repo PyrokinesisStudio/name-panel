@@ -36,6 +36,13 @@ class panel(PropertyGroup):
     default = True
   )
 
+  # hide search
+  hideSearch = BoolProperty(
+    name = 'Hide Search',
+    description = 'Only display the search field in the name panel when the the filters option is toggled on.',
+    default = True
+  )
+
   # filters
   filters = BoolProperty(
     name = 'Filters',
@@ -180,7 +187,7 @@ class panel(PropertyGroup):
     default = False
   )
 
-  # boneMode
+  # bone mode
   boneMode = EnumProperty(
     name = 'Bone Mode',
     description = 'The display mode for bones.',

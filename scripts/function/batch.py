@@ -3364,37 +3364,19 @@ def quick(context, object, panel, option):
                 # name
                 context.active_pose_bone.name = name(context, context.active_pose_bone.name) if option.suffixLast else name(context, context.active_pose_bone.name) + option.suffix
 
-  # bone constraints
-  if panel.boneConstraints:
+    # bone constraints
+    if panel.boneConstraints:
 
-    # ignore constraint
-    if not option.ignoreConstraint:
-      if object.mode == 'POSE':
+      # ignore bone constraint
+      if not option.ignoreBoneConstraint:
+        if object.mode == 'POSE':
 
-        # display bones
-        if panel.displayBones:
+          # display bones
+          if panel.displayBones:
 
-          # bone mode
-          if panel.boneMode == 'SELECTED':
-            for bone in context.selected_pose_bones[:]:
-              for constraint in bone.constraints[:]:
-
-                # search
-                if search == '' or re.search(search, constraint.name, re.I):
-
-                  # append
-                  storage.batch.constraints.append([constraint.name, [1, constraint]])
-
-              # process
-              process(context, storage.batch.constraints)
-
-              # clear
-              storage.batch.constraints.clear()
-
-          # bone mode
-          else:
-            for bone in object.pose.bones[:]:
-              if True in [x&y for (x, y) in zip(bone.bone.layers, object.data.layers)]:
+            # bone mode
+            if panel.boneMode == 'SELECTED':
+              for bone in context.selected_pose_bones[:]:
                 for constraint in bone.constraints[:]:
 
                   # search
@@ -3409,21 +3391,39 @@ def quick(context, object, panel, option):
                 # clear
                 storage.batch.constraints.clear()
 
-        # display bones
-        else:
-          for constraint in context.active_pose_bone.constraints[:]:
+            # bone mode
+            else:
+              for bone in object.pose.bones[:]:
+                if True in [x&y for (x, y) in zip(bone.bone.layers, object.data.layers)]:
+                  for constraint in bone.constraints[:]:
 
-            # search
-            if search == '' or re.search(search, constraint.name, re.I):
+                    # search
+                    if search == '' or re.search(search, constraint.name, re.I):
 
-              # append
-              storage.batch.constraints.append([constraint.name, [1, constraint]])
+                      # append
+                      storage.batch.constraints.append([constraint.name, [1, constraint]])
 
-          # process
-          process(context, storage.batch.constraints)
+                  # process
+                  process(context, storage.batch.constraints)
 
-          # clear
-          storage.batch.constraints.clear()
+                  # clear
+                  storage.batch.constraints.clear()
+
+          # display bones
+          else:
+            for constraint in context.active_pose_bone.constraints[:]:
+
+              # search
+              if search == '' or re.search(search, constraint.name, re.I):
+
+                # append
+                storage.batch.constraints.append([constraint.name, [1, constraint]])
+
+            # process
+            process(context, storage.batch.constraints)
+
+            # clear
+            storage.batch.constraints.clear()
 
   # object data
   if object.type != 'EMPTY':

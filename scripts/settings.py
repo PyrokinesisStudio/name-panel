@@ -1357,6 +1357,132 @@ class batch:
       default = False
     )
 
+    # ignore action
+    ignoreAction = BoolProperty(
+      name = 'Ignore Action',
+      description = 'Ignore action names.',
+      default = False
+    )
+
+    # ignore grease pencil
+    ignoreGreasePencil = BoolProperty(
+      name = 'Ignore Grease Pencil',
+      description = 'Ignore grease pencil names.',
+      default = False
+    )
+
+    # ignore object
+    ignoreObject = BoolProperty(
+      name = 'Ignore Object',
+      description = 'Ignore object names.',
+      default = False
+    )
+
+    # ignore group
+    ignoreGroup  = BoolProperty(
+      name = 'Ignore Oject Group',
+      description = 'Ignore object group names.',
+      default = False
+    )
+
+    # ignore constraint
+    ignoreConstraint = BoolProperty(
+      name = 'Ignore Constraint',
+      description = 'Ignore constraint names.',
+      default = False
+    )
+
+    # ignore modifier
+    ignoreModifier = BoolProperty(
+      name = 'Ignore Modifier',
+      description = 'Ignore modifier names.',
+      default = False
+    )
+
+    # ignore bone
+    ignoreBone = BoolProperty(
+      name = 'Ignore Bone',
+      description = 'Ignore bone names.',
+      default = False
+    )
+
+    # ignore bone group
+    ignoreBoneGroup  = BoolProperty(
+      name = 'Ignore Bone Group',
+      description = 'Ignore bone group names.',
+      default = False
+    )
+
+    # ignore bone constraint
+    ignoreBoneConstraint = BoolProperty(
+      name = 'Ignore Bone Constraint',
+      description = 'Ignore bone constraint names.',
+      default = False
+    )
+
+    # ignore object data
+    ignoreObjectData = BoolProperty(
+      name = 'Ignore Object Data',
+      description = 'Ignore object data names.',
+      default = False
+    )
+
+    # ignore vertex group
+    ignoreVertexGroup = BoolProperty(
+      name = 'Ignore Vertex Group',
+      description = 'Ignore vertex group names.',
+      default = False
+    )
+
+    # ignore shapekey
+    ignoreShapekey = BoolProperty(
+      name = 'Ignore Shapekey',
+      description = 'Ignore shapekey names.',
+      default = False
+    )
+
+    # ignore uv
+    ignoreUV = BoolProperty(
+      name = 'Ignore UV',
+      description = 'Ignore uv names.',
+      default = False
+    )
+
+    # ignore vertex color
+    ignoreVertexColor = BoolProperty(
+      name = 'Ignore Vertex Color',
+      description = 'Ignore vertex color names.',
+      default = False
+    )
+
+    # ignore material
+    ignoreMaterial = BoolProperty(
+      name = 'Ignore Material',
+      description = 'Ignore material names.',
+      default = False
+    )
+
+    # ignore texture
+    ignoreTexture = BoolProperty(
+      name = 'Ignore Texture',
+      description = 'Ignore texture names.',
+      default = False
+    )
+
+    # ignore particle system
+    ignoreParticleSystem = BoolProperty(
+      name = 'Ignore Particle System',
+      description = 'Ignore particle system names.',
+      default = False
+    )
+
+    # ignore particle setting
+    ignoreParticleSetting = BoolProperty(
+      name = 'Ignore Particle Setting',
+      description = 'Ignore particle setting names.',
+      default = False
+    )
+
     # custom name
     customName = StringProperty(
       name = 'Custom Name',

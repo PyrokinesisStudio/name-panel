@@ -169,6 +169,45 @@ class name(Operator):
       column.separator()
       column.separator()
 
+    # quick batch
+    else:
+
+      # label
+      column.label(text='Ignore:')
+
+      # column
+      column = layout.column(align=True)
+
+      split = column.split(align=True)
+
+      split.prop(option, 'ignoreObject', text='', icon='OBJECT_DATA')
+      split.prop(option, 'ignoreAction', text='', icon='ACTION')
+      split.prop(option, 'ignoreGreasePencil', text='', icon='GREASEPENCIL')
+      split.prop(option, 'ignoreGroup', text='', icon='GROUP')
+      split.prop(option, 'ignoreConstraint', text='', icon='CONSTRAINT')
+      split.prop(option, 'ignoreModifier', text='', icon='MODIFIER')
+      split.prop(option, 'ignoreBone', text='', icon='BONE_DATA')
+      split.prop(option, 'ignoreBoneGroup', text='', icon='GROUP_BONE')
+      split.prop(option, 'ignoreBoneConstraint', text='', icon='CONSTRAINT_BONE')
+
+      split = column.split(align=True)
+      split.prop(option, 'ignoreObjectData', text='', icon='MESH_DATA')
+      split.prop(option, 'ignoreVertexGroup', text='', icon='GROUP_VERTEX')
+      split.prop(option, 'ignoreShapekey', text='', icon='SHAPEKEY_DATA')
+      split.prop(option, 'ignoreUV', text='', icon='GROUP_UVS')
+      split.prop(option, 'ignoreVertexColor', text='', icon='GROUP_VCOL')
+      split.prop(option, 'ignoreMaterial', text='', icon='MATERIAL')
+      split.prop(option, 'ignoreTexture', text='', icon='TEXTURE')
+      split.prop(option, 'ignoreParticleSystem', text='', icon='PARTICLES')
+      split.prop(option, 'ignoreParticleSetting', text='', icon='MOD_PARTICLES')
+
+
+      # input fields
+      column.separator()
+      column.separator()
+      column.separator()
+      column.separator()
+
     # custom name
     column = layout.column(align=True)
     column.prop(option, 'customName')

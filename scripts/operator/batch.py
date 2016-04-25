@@ -82,8 +82,8 @@ class name(Operator):
       row.prop(option, 'constraints', text='', icon='CONSTRAINT')
       row.prop(option, 'modifiers', text='', icon='MODIFIER')
       row.prop(option, 'objectData', text='', icon='MESH_DATA')
-      row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
       row.prop(option, 'bones', text='', icon='BONE_DATA')
+      row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
       row.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
 
       # row 2

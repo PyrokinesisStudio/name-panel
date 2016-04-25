@@ -244,11 +244,11 @@ def filters(self, context, layout, option):
     # modifiers
     row.prop(option, 'modifiers', text='', icon='MODIFIER')
 
-    # bone constraints
-    row.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
-
     # bone groups
     row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
+
+    # bone constraints
+    row.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
 
     # row
     row = layout.row(align=True)
@@ -615,11 +615,11 @@ def populate(self, context, layout, object, option):
   # object
   Object(self, context, column, object, option)
 
-  # group
-  block.object.group(self, context, column, object, option)
-
   # action
   block.object.action(self, context, column, object, option)
+
+  # group
+  block.object.group(self, context, column, object, option)
 
   # grease pencil
   block.object.greasePencil(self, context, column, object, option)

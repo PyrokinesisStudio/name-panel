@@ -23,6 +23,9 @@ from bpy.props import BoolProperty
 from bpy.types import Operator
 from ..function import batch
 
+# addon
+addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
+
 # name
 class name(Operator):
   '''
@@ -74,7 +77,7 @@ class name(Operator):
 
       # row 1
       row = column.row(align=True)
-      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.scale_x = 5
       row.prop(option, 'actions', text='', icon='ACTION')
       row.prop(option, 'greasePencil', text='', icon='GREASEPENCIL')
       row.prop(option, 'objects', text='', icon='OBJECT_DATA')
@@ -88,7 +91,7 @@ class name(Operator):
 
       # row 2
       row = column.row(align=True)
-      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.scale_x = 5
       row.prop(option, 'actionGroups', text='', icon='NLA')
       row.prop(option, 'pencilLayers', text='', icon='OOPS')
       row.prop(option, 'vertexGroups', text='', icon='GROUP_VERTEX')
@@ -140,7 +143,7 @@ class name(Operator):
 
       # row 1
       row = column.row(align=True)
-      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.scale_x = 5
       row.prop(option, 'scenes', text='', icon='SCENE_DATA')
       row.prop(option, 'renderLayers', text='', icon='RENDERLAYERS')
       row.prop(option, 'worlds', text='', icon='WORLD')
@@ -153,7 +156,7 @@ class name(Operator):
 
       # row 2
       row = column.row(align=True)
-      row.scale_x = 5 # hack: forces buttons to line up correctly
+      row.scale_x = 5
       row.prop(option, 'screens', text='', icon='SPLITSCREEN')
       row.prop(option, 'keyingSets', text='', icon='KEYINGSET')
       row.prop(option, 'palettes', text='', icon='COLOR')
@@ -286,5 +289,14 @@ class name(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    context.window_manager.invoke_props_dialog(self, width=300)
+    try:
+
+      # size
+      size = 300 if addon.preferences['largePopups'] == 0 else 450
+    except:
+
+      # size
+      size = 300
+
+    context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

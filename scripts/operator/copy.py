@@ -22,6 +22,9 @@ import bpy
 from bpy.types import Operator
 from ..function import copy
 
+# addon
+addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
+
 # name
 class name(Operator):
   '''
@@ -94,5 +97,15 @@ class name(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    context.window_manager.invoke_props_dialog(self, width=180)
+    try:
+
+      # size
+      size = 180 if addon.preferences['largePopups'] == 0 else 270
+
+    except:
+
+      # size
+      size = 180
+
+    context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

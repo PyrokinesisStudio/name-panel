@@ -63,15 +63,3 @@ class specials(Menu):
 
     # hide search
     layout.prop(option, 'hideSearch')
-
-    # serparator
-    # layout.separator()
-
-    # object names
-    # layout.operator('view3d.auto_name_object_names', icon='OBJECT_DATA')
-
-    # constraint names
-    # layout.operator('view3d.auto_name_constraint_names', icon='CONSTRAINT')
-
-    # modifier names
-    # layout.operator('view3d.auto_name_modifier_names', icon='MODIFIER')

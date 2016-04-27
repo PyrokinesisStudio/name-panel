@@ -33,6 +33,7 @@ bl_info = {
   'blender': (2, 77, 0),
   'location': '3D View → Tool or Property Shelf → Name',
   'description': 'In panel datablock name stack with batch name tools.',
+  # doc
   'tracker_url': 'https://github.com/trentinfrederick/name-panel/issues',
   'category': '3D View'
 }
@@ -62,10 +63,17 @@ class preferences(AddonPreferences):
     default = False
   )
 
+  # large popups
+  largePopups = BoolProperty(
+    name = 'Large Pop-ups',
+    description = 'Increase the size of pop-ups.',
+    default = False
+  )
+
   # location
   location = EnumProperty(
     name = 'Panel Location',
-    description = 'The 3D view shelf to use. (Save user settings and restart Blender)',
+    description = 'The 3D view shelf to use.',
     items = [
       ('TOOLS', 'Tool Shelf', 'Places the Name panel in the tool shelf under the tab labeled \'Name\''),
       ('UI', 'Property Shelf', 'Places the Name panel in the property shelf.')
@@ -73,13 +81,20 @@ class preferences(AddonPreferences):
     default = 'TOOLS'
   )
 
+  # draw
   def draw(self, context):
 
     # layout
     layout = self.layout
 
+    # row
+    row = layout.row()
+
     # pop ups
-    layout.prop(self, 'popups')
+    row.prop(self, 'popups')
+
+    # pop ups
+    row.prop(self, 'largePopups')
 
     # label
     layout.label(text='Location:')
@@ -112,20 +127,6 @@ def register():
   # register module
   bpy.utils.register_module(__name__)
 
-  # shelf position
-  # addon
-  if addon:
-    try:
-      if addon.preferences['location'] == 0:
-        bpy.utils.unregister_class(panel.UIName)
-      else:
-        bpy.utils.unregister_class(panel.toolsName)
-    except:
-      bpy.utils.unregister_class(panel.UIName)
-  else:
-    bpy.utils.unregister_class(panel.UIName)
-
-  # pointer properties
   # batch auto name settings
   bpy.types.Scene.BatchAutoName = PointerProperty(
     type = PropertyGroup.batch.auto.name,
@@ -191,10 +192,10 @@ def unregister():
     Unregister.
   '''
 
-  # register module
+  # unregister module
   bpy.utils.unregister_module(__name__)
 
-  # pointer properties
+  # delete pointer properties
   del bpy.types.Scene.BatchAutoName
   del bpy.types.Scene.BatchAutoName_ObjectNames
   del bpy.types.Scene.BatchAutoName_ConstraintNames

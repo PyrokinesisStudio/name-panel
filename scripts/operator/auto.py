@@ -22,6 +22,9 @@ import bpy
 from bpy.types import Operator
 from ..function import auto
 
+# addon
+addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
+
 # name
 class name(Operator):
   '''
@@ -96,7 +99,17 @@ class name(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    context.window_manager.invoke_props_dialog(self, width=300)
+    try:
+
+      # size
+      size = 300 if addon.preferences['largePopups'] == 0 else 450
+
+    except:
+
+      # size
+      size = 300
+
+    context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}
 
 # objects
@@ -210,7 +223,17 @@ class objects(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    context.window_manager.invoke_props_dialog(self, width=150)
+    try:
+
+      # size
+      size = 150 if addon.preferences['largePopups'] == 0 else 225
+
+    except:
+
+      # size
+      size = 150
+
+    context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}
 
 # constraints
@@ -410,7 +433,17 @@ class constraints(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    context.window_manager.invoke_props_dialog(self, width=600)
+    try:
+
+      # size
+      size = 600 if addon.preferences['largePopups'] == 0 else 900
+
+    except:
+
+      # size
+      size = 600
+
+    context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}
 
 # modifiers
@@ -720,7 +753,17 @@ class modifiers(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    context.window_manager.invoke_props_dialog(self, width=600)
+    try:
+
+      # size
+      size = 600 if addon.preferences['largePopups'] == 0 else 900
+
+    except:
+
+      # size
+      size = 600
+
+    context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}
 
 # objects
@@ -828,5 +871,15 @@ class objectData(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    context.window_manager.invoke_props_dialog(self, width=150)
+    try:
+
+      # size
+      size = 150 if addon.preferences['largePopups'] == 0 else 225
+
+    except:
+
+      # size
+      size = 225
+
+    context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

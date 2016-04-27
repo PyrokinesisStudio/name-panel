@@ -3573,6 +3573,8 @@ def quick(context, object, panel, option):
 
     # ignore texture
     if not option.ignoreTexture:
+
+      # material textures
       for slot in object.material_slots:
         if slot.material != None:
           if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
@@ -3591,6 +3593,56 @@ def quick(context, object, panel, option):
 
             # clear
             storage.batch.textures.clear()
+
+      # particle system textures
+      if panel.particleSystems:
+        for modifier in object.modifiers[:]:
+          if modifier.type == 'PARTICLE_SYSTEM':
+            for slot in modifier.particle_system.settings.texture_slots[:]:
+              if hasattr(slot, 'texture'):
+                if slot.texture != None:
+
+                  # search
+                  if search == '' or re.search(search, slot.texture.name, re.I):
+
+                    # append
+                    storage.batch.textures.append([slot.texture.name, [1, slot.texture]])
+
+            # process
+            process(context, storage.batch.textures)
+
+            # clear
+            storage.batch.textures.clear()
+
+      # modifier textures
+      if panel.modifiers:
+        for modifier in object.modifiers[:]:
+
+          # texture
+          if modifier.type in {'DISPLACE', 'WARP'}:
+            if modifier.texture:
+
+              # search
+              if search == '' or re.search(search, modifier.texture.name, re.I):
+
+                # append
+                storage.batch.textures.append([modifier.texture.name, [1, modifier.texture]])
+
+          # mask texture
+          elif modifier.type in {'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_PROXIMITY'}:
+            if modifier.mask_texture:
+
+              # search
+              if search == '' or re.search(search, modifier.mask_texture.name, re.I):
+
+                # append
+                storage.batch.textures.append([modifier.mask_texture.name, [1, modifier.mask_texture]])
+
+        # process
+        process(context, storage.batch.textures)
+
+        # clear
+        storage.batch.textures.clear()
 
   # particle systems
   if panel.particleSystems:

@@ -38,6 +38,14 @@ class toolsName(Panel):
   bl_options = {'HIDE_HEADER'}
   bl_category = 'Name'
 
+  # poll
+  @classmethod
+  def poll(self, cls):
+    try:
+      return True if addon.preferences['location'] == 0 else False
+    except:
+      return True
+
   # draw
   def draw(self, context):
     '''
@@ -56,6 +64,14 @@ class UIName(Panel):
   bl_space_type = 'VIEW_3D'
   bl_label = 'Name'
   bl_region_type = 'UI'
+
+  # poll
+  @classmethod
+  def poll(self, cls):
+    try:
+      return True if addon.preferences['location'] == 1 else False
+    except:
+      return False
 
   # draw
   def draw(self, context):
@@ -411,11 +427,34 @@ def sort(context, member, object):
   if option.modifiers:
     for modifier in object.modifiers[:]:
 
-      # particle
-      particle = [modifier.particle_system.name, modifier.particle_system.settings.name] if modifier.type == 'PARTICLE_SYSTEM' else []
+      if modifier.type == 'PARTICLE_SYSTEM':
+        # particle
+        particle = [modifier.particle_system.name, modifier.particle_system.settings.name]
+
+        # texture
+        texture = [slot.texture.name for slot in modifier.particle_system.settings.texture_slots[:] if slot != None]
+
+      elif modifier.type in {'DISPLACE', 'WARP'}:
+        if modifier.texture:
+
+          # texture
+          texture = [modifier.texture.name]
+
+      elif modifier.type in {'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_PROXIMITY'}:
+        if modifier.mask_texture:
+
+          # texture
+          texture = [modifier.mask_texture.name]
+
+      else:
+
+        particle = []
+
+        # texture:
+        texture = []
 
       # search
-      if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle if re.search(search, item, re.I) != None]:
+      if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle if re.search(search, item, re.I) != None] or [re.search(search, item, re.I) for item in texture if re.search(search, item, re.I) != None]:
 
         # member
         member[object.name].append(modifier.name)
@@ -425,16 +464,25 @@ def sort(context, member, object):
           if modifier.type in 'PARTICLE_SYSTEM':
 
             # search
-            if search == '' or re.search(search, particle[0], re.I) or re.search(search, particle[1], re.I):
+            if search == '' or re.search(search, particle[0], re.I) or re.search(search, particle[1], re.I) or [re.search(search, item, re.I) for item in texture if re.search(search, item, re.I) != None]:
 
               # member
               member[object.name].append(modifier.particle_system.name)
 
               # search
-              if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
+              if search == '' or re.search(search, modifier.particle_system.settings.name, re.I) or [re.search(search, item, re.I) for item in texture if re.search(search, item, re.I) != None]:
 
                 # member
                 member[object.name].append(modifier.particle_system.settings.name)
+
+                for slot in modifier.particle_system.settings.texture_slots[:]:
+                  if slot != None:
+
+                    # search
+                    if search == '' or re.search(search, slot.texture.name, re.I):
+
+                      # member
+                      member[object.name].append(slot.texture.name)
 
   # materials
   if option.materials:
@@ -795,23 +843,82 @@ class block:
         for modifier in object.modifiers[:]:
 
           # particle
-          particle = [modifier.particle_system.name, modifier.particle_system.settings.name] if modifier.type == 'PARTICLE_SYSTEM' else []
+          particle = []
+
+          # texture:
+          texture = []
+
+          if modifier.type == 'PARTICLE_SYSTEM':
+            # particle
+            particle = [modifier.particle_system.name, modifier.particle_system.settings.name]
+
+            # texture
+            texture = [slot.texture.name for slot in modifier.particle_system.settings.texture_slots[:] if slot != None]
+
+          if modifier.type in {'DISPLACE', 'WARP'}:
+            if modifier.texture:
+
+              # texture
+              texture = [modifier.texture.name]
+
+          if modifier.type in {'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_PROXIMITY'}:
+            if modifier.mask_texture:
+
+              # texture
+              texture = [modifier.mask_texture.name]
+
+          # member
+          member = particle + texture
 
           # search
-          if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in particle if re.search(search, item, re.I) != None]:
+          if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in member if re.search(search, item, re.I) != None]:
 
             # modifier
             Modifier(self, context, layout, modifier, object, option)
+
+            # texture
+            if option.textures:
+              if modifier.type in {'DISPLACE', 'WARP'}:
+                if modifier.texture:
+
+                  # search
+                  if search == '' or re.search(search, modifier.texture.name, re.I):
+
+                    # texture
+                    Texture(self, context, layout, modifier, object, option)
+
+              # mask texture
+              elif modifier.type in {'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_PROXIMITY'}:
+                if modifier.mask_texture:
+
+                  # search
+                  if search == '' or re.search(search, modifier.mask_texture.name, re.I):
+
+                    # mask texture
+                    MaskTexture(self, context, layout, modifier, object, option)
 
             # particle systems
             if option.particleSystems:
               if modifier.type in 'PARTICLE_SYSTEM':
 
                 # search
-                if search == '' or re.search(search, particle[0], re.I) or re.search(search, particle[1], re.I):
+                if search == '' or re.search(search, particle[0], re.I) or re.search(search, particle[1], re.I) or [re.search(search, item, re.I) for item in texture if re.search(search, item, re.I) != None]:
 
                   # particle
                   Particle(self, context, layout, modifier, object, option)
+
+                  # texture
+                  if option.textures:
+                    # if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
+                    for slot in modifier.particle_system.settings.texture_slots[:]:
+                      if hasattr(slot, 'texture'):
+                        if slot.texture:
+
+                          # search
+                          if search == '' or re.search(search, slot.texture.name, re.I):
+
+                            # texture
+                            Texture(self, context, layout, slot, object, option)
 
       else:
         context.scene['NamePanel']['particleSystems'] = 0
@@ -852,10 +959,6 @@ class block:
 
                             # texture
                             Texture(self, context, layout, tslot, object, option)
-
-      else:
-        context.scene['NamePanel']['textures'] = 0
-
 
   # object data
   class objectData:
@@ -1131,7 +1234,7 @@ class block:
 # object
 def Object(self, context, layout, datablock, option):
   '''
-    The object.
+    The object name row.
   '''
   # search
   search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
@@ -1183,7 +1286,7 @@ def Object(self, context, layout, datablock, option):
 # group
 def Group(self, context, layout, datablock, object):
   '''
-    The object group.
+    The object group name row.
   '''
 
   # row
@@ -1210,7 +1313,7 @@ def Group(self, context, layout, datablock, object):
 # action
 def Action(self, context, layout, datablock, object):
   '''
-    The object action.
+    The object action name row.
   '''
 
   # row
@@ -1234,7 +1337,7 @@ def Action(self, context, layout, datablock, object):
 # grease pencil
 def GreasePencil(self, context, layout, datablock, object, option):
   '''
-    The object grease pencil.
+    The object grease pencil name row.
   '''
 
   # search
@@ -1262,7 +1365,7 @@ def GreasePencil(self, context, layout, datablock, object, option):
 # pencil layer
 def PencilLayer(self, context, layout, datablock, object, option):
   '''
-    The object pencil layer.
+    The object pencil layer name row.
   '''
 
   # row
@@ -1295,7 +1398,7 @@ def PencilLayer(self, context, layout, datablock, object, option):
 # constraint
 def Constraint(self, context, layout, datablock, object, bone, option):
   '''
-    The object or pose bone constraint.
+    The object or pose bone constraint name row.
   '''
 
   # row
@@ -1372,7 +1475,7 @@ def Constraint(self, context, layout, datablock, object, bone, option):
 # modifier
 def Modifier(self, context, layout, datablock, object, option):
   '''
-    The object modifier.
+    The object modifier name row.
   '''
 
   # search
@@ -1443,7 +1546,7 @@ def Modifier(self, context, layout, datablock, object, option):
 # object data
 def ObjectData(self, context, layout, datablock, option):
   '''
-    The object data.
+    The object data name row.
   '''
 
   # search
@@ -1488,7 +1591,7 @@ def ObjectData(self, context, layout, datablock, option):
 # vertex group
 def VertexGroup(self, context, layout, datablock, object, option):
   '''
-    The object data vertex group.
+    The object data vertex group name row.
   '''
 
   # row
@@ -1524,7 +1627,7 @@ def VertexGroup(self, context, layout, datablock, object, option):
 # shapekey
 def Shapekey(self, context, layout, datablock, object, option):
   '''
-    The object animation data data shapekey.
+    The object animation data data shapekey name row.
   '''
 
   # row
@@ -1564,7 +1667,7 @@ def Shapekey(self, context, layout, datablock, object, option):
 # uv
 def UV(self, context, layout, datablock, object, option):
   '''
-    The object data uv.
+    The object data uv name row.
   '''
 
   # row
@@ -1600,7 +1703,7 @@ def UV(self, context, layout, datablock, object, option):
 # vertex color
 def VertexColor(self, context, layout, datablock, object, option):
   '''
-    The object data vertex color.
+    The object data vertex color name row.
   '''
 
   # row
@@ -1636,7 +1739,7 @@ def VertexColor(self, context, layout, datablock, object, option):
 # material
 def Material(self, context, layout, datablock, object, option):
   '''
-    The object material.
+    The object material name row.
   '''
 
   # search
@@ -1664,7 +1767,7 @@ def Material(self, context, layout, datablock, object, option):
 # texture
 def Texture(self, context, layout, datablock, object, option):
   '''
-    The object material texture.
+    The texture name row.
   '''
 
   # row
@@ -1687,20 +1790,58 @@ def Texture(self, context, layout, datablock, object, option):
 
   # options
   if option.options:
+    if hasattr(datablock, 'use'):
 
-    # icon toggle
-    if datablock.use:
-      iconToggle = 'RADIOBUT_ON'
-    else:
-      iconToggle = 'RADIOBUT_OFF'
+      # icon toggle
+      if datablock.use:
+        iconToggle = 'RADIOBUT_ON'
+      else:
+        iconToggle = 'RADIOBUT_OFF'
 
-    # use
-    row.prop(datablock, 'use', text='', icon=iconToggle)
+      # use
+      row.prop(datablock, 'use', text='', icon=iconToggle)
+
+# mask texture
+def MaskTexture(self, context, layout, datablock, object, option):
+  '''
+    The mask texture name row.
+  '''
+
+  # row
+  row = layout.row(align=True)
+
+  # sub
+  sub = row.row()
+
+  # scale
+  sub.scale_x = 1.6
+
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='TEXTURE', emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.type = 'TEXTURE'
+
+  # name
+  row.prop(datablock.mask_texture, 'name', text='')
+
+  # options
+  if option.options:
+    if hasattr(datablock, 'use'):
+
+      # icon toggle
+      if datablock.use:
+        iconToggle = 'RADIOBUT_ON'
+      else:
+        iconToggle = 'RADIOBUT_OFF'
+
+      # use
+      row.prop(datablock, 'use', text='', icon=iconToggle)
 
 # particle
 def Particle(self, context, layout, datablock, object, option):
   '''
-    The modifier particle system and settings.
+    The modifier particle system and setting name row.
   '''
 
   # search
@@ -1749,7 +1890,7 @@ def Particle(self, context, layout, datablock, object, option):
 # bone group
 def BoneGroup(self, context, layout, datablock, object):
   '''
-    The object data bone group.
+    The armature data bone group name row.
   '''
 
   # row

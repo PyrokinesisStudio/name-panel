@@ -25,6 +25,9 @@ from bpy.props import BoolProperty, StringProperty, EnumProperty
 from ..interface.popup.constraints import ConstraintButtons
 from ..interface.popup.modifiers import ModifierButtons
 
+# addon
+addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
+
 # operator
 class operator(Operator):
   '''
@@ -498,7 +501,17 @@ class constraint(ConstraintButtons, Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    context.window_manager.invoke_popup(self, width=350)
+    try:
+
+      # size
+      size = 350 if addon.preferences['largePopups'] == 0 else 525
+
+    except:
+
+      # size
+      size = 350
+
+    context.window_manager.invoke_popup(self, width=size)
     return {'RUNNING_MODAL'}
 
 # pop up modifier
@@ -570,5 +583,15 @@ class modifier(ModifierButtons, Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    context.window_manager.invoke_popup(self, width=350)
+    try:
+
+      # size
+      size = 350 if addon.preferences['largePopups'] == 0 else 525
+
+    except:
+
+      # size
+      size = 350
+
+    context.window_manager.invoke_popup(self, width=size)
     return {'RUNNING_MODAL'}

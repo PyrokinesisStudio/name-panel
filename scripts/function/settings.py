@@ -143,6 +143,9 @@ def reset(context, panel, auto, names, name, copy):
     # object name
     objectName = context.scene.BatchAutoName_ObjectNames
 
+    # prefix
+    objectName.prefix = False
+
     # mesh
     objectName.mesh = 'Mesh'
 
@@ -178,6 +181,9 @@ def reset(context, panel, auto, names, name, copy):
 
     # constraint name
     constraintName = context.scene.BatchAutoName_ConstraintNames
+
+    # prefix
+    constraintName.prefix = False
 
     # camera solver
     constraintName.cameraSolver = 'Camera Solver'
@@ -262,6 +268,9 @@ def reset(context, panel, auto, names, name, copy):
 
     # modifier name
     modifierName = context.scene.BatchAutoName_ModifierNames
+
+    # prefix
+    modifierName.prefix = False
 
     # data transfer
     modifierName.dataTransfer = 'Data Transfer'
@@ -447,6 +456,9 @@ def reset(context, panel, auto, names, name, copy):
 
     # object data name
     objectDataName = context.scene.BatchAutoName_ObjectDataNames
+
+    # prefix
+    objectDataName.prefix = False
 
     # mesh
     objectDataName.mesh = 'Mesh'
@@ -832,6 +844,9 @@ def transfer(context, panel, auto, names, name, copy):
         # object name
         objectName = context.scene.BatchAutoName_ObjectNames
 
+        # prefix
+        scene.BatchAutoName_ObjectNames.prefix = objectName.prefix
+
         # mesh
         scene.BatchAutoName_ObjectNames.mesh = objectName.mesh
 
@@ -867,6 +882,9 @@ def transfer(context, panel, auto, names, name, copy):
 
         # constraint name
         constraintName = context.scene.BatchAutoName_ConstraintNames
+
+        # prefix
+        scene.BatchAutoName_ConstraintNames.prefix = constraintName.prefix
 
         # camera solver
         scene.BatchAutoName_ConstraintNames.cameraSolver = constraintName.cameraSolver
@@ -951,6 +969,9 @@ def transfer(context, panel, auto, names, name, copy):
 
         # modifier name
         modifierName = context.scene.BatchAutoName_ModifierNames
+
+        # prefix
+        scene.BatchAutoName_ModifierNames.prefix = modifierName.prefix
 
         # data transfer
         scene.BatchAutoName_ModifierNames.dataTransfer = modifierName.dataTransfer
@@ -1101,6 +1122,9 @@ def transfer(context, panel, auto, names, name, copy):
 
         # object data name
         objectDataName = context.scene.BatchAutoName_ObjectDataNames
+
+        # prefix
+        scene.BatchAutoName_ObjectDataNames.prefix = objectDataName.prefix
 
         # mesh
         scene.BatchAutoName_ObjectDataNames.mesh = objectDataName.mesh

@@ -38,7 +38,7 @@ class toolsName(Panel):
   bl_options = {'HIDE_HEADER'}
   bl_category = 'Name'
 
-  # poll
+  # # poll
   # @classmethod
   # def poll(self, cls):
   #   try: return True if addon.preferences['location'] == 0 else False
@@ -63,7 +63,7 @@ class UIName(Panel):
   bl_label = 'Name'
   bl_region_type = 'UI'
 
-  # poll
+  # # poll
   # @classmethod
   # def poll(self, cls):
   #   try: return True if addon.preferences['location'] == 1 else False

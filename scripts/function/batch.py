@@ -1193,8 +1193,8 @@ def main(context, quickBatch):
                         else:
 
                           # shared
-                          if texslot.texture not in shared[:]:
-                            shared.append(texslot.texture)
+                          if texslot.texture not in shared.textures[:]:
+                            shared.textures.append(texslot.texture)
 
                             # sort
                             sort(context, texslot.texture)

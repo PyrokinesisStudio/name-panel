@@ -303,6 +303,13 @@ class batch:
       '''
         Properties that effect the names used when auto naming objects.
       '''
+
+      # prefix
+      prefix = BoolProperty(
+        name = 'Prefix',
+        description = 'Prefix the names of the objects with the values below.'
+      )
+
       # mesh
       mesh = StringProperty(
         name = 'Mesh',
@@ -385,6 +392,12 @@ class batch:
       '''
         Properties that effect the names used when auto naming constraints.
       '''
+
+      # prefix
+      prefix = BoolProperty(
+        name = 'Prefix',
+        description = 'Prefix the names of the constraints with the values below.'
+      )
 
       # camera solver
       cameraSolver = StringProperty(
@@ -580,6 +593,13 @@ class batch:
       '''
         Properties that effect the names used when auto naming modifiers.
       '''
+
+      # prefix
+      prefix = BoolProperty(
+        name = 'Prefix',
+        description = 'Prefix the names of the modifiers with the values below.'
+      )
+
       # data transfer
       dataTransfer = StringProperty(
         name = 'Data Transfer',
@@ -928,6 +948,13 @@ class batch:
       '''
         Properties that effect the names used when auto naming objects.
       '''
+
+      # prefix
+      prefix = BoolProperty(
+        name = 'Prefix',
+        description = 'Prefix the names of the object\'s data with the values below.'
+      )
+
       # mesh
       mesh = StringProperty(
         name = 'Mesh',

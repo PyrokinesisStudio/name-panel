@@ -142,6 +142,9 @@ class objects(Operator):
     # option
     option = context.scene.BatchAutoName_ObjectNames
 
+    # prefix
+    layout.prop(option, 'prefix')
+
     # input fields
 
     # mesh
@@ -265,6 +268,9 @@ class constraints(Operator):
 
     # option
     option = context.scene.BatchAutoName_ConstraintNames
+
+    # prefix
+    layout.prop(option, 'prefix')
 
     # input fields
     split = layout.split()
@@ -475,6 +481,9 @@ class modifiers(Operator):
 
     # option
     option = context.scene.BatchAutoName_ModifierNames
+
+    # prefix
+    layout.prop(option, 'prefix')
 
     # input fields
     split = layout.split()
@@ -796,6 +805,10 @@ class objectData(Operator):
     # option
     option = context.scene.BatchAutoName_ObjectDataNames
 
+
+    # prefix
+    layout.prop(option, 'prefix')
+
     # input fields
 
     # mesh
@@ -879,7 +892,7 @@ class objectData(Operator):
     except:
 
       # size
-      size = 225
+      size = 150
 
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

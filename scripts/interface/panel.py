@@ -1117,113 +1117,114 @@ class block:
 
     # active bone
     if object.type in 'ARMATURE':
-      if object.mode in {'POSE', 'EDIT'}:
+      if context.active_bone:
+        if object.mode in {'POSE', 'EDIT'}:
 
-        # constraints
-        try:
-          constraints = [item.name for item in context.active_pose_bone.constraints[:]]
-        except:
-          constraints = []
+          # constraints
+          try:
+            constraints = [item.name for item in context.active_pose_bone.constraints[:]]
+          except:
+            constraints = []
 
-        # display bones
-        if option.displayBones:
+          # display bones
+          if option.displayBones:
 
-          row = layout.row()
+            row = layout.row()
 
-          row.prop(option, 'boneMode', expand=True)
+            row.prop(option, 'boneMode', expand=True)
 
-          layout.separator()
+            layout.separator()
 
-        # search
-        if search == '' or re.search(search, context.active_bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
+          # search
+          if search == '' or re.search(search, context.active_bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
-          # bone
-          Bone(self, context, layout, context.active_bone, object, option)
+            # bone
+            Bone(self, context, layout, context.active_bone, object, option)
 
-          # bone constraints
-          if option.boneConstraints:
+            # bone constraints
+            if option.boneConstraints:
+              if object.mode in 'POSE':
+                bone = context.active_pose_bone
+                if bone:
+                  for constraint in bone.constraints[:]:
+
+                    # search
+                    if search == '' or re.search(search, constraint.name, re.I):
+
+                      # constraint
+                      Constraint(self, context, layout, constraint, object, bone, option)
+
+                  # constraints
+                  if constraints != []:
+
+                    # row
+                    row = layout.row()
+
+                    # separator
+                    row.separator()
+
+          # display bones
+          if option.displayBones:
+
+            # pose mode
             if object.mode in 'POSE':
-              bone = context.active_pose_bone
-              if bone:
-                for constraint in bone.constraints[:]:
 
-                  # search
-                  if search == '' or re.search(search, constraint.name, re.I):
+              # bones
+              bones = object.data.bones[:]
 
-                    # constraint
-                    Constraint(self, context, layout, constraint, object, bone, option)
+            # edit mode
+            else:
+
+              # bones
+              bones = object.data.edit_bones[:]
+
+            # selected
+            if option.boneMode == 'SELECTED':
+
+              # bones
+              bones = [[bone.name, bone] for bone in bones if bone.select]
+
+            # layers
+            else:
+
+              # bones
+              bones = [[bone.name, bone] for bone in bones if True in [x&y for (x, y) in zip(bone.layers, object.data.layers)]]
+
+            # sort and display
+            for bone in sorted(bones):
+              if bone[1] != context.active_bone:
 
                 # constraints
-                if constraints != []:
+                try:
+                  constraints = [item.name for item in object.pose.bones[bone[1].name].constraints[:]]
+                except:
+                  constraints = []
 
-                  # row
-                  row = layout.row()
+                # search
+                if search == '' or re.search(search, bone[1].name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
-                  # separator
-                  row.separator()
+                  # bone
+                  Bone(self, context, layout, bone[1], object, option)
 
-        # display bones
-        if option.displayBones:
+                  # bone constraints
+                  if option.boneConstraints:
+                    if object.mode in 'POSE':
+                      for constraint in object.pose.bones[bone[1].name].constraints[:]:
 
-          # pose mode
-          if object.mode in 'POSE':
+                        # search
+                        if search == '' or re.search(search, constraint.name, re.I):
 
-            # bones
-            bones = object.data.bones[:]
+                          # constraint
+                          Constraint(self, context, layout, constraint, object, bone[1], option)
 
-          # edit mode
-          else:
+                      # constraints
+                      if constraints != []:
 
-            # bones
-            bones = object.data.edit_bones[:]
+                        # row
+                        row = layout.row()
 
-          # selected
-          if option.boneMode == 'SELECTED':
-
-            # bones
-            bones = [[bone.name, bone] for bone in bones if bone.select]
-
-          # layers
-          else:
-
-            # bones
-            bones = [[bone.name, bone] for bone in bones if True in [x&y for (x, y) in zip(bone.layers, object.data.layers)]]
-
-          # sort and display
-          for bone in sorted(bones):
-            if bone[1] != context.active_bone:
-
-              # constraints
-              try:
-                constraints = [item.name for item in object.pose.bones[bone[1].name].constraints[:]]
-              except:
-                constraints = []
-
-              # search
-              if search == '' or re.search(search, bone[1].name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
-
-                # bone
-                Bone(self, context, layout, bone[1], object, option)
-
-                # bone constraints
-                if option.boneConstraints:
-                  if object.mode in 'POSE':
-                    for constraint in object.pose.bones[bone[1].name].constraints[:]:
-
-                      # search
-                      if search == '' or re.search(search, constraint.name, re.I):
-
-                        # constraint
-                        Constraint(self, context, layout, constraint, object, bone[1], option)
-
-                    # constraints
-                    if constraints != []:
-
-                      # row
-                      row = layout.row()
-
-                      # separator
-                      row.separator()
+                        # separator
+                        row.separator()
 
 # object
 def Object(self, context, layout, datablock, option):

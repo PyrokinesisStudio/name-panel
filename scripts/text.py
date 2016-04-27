@@ -34,8 +34,6 @@ Special Characters
 
   a|b      matches either a or b.
 
-  ()       Creates a capture group and indicates precedence.
-
 
 Quantifiers
 
@@ -77,6 +75,10 @@ Special Sequences
 
 Groups
 
+  ()             Creates a capture group and indicates precedence.
+
+  \1             Recall first captured group, change accordingly.
+
   (?P<name>...)  Creates a group with the id of 'name'.
 
   \g<id>         Matches a previously defined group.
@@ -84,28 +86,59 @@ Groups
   (?(id)yes|no)  Match 'yes' if group 'id' matched, else 'no'.
 
 
-Example
+Examples
 
-  String: 'Name.001'
+(1) String: 'Name.001'
 
-  Expression: \W[0-9]*$
+    Find: \W[0-9]*$
 
-  Result: 'Name'
+    Result: 'Name'
+
+    This expression will strip any numbers at the tail end of a name up to and
+    including any non-alphanumeric character.
+
+    The individual characters used are;
+
+    \W    Non-alphanumeric. (any character other then [0-9a-zA-Z_])
+
+    [0-9] Character class from range 0 through 9.
+
+    *     Anything preceding this symbol will be matched until no other matches
+          are found.
+
+    $     Indicates that we want to start from the end of the string.
 
 
-  This expression will strip any numbers at the tail end of a name up to and
-  including any non-alphanumeric character.
+(2) String: 'Name.001'
 
-  The individual characters used are;
+    Find: ([A-z]*\.)
 
-  \W    Non-alphanumeric. (any character other then [0-9a-zA-Z_])
+    Replace: Changed_\1
 
-  [0-9] Character class from range 0 through 9.
+    Result: 'Changed_Name.001'
 
-  *     Anything preceding this symbol will be matched until no other matches
-        are found.
+    This expression will create a capture group of any characters and a . (dot)
+    replace those characters with 'Changed_' infront of that captured group.
 
-  $     Indicates that we want to start from the end of the string.
+      The individual characters used are;
+
+      (     Start a capture group.
+
+      [A-z] Character class range A-z (upper and lowercase).
+
+      *     Anything preceding this symbol will be matched until no other
+            matches are found.
+
+      \.    Used here to escape the character . (dot) which has special
+            meaning in regular expressions.
+
+      )     End a capture group.
+
+      \1    Recall first captured group.
+
+
+
+
 
   Regular expressions are much like a tiny programming language, this cheatsheet
   will help get you started.

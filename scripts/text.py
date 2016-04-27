@@ -108,7 +108,7 @@ Example
   $     Indicates that we want to start from the end of the string.
 
   Regular expressions are much like a tiny programming language, this cheatsheet
-  will get you started.
+  will help get you started.
 
   For a more complete documentation of python related regular expressions;
 

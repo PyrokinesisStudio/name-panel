@@ -86,11 +86,15 @@ Groups
 
 Example
 
-  \W[0-9]*$|_[0-9]*$
+  String: 'Name.001'
+
+  Expression: \W[0-9]*$
+
+  Result: 'Name'
+
 
   This expression will strip any numbers at the tail end of a name up to and
-  including any non-alphanumeric character OR it will strip any numbers up to
-  and including an underscore.
+  including any non-alphanumeric character.
 
   The individual characters used are;
 
@@ -102,20 +106,6 @@ Example
         are found.
 
   $     Indicates that we want to start from the end of the string.
-
-  |     Or, has to be one or the other, otherwise nothing happens, either
-        everything on the left or everything on the right of this symbol.
-
-  _     This is literally the underscore symbol, the expression above has an '|'
-        in it because the underscore is considered an Alphanumeric symbol and
-        everything before the '|' symbol will not remove numbers from the end of
-        the name if those numbers are preceded by an underscore.
-
-        in other words \W[0-9]*$ by itself works for almost all situations when
-        you want to remove trailing numbers except if those numbers are proceded
-        by an underscore, in those cases you will likely want to use '|' to
-        account for the underscore situation.
-
 
   Regular expressions are much like a tiny programming language, this cheatsheet
   will get you started.

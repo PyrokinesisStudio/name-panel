@@ -1085,8 +1085,6 @@ class block:
 
                             # texture
                             Texture(self, context, layout, tslot, object, option)
-      else:
-        context.scene['NamePanel']['textures'] = 0
 
     # bone groups
     def boneGroup(self, context, layout, object, option):

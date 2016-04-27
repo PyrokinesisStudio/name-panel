@@ -39,12 +39,10 @@ class toolsName(Panel):
   bl_category = 'Name'
 
   # poll
-  @classmethod
-  def poll(self, cls):
-    try:
-      return True if addon.preferences['location'] == 0 else False
-    except:
-      return True
+  # @classmethod
+  # def poll(self, cls):
+  #   try: return True if addon.preferences['location'] == 0 else False
+  #   except: return True
 
   # draw
   def draw(self, context):
@@ -66,12 +64,10 @@ class UIName(Panel):
   bl_region_type = 'UI'
 
   # poll
-  @classmethod
-  def poll(self, cls):
-    try:
-      return True if addon.preferences['location'] == 1 else False
-    except:
-      return False
+  # @classmethod
+  # def poll(self, cls):
+  #   try: return True if addon.preferences['location'] == 1 else False
+  #   except: return False
 
   # draw
   def draw(self, context):

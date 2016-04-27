@@ -73,7 +73,7 @@ class preferences(AddonPreferences):
   # location
   location = EnumProperty(
     name = 'Panel Location',
-    description = 'The 3D view shelf to use.',
+    description = 'The 3D view shelf to use (Save user settings and restart Blender.)',
     items = [
       ('TOOLS', 'Tool Shelf', 'Places the Name panel in the tool shelf under the tab labeled \'Name\''),
       ('UI', 'Property Shelf', 'Places the Name panel in the property shelf.')
@@ -185,6 +185,19 @@ def register():
 
   # append
   bpy.types.OUTLINER_HT_header.append(button.batchName)
+
+  # shelf position
+  # addon
+  if addon:
+    try:
+      if addon.preferences['location'] == 0:
+        bpy.utils.unregister_class(panel.UIName)
+      else:
+        bpy.utils.unregister_class(panel.toolsName)
+    except:
+      bpy.utils.unregister_class(panel.UIName)
+  else:
+    bpy.utils.unregister_class(panel.UIName)
 
 # unregister
 def unregister():

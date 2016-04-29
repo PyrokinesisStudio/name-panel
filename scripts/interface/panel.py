@@ -1239,7 +1239,7 @@ def Object(self, context, layout, datablock, option):
 
     # row
     row = layout.row(align=True)
-    row.enabled = (search == '' or re.search(search, datablock.name, re.I) != None)
+    row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
     # template
     row.template_ID(context.scene.objects, 'active')
@@ -1249,7 +1249,7 @@ def Object(self, context, layout, datablock, option):
 
     # row
     row = layout.row(align=True)
-    row.enabled = (search == '' or re.search(search, datablock.name, re.I) != None)
+    row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
     # sub
     sub = row.row(align=True)
@@ -1340,7 +1340,7 @@ def GreasePencil(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
-  row.enabled = (search == '' or re.search(search, datablock.name, re.I) != None)
+  row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
   # sub
   sub = row.row()
@@ -1478,7 +1478,7 @@ def Modifier(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
-  row.enabled = (search == '' or re.search(search, datablock.name, re.I) != None)
+  row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
   # sub
   sub = row.row()
@@ -1550,7 +1550,7 @@ def ObjectData(self, context, layout, datablock, option):
   # row
   row = layout.row(align=True)
   if datablock.type != 'EMPTY':
-    row.enabled = (search == '' or re.search(search, datablock.data.name, re.I) != None)
+    row.active = (search == '' or re.search(search, datablock.data.name, re.I) != None)
 
   # empty
   if datablock.type in 'EMPTY':
@@ -1742,7 +1742,7 @@ def Material(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
-  row.enabled = (search == '' or re.search(search, datablock.name, re.I) != None)
+  row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
   # sub
   sub = row.row()
@@ -1844,7 +1844,7 @@ def Particle(self, context, layout, datablock, object, option):
 
   # row
   row = layout.row(align=True)
-  row.enabled = (search == '' or re.search(search, datablock.particle_system.name, re.I) != None)
+  row.active = (search == '' or re.search(search, datablock.particle_system.name, re.I) != None)
 
   # sub
   sub = row.row()
@@ -1919,7 +1919,7 @@ def Bone(self, context, layout, datablock, object, option):
   row = layout.row(align=True)
 
   # enabled
-  row.enabled = (search == '' or re.search(search, datablock.name, re.I) != None)
+  row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
   # sub
   sub = row.row(align=True)

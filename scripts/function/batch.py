@@ -300,6 +300,11 @@ def main(context, quickBatch):
           for group in action[1][1].groups:
             group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
 
+          # fix paths
+          for curve in action[1][1].fcurves[:]:
+            if 'pose' in curve.data_path:
+              curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
+
       # grease pencil
       if option.greasePencil:
         for object in bpy.data.objects[:]:
@@ -1555,6 +1560,11 @@ def main(context, quickBatch):
           for group in action[1][1].groups:
             group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
 
+          # fix paths
+          for curve in action[1][1].fcurves[:]:
+            if 'pose' in curve.data_path:
+              curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
+
       # grease pencil
       if option.greasePencil:
         for object in context.scene.objects[:]:
@@ -2223,6 +2233,11 @@ def main(context, quickBatch):
         for action in storage.batch.actions:
           for group in action[1][1].groups:
             group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
+
+          # fix paths
+          for curve in action[1][1].fcurves[:]:
+            if 'pose' in curve.data_path:
+              curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
 
         # clear collection
         storage.batch.actions.clear()

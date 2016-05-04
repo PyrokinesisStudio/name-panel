@@ -231,7 +231,7 @@ class batch:
       # batch type
       batchType = EnumProperty(
         name = 'Batch Type',
-        description = '',
+        description = 'How to perform auto naming on datablocks designated below.',
         items = [
           ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
           ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
@@ -1041,7 +1041,7 @@ class batch:
     # batch type
     batchType = EnumProperty(
       name = 'Batch Type',
-      description = '',
+      description = 'How to perform batch naming on datablocks designated below.',
       items = [
         ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
         ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
@@ -1618,7 +1618,7 @@ class batch:
     # batch type
     batchType = EnumProperty(
       name = 'Batch Type',
-      description = '',
+      description = 'How to perform batch name copying on datablocks designated below.',
       items = [
         ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
         ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),

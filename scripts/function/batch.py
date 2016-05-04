@@ -303,8 +303,10 @@ def main(context, quickBatch):
           # fix paths
           for curve in action[1][1].fcurves[:]:
             if 'pose' in curve.data_path:
-              if not re.search('constraints', curve.data_path):
+              try:
                 curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
+              except:
+                pass
 
       # grease pencil
       if option.greasePencil:
@@ -1564,8 +1566,10 @@ def main(context, quickBatch):
           # fix paths
           for curve in action[1][1].fcurves[:]:
             if 'pose' in curve.data_path:
-              if not re.search('constraints', curve.data_path):
+              try:
                 curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
+              except:
+                pass
 
       # grease pencil
       if option.greasePencil:
@@ -2239,8 +2243,10 @@ def main(context, quickBatch):
           # fix paths
           for curve in action[1][1].fcurves[:]:
             if 'pose' in curve.data_path:
-              if not re.search('constraints', curve.data_path):
+              try:
                 curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
+              except:
+                pass
 
         # clear collection
         storage.batch.actions.clear()

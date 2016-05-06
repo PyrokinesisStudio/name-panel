@@ -385,14 +385,15 @@ def main(context, quickBatch):
                     # sort
                     sort(context, object.grease_pencil)
 
+
+          # process
+          process(context, storage.batch.greasePencils)
+
+          # clear storage
+          storage.batch.greasePencils.clear()
+
         # clear shared
         shared.greasePencils.clear()
-
-        # process
-        process(context, storage.batch.greasePencils)
-
-        # clear storage
-        storage.batch.greasePencils.clear()
 
       # pencil layers
       if option.pencilLayers:
@@ -492,8 +493,6 @@ def main(context, quickBatch):
 
             # process
             process(context, storage.batch.pencilLayers)
-
-            print(storage.batch.pencilLayers)
 
             # clear storage
             storage.batch.pencilLayers.clear()
@@ -1113,14 +1112,14 @@ def main(context, quickBatch):
                     # sort
                     sort(context, slot.material)
 
+          # process
+          process(context, storage.batch.materials)
+
+          # clear storage
+          storage.batch.materials.clear()
+
         # clear shared
         shared.materials.clear()
-
-        # process
-        process(context, storage.batch.materials)
-
-        # clear storage
-        storage.batch.materials.clear()
 
       # textures
       if option.textures:
@@ -1185,6 +1184,12 @@ def main(context, quickBatch):
                                 # sort
                                 sort(context, texslot.texture)
 
+                    # process
+                    process(context, storage.batch.textures)
+
+                    # clear storage
+                    storage.batch.textures.clear()
+
             # batch type
             else:
               for slot in object.material_slots[:]:
@@ -1242,16 +1247,14 @@ def main(context, quickBatch):
                               # sort
                               sort(context, texslot.texture)
 
-            # clear shared
-            shared.textures.clear()
+                  # process
+                  process(context, storage.batch.textures)
 
-            print(storage.batch.textures)
+                  # clear storage
+                  storage.batch.textures.clear()
 
-            # process
-            process(context, storage.batch.textures)
-
-            # clear storage
-            storage.batch.textures.clear()
+        # clear shared
+        shared.textures.clear()
 
       # particle systems
       if option.particleSystems:
@@ -1371,14 +1374,15 @@ def main(context, quickBatch):
                       # sort
                       sort(context, system.settings)
 
+          # process
+          process(context, storage.batch.particleSettings)
+
+          # clear storage
+          storage.batch.particleSettings.clear()
+
         # clear shared
         shared.particleSettings.clear()
 
-        # process
-        process(context, storage.batch.particleSettings)
-
-        # clear storage
-        storage.batch.particleSettings.clear()
 
     # sensors
     if option.sensors:
@@ -1620,14 +1624,15 @@ def main(context, quickBatch):
                   # sort
                   sort(context, object.grease_pencil)
 
+          # process
+          process(context, storage.batch.greasePencils)
+
+          # clear storage
+          storage.batch.greasePencils.clear()
+
         # clear shared
         shared.greasePencils.clear()
 
-        # process
-        process(context, storage.batch.greasePencils)
-
-        # clear storage
-        storage.batch.greasePencils.clear()
 
       # pencil layers
       if option.pencilLayers:
@@ -2012,14 +2017,15 @@ def main(context, quickBatch):
                   # sort
                   sort(context, slot.material)
 
+
+          # process
+          process(context, storage.batch.materials)
+
+          # clear storage
+          storage.batch.materials.clear()
+
         # clear shared
         shared.materials.clear()
-
-        # process
-        process(context, storage.batch.materials)
-
-        # clear storage
-        storage.batch.materials.clear()
 
       # textures
       if option.textures:
@@ -2080,14 +2086,14 @@ def main(context, quickBatch):
                             # sort
                             sort(context, texslot.texture)
 
+                # process
+                process(context, storage.batch.textures)
+
+                # clear storage
+                storage.batch.textures.clear()
+
         # clear shared
         shared.textures.clear()
-
-        # process
-        process(context, storage.batch.textures)
-
-        # clear storage
-        storage.batch.textures.clear()
 
       # particle systems
       if option.particleSystems:
@@ -2149,14 +2155,14 @@ def main(context, quickBatch):
                     # sort
                     sort(context, system.settings)
 
+          # process
+          process(context, storage.batch.particleSettings)
+
+          # clear storage
+          storage.batch.particleSettings.clear()
+
         # clear shared
         shared.particleSettings.clear()
-
-        # process
-        process(context, storage.batch.particleSettings)
-
-        # clear storage
-        storage.batch.particleSettings.clear()
 
       # sensors
       if option.sensors:

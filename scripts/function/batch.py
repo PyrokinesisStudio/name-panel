@@ -106,14 +106,15 @@ def main(context, quickBatch):
 
           # armatures
           storage.batch.armatures,
-          ]
+        ]
         for collection in all:
+          if collection != []:
 
-          # process
-          process(context, collection)
+            # process
+            process(context, collection)
 
-          # clear storage
-          collection.clear()
+            # clear storage
+            collection.clear()
 
       # mode
       else:
@@ -151,14 +152,15 @@ def main(context, quickBatch):
 
           # armatures
           storage.batch.armatures,
-          ]
+        ]
         for collection in all:
+          if collection != []:
 
-          # process
-          process(context, collection)
+            # process
+            process(context, collection)
 
-          # clear storage
-          collection.clear()
+            # clear storage
+            collection.clear()
 
     # display names
     else:
@@ -196,12 +198,13 @@ def main(context, quickBatch):
         storage.batch.armatures,
         ]
       for collection in all:
+        if collection != []:
 
-        # process
-        process(context, collection)
+          # process
+          process(context, collection)
 
-        # clear storage
-        collection.clear()
+          # clear storage
+          collection.clear()
 
 
   # quick batch

@@ -115,7 +115,7 @@ def main(context, quickBatch):
           # clear storage
           collection.clear()
 
-        # mode
+      # mode
       else:
         for object in context.scene.objects[:]:
           if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]:
@@ -518,20 +518,20 @@ def main(context, quickBatch):
                 # sort
                 sort(context, object)
 
-              # batch type
-              else:
+          # batch type
+          else:
 
-                # object type
-                if option.objectType in 'ALL':
+            # object type
+            if option.objectType in 'ALL':
 
-                  # sort
-                  sort(context, object)
+              # sort
+              sort(context, object)
 
-                # object type
-                elif option.objectType in object.type:
+            # object type
+            elif option.objectType in object.type:
 
-                  # sort
-                  sort(context, object)
+              # sort
+              sort(context, object)
 
         # process
         process(context, storage.batch.objects)
@@ -556,32 +556,32 @@ def main(context, quickBatch):
                     sort(context, group)
 
 
-                    # object type
-                  elif option.objectType in object.type:
-                    for group in bpy.data.groups[:]:
-                      if object in group.objects[:]:
+              # object type
+              elif option.objectType in object.type:
+                for group in bpy.data.groups[:]:
+                  if object in group.objects[:]:
 
-                        # sort
-                        sort(context, group)
+                    # sort
+                    sort(context, group)
 
-                        # batch type
-                      else:
+          # batch type
+          else:
 
-                        # object type
-                        if option.objectType in 'ALL':
-                          for group in bpy.data.groups[:]:
-                            if object in group.objects[:]:
+            # object type
+            if option.objectType in 'ALL':
+              for group in bpy.data.groups[:]:
+                if object in group.objects[:]:
 
-                              # sort
-                              sort(context, group)
+                  # sort
+                  sort(context, group)
 
-                              # object type
-                            elif option.objectType in object.type:
-                              for group in bpy.data.groups[:]:
-                                if object in group.objects[:]:
+            # object type
+            elif option.objectType in object.type:
+              for group in bpy.data.groups[:]:
+                if object in group.objects[:]:
 
-                                  # sort
-                                  sort(context, group)
+                  # sort
+                  sort(context, group)
 
         # clear duplicates
         objectGroups = []
@@ -3975,75 +3975,57 @@ def process(context, collection):
   '''
     Process collection, send names to name.
   '''
+  # if not collection == []:
 
-  if not collection == []:
+  # sort collection
+  collection.sort()
 
-    collection.sort()
+  # option
+  option = context.scene.BatchName
 
-    # option
-    option = context.scene.BatchName
+  # count
+  counter = [
+    # 'datablock.name', ...
+  ]
+
+  # datablocks
+  datablocks = [
+    # ['datablock.name', datablock], [...
+  ]
+
+  # duplicates
+  duplicates = [
+    # 'datablock.name', ...
+  ]
+
+  # collection
+  for item in collection[:]:
+
+    # sort
+    if option.sort:
+
+      # name
+      item[0] = name(context, (re.split(r'\W[0-9]*$|_[0-9]*$', item[0]))[0])
+    else:
+      item[0] = name(context, item[0])
 
     # count
-    counter = [
-      # 'datablock.name', ...
-    ]
+    counter.append(item[0])
 
-    # datablocks
-    datablocks = [
-      # ['datablock.name', datablock], [...
-    ]
-
-    # duplicates
-    duplicates = [
-      # 'datablock.name', ...
-    ]
-
-    # collection
-    for item in collection[:]:
-
-      # sort
-      if option.sort:
-
-        # name
-        item[0] = name(context, (re.split(r'\W[0-9]*$|_[0-9]*$', item[0]))[0])
-      else:
-        item[0] = name(context, item[0])
-
-      # count
-      counter.append(item[0])
+  # name count
+  i = 0
+  for item in collection[:]:
 
     # name count
-    i = 0
-    for item in collection[:]:
+    item[1][0] = counter.count(counter[i])
+    i += 1
 
-      # name count
-      item[1][0] = counter.count(counter[i])
-      i += 1
+  # randomize
+  for item in collection[:]:
 
-    # randomize
-    for item in collection[:]:
-
-      # sort
-      if option.sort:
-        if item[1][0] > 1:
-
-          # randomize name
-          if hasattr(item[1][1], 'name'):
-            item[1][1].name = str(random())
-          elif hasattr(item[1][1], 'info'):
-            item[1][1].info = str(random())
-          elif hasattr(item[1][1], 'bl_label'):
-            item[1][1].bl_label = str(random())
-        elif not option.sortOnly:
-
-          # randomize name
-          if hasattr(item[1][1], 'name'):
-            item[1][1].name = str(random())
-          elif hasattr(item[1][1], 'info'):
-            item[1][1].info = str(random())
-          elif hasattr(item[1][1], 'bl_label'):
-            item[1][1].bl_label = str(random())
-      else:
+    # sort
+    if option.sort:
+      if item[1][0] > 1:
 
         # randomize name
         if hasattr(item[1][1], 'name'):
@@ -4052,77 +4034,95 @@ def process(context, collection):
           item[1][1].info = str(random())
         elif hasattr(item[1][1], 'bl_label'):
           item[1][1].bl_label = str(random())
+      elif not option.sortOnly:
 
-    # sort
-    if option.sort:
-      i = 0
-      for item in collection[:]:
-        datablocks.append([item[0], i])
-        i += 1
-      i = 0
-      for item in sorted(datablocks):
+        # randomize name
+        if hasattr(item[1][1], 'name'):
+          item[1][1].name = str(random())
+        elif hasattr(item[1][1], 'info'):
+          item[1][1].info = str(random())
+        elif hasattr(item[1][1], 'bl_label'):
+          item[1][1].bl_label = str(random())
+    else:
 
-        # name count
-        if collection[item[1]][1][0] > 1:
+      # randomize name
+      if hasattr(item[1][1], 'name'):
+        item[1][1].name = str(random())
+      elif hasattr(item[1][1], 'info'):
+        item[1][1].info = str(random())
+      elif hasattr(item[1][1], 'bl_label'):
+        item[1][1].bl_label = str(random())
 
-          # duplicates
-          if collection[item[1]][0] not in duplicates:
+  # sort
+  if option.sort:
+    i = 0
+    for item in collection[:]:
+      datablocks.append([item[0], i])
+      i += 1
+    i = 0
+    for item in sorted(datablocks):
 
-            # suffix last
-            if option.suffixLast:
+      # name count
+      if collection[item[1]][1][0] > 1:
 
-              # rename
-              rename = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0]))) + option.suffix
-            else:
-
-              # rename
-              rename = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
-
-            # name
-            if hasattr(collection[item[1]][1][1], 'name'):
-              collection[item[1]][1][1].name = rename
-            elif hasattr(collection[item[1]][1][1], 'info'):
-              collection[item[1]][1][1].info = rename
-            elif hasattr(collection[item[1]][1][1], 'bl_label'):
-              collection[item[1]][1][1].bl_label = rename
-            i += 1
-          if i == collection[item[1]][1][0]:
-            i = 0
-
-            # duplicates
-            duplicates.append(collection[item[1]][0])
-
-    # assign names
-    if not option.sortOnly:
-      for item in collection[:]:
-        if item[0] not in duplicates:
+        # duplicates
+        if collection[item[1]][0] not in duplicates:
 
           # suffix last
           if option.suffixLast:
 
             # rename
-            rename = item[0] + option.suffix
+            rename = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0]))) + option.suffix
           else:
 
             # rename
-            rename = item[0]
+            rename = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
 
           # name
-          if hasattr(item[1][1], 'name'):
-            item[1][1].name = rename
-          elif hasattr(item[1][1], 'info'):
-            item[1][1].info = rename
-          elif hasattr(item[1][1], 'bl_label'):
-            item[1][1].bl_label = rename
+          if hasattr(collection[item[1]][1][1], 'name'):
+            collection[item[1]][1][1].name = rename
+          elif hasattr(collection[item[1]][1][1], 'info'):
+            collection[item[1]][1][1].info = rename
+          elif hasattr(collection[item[1]][1][1], 'bl_label'):
+            collection[item[1]][1][1].bl_label = rename
+          i += 1
+        if i == collection[item[1]][1][0]:
+          i = 0
 
-    # clear counter
-    counter.clear()
+          # duplicates
+          duplicates.append(collection[item[1]][0])
 
-    # clear datablocks
-    datablocks.clear()
+  # assign names
+  if not option.sortOnly:
+    for item in collection[:]:
+      if item[0] not in duplicates:
 
-    # clear duplicates
-    duplicates.clear()
+        # suffix last
+        if option.suffixLast:
+
+          # rename
+          rename = item[0] + option.suffix
+        else:
+
+          # rename
+          rename = item[0]
+
+        # name
+        if hasattr(item[1][1], 'name'):
+          item[1][1].name = rename
+        elif hasattr(item[1][1], 'info'):
+          item[1][1].info = rename
+        elif hasattr(item[1][1], 'bl_label'):
+          item[1][1].bl_label = rename
+
+  # clear counter
+  counter.clear()
+
+  # clear datablocks
+  datablocks.clear()
+
+  # clear duplicates
+  duplicates.clear()
 
 # name
 def name(context, oldName):

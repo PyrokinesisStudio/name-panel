@@ -278,10 +278,13 @@ class name(Operator):
     '''
       Execute the operator.
     '''
+    globalUndo = context.user_preferences.edit.use_global_undo
+    context.user_preferences.edit.use_global_undo = False
 
     # main
     batch.main(context, self.quickBatch)
 
+    context.user_preferences.edit.use_global_undo = globalUndo
     return {'FINISHED'}
 
   # invoke
@@ -289,6 +292,7 @@ class name(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
+
     try:
 
       # size

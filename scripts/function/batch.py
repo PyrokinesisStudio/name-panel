@@ -112,7 +112,7 @@ def main(context, quickBatch):
           # process
           process(context, collection)
 
-          # clear
+          # clear storage
           collection.clear()
 
         # mode
@@ -157,7 +157,7 @@ def main(context, quickBatch):
           # process
           process(context, collection)
 
-          # clear
+          # clear storage
           collection.clear()
 
     # display names
@@ -200,7 +200,7 @@ def main(context, quickBatch):
         # process
         process(context, collection)
 
-        # clear
+        # clear storage
         collection.clear()
 
 
@@ -388,7 +388,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.greasePencils)
 
-        # clear collection
+        # clear storage
         storage.batch.greasePencils.clear()
 
       # pencil layers
@@ -492,7 +492,7 @@ def main(context, quickBatch):
 
             print(storage.batch.pencilLayers)
 
-            # clear collection
+            # clear storage
             storage.batch.pencilLayers.clear()
 
         # clear shared
@@ -536,7 +536,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.objects)
 
-        # clear collection
+        # clear storage
         storage.batch.objects.clear()
 
       # groups
@@ -586,6 +586,8 @@ def main(context, quickBatch):
         # clear duplicates
         objectGroups = []
         [objectGroups.append(item) for item in storage.batch.groups if item not in objectGroups]
+
+        # clear storage
         storage.batch.groups.clear()
 
         # process
@@ -631,7 +633,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.constraints)
 
-          # clear collection
+          # clear storage
           storage.batch.constraints.clear()
 
       # modifiers
@@ -674,7 +676,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.modifiers)
 
-          # clear collection
+          # clear storage
           storage.batch.modifiers.clear()
 
       # object data
@@ -766,12 +768,13 @@ def main(context, quickBatch):
 
         # process collection
         for collection in objectData:
+          if collection != []:
 
-          # process
-          process(context, collection)
+            # process
+            process(context, collection)
 
-          # clear collection
-          collection.clear()
+            # clear storage
+            collection.clear()
 
       # bone groups
       if option.boneGroups:
@@ -798,7 +801,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.boneGroups)
 
-          # clear collection
+          # clear storage
           storage.batch.boneGroups.clear()
 
       # bones
@@ -846,7 +849,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.bones)
 
-            # clear collection
+            # clear storage
             storage.batch.bones.clear()
 
       # bone constraints
@@ -876,7 +879,7 @@ def main(context, quickBatch):
                     # process
                     process(context, storage.batch.constraints)
 
-                    # clear collection
+                    # clear storage
                     storage.batch.constraints.clear()
 
             # batch type
@@ -899,7 +902,7 @@ def main(context, quickBatch):
                 # process
                 process(context, storage.batch.constraints)
 
-                # clear collection
+                # clear storage
                 storage.batch.constraints.clear()
 
       # vertex groups
@@ -927,7 +930,7 @@ def main(context, quickBatch):
                 # process
                 process(context, storage.batch.vertexGroups)
 
-                # clear collection
+                # clear storage
                 storage.batch.vertexGroups.clear()
 
             # batch type
@@ -949,7 +952,7 @@ def main(context, quickBatch):
               # process
               process(context, storage.batch.vertexGroups)
 
-              # clear collection
+              # clear storage
               storage.batch.vertexGroups.clear()
 
 
@@ -995,7 +998,7 @@ def main(context, quickBatch):
               # process
               process(context, storage.batch.shapekeys)
 
-              # clear collection
+              # clear storage
               storage.batch.shapekeys.clear()
 
       # uvs
@@ -1021,7 +1024,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.uvs)
 
-            # clear collection
+            # clear storage
             storage.batch.uvs.clear()
 
       # vertex colors
@@ -1047,7 +1050,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.vertexColors)
 
-            # clear collection
+            # clear storage
             storage.batch.vertexColors.clear()
 
       # materials
@@ -1113,7 +1116,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.materials)
 
-        # clear collection
+        # clear storage
         storage.batch.materials.clear()
 
       # textures
@@ -1242,7 +1245,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.textures)
 
-        # clear collection
+        # clear storage
         storage.batch.textures.clear()
 
       # particle systems
@@ -1286,7 +1289,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.particleSystems)
 
-            # clear collection
+            # clear storage
             storage.batch.particleSystems.clear()
 
       # particle settings
@@ -1369,7 +1372,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.particleSettings)
 
-        # clear collection
+        # clear storage
         storage.batch.particleSettings.clear()
 
     # sensors
@@ -1414,7 +1417,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.sensors)
 
-        # clear collection
+        # clear storage
         storage.batch.sensors.clear()
 
     # controllers
@@ -1459,7 +1462,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.controllers)
 
-        # clear collection
+        # clear storage
         storage.batch.controllers.clear()
 
     # actuators
@@ -1504,7 +1507,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.actuators)
 
-        # clear collection
+        # clear storage
         storage.batch.actuators.clear()
 
     # batch type
@@ -1531,6 +1534,8 @@ def main(context, quickBatch):
         # clear duplicates
         actions = []
         [actions.append(item) for item in storage.batch.actions if item not in actions]
+
+        # clear storage
         storage.batch.actions.clear()
 
         # process
@@ -1616,7 +1621,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.greasePencils)
 
-        # clear collection
+        # clear storage
         storage.batch.greasePencils.clear()
 
       # pencil layers
@@ -1669,7 +1674,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.pencilLayers)
 
-            # clear collection
+            # clear storage
             storage.batch.pencilLayers.clear()
 
         # clear shared
@@ -1694,7 +1699,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.objects)
 
-        # clear collection
+        # clear storage
         storage.batch.objects.clear()
 
       # groups
@@ -1720,6 +1725,8 @@ def main(context, quickBatch):
         # clear duplicates
         objectGroups = []
         [objectGroups.append(item) for item in storage.batch.groups if item not in objectGroups]
+
+        # clear storage
         storage.batch.groups.clear()
 
         # process
@@ -1745,7 +1752,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.constraints)
 
-          # clear collection
+          # clear storage
           storage.batch.constraints.clear()
 
       # modifiers
@@ -1768,7 +1775,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.modifiers)
 
-          # clear collection
+          # clear storage
           storage.batch.modifiers.clear()
 
       # object data
@@ -1821,9 +1828,13 @@ def main(context, quickBatch):
           storage.batch.armatures
         ]
         for collection in objectData:
+          if collection != []:
 
-          # process
-          process(context, collection)
+            # process
+            process(context, collection)
+
+            # clear storage
+            collection.clear()
 
       # bone groups
       if option.boneGroups:
@@ -1837,7 +1848,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.boneGroups)
 
-          # clear collection
+          # clear storage
           storage.batch.boneGroups.clear()
 
       # bones
@@ -1862,7 +1873,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.bones)
 
-            # clear collection
+            # clear storage
             storage.batch.bones.clear()
 
       # bone constraints
@@ -1887,7 +1898,7 @@ def main(context, quickBatch):
               # process
               process(context, storage.batch.constraints)
 
-              # clear collection
+              # clear storage
               storage.batch.constraints.clear()
 
       # vertex groups
@@ -1911,7 +1922,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.vertexGroups)
 
-            # clear collection
+            # clear storage
             storage.batch.vertexGroups.clear()
 
       # shapekeys
@@ -1936,7 +1947,7 @@ def main(context, quickBatch):
               # process
               process(context, storage.batch.shapekeys)
 
-              # clear collection
+              # clear storage
               storage.batch.shapekeys.clear()
 
       # uvs
@@ -1951,7 +1962,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.uvs)
 
-            # clear collection
+            # clear storage
             storage.batch.uvs.clear()
 
       # vertex colors
@@ -1966,7 +1977,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.vertexColors)
 
-            # clear collection
+            # clear storage
             storage.batch.vertexColors.clear()
 
       # materials
@@ -2002,7 +2013,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.materials)
 
-        # clear collection
+        # clear storage
         storage.batch.materials.clear()
 
       # textures
@@ -2070,7 +2081,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.textures)
 
-        # clear collection
+        # clear storage
         storage.batch.textures.clear()
 
       # particle systems
@@ -2094,7 +2105,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.particleSystems)
 
-            # clear collection
+            # clear storage
             storage.batch.particleSystems.clear()
 
       # particle settings
@@ -2139,7 +2150,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.particleSettings)
 
-        # clear collection
+        # clear storage
         storage.batch.particleSettings.clear()
 
       # sensors
@@ -2163,7 +2174,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.sensors)
 
-          # clear collection
+          # clear storage
           storage.batch.sensors.clear()
 
       # controllers
@@ -2187,7 +2198,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.controllers)
 
-          # clear collection
+          # clear storage
           storage.batch.controllers.clear()
 
       # actuators
@@ -2211,7 +2222,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.actuators)
 
-          # clear collection
+          # clear storage
           storage.batch.actuators.clear()
 
     # batch type
@@ -2227,7 +2238,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.actions)
 
-        # clear collection
+        # clear storage
         storage.batch.actions.clear()
 
       # action groups
@@ -2251,7 +2262,7 @@ def main(context, quickBatch):
                 except:
                   pass
 
-        # clear collection
+        # clear storage
         storage.batch.actions.clear()
 
       # grease pencil
@@ -2264,7 +2275,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.greasePencils)
 
-        # clear collection
+        # clear storage
         storage.batch.greasePencils.clear()
 
       # pencil layers
@@ -2280,7 +2291,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.pencilLayers)
 
-          # clear collection
+          # clear storage
           storage.batch.pencilLayers.clear()
 
       # objects
@@ -2302,7 +2313,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.objects)
 
-        # clear collection
+        # clear storage
         storage.batch.objects.clear()
 
       # groups
@@ -2315,7 +2326,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.groups)
 
-        # clear collection
+        # clear storage
         storage.batch.groups.clear()
 
       # constraints
@@ -2356,7 +2367,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.constraints)
 
-          # clear collection
+          # clear storage
           storage.batch.constraints.clear()
 
       # modifiers
@@ -2397,7 +2408,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.modifiers)
 
-          # clear collection
+          # clear storage
           storage.batch.modifiers.clear()
 
       # object data
@@ -2412,7 +2423,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.cameras)
 
-        # clear collection
+        # clear storage
         storage.batch.cameras.clear()
 
         # meshes
@@ -2424,7 +2435,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.meshes)
 
-        # clear collection
+        # clear storage
         storage.batch.meshes.clear()
 
         # curves
@@ -2436,7 +2447,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.curves)
 
-        # clear collection
+        # clear storage
         storage.batch.curves.clear()
 
         # lamps
@@ -2448,7 +2459,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.lamps)
 
-        # clear collection
+        # clear storage
         storage.batch.lamps.clear()
 
         # lattices
@@ -2460,7 +2471,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.lattices)
 
-        # clear collection
+        # clear storage
         storage.batch.lattices.clear()
 
         # metaballs
@@ -2472,7 +2483,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.metaballs)
 
-        # clear collection
+        # clear storage
         storage.batch.metaballs.clear()
 
         # speakers
@@ -2484,7 +2495,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.speakers)
 
-        # clear collection
+        # clear storage
         storage.batch.speakers.clear()
 
         # armatures
@@ -2496,7 +2507,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.armatures)
 
-        # clear collection
+        # clear storage
         storage.batch.armatures.clear()
 
       # bone groups
@@ -2511,7 +2522,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.boneGroups)
 
-            # clear collection
+            # clear storage
             storage.batch.boneGroups.clear()
 
       # bones
@@ -2525,7 +2536,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.bones)
 
-          # clear collection
+          # clear storage
           storage.batch.bones.clear()
 
       # bone constraints
@@ -2541,7 +2552,7 @@ def main(context, quickBatch):
               # process
               process(context, storage.batch.constraints)
 
-              # clear collection
+              # clear storage
               storage.batch.constraints.clear()
 
       # vertex groups
@@ -2556,7 +2567,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.vertexGroups)
 
-            # clear collection
+            # clear storage
             storage.batch.vertexGroups.clear()
 
       # shape keys
@@ -2573,7 +2584,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.shapekeys)
 
-            # clear collection
+            # clear storage
             storage.batch.shapekeys.clear()
 
       # uvs
@@ -2588,7 +2599,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.uvs)
 
-            # clear collection
+            # clear storage
             storage.batch.uvs.clear()
 
       # vertex colors
@@ -2603,7 +2614,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.vertexColors)
 
-            # clear collection
+            # clear storage
             storage.batch.vertexColors.clear()
 
       # materials
@@ -2616,7 +2627,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.materials)
 
-        # clear collection
+        # clear storage
         storage.batch.materials.clear()
 
       # textures
@@ -2629,7 +2640,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.textures)
 
-        # clear collection
+        # clear storage
         storage.batch.textures.clear()
 
       # particles systems
@@ -2644,7 +2655,7 @@ def main(context, quickBatch):
             # process
             process(context, storage.batch.particleSystems)
 
-            # clear collection
+            # clear storage
             storage.batch.particleSystems.clear()
 
       # particles settings
@@ -2657,7 +2668,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.particleSettings)
 
-        # clear collection
+        # clear storage
         storage.batch.particleSettings.clear()
 
       # sensors
@@ -2681,7 +2692,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.sensors)
 
-          # clear collection
+          # clear storage
           storage.batch.sensors.clear()
 
       # controllers
@@ -2705,7 +2716,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.controllers)
 
-          # clear collection
+          # clear storage
           storage.batch.controllers.clear()
 
       # actuators
@@ -2729,7 +2740,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.actuators)
 
-          # clear collection
+          # clear storage
           storage.batch.actuators.clear()
 
     # line sets
@@ -2750,7 +2761,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.linestyles)
 
-      # clear collection
+      # clear storage
       storage.batch.linestyles.clear()
 
     # linestyle modifiers
@@ -2855,7 +2866,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.scenes)
 
-      # clear collection
+      # clear storage
       storage.batch.scenes.clear()
 
     # render layers
@@ -2869,7 +2880,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.renderLayers)
 
-        # clear collection
+        # clear storage
         storage.batch.renderLayers.clear()
 
     # worlds
@@ -2882,7 +2893,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.worlds)
 
-      # clear collection
+      # clear storage
       storage.batch.worlds.clear()
 
     # libraries
@@ -2895,7 +2906,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.libraries)
 
-      # clear collection
+      # clear storage
       storage.batch.libraries.clear()
 
     # images
@@ -2908,7 +2919,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.images)
 
-      # clear collection
+      # clear storage
       storage.batch.images.clear()
 
     # masks
@@ -2921,7 +2932,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.masks)
 
-      # clear collection
+      # clear storage
       storage.batch.masks.clear()
 
     # sequences
@@ -2936,7 +2947,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.sequences)
 
-          # clear collection
+          # clear storage
           storage.batch.sequences.clear()
 
     # movie clips
@@ -2949,7 +2960,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.movieClips)
 
-      # clear collection
+      # clear storage
       storage.batch.movieClips.clear()
 
     # sounds
@@ -2962,7 +2973,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.sounds)
 
-      # clear collection
+      # clear storage
       storage.batch.sounds.clear()
 
     # screens
@@ -2975,7 +2986,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.screens)
 
-      # clear collection
+      # clear storage
       storage.batch.screens.clear()
 
     # keying sets
@@ -2989,7 +3000,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.keyingSets)
 
-        # clear collection
+        # clear storage
         storage.batch.keyingSets.clear()
 
     # palettes
@@ -3002,7 +3013,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.palettes)
 
-      # clear collection
+      # clear storage
       storage.batch.palettes.clear()
 
     # brushes
@@ -3015,7 +3026,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.brushes)
 
-      # clear collection
+      # clear storage
       storage.batch.brushes.clear()
 
     # nodes
@@ -3032,7 +3043,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.nodes)
 
-          # clear collection
+          # clear storage
           storage.batch.nodes.clear()
 
       # compositing
@@ -3046,7 +3057,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.nodes)
 
-          # clear collection
+          # clear storage
           storage.batch.nodes.clear()
 
       # texture
@@ -3060,7 +3071,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.nodes)
 
-          # clear collection
+          # clear storage
           storage.batch.nodes.clear()
 
       # groups
@@ -3073,7 +3084,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.nodes)
 
-        # clear collection
+        # clear storage
         storage.batch.nodes.clear()
 
     # node labels
@@ -3093,7 +3104,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.nodeLabels)
 
-          # clear collection
+          # clear storage
           storage.batch.nodeLabels.clear()
 
       # compositing
@@ -3107,7 +3118,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.nodeLabels)
 
-          # clear collection
+          # clear storage
           storage.batch.nodeLabels.clear()
 
       # texture
@@ -3121,7 +3132,7 @@ def main(context, quickBatch):
           # process
           process(context, storage.batch.nodeLabels)
 
-          # clear collection
+          # clear storage
           storage.batch.nodeLabels.clear()
 
       # groups
@@ -3134,7 +3145,7 @@ def main(context, quickBatch):
         # process
         process(context, storage.batch.nodeLabels)
 
-        # clear collection
+        # clear storage
         storage.batch.nodeLabels.clear()
 
       # batch tag
@@ -3150,7 +3161,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.nodeGroups)
 
-      # clear collection
+      # clear storage
       storage.batch.nodeGroups.clear()
 
     # texts
@@ -3163,7 +3174,7 @@ def main(context, quickBatch):
       # process
       process(context, storage.batch.texts)
 
-      # clear collection
+      # clear storage
       storage.batch.texts.clear()
 
 # quick
@@ -3223,7 +3234,7 @@ def quick(context, object, panel, option):
         # process
         process(context, storage.batch.pencilLayers)
 
-        # clear
+        # clear storage
         storage.batch.pencilLayers.clear()
 
   # groups
@@ -3257,7 +3268,7 @@ def quick(context, object, panel, option):
       # process
       process(context, storage.batch.constraints)
 
-      # clear
+      # clear storage
       storage.batch.constraints.clear()
 
   # modifiers
@@ -3276,7 +3287,7 @@ def quick(context, object, panel, option):
       # process
       process(context, storage.batch.modifiers)
 
-      # clear
+      # clear storage
       storage.batch.modifiers.clear()
 
   # bone groups
@@ -3296,7 +3307,7 @@ def quick(context, object, panel, option):
         # process
         process(context, storage.batch.boneGroups)
 
-        # clear
+        # clear storage
         storage.batch.boneGroups.clear()
 
   # bones
@@ -3337,7 +3348,7 @@ def quick(context, object, panel, option):
               # process
               process(context, storage.batch.bones)
 
-              # clear
+              # clear storage
               storage.batch.bones.clear()
 
             # bone mode
@@ -3367,7 +3378,7 @@ def quick(context, object, panel, option):
               # process
               process(context, storage.batch.bones)
 
-              # clear
+              # clear storage
               storage.batch.bones.clear()
 
           # display bones
@@ -3415,7 +3426,7 @@ def quick(context, object, panel, option):
                 # process
                 process(context, storage.batch.constraints)
 
-                # clear
+                # clear storage
                 storage.batch.constraints.clear()
 
             # bone mode
@@ -3433,7 +3444,7 @@ def quick(context, object, panel, option):
                   # process
                   process(context, storage.batch.constraints)
 
-                  # clear
+                  # clear storage
                   storage.batch.constraints.clear()
 
           # display bones
@@ -3449,7 +3460,7 @@ def quick(context, object, panel, option):
             # process
             process(context, storage.batch.constraints)
 
-            # clear
+            # clear storage
             storage.batch.constraints.clear()
 
   # object data
@@ -3511,7 +3522,7 @@ def quick(context, object, panel, option):
         # process
         process(context, storage.batch.vertexGroups)
 
-        # clear
+        # clear storage
         storage.batch.vertexGroups.clear()
 
   # shapekeys
@@ -3532,7 +3543,7 @@ def quick(context, object, panel, option):
           # process
           process(context, storage.batch.shapekeys)
 
-          # clear
+          # clear storage
           storage.batch.shapekeys.clear()
 
   # uv maps
@@ -3552,7 +3563,7 @@ def quick(context, object, panel, option):
         # process
         process(context, storage.batch.uvs)
 
-        # clear
+        # clear storage
         storage.batch.uvs.clear()
 
   # vertex colors
@@ -3572,7 +3583,7 @@ def quick(context, object, panel, option):
         # process
         process(context, storage.batch.vertexColors)
 
-        # clear
+        # clear storage
         storage.batch.vertexColors.clear()
 
   # materials
@@ -3592,7 +3603,7 @@ def quick(context, object, panel, option):
       # process
       process(context, storage.batch.materials)
 
-      # clear
+      # clear storage
       storage.batch.materials.clear()
 
   # textures
@@ -3618,7 +3629,7 @@ def quick(context, object, panel, option):
             # process
             process(context, storage.batch.textures)
 
-            # clear
+            # clear storage
             storage.batch.textures.clear()
 
       # particle system textures
@@ -3638,7 +3649,7 @@ def quick(context, object, panel, option):
             # process
             process(context, storage.batch.textures)
 
-            # clear
+            # clear storage
             storage.batch.textures.clear()
 
       # modifier textures
@@ -3668,7 +3679,7 @@ def quick(context, object, panel, option):
         # process
         process(context, storage.batch.textures)
 
-        # clear
+        # clear storage
         storage.batch.textures.clear()
 
   # particle systems
@@ -3688,7 +3699,7 @@ def quick(context, object, panel, option):
       # process
       process(context, storage.batch.particleSystems)
 
-      # clear
+      # clear storage
       storage.batch.particleSystems.clear()
 
   # particle settings
@@ -3708,7 +3719,7 @@ def quick(context, object, panel, option):
       # process
       process(context, storage.batch.particleSettings)
 
-      # clear
+      # clear storage
       storage.batch.particleSettings.clear()
 
 # sort
@@ -3966,6 +3977,8 @@ def process(context, collection):
   '''
 
   if not collection == []:
+
+    collection.sort()
 
     # option
     option = context.scene.BatchName

@@ -668,7 +668,7 @@ def reset(context, panel, auto, names, name, copy):
     batchNameOption.trimEnd = 0
 
     # sort
-    batchNameOption.sort = True
+    batchNameOption.sort = False
 
     # start
     batchNameOption.start = 1

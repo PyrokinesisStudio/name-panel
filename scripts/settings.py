@@ -1576,7 +1576,7 @@ class batch:
     sort = BoolProperty(
       name = 'Sort Duplicates',
       description = 'Recount names that are identical with a trailing number.',
-      default = True
+      default = False
     )
 
     # start

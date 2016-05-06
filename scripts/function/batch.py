@@ -206,9 +206,9 @@ def main(context, quickBatch):
           # clear storage
           collection.clear()
 
-
   # quick batch
   else:
+
     # batch type
     if option.batchType in {'SELECTED', 'OBJECTS'}:
 
@@ -1242,14 +1242,16 @@ def main(context, quickBatch):
                               # sort
                               sort(context, texslot.texture)
 
-        # clear shared
-        shared.textures.clear()
+            # clear shared
+            shared.textures.clear()
 
-        # process
-        process(context, storage.batch.textures)
+            print(storage.batch.textures)
 
-        # clear storage
-        storage.batch.textures.clear()
+            # process
+            process(context, storage.batch.textures)
+
+            # clear storage
+            storage.batch.textures.clear()
 
       # particle systems
       if option.particleSystems:

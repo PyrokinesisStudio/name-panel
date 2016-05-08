@@ -81,6 +81,14 @@ def main(context, quickBatch):
         # sort
         if option.sort:
           storage.batch.objects.sort()
+          storage.batch.cameras.sort()
+          storage.batch.meshes.sort()
+          storage.batch.curves.sort()
+          storage.batch.lamps.sort()
+          storage.batch.lattices.sort()
+          storage.batch.metaballs.sort()
+          storage.batch.speakers.sort()
+          storage.batch.armatures.sort()
 
           # all
         all = [
@@ -131,6 +139,14 @@ def main(context, quickBatch):
         # sort
         if option.sort:
           storage.batch.objects.sort()
+          storage.batch.cameras.sort()
+          storage.batch.meshes.sort()
+          storage.batch.curves.sort()
+          storage.batch.lamps.sort()
+          storage.batch.lattices.sort()
+          storage.batch.metaballs.sort()
+          storage.batch.speakers.sort()
+          storage.batch.armatures.sort()
 
         # all
         all = [
@@ -175,10 +191,6 @@ def main(context, quickBatch):
 
       # quick
       quick(context, context.active_object, panel, option)
-
-      # sort
-      if option.sort:
-        storage.batch.objects.sort()
 
       # all
       all = [

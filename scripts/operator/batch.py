@@ -121,19 +121,6 @@ class name(Operator):
       row.prop(option, 'controllers', text='Controllers', toggle=True)
       row.prop(option, 'actuators', text='Actuators', toggle=True)
 
-      # column
-      column = layout.column(align=True)
-
-      # label
-      column.label(text='Freestyle:')
-
-      # row
-      row = column.row(align=True)
-      row.scale_x = 1.5
-      row.prop(option, 'lineSets', text='', icon='BRUSH_TEXDRAW')
-      row.prop(option, 'linestyles', text='', icon='LINE_DATA')
-      row.prop(option, 'linestyleModifiers', text='', icon='MODIFIER')
-      row.prop(option, 'linestyleModifierType', text='')
 
       # column
       column = layout.column()
@@ -166,6 +153,20 @@ class name(Operator):
       row.prop(option, 'nodeGroups', text='', icon='NODETREE')
       row.prop(option, 'texts', text='', icon='TEXT')
 
+      # column
+      column = layout.column(align=True)
+
+      # label
+      column.label(text='Freestyle:')
+
+      # row
+      row = column.row(align=True)
+      row.scale_x = 1.5
+      row.prop(option, 'lineSets', text='', icon='BRUSH_TEXDRAW')
+      row.prop(option, 'linestyles', text='', icon='LINE_DATA')
+      row.prop(option, 'linestyleModifiers', text='', icon='MODIFIER')
+      row.prop(option, 'linestyleModifierType', text='')
+      
       # input fields
       column.separator()
       column.separator()

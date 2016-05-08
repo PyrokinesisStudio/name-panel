@@ -52,7 +52,7 @@ class shared:
 # main
 def main(context, quickBatch):
   '''
-    Send datablock values to sort then send collections to process, action group & lineset names are sent to name.
+    Send datablock values to populate then send collections to process, action group & lineset names are sent to name.
   '''
 
   # tag
@@ -77,6 +77,10 @@ def main(context, quickBatch):
 
           # quick
           quick(context, object, panel, option)
+
+        # sort
+        if option.sort:
+          storage.batch.objects.sort()
 
           # all
         all = [
@@ -124,6 +128,10 @@ def main(context, quickBatch):
             # quick
             quick(context, object, panel, option)
 
+        # sort
+        if option.sort:
+          storage.batch.objects.sort()
+
         # all
         all = [
           # object
@@ -167,6 +175,10 @@ def main(context, quickBatch):
 
       # quick
       quick(context, context.active_object, panel, option)
+
+      # sort
+      if option.sort:
+        storage.batch.objects.sort()
 
       # all
       all = [
@@ -224,14 +236,14 @@ def main(context, quickBatch):
                 # object type
                 if option.objectType in 'ALL':
 
-                  # sort
-                  sort(context, object.animation_data.action)
+                  # populate
+                  populate(context, object.animation_data.action)
 
                 # object type
                 elif option.objectType in object.type:
 
-                  # sort
-                  sort(context, object.animation_data.action)
+                  # populate
+                  populate(context, object.animation_data.action)
 
             # batch type
             else:
@@ -239,14 +251,14 @@ def main(context, quickBatch):
               # object type
               if option.objectType in 'ALL':
 
-                # sort
-                sort(context, object.animation_data.action)
+                # populate
+                populate(context, object.animation_data.action)
 
               # object type
               elif option.objectType in object.type:
 
-                # sort
-                sort(context, object.animation_data.action)
+                # populate
+                populate(context, object.animation_data.action)
 
         # clear duplicates
         actions = []
@@ -269,14 +281,14 @@ def main(context, quickBatch):
                   # object type
                   if option.objectType in 'ALL':
 
-                    # sort
-                    sort(context, object.animation_data.action)
+                    # populate
+                    populate(context, object.animation_data.action)
 
                   # object type
                   elif option.objectType in object.type:
 
-                    # sort
-                    sort(context, object.animation_data.action)
+                    # populate
+                    populate(context, object.animation_data.action)
 
               # batch type
               else:
@@ -284,14 +296,14 @@ def main(context, quickBatch):
                 # object type
                 if option.objectType in 'ALL':
 
-                  # sort
-                  sort(context, object.animation_data.action)
+                  # populate
+                  populate(context, object.animation_data.action)
 
                 # object type
                 elif option.objectType in object.type:
 
-                  # sort
-                  sort(context, object.animation_data.action)
+                  # populate
+                  populate(context, object.animation_data.action)
 
         # clear duplicates
         actions = []
@@ -303,14 +315,17 @@ def main(context, quickBatch):
           for group in action[1][1].groups:
             group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
 
-          # fix paths
-          for curve in action[1][1].fcurves[:]:
-            if 'pose' in curve.data_path:
-              if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
-                try:
-                  curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
-                except:
-                  pass
+          # bones
+          if option.bones:
+
+            # fix paths
+            for curve in action[1][1].fcurves[:]:
+              if 'pose' in curve.data_path:
+                if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
+                  try:
+                    curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
+                  except:
+                    pass
 
       # grease pencil
       if option.greasePencil:
@@ -325,31 +340,31 @@ def main(context, quickBatch):
                 if option.objectType in 'ALL':
                   if object.grease_pencil.users == 1:
 
-                    # sort
-                    sort(context, object.grease_pencil)
+                    # populate
+                    populate(context, object.grease_pencil)
                   else:
 
                     # shared
                     if object.grease_pencil not in shared.greasePencils[:]:
                       shared.greasePencils.append(object.grease_pencil)
 
-                      # sort
-                      sort(context, object.grease_pencil)
+                      # populate
+                      populate(context, object.grease_pencil)
 
                 # object type
                 elif option.objectType in object.type:
                   if object.grease_pencil.users == 1:
 
-                    # sort
-                    sort(context, object.grease_pencil)
+                    # populate
+                    populate(context, object.grease_pencil)
                   else:
 
                     # shared
                     if object.grease_pencil not in shared.greasePencils[:]:
                       shared.greasePencils.append(object.grease_pencil)
 
-                      # sort
-                      sort(context, object.grease_pencil)
+                      # populate
+                      populate(context, object.grease_pencil)
 
             # batch type
             else:
@@ -358,23 +373,23 @@ def main(context, quickBatch):
               if option.objectType in 'ALL':
                 if object.grease_pencil.users == 1:
 
-                  # sort
-                  sort(context, object.grease_pencil)
+                  # populate
+                  populate(context, object.grease_pencil)
                 else:
 
                   # shared
                   if object.grease_pencil not in shared.greasePencils[:]:
                     shared.greasePencils.append(object.grease_pencil)
 
-                    # sort
-                    sort(context, object.grease_pencil)
+                    # populate
+                    populate(context, object.grease_pencil)
 
               # object type
               elif option.objectType in object.type:
                 if object.grease_pencil.users == 1:
 
-                  # sort
-                  sort(context, object.grease_pencil)
+                  # populate
+                  populate(context, object.grease_pencil)
 
                 else:
 
@@ -382,8 +397,8 @@ def main(context, quickBatch):
                   if object.grease_pencil not in shared.greasePencils[:]:
                     shared.greasePencils.append(object.grease_pencil)
 
-                    # sort
-                    sort(context, object.grease_pencil)
+                    # populate
+                    populate(context, object.grease_pencil)
 
 
           # process
@@ -411,8 +426,8 @@ def main(context, quickBatch):
                     # layers
                     for layer in object.grease_pencil.layers[:]:
 
-                      # sort
-                      sort(context, layer)
+                      # populate
+                      populate(context, layer)
                   else:
 
                     # shared
@@ -422,8 +437,8 @@ def main(context, quickBatch):
                       # layers
                       for layer in object.grease_pencil.layers[:]:
 
-                        # sort
-                        sort(context, layer)
+                        # populate
+                        populate(context, layer)
 
                 # object type
                 elif option.objectType in object.type:
@@ -432,8 +447,8 @@ def main(context, quickBatch):
                     # layers
                     for layer in object.grease_pencil.layers[:]:
 
-                      # sort
-                      sort(context, layer)
+                      # populate
+                      populate(context, layer)
                   else:
 
                     # shared
@@ -443,8 +458,8 @@ def main(context, quickBatch):
                       # layers
                       for layer in object.grease_pencil.layers[:]:
 
-                        # sort
-                        sort(context, layer)
+                        # populate
+                        populate(context, layer)
 
             # batch type
             else:
@@ -456,8 +471,8 @@ def main(context, quickBatch):
                   # layers
                   for layer in object.grease_pencil.layers[:]:
 
-                    # sort
-                    sort(context, layer)
+                    # populate
+                    populate(context, layer)
                 else:
 
                   # shared
@@ -467,8 +482,8 @@ def main(context, quickBatch):
                     # layers
                     for layer in object.grease_pencil.layers[:]:
 
-                      # sort
-                      sort(context, layer)
+                      # populate
+                      populate(context, layer)
 
               # object type
               elif option.objectType in object.type:
@@ -477,8 +492,8 @@ def main(context, quickBatch):
                   # layers
                   for layer in object.grease_pencil.layers[:]:
 
-                    # sort
-                    sort(context, layer)
+                    # populate
+                    populate(context, layer)
                 else:
 
                   # shared
@@ -488,8 +503,8 @@ def main(context, quickBatch):
                     # layers
                     for layer in object.grease_pencil.layers[:]:
 
-                      # sort
-                      sort(context, layer)
+                      # populate
+                      populate(context, layer)
 
             # process
             process(context, storage.batch.pencilLayers)
@@ -511,14 +526,14 @@ def main(context, quickBatch):
               # object type
               if option.objectType in 'ALL':
 
-                # sort
-                sort(context, object)
+                # populate
+                populate(context, object)
 
               # object type
               elif option.objectType in object.type:
 
-                # sort
-                sort(context, object)
+                # populate
+                populate(context, object)
 
           # batch type
           else:
@@ -526,14 +541,14 @@ def main(context, quickBatch):
             # object type
             if option.objectType in 'ALL':
 
-              # sort
-              sort(context, object)
+              # populate
+              populate(context, object)
 
             # object type
             elif option.objectType in object.type:
 
-              # sort
-              sort(context, object)
+              # populate
+              populate(context, object)
 
         # process
         process(context, storage.batch.objects)
@@ -554,8 +569,8 @@ def main(context, quickBatch):
                 for group in bpy.data.groups[:]:
                   if object in group.objects[:]:
 
-                    # sort
-                    sort(context, group)
+                    # populate
+                    populate(context, group)
 
 
               # object type
@@ -563,8 +578,8 @@ def main(context, quickBatch):
                 for group in bpy.data.groups[:]:
                   if object in group.objects[:]:
 
-                    # sort
-                    sort(context, group)
+                    # populate
+                    populate(context, group)
 
           # batch type
           else:
@@ -574,16 +589,16 @@ def main(context, quickBatch):
               for group in bpy.data.groups[:]:
                 if object in group.objects[:]:
 
-                  # sort
-                  sort(context, group)
+                  # populate
+                  populate(context, group)
 
             # object type
             elif option.objectType in object.type:
               for group in bpy.data.groups[:]:
                 if object in group.objects[:]:
 
-                  # sort
-                  sort(context, group)
+                  # populate
+                  populate(context, group)
 
         # clear duplicates
         objectGroups = []
@@ -607,14 +622,14 @@ def main(context, quickBatch):
                 # constraint type
                 if option.constraintType in 'ALL':
 
-                  # sort
-                  sort(context, constraint)
+                  # populate
+                  populate(context, constraint)
 
                 # constraint type
                 elif option.constraintType in constraint.type:
 
-                  # sort
-                  sort(context, constraint)
+                  # populate
+                  populate(context, constraint)
 
           # batch type
           else:
@@ -623,14 +638,14 @@ def main(context, quickBatch):
               # constraint type
               if option.constraintType in 'ALL':
 
-                # sort
-                sort(context, constraint)
+                # populate
+                populate(context, constraint)
 
               # constraint type
               elif option.constraintType in constraint.type:
 
-                # sort
-                sort(context, constraint)
+                # populate
+                populate(context, constraint)
 
           # process
           process(context, storage.batch.constraints)
@@ -650,14 +665,14 @@ def main(context, quickBatch):
                 # modifier type
                 if option.modifierType in 'ALL':
 
-                  # sort
-                  sort(context, modifier)
+                  # populate
+                  populate(context, modifier)
 
                 # modifier tye
                 elif option.modifierType in modifier.type:
 
-                  # sort
-                  sort(context, modifier)
+                  # populate
+                  populate(context, modifier)
 
           # batch type
           else:
@@ -666,14 +681,14 @@ def main(context, quickBatch):
               # modifier type
               if option.modifierType in 'ALL':
 
-                # sort
-                sort(context, modifier)
+                # populate
+                populate(context, modifier)
 
               # modifier tye
               elif option.modifierType in modifier.type:
 
-                # sort
-                sort(context, modifier)
+                # populate
+                populate(context, modifier)
 
           # process
           process(context, storage.batch.modifiers)
@@ -694,31 +709,31 @@ def main(context, quickBatch):
                 if option.objectType in 'ALL':
                   if object.data.users == 1:
 
-                    # sort
-                    sort(context, object.data)
+                    # populate
+                    populate(context, object.data)
                   else:
 
                     # shared
                     if object.data.name not in shared.objectData[:]:
                       shared.objectData.append(object.data.name)
 
-                      # sort
-                      sort(context, object.data)
+                      # populate
+                      populate(context, object.data)
 
                 # object type
                 elif option.objectType in object.type:
                   if object.data.users == 1:
 
-                    # sort
-                    sort(context, object.data)
+                    # populate
+                    populate(context, object.data)
                   else:
 
                     # shared shared
                     if object.data.name not in shared.objectData[:]:
                       shared.objectData.append(object.data.name)
 
-                      # sort
-                      sort(context, object.data)
+                      # populate
+                      populate(context, object.data)
 
             # batch type
             else:
@@ -727,31 +742,31 @@ def main(context, quickBatch):
               if option.objectType in 'ALL':
                 if object.data.users == 1:
 
-                  # sort
-                  sort(context, object.data)
+                  # populate
+                  populate(context, object.data)
                 else:
 
                   # shared shared
                   if object.data.name not in shared.objectData[:]:
                     shared.objectData.append(object.data.name)
 
-                    # sort
-                    sort(context, object.data)
+                    # populate
+                    populate(context, object.data)
 
               # object type
               elif option.objectType in object.type:
                 if object.data.users == 1:
 
-                  # sort
-                  sort(context, object.data)
+                  # populate
+                  populate(context, object.data)
                 else:
 
                   # shared shared
                   if object.data.name not in shared.objectData[:]:
                     shared.objectData.append(object.data.name)
 
-                    # sort
-                    sort(context, object.data)
+                    # populate
+                    populate(context, object.data)
 
         # clear shared
         shared.objectData.clear()
@@ -789,16 +804,16 @@ def main(context, quickBatch):
                 for group in object.pose.bone_groups[:]:
                   if object.select:
 
-                    # sort
-                    sort(context, group)
+                    # populate
+                    populate(context, group)
 
           # batch type
           else:
             if object.type in 'ARMATURE':
               for group in object.pose.bone_groups[:]:
 
-                # sort
-                sort(context, group)
+                # populate
+                populate(context, group)
 
           # process
           process(context, storage.batch.boneGroups)
@@ -820,16 +835,16 @@ def main(context, quickBatch):
                   for bone in bpy.data.armatures[object.data.name].edit_bones[:]:
                     if bone.select:
 
-                      # sort
-                      sort(context, bone)
+                      # populate
+                      populate(context, bone)
 
                 # pose or object mode
                 else:
                   for bone in bpy.data.armatures[object.data.name].bones[:]:
                     if bone.select:
 
-                      # sort
-                      sort(context, bone)
+                      # populate
+                      populate(context, bone)
 
             # batch type
             else:
@@ -838,15 +853,15 @@ def main(context, quickBatch):
               if object.mode in 'EDIT':
                 for bone in bpy.data.armatures[object.data.name].edit_bones[:]:
 
-                    # sort
-                    sort(context, bone)
+                    # populate
+                    populate(context, bone)
 
               # pose or object mode
               else:
                 for bone in bpy.data.armatures[object.data.name].bones[:]:
 
-                    # sort
-                    sort(context, bone)
+                    # populate
+                    populate(context, bone)
 
             # process
             process(context, storage.batch.bones)
@@ -869,14 +884,14 @@ def main(context, quickBatch):
                       # constraint type
                       if option.constraintType in 'ALL':
 
-                        # sort
-                        sort(context, constraint)
+                        # populate
+                        populate(context, constraint)
 
                       # constraint type
                       elif option.constraintType in constraint.type:
 
-                        # sort
-                        sort(context, constraint)
+                        # populate
+                        populate(context, constraint)
 
                     # process
                     process(context, storage.batch.constraints)
@@ -892,14 +907,14 @@ def main(context, quickBatch):
                   # constraint type
                   if option.constraintType in 'ALL':
 
-                    # sort
-                    sort(context, constraint)
+                    # populate
+                    populate(context, constraint)
 
                   # constraint type
                   elif option.constraintType in constraint.type:
 
-                    # sort
-                    sort(context, constraint)
+                    # populate
+                    populate(context, constraint)
 
                 # process
                 process(context, storage.batch.constraints)
@@ -920,14 +935,14 @@ def main(context, quickBatch):
                   # object type
                   if option.objectType in 'ALL':
 
-                    # sort
-                    sort(context, group)
+                    # populate
+                    populate(context, group)
 
                   # object type
                   elif option.objectType in object.type:
 
-                    # sort
-                    sort(context, group)
+                    # populate
+                    populate(context, group)
 
                 # process
                 process(context, storage.batch.vertexGroups)
@@ -942,14 +957,14 @@ def main(context, quickBatch):
                 # object type
                 if option.objectType in 'ALL':
 
-                  # sort
-                  sort(context, group)
+                  # populate
+                  populate(context, group)
 
                 # object type
                 elif option.objectType in object.type:
 
-                  # sort
-                  sort(context, group)
+                  # populate
+                  populate(context, group)
 
               # process
               process(context, storage.batch.vertexGroups)
@@ -972,14 +987,14 @@ def main(context, quickBatch):
                     # object type
                     if option.objectType in 'ALL':
 
-                      # sort
-                      sort(context, block)
+                      # populate
+                      populate(context, block)
 
                     # object type
                     elif option.objectType in object.type:
 
-                      # sort
-                      sort(context, block)
+                      # populate
+                      populate(context, block)
 
               # batch type
               else:
@@ -988,14 +1003,14 @@ def main(context, quickBatch):
                   # object type
                   if option.objectType in 'ALL':
 
-                    # sort
-                    sort(context, block)
+                    # populate
+                    populate(context, block)
 
                   # object type
                   elif option.objectType in object.type:
 
-                    # sort
-                    sort(context, block)
+                    # populate
+                    populate(context, block)
 
               # process
               process(context, storage.batch.shapekeys)
@@ -1013,15 +1028,15 @@ def main(context, quickBatch):
               if object.select:
                 for uv in object.data.uv_textures[:]:
 
-                  # sort
-                  sort(context, uv)
+                  # populate
+                  populate(context, uv)
 
             # batch type
             else:
              for uv in object.data.uv_textures[:]:
 
-                # sort
-                sort(context, uv)
+                # populate
+                populate(context, uv)
 
             # process
             process(context, storage.batch.uvs)
@@ -1039,15 +1054,15 @@ def main(context, quickBatch):
               if object.select:
                 for color in object.data.vertex_colors[:]:
 
-                  # sort
-                  sort(context, color)
+                  # populate
+                  populate(context, color)
 
             # batch type
             else:
               for color in object.data.vertex_colors[:]:
 
-                # sort
-                sort(context, color)
+                # populate
+                populate(context, color)
 
             # process
             process(context, storage.batch.vertexColors)
@@ -1069,22 +1084,22 @@ def main(context, quickBatch):
                     # object type
                     if option.objectType in 'ALL':
 
-                      # sort
-                      sort(context, slot.material)
+                      # populate
+                      populate(context, slot.material)
 
                     # object type
                     elif option.objectType in object.type:
 
-                      # sort
-                      sort(context, slot.material)
+                      # populate
+                      populate(context, slot.material)
                   else:
 
                     # shared
                     if slot.material not in shared.materials[:]:
                       shared.materials.append(slot.material)
 
-                      # sort
-                      sort(context, slot.material)
+                      # populate
+                      populate(context, slot.material)
 
           # batch type
           else:
@@ -1095,22 +1110,22 @@ def main(context, quickBatch):
                   # object type
                   if option.objectType in 'ALL':
 
-                    # sort
-                    sort(context, slot.material)
+                    # populate
+                    populate(context, slot.material)
 
                   # object type
                   elif option.objectType in object.type:
 
-                    # sort
-                    sort(context, slot.material)
+                    # populate
+                    populate(context, slot.material)
                 else:
 
                   # shared
                   if slot.material not in shared.materials[:]:
                     shared.materials.append(slot.material)
 
-                    # sort
-                    sort(context, slot.material)
+                    # populate
+                    populate(context, slot.material)
 
           # process
           process(context, storage.batch.materials)
@@ -1139,22 +1154,22 @@ def main(context, quickBatch):
                             # object type
                             if option.objectType in 'ALL':
 
-                              # sort
-                              sort(context, texslot.texture)
+                              # populate
+                              populate(context, texslot.texture)
 
                             # object type
                             elif option.objectType in object.type:
 
-                              # sort
-                              sort(context, texslot.texture)
+                              # populate
+                              populate(context, texslot.texture)
                           else:
 
                             # shared
                             if texslot.texture not in shared.textures[:]:
                               shared.textures.append(texslot.texture)
 
-                              # sort
-                              sort(context, texslot.texture)
+                              # populate
+                              populate(context, texslot.texture)
                     else:
 
                       # shared
@@ -1167,22 +1182,22 @@ def main(context, quickBatch):
                               # object type
                               if option.objectType in 'ALL':
 
-                                # sort
-                                sort(context, texslot.texture)
+                                # populate
+                                populate(context, texslot.texture)
 
                               # object type
                               elif option.objectType in object.type:
 
-                                # sort
-                                sort(context, texslot.texture)
+                                # populate
+                                populate(context, texslot.texture)
                             else:
 
                               # shared
                               if texslot.texture not in shared.textures[:]:
                                 shared.textures.append(texslot.texture)
 
-                                # sort
-                                sort(context, texslot.texture)
+                                # populate
+                                populate(context, texslot.texture)
 
                     # process
                     process(context, storage.batch.textures)
@@ -1202,22 +1217,22 @@ def main(context, quickBatch):
                           # object type
                           if option.objectType in 'ALL':
 
-                            # sort
-                            sort(context, texslot.texture)
+                            # populate
+                            populate(context, texslot.texture)
 
                           # object type
                           elif option.objectType in object.type:
 
-                            # sort
-                            sort(context, texslot.texture)
+                            # populate
+                            populate(context, texslot.texture)
                         else:
 
                           # shared
                           if texslot.texture not in shared.textures[:]:
                             shared.textures.append(texslot.texture)
 
-                            # sort
-                            sort(context, texslot.texture)
+                            # populate
+                            populate(context, texslot.texture)
                   else:
 
                     # shared
@@ -1230,22 +1245,22 @@ def main(context, quickBatch):
                             # object type
                             if option.objectType in 'ALL':
 
-                              # sort
-                              sort(context, texslot.texture)
+                              # populate
+                              populate(context, texslot.texture)
 
                             # object type
                             elif option.objectType in object.type:
 
-                              # sort
-                              sort(context, texslot.texture)
+                              # populate
+                              populate(context, texslot.texture)
                           else:
 
                             # shared
                             if texslot.texture not in shared.textures[:]:
                               shared.textures.append(texslot.texture)
 
-                              # sort
-                              sort(context, texslot.texture)
+                              # populate
+                              populate(context, texslot.texture)
 
                   # process
                   process(context, storage.batch.textures)
@@ -1269,14 +1284,14 @@ def main(context, quickBatch):
                   # object type
                   if option.objectType in 'ALL':
 
-                    # sort
-                    sort(context, system)
+                    # populate
+                    populate(context, system)
 
                   # object type
                   elif option.objectType in object.type:
 
-                    # sort
-                    sort(context, system)
+                    # populate
+                    populate(context, system)
 
             # batch type
             else:
@@ -1285,14 +1300,14 @@ def main(context, quickBatch):
                 # object type
                 if option.objectType in 'ALL':
 
-                  # sort
-                  sort(context, system)
+                  # populate
+                  populate(context, system)
 
                 # object type
                 elif option.objectType in object.type:
 
-                  # sort
-                  sort(context, system)
+                  # populate
+                  populate(context, system)
 
             # process
             process(context, storage.batch.particleSystems)
@@ -1314,31 +1329,31 @@ def main(context, quickBatch):
                   if option.objectType in 'ALL':
                     if system.settings.users == 1:
 
-                      # sort
-                      sort(context, system.settings)
+                      # populate
+                      populate(context, system.settings)
                     else:
 
                       # shared
                       if system.settings not in shared.particleSettings[:]:
                         shared.particleSettings.append(system.settings)
 
-                        # sort
-                        sort(context, system.settings)
+                        # populate
+                        populate(context, system.settings)
 
                   # object type
                   elif option.objectType in object.type:
                     if system.settings.users == 1:
 
-                      # sort
-                      sort(context, system.settings)
+                      # populate
+                      populate(context, system.settings)
                     else:
 
                       # shared
                       if system.settings not in shared.particleSettings[:]:
                         shared.particleSettings.append(system.settings)
 
-                        # sort
-                        sort(context, system.settings)
+                        # populate
+                        populate(context, system.settings)
 
             # batch type
             else:
@@ -1348,31 +1363,31 @@ def main(context, quickBatch):
                 if option.objectType in 'ALL':
                   if system.settings.users == 1:
 
-                    # sort
-                    sort(context, system.settings)
+                    # populate
+                    populate(context, system.settings)
                   else:
 
                     # shared
                     if system.settings not in shared.particleSettings[:]:
                       shared.particleSettings.append(system.settings)
 
-                      # sort
-                      sort(context, system.settings)
+                      # populate
+                      populate(context, system.settings)
 
                 # object type
                 elif option.objectType in object.type:
                   if system.settings.users == 1:
 
-                    # sort
-                    sort(context, system.settings)
+                    # populate
+                    populate(context, system.settings)
                   else:
 
                     # shared
                     if system.settings not in shared.particleSettings[:]:
                       shared.particleSettings.append(system.settings)
 
-                      # sort
-                      sort(context, system.settings)
+                      # populate
+                      populate(context, system.settings)
 
           # process
           process(context, storage.batch.particleSettings)
@@ -1395,16 +1410,16 @@ def main(context, quickBatch):
             # object type
             if option.objectType in 'ALL':
 
-              # sort
+              # populate
               for sensor in object.game.sensors[:]:
-                sort(context, sensor)
+                populate(context, sensor)
 
             # object type
             elif option.objectType in object.type:
 
-              # sort
+              # populate
               for sensor in object.game.sensors[:]:
-                sort(context, sensor)
+                populate(context, sensor)
 
         # batch type
         else:
@@ -1412,16 +1427,16 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
+            # populate
             for sensor in object.game.sensors[:]:
-              sort(context, sensor)
+              populate(context, sensor)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
+            # populate
             for sensor in object.game.sensors[:]:
-              sort(context, sensor)
+              populate(context, sensor)
 
         # process
         process(context, storage.batch.sensors)
@@ -1440,16 +1455,16 @@ def main(context, quickBatch):
             # object type
             if option.objectType in 'ALL':
 
-              # sort
+              # populate
               for controller in object.game.controllers[:]:
-                sort(context, controller)
+                populate(context, controller)
 
             # object type
             elif option.objectType in object.type:
 
-              # sort
+              # populate
               for controller in object.game.controllers[:]:
-                sort(context, controller)
+                populate(context, controller)
 
         # batch type
         else:
@@ -1457,16 +1472,16 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
+            # populate
             for controller in object.game.controllers[:]:
-              sort(context, controller)
+              populate(context, controller)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
+            # populate
             for controller in object.game.controllers[:]:
-              sort(context, controller)
+              populate(context, controller)
 
         # process
         process(context, storage.batch.controllers)
@@ -1485,16 +1500,16 @@ def main(context, quickBatch):
             # object type
             if option.objectType in 'ALL':
 
-              # sort
+              # populate
               for actuator in object.game.actuators[:]:
-                sort(context, actuator)
+                populate(context, actuator)
 
             # object type
             elif option.objectType in object.type:
 
-              # sort
+              # populate
               for actuator in object.game.actuators[:]:
-                sort(context, actuator)
+                populate(context, actuator)
 
         # batch type
         else:
@@ -1502,16 +1517,16 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
+            # populate
             for actuator in object.game.actuators[:]:
-              sort(context, actuator)
+              populate(context, actuator)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
+            # populate
             for actuator in object.game.actuators[:]:
-              sort(context, actuator)
+              populate(context, actuator)
 
         # process
         process(context, storage.batch.actuators)
@@ -1531,14 +1546,14 @@ def main(context, quickBatch):
               # object type
               if option.objectType in 'ALL':
 
-                # sort
-                sort(context, object.animation_data.action)
+                # populate
+                populate(context, object.animation_data.action)
 
               # object type
               elif option.objectType in object.type:
 
-                # sort
-                sort(context, object.animation_data.action)
+                # populate
+                populate(context, object.animation_data.action)
 
         # clear duplicates
         actions = []
@@ -1559,14 +1574,14 @@ def main(context, quickBatch):
               # object type
               if option.objectType in 'ALL':
 
-                # sort
-                sort(context, object.animation_data.action)
+                # populate
+                populate(context, object.animation_data.action)
 
               # object type
               elif option.objectType in object.type:
 
-                # sort
-                sort(context, object.animation_data.action)
+                # populate
+                populate(context, object.animation_data.action)
 
         # clear duplicates
         actions = []
@@ -1578,14 +1593,17 @@ def main(context, quickBatch):
           for group in action[1][1].groups:
             group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
 
-          # fix paths
-          for curve in action[1][1].fcurves[:]:
-            if 'pose' in curve.data_path:
-              if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
-                try:
-                  curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
-                except:
-                  pass
+          # bones
+          if option.bones:
+
+            # fix paths
+            for curve in action[1][1].fcurves[:]:
+              if 'pose' in curve.data_path:
+                if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
+                  try:
+                    curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
+                  except:
+                    pass
 
       # grease pencil
       if option.greasePencil:
@@ -1596,8 +1614,8 @@ def main(context, quickBatch):
             if option.objectType in 'ALL':
               if object.grease_pencil.users == 1:
 
-                # sort
-                sort(context, object.grease_pencil)
+                # populate
+                populate(context, object.grease_pencil)
 
               else:
 
@@ -1605,15 +1623,15 @@ def main(context, quickBatch):
                 if object.grease_pencil not in shared.greasePencils[:]:
                   shared.greasePencils.append(object.grease_pencil)
 
-                  # sort
-                  sort(context, object.grease_pencil)
+                  # populate
+                  populate(context, object.grease_pencil)
 
             # object type
             elif option.objectType in object.type:
               if object.grease_pencil.users == 1:
 
-                # sort
-                sort(context, object.grease_pencil)
+                # populate
+                populate(context, object.grease_pencil)
 
               else:
 
@@ -1621,8 +1639,8 @@ def main(context, quickBatch):
                 if object.grease_pencil not in shared.greasePencils[:]:
                   shared.greasePencils.append(object.grease_pencil)
 
-                  # sort
-                  sort(context, object.grease_pencil)
+                  # populate
+                  populate(context, object.grease_pencil)
 
           # process
           process(context, storage.batch.greasePencils)
@@ -1646,8 +1664,8 @@ def main(context, quickBatch):
                 # layers
                 for layer in object.grease_pencil.layers[:]:
 
-                  # sort
-                  sort(context, layer)
+                  # populate
+                  populate(context, layer)
               else:
 
                 # shared
@@ -1657,8 +1675,8 @@ def main(context, quickBatch):
                   # layers
                   for layer in object.grease_pencil.layers[:]:
 
-                    # sort
-                    sort(context, layer)
+                    # populate
+                    populate(context, layer)
 
             # object type
             elif option.objectType in object.type:
@@ -1667,8 +1685,8 @@ def main(context, quickBatch):
                 # layers
                 for layer in object.grease_pencil.layers[:]:
 
-                  # sort
-                  sort(context, layer)
+                  # populate
+                  populate(context, layer)
               else:
 
                 # shared
@@ -1678,8 +1696,8 @@ def main(context, quickBatch):
                   # layers
                   for layer in object.grease_pencil.layers[:]:
 
-                    # sort
-                    sort(context, layer)
+                    # populate
+                    populate(context, layer)
 
             # process
             process(context, storage.batch.pencilLayers)
@@ -1697,14 +1715,14 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
-            sort(context, object)
+            # populate
+            populate(context, object)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
-            sort(context, object)
+            # populate
+            populate(context, object)
 
         # process
         process(context, storage.batch.objects)
@@ -1721,16 +1739,16 @@ def main(context, quickBatch):
             for group in bpy.data.groups[:]:
               if object in group.objects[:]:
 
-                # sort
-                sort(context, group)
+                # populate
+                populate(context, group)
 
           # object type
           elif option.objectType in object.type:
             for group in bpy.data.groups[:]:
               if object in group.objects[:]:
 
-                # sort
-                sort(context, group)
+                # populate
+                populate(context, group)
 
         # clear duplicates
         objectGroups = []
@@ -1750,14 +1768,14 @@ def main(context, quickBatch):
             # constraint type
             if option.constraintType in 'ALL':
 
-              # sort
-              sort(context, constraint)
+              # populate
+              populate(context, constraint)
 
             # constraint type
             elif option.constraintType in constraint.type:
 
-              # sort
-              sort(context, constraint)
+              # populate
+              populate(context, constraint)
 
           # process
           process(context, storage.batch.constraints)
@@ -1773,14 +1791,14 @@ def main(context, quickBatch):
             # modifier type
             if option.modifierType in 'ALL':
 
-              # sort
-              sort(context, modifier)
+              # populate
+              populate(context, modifier)
 
             # modifier tye
             elif option.modifierType in modifier.type:
 
-              # sort
-              sort(context, modifier)
+              # populate
+              populate(context, modifier)
 
           # process
           process(context, storage.batch.modifiers)
@@ -1797,31 +1815,31 @@ def main(context, quickBatch):
             if option.objectType in 'ALL':
               if object.data.users == 1:
 
-                # sort
-                sort(context, object.data)
+                # populate
+                populate(context, object.data)
               else:
 
                 # shared shared
                 if object.data.name not in shared.objectData[:]:
                   shared.objectData.append(object.data.name)
 
-                  # sort
-                  sort(context, object.data)
+                  # populate
+                  populate(context, object.data)
 
             # object type
             elif option.objectType in object.type:
               if object.data.users == 1:
 
-                # sort
-                sort(context, object.data)
+                # populate
+                populate(context, object.data)
               else:
 
                 # shared shared
                 if object.data.name not in shared.objectData[:]:
                   shared.objectData.append(object.data.name)
 
-                  # sort
-                  sort(context, object.data)
+                  # populate
+                  populate(context, object.data)
 
         # clear shared
         shared.objectData.clear()
@@ -1852,8 +1870,8 @@ def main(context, quickBatch):
           if object.type in 'ARMATURE':
             for group in object.pose.bone_groups[:]:
 
-              # sort
-              sort(context, group)
+              # populate
+              populate(context, group)
 
           # process
           process(context, storage.batch.boneGroups)
@@ -1870,15 +1888,15 @@ def main(context, quickBatch):
             if object.mode in 'EDIT':
               for bone in bpy.data.armatures[object.data.name].edit_bones[:]:
 
-                  # sort
-                  sort(context, bone)
+                  # populate
+                  populate(context, bone)
 
             # pose or object mode
             else:
               for bone in bpy.data.armatures[object.data.name].bones[:]:
 
-                  # sort
-                  sort(context, bone)
+                  # populate
+                  populate(context, bone)
 
             # process
             process(context, storage.batch.bones)
@@ -1896,14 +1914,14 @@ def main(context, quickBatch):
                 # constraint type
                 if option.constraintType in 'ALL':
 
-                  # sort
-                  sort(context, constraint)
+                  # populate
+                  populate(context, constraint)
 
                 # constraint type
                 elif option.constraintType in constraint.type:
 
-                  # sort
-                  sort(context, constraint)
+                  # populate
+                  populate(context, constraint)
 
               # process
               process(context, storage.batch.constraints)
@@ -1920,14 +1938,14 @@ def main(context, quickBatch):
               # object type
               if option.objectType in 'ALL':
 
-                # sort
-                sort(context, group)
+                # populate
+                populate(context, group)
 
               # object type
               elif option.objectType in object.type:
 
-                # sort
-                sort(context, group)
+                # populate
+                populate(context, group)
 
             # process
             process(context, storage.batch.vertexGroups)
@@ -1945,14 +1963,14 @@ def main(context, quickBatch):
                 # object type
                 if option.objectType in 'ALL':
 
-                  # sort
-                  sort(context, block)
+                  # populate
+                  populate(context, block)
 
                 # object type
                 elif option.objectType in object.type:
 
-                  # sort
-                  sort(context, block)
+                  # populate
+                  populate(context, block)
 
               # process
               process(context, storage.batch.shapekeys)
@@ -1966,8 +1984,8 @@ def main(context, quickBatch):
           if object.type in 'MESH':
             for uv in object.data.uv_textures[:]:
 
-              # sort
-              sort(context, uv)
+              # populate
+              populate(context, uv)
 
             # process
             process(context, storage.batch.uvs)
@@ -1981,8 +1999,8 @@ def main(context, quickBatch):
           if object.type in 'MESH':
             for color in object.data.vertex_colors[:]:
 
-              # sort
-              sort(context, color)
+              # populate
+              populate(context, color)
 
             # process
             process(context, storage.batch.vertexColors)
@@ -2000,22 +2018,22 @@ def main(context, quickBatch):
                 # object type
                 if option.objectType in 'ALL':
 
-                  # sort
-                  sort(context, slot.material)
+                  # populate
+                  populate(context, slot.material)
 
                 # object type
                 elif option.objectType in object.type:
 
-                  # sort
-                  sort(context, slot.material)
+                  # populate
+                  populate(context, slot.material)
               else:
 
                 # shared
                 if slot.material not in shared.materials[:]:
                   shared.materials.append(slot.material)
 
-                  # sort
-                  sort(context, slot.material)
+                  # populate
+                  populate(context, slot.material)
 
 
           # process
@@ -2041,22 +2059,22 @@ def main(context, quickBatch):
                         # object type
                         if option.objectType in 'ALL':
 
-                          # sort
-                          sort(context, texslot.texture)
+                          # populate
+                          populate(context, texslot.texture)
 
                         # object type
                         elif option.objectType in object.type:
 
-                          # sort
-                          sort(context, texslot.texture)
+                          # populate
+                          populate(context, texslot.texture)
                       else:
 
                         # shared
                         if texslot.texture not in shared.textures[:]:
                           shared.textures.append(texslot.texture)
 
-                          # sort
-                          sort(context, texslot.texture)
+                          # populate
+                          populate(context, texslot.texture)
                 else:
 
                   # shared
@@ -2069,22 +2087,22 @@ def main(context, quickBatch):
                           # object type
                           if option.objectType in 'ALL':
 
-                            # sort
-                            sort(context, texslot.texture)
+                            # populate
+                            populate(context, texslot.texture)
 
                           # object type
                           elif option.objectType in object.type:
 
-                            # sort
-                            sort(context, texslot.texture)
+                            # populate
+                            populate(context, texslot.texture)
                         else:
 
                           # shared
                           if texslot.texture not in shared.textures[:]:
                             shared.textures.append(texslot.texture)
 
-                            # sort
-                            sort(context, texslot.texture)
+                            # populate
+                            populate(context, texslot.texture)
 
                 # process
                 process(context, storage.batch.textures)
@@ -2104,14 +2122,14 @@ def main(context, quickBatch):
               # object type
               if option.objectType in 'ALL':
 
-                # sort
-                sort(context, system)
+                # populate
+                populate(context, system)
 
               # object type
               elif option.objectType in object.type:
 
-                # sort
-                sort(context, system)
+                # populate
+                populate(context, system)
 
             # process
             process(context, storage.batch.particleSystems)
@@ -2129,31 +2147,31 @@ def main(context, quickBatch):
               if option.objectType in 'ALL':
                 if system.settings.users == 1:
 
-                  # sort
-                  sort(context, system.settings)
+                  # populate
+                  populate(context, system.settings)
                 else:
 
                   # shared
                   if system.settings not in shared.particleSettings[:]:
                     shared.particleSettings.append(system.settings)
 
-                    # sort
-                    sort(context, system.settings)
+                    # populate
+                    populate(context, system.settings)
 
               # object type
               elif option.objectType in object.type:
                 if system.settings.users == 1:
 
-                  # sort
-                  sort(context, system.settings)
+                  # populate
+                  populate(context, system.settings)
                 else:
 
                   # shared
                   if system.settings not in shared.particleSettings[:]:
                     shared.particleSettings.append(system.settings)
 
-                    # sort
-                    sort(context, system.settings)
+                    # populate
+                    populate(context, system.settings)
 
           # process
           process(context, storage.batch.particleSettings)
@@ -2171,16 +2189,16 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
+            # populate
             for sensor in object.game.sensors[:]:
-              sort(context, sensor)
+              populate(context, sensor)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
+            # populate
             for sensor in object.game.sensors[:]:
-              sort(context, sensor)
+              populate(context, sensor)
 
           # process
           process(context, storage.batch.sensors)
@@ -2195,16 +2213,16 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
+            # populate
             for controller in object.game.controllers[:]:
-              sort(context, controller)
+              populate(context, controller)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
+            # populate
             for controller in object.game.controllers[:]:
-              sort(context, controller)
+              populate(context, controller)
 
           # process
           process(context, storage.batch.controllers)
@@ -2219,16 +2237,16 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
+            # populate
             for actuator in object.game.actuators[:]:
-              sort(context, actuator)
+              populate(context, actuator)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
+            # populate
             for actuator in object.game.actuators[:]:
-              sort(context, actuator)
+              populate(context, actuator)
 
           # process
           process(context, storage.batch.actuators)
@@ -2243,8 +2261,8 @@ def main(context, quickBatch):
       if option.actions:
         for action in bpy.data.actions[:]:
 
-          # sort
-          sort(context, action)
+          # populate
+          populate(context, action)
 
         # process
         process(context, storage.batch.actions)
@@ -2256,22 +2274,25 @@ def main(context, quickBatch):
       if option.actionGroups:
         for action in bpy.data.actions[:]:
 
-          # sort
-          sort(context, action)
+          # populate
+          populate(context, action)
 
         # process
         for action in storage.batch.actions:
           for group in action[1][1].groups:
             group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
 
-          # fix paths
-          for curve in action[1][1].fcurves[:]:
-            if 'pose' in curve.data_path:
-              if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
-                try:
-                  curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
-                except:
-                  pass
+          # bones
+          if option.bones:
+
+            # fix paths
+            for curve in action[1][1].fcurves[:]:
+              if 'pose' in curve.data_path:
+                if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
+                  try:
+                    curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
+                  except:
+                    pass
 
         # clear storage
         storage.batch.actions.clear()
@@ -2280,8 +2301,8 @@ def main(context, quickBatch):
       if option.greasePencil:
         for pencil in bpy.data.grease_pencil[:]:
 
-          # sort
-          sort(context, pencil)
+          # populate
+          populate(context, pencil)
 
         # process
         process(context, storage.batch.greasePencils)
@@ -2296,8 +2317,8 @@ def main(context, quickBatch):
           # layers
           for layer in pencil.layers[:]:
 
-            # sort
-            sort(context, layer)
+            # populate
+            populate(context, layer)
 
           # process
           process(context, storage.batch.pencilLayers)
@@ -2312,14 +2333,14 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
-            sort(context, object)
+            # populate
+            populate(context, object)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
-            sort(context, object)
+            # populate
+            populate(context, object)
 
         # process
         process(context, storage.batch.objects)
@@ -2331,8 +2352,8 @@ def main(context, quickBatch):
       if option.groups:
         for group in bpy.data.groups[:]:
 
-          # sort
-          sort(context, group)
+          # populate
+          populate(context, group)
 
         # process
         process(context, storage.batch.groups)
@@ -2351,14 +2372,14 @@ def main(context, quickBatch):
               # constraint type
               if option.constraintType in 'ALL':
 
-                # sort
-                sort(context, constraint)
+                # populate
+                populate(context, constraint)
 
               # constraint type
               elif option.constraintType in constraint.type:
 
-                # sort
-                sort(context, constraint)
+                # populate
+                populate(context, constraint)
 
             # object type
             elif option.objectType in object.type:
@@ -2366,14 +2387,14 @@ def main(context, quickBatch):
               # constraint type
               if option.constraintType in 'ALL':
 
-                # sort
-                sort(context, constraint)
+                # populate
+                populate(context, constraint)
 
                 # constraint type
               elif option.constraintType in constraint.type:
 
-                # sort
-                sort(context, constraint)
+                # populate
+                populate(context, constraint)
 
           # process
           process(context, storage.batch.constraints)
@@ -2392,14 +2413,14 @@ def main(context, quickBatch):
               # modifier type
               if option.modifierType in 'ALL':
 
-                # sort
-                sort(context, modifier)
+                # populate
+                populate(context, modifier)
 
               # modifier type
               elif option.modifierType in modifier.type:
 
-                # sort
-                sort(context, modifier)
+                # populate
+                populate(context, modifier)
 
             # object type
             elif option.objectType in object.type:
@@ -2407,14 +2428,14 @@ def main(context, quickBatch):
               # modifier type
               if option.modifierType in 'ALL':
 
-                # sort
-                sort(context, modifier)
+                # populate
+                populate(context, modifier)
 
               # modifier type
               elif option.modifierType in modifier.type:
 
-                # sort
-                sort(context, modifier)
+                # populate
+                populate(context, modifier)
 
           # process
           process(context, storage.batch.modifiers)
@@ -2428,8 +2449,8 @@ def main(context, quickBatch):
         # cameras
         for camera in bpy.data.cameras[:]:
 
-          # sort
-          sort(context, camera)
+          # populate
+          populate(context, camera)
 
         # process
         process(context, storage.batch.cameras)
@@ -2440,8 +2461,8 @@ def main(context, quickBatch):
         # meshes
         for mesh in bpy.data.meshes[:]:
 
-          # sort
-          sort(context, mesh)
+          # populate
+          populate(context, mesh)
 
         # process
         process(context, storage.batch.meshes)
@@ -2452,8 +2473,8 @@ def main(context, quickBatch):
         # curves
         for curve in bpy.data.curves[:]:
 
-          # sort
-          sort(context, curve)
+          # populate
+          populate(context, curve)
 
         # process
         process(context, storage.batch.curves)
@@ -2464,8 +2485,8 @@ def main(context, quickBatch):
         # lamps
         for lamp in bpy.data.lamps[:]:
 
-          # sort
-          sort(context, lamp)
+          # populate
+          populate(context, lamp)
 
         # process
         process(context, storage.batch.lamps)
@@ -2476,8 +2497,8 @@ def main(context, quickBatch):
         # lattices
         for lattice in bpy.data.lattices[:]:
 
-          # sort
-          sort(context, lattice)
+          # populate
+          populate(context, lattice)
 
         # process
         process(context, storage.batch.lattices)
@@ -2488,8 +2509,8 @@ def main(context, quickBatch):
         # metaballs
         for metaball in bpy.data.metaballs[:]:
 
-          # sort
-          sort(context, metaball)
+          # populate
+          populate(context, metaball)
 
         # process
         process(context, storage.batch.metaballs)
@@ -2500,8 +2521,8 @@ def main(context, quickBatch):
         # speakers
         for speaker in bpy.data.speakers[:]:
 
-          # sort
-          sort(context, speaker)
+          # populate
+          populate(context, speaker)
 
         # process
         process(context, storage.batch.speakers)
@@ -2512,8 +2533,8 @@ def main(context, quickBatch):
         # armatures
         for armature in bpy.data.armatures[:]:
 
-          # sort
-          sort(context, armature)
+          # populate
+          populate(context, armature)
 
         # process
         process(context, storage.batch.armatures)
@@ -2527,8 +2548,8 @@ def main(context, quickBatch):
           if object.type in 'ARMATURE':
             for group in object.pose.bone_groups[:]:
 
-              # sort
-              sort(context, group)
+              # populate
+              populate(context, group)
 
             # process
             process(context, storage.batch.boneGroups)
@@ -2541,8 +2562,8 @@ def main(context, quickBatch):
         for armature in bpy.data.armatures[:]:
           for bone in armature.bones[:]:
 
-            # sort
-            sort(context, bone)
+            # populate
+            populate(context, bone)
 
           # process
           process(context, storage.batch.bones)
@@ -2557,8 +2578,8 @@ def main(context, quickBatch):
             for bone in object.pose.bones[:]:
               for constraint in bone.constraints[:]:
 
-                # sort
-                sort(context, constraint)
+                # populate
+                populate(context, constraint)
 
               # process
               process(context, storage.batch.constraints)
@@ -2572,8 +2593,8 @@ def main(context, quickBatch):
           if object.type in {'MESH', 'LATTICE'}:
             for group in object.vertex_groups[:]:
 
-              # sort
-              sort(context, group)
+              # populate
+              populate(context, group)
 
             # process
             process(context, storage.batch.vertexGroups)
@@ -2585,12 +2606,12 @@ def main(context, quickBatch):
       if option.shapekeys:
         for shapekey in bpy.data.shape_keys[:]:
 
-            # sort
-            sort(context, shapekey)
+            # populate
+            populate(context, shapekey)
             for block in shapekey.key_blocks[:]:
 
-              # sort
-              sort(context, block)
+              # populate
+              populate(context, block)
 
             # process
             process(context, storage.batch.shapekeys)
@@ -2604,8 +2625,8 @@ def main(context, quickBatch):
           if object.type in 'MESH':
             for uv in object.data.uv_textures[:]:
 
-              # sort
-              sort(context, uv)
+              # populate
+              populate(context, uv)
 
             # process
             process(context, storage.batch.uvs)
@@ -2619,8 +2640,8 @@ def main(context, quickBatch):
           if object.type in 'MESH':
             for color in object.data.vertex_colors[:]:
 
-              # sort
-              sort(context, color)
+              # populate
+              populate(context, color)
 
             # process
             process(context, storage.batch.vertexColors)
@@ -2632,8 +2653,8 @@ def main(context, quickBatch):
       if option.materials:
         for material in bpy.data.materials[:]:
 
-          # sort
-          sort(context, material)
+          # populate
+          populate(context, material)
 
         # process
         process(context, storage.batch.materials)
@@ -2645,8 +2666,8 @@ def main(context, quickBatch):
       if option.textures:
         for texture in bpy.data.textures[:]:
 
-          # sort
-          sort(context, texture)
+          # populate
+          populate(context, texture)
 
         # process
         process(context, storage.batch.textures)
@@ -2660,8 +2681,8 @@ def main(context, quickBatch):
           if object.type in 'MESH':
             for system in object.particle_systems[:]:
 
-              # sort
-              sort(context, system)
+              # populate
+              populate(context, system)
 
             # process
             process(context, storage.batch.particleSystems)
@@ -2673,8 +2694,8 @@ def main(context, quickBatch):
       if option.particleSettings:
         for settings in bpy.data.particles[:]:
 
-          # sort
-          sort(context, settings)
+          # populate
+          populate(context, settings)
 
         # process
         process(context, storage.batch.particleSettings)
@@ -2689,16 +2710,16 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
+            # populate
             for sensor in object.game.sensors[:]:
-              sort(context, sensor)
+              populate(context, sensor)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
+            # populate
             for sensor in object.game.sensors[:]:
-              sort(context, sensor)
+              populate(context, sensor)
 
           # process
           process(context, storage.batch.sensors)
@@ -2713,16 +2734,16 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
+            # populate
             for controller in object.game.controllers[:]:
-              sort(context, controller)
+              populate(context, controller)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
+            # populate
             for controller in object.game.controllers[:]:
-              sort(context, controller)
+              populate(context, controller)
 
           # process
           process(context, storage.batch.controllers)
@@ -2737,16 +2758,16 @@ def main(context, quickBatch):
           # object type
           if option.objectType in 'ALL':
 
-            # sort
+            # populate
             for actuator in object.game.actuators[:]:
-              sort(context, actuator)
+              populate(context, actuator)
 
           # object type
           elif option.objectType in object.type:
 
-            # sort
+            # populate
             for actuator in object.game.actuators[:]:
-              sort(context, actuator)
+              populate(context, actuator)
 
           # process
           process(context, storage.batch.actuators)
@@ -2766,8 +2787,8 @@ def main(context, quickBatch):
     if option.linestyles:
       for style in bpy.data.linestyles[:]:
 
-        # sort
-        sort(context, style)
+        # populate
+        populate(context, style)
 
       # process
       process(context, storage.batch.linestyles)
@@ -2786,14 +2807,14 @@ def main(context, quickBatch):
           # linestyle modifier type
           if option.linestyleModifierType in 'ALL':
 
-            # sort
-            sort(context, modifier)
+            # populate
+            populate(context, modifier)
 
           # linestyle modifier type
           elif option.linestyleModifierType in modifier.type:
 
-            # sort
-            sort(context, modifier)
+            # populate
+            populate(context, modifier)
 
         # process
         process(context, storage.batch.modifiers)
@@ -2808,14 +2829,14 @@ def main(context, quickBatch):
           # linestyle modifier type
           if option.linestyleModifierType in 'ALL':
 
-            # sort
-            sort(context, modifier)
+            # populate
+            populate(context, modifier)
 
           # linestyle modifier type
           elif option.linestyleModifierType in modifier.type:
 
-            # sort
-            sort(context, modifier)
+            # populate
+            populate(context, modifier)
 
         # process
         process(context, storage.batch.modifiers)
@@ -2830,14 +2851,14 @@ def main(context, quickBatch):
           # linestyle modifier type
           if option.linestyleModifierType in 'ALL':
 
-            # sort
-            sort(context, modifier)
+            # populate
+            populate(context, modifier)
 
           # linestyle modifier type
           elif option.linestyleModifierType in modifier.type:
 
-            # sort
-            sort(context, modifier)
+            # populate
+            populate(context, modifier)
 
         # process
         process(context, storage.batch.modifiers)
@@ -2852,14 +2873,14 @@ def main(context, quickBatch):
           # linestyle modifier type
           if option.linestyleModifierType in 'ALL':
 
-            # sort
-            sort(context, modifier)
+            # populate
+            populate(context, modifier)
 
           # linestyle modifier type
           elif option.linestyleModifierType in modifier.type:
 
-            # sort
-            sort(context, modifier)
+            # populate
+            populate(context, modifier)
 
         # process
         process(context, storage.batch.modifiers)
@@ -2871,8 +2892,8 @@ def main(context, quickBatch):
     if option.scenes:
       for scene in bpy.data.scenes[:]:
 
-        # sort
-        sort(context, scene)
+        # populate
+        populate(context, scene)
 
       # process
       process(context, storage.batch.scenes)
@@ -2885,8 +2906,8 @@ def main(context, quickBatch):
       for scene in bpy.data.scenes[:]:
         for layer in scene.render.layers[:]:
 
-          # sort
-          sort(context, layer)
+          # populate
+          populate(context, layer)
 
         # process
         process(context, storage.batch.renderLayers)
@@ -2898,8 +2919,8 @@ def main(context, quickBatch):
     if option.worlds:
       for world in bpy.data.worlds[:]:
 
-        # sort
-        sort(context, world)
+        # populate
+        populate(context, world)
 
       # process
       process(context, storage.batch.worlds)
@@ -2911,8 +2932,8 @@ def main(context, quickBatch):
     if option.libraries:
       for library in bpy.data.libraries[:]:
 
-        # sort
-        sort(context, library)
+        # populate
+        populate(context, library)
 
       # process
       process(context, storage.batch.libraries)
@@ -2924,8 +2945,8 @@ def main(context, quickBatch):
     if option.images:
       for image in bpy.data.images[:]:
 
-        # sort
-        sort(context, image)
+        # populate
+        populate(context, image)
 
       # process
       process(context, storage.batch.images)
@@ -2937,8 +2958,8 @@ def main(context, quickBatch):
     if option.masks:
       for mask in bpy.data.masks[:]:
 
-        # sort
-        sort(context, mask)
+        # populate
+        populate(context, mask)
 
       # process
       process(context, storage.batch.masks)
@@ -2952,8 +2973,8 @@ def main(context, quickBatch):
         if hasattr(scene.sequence_editor, 'sequence_all'):
           for sequence in scene.sequence_editor.sequences_all[:]:
 
-            # sort
-            sort(context, sequence)
+            # populate
+            populate(context, sequence)
 
           # process
           process(context, storage.batch.sequences)
@@ -2965,8 +2986,8 @@ def main(context, quickBatch):
     if option.movieClips:
       for clip in bpy.data.movieclips[:]:
 
-        # sort
-        sort(context, clip)
+        # populate
+        populate(context, clip)
 
       # process
       process(context, storage.batch.movieClips)
@@ -2978,8 +2999,8 @@ def main(context, quickBatch):
     if option.sounds:
       for sound in bpy.data.sounds[:]:
 
-        # sort
-        sort(context, sound)
+        # populate
+        populate(context, sound)
 
       # process
       process(context, storage.batch.sounds)
@@ -2991,8 +3012,8 @@ def main(context, quickBatch):
     if option.screens:
       for screen in bpy.data.screens[:]:
 
-        # sort
-        sort(context, screen)
+        # populate
+        populate(context, screen)
 
       # process
       process(context, storage.batch.screens)
@@ -3005,8 +3026,8 @@ def main(context, quickBatch):
       for scene in bpy.data.scenes[:]:
         for keyingSet in scene.keying_sets[:]:
 
-          # sort
-          sort(context, keyingSet)
+          # populate
+          populate(context, keyingSet)
 
         # process
         process(context, storage.batch.keyingSets)
@@ -3018,8 +3039,8 @@ def main(context, quickBatch):
     if option.palettes:
       for palette in bpy.data.palettes[:]:
 
-        # sort
-        sort(context, palette)
+        # populate
+        populate(context, palette)
 
       # process
       process(context, storage.batch.palettes)
@@ -3031,8 +3052,8 @@ def main(context, quickBatch):
     if option.brushes:
       for brush in bpy.data.brushes[:]:
 
-        # sort
-        sort(context, brush)
+        # populate
+        populate(context, brush)
 
       # process
       process(context, storage.batch.brushes)
@@ -3048,8 +3069,8 @@ def main(context, quickBatch):
         if hasattr(material.node_tree, 'nodes'):
           for node in material.node_tree.nodes[:]:
 
-            # sort
-            sort(context, node)
+            # populate
+            populate(context, node)
 
           # process
           process(context, storage.batch.nodes)
@@ -3062,8 +3083,8 @@ def main(context, quickBatch):
         if hasattr(scene.node_tree, 'nodes'):
           for node in scene.node_tree.nodes[:]:
 
-            # sort
-            sort(context, node)
+            # populate
+            populate(context, node)
 
           # process
           process(context, storage.batch.nodes)
@@ -3076,8 +3097,8 @@ def main(context, quickBatch):
         if hasattr(texture.node_tree, 'nodes'):
           for node in texture.node_tree.nodes[:]:
 
-            # sort
-            sort(context, node)
+            # populate
+            populate(context, node)
 
           # process
           process(context, storage.batch.nodes)
@@ -3089,8 +3110,8 @@ def main(context, quickBatch):
       for group in bpy.data.node_groups[:]:
         for node in group.nodes[:]:
 
-          # sort
-          sort(context, node)
+          # populate
+          populate(context, node)
 
         # process
         process(context, storage.batch.nodes)
@@ -3109,8 +3130,8 @@ def main(context, quickBatch):
         if hasattr(material.node_tree, 'nodes'):
           for node in material.node_tree.nodes[:]:
 
-            # sort
-            sort(context, node)
+            # populate
+            populate(context, node)
 
           # process
           process(context, storage.batch.nodeLabels)
@@ -3123,8 +3144,8 @@ def main(context, quickBatch):
         if hasattr(scene.node_tree, 'nodes'):
           for node in scene.node_tree.nodes[:]:
 
-            # sort
-            sort(context, node)
+            # populate
+            populate(context, node)
 
           # process
           process(context, storage.batch.nodeLabels)
@@ -3137,8 +3158,8 @@ def main(context, quickBatch):
         if hasattr(texture.node_tree, 'nodes'):
           for node in texture.node_tree.nodes[:]:
 
-            # sort
-            sort(context, node)
+            # populate
+            populate(context, node)
 
           # process
           process(context, storage.batch.nodeLabels)
@@ -3150,8 +3171,8 @@ def main(context, quickBatch):
       for group in bpy.data.node_groups[:]:
         for node in group.nodes[:]:
 
-          # sort
-          sort(context, node)
+          # populate
+          populate(context, node)
 
         # process
         process(context, storage.batch.nodeLabels)
@@ -3166,8 +3187,8 @@ def main(context, quickBatch):
     if option.nodeGroups:
       for group in bpy.data.node_groups[:]:
 
-        # sort
-        sort(context, group)
+        # populate
+        populate(context, group)
 
       # process
       process(context, storage.batch.nodeGroups)
@@ -3179,8 +3200,8 @@ def main(context, quickBatch):
     if option.texts:
       for text in bpy.data.texts[:]:
 
-        # sort
-        sort(context, text)
+        # populate
+        populate(context, text)
 
       # process
       process(context, storage.batch.texts)
@@ -3312,7 +3333,7 @@ def quick(context, object, panel, option):
           # search
           if search == '' or re.search(search, group.name, re.I):
 
-            # sort
+            # populate
             storage.batch.boneGroups.append([group.name, [1, group]])
 
         # process
@@ -3527,7 +3548,7 @@ def quick(context, object, panel, option):
           # search
           if search == '' or re.search(search, group.name, re.I):
 
-            # sort
+            # populate
             storage.batch.vertexGroups.append([group.name, [1, group]])
 
         # process
@@ -3548,7 +3569,7 @@ def quick(context, object, panel, option):
             # search
             if search == '' or re.search(search, key.name, re.I):
 
-              # sort
+              # populate
               storage.batch.shapekeys.append([key.name, [1, key]])
 
           # process
@@ -3733,8 +3754,8 @@ def quick(context, object, panel, option):
       # clear storage
       storage.batch.particleSettings.clear()
 
-# sort
-def sort(context, datablock):
+# populate
+def populate(context, datablock):
   '''
     Sort datablocks into proper storage list.
   '''
@@ -3987,9 +4008,6 @@ def process(context, collection):
     Process collection, send names to name.
   '''
   # if not collection == []:
-
-  # sort collection
-  collection.sort()
 
   # option
   option = context.scene.BatchName

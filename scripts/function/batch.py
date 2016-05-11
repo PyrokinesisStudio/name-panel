@@ -4112,7 +4112,7 @@ def process(context, collection):
     if option.sort:
 
       # name
-      item[0] = name(context, (re.split(r'\W[0-9]*$|_[0-9]*$', item[0]))[0])
+      item[0] = name(context, (re.split(r'[\W[0-9]*]*$|[_[0-9]*]*$', item[0]))[0])
     else:
       item[0] = name(context, item[0])
 

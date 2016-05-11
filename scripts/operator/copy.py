@@ -56,7 +56,7 @@ class name(Operator):
     option = context.scene.BatchCopyName
 
     # batch type
-    layout.prop(option, 'batchType', expand=True)
+    layout.prop(option, 'mode', expand=True)
 
     # column
     column = layout.column(align=True)

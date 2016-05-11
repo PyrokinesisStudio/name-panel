@@ -233,16 +233,16 @@ def main(context, quickBatch):
   # quick batch
   else:
 
-    # batch type
-    if option.batchType in {'SELECTED', 'OBJECTS'}:
+    # mode
+    if option.mode in {'SELECTED', 'OBJECTS'}:
 
       # actions
       if option.actions:
         for object in bpy.data.objects[:]:
           if hasattr(object.animation_data, 'action'):
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
 
                 # object type
@@ -257,7 +257,7 @@ def main(context, quickBatch):
                   # populate
                   populate(context, object.animation_data.action)
 
-            # batch type
+            # mode
             else:
 
               # object type
@@ -286,8 +286,8 @@ def main(context, quickBatch):
           if hasattr(object.animation_data, 'action'):
             if hasattr(object.animation_data.action, 'name'):
 
-              # batch type
-              if option.batchType in 'SELECTED':
+              # mode
+              if option.mode in 'SELECTED':
                 if object.select:
 
                   # object type
@@ -302,7 +302,7 @@ def main(context, quickBatch):
                     # populate
                     populate(context, object.animation_data.action)
 
-              # batch type
+              # mode
               else:
 
                 # object type
@@ -344,8 +344,8 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if hasattr(object.grease_pencil, 'name'):
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
 
                 # object type
@@ -378,7 +378,7 @@ def main(context, quickBatch):
                       # populate
                       populate(context, object.grease_pencil)
 
-            # batch type
+            # mode
             else:
 
               # object type
@@ -427,8 +427,8 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if hasattr(object.grease_pencil, 'name'):
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
 
                 # object type
@@ -473,7 +473,7 @@ def main(context, quickBatch):
                         # populate
                         populate(context, layer)
 
-            # batch type
+            # mode
             else:
 
               # object type
@@ -531,8 +531,8 @@ def main(context, quickBatch):
       if option.objects:
         for object in bpy.data.objects[:]:
 
-          # batch type
-          if option.batchType in 'SELECTED':
+          # mode
+          if option.mode in 'SELECTED':
             if object.select:
 
               # object type
@@ -547,7 +547,7 @@ def main(context, quickBatch):
                 # populate
                 populate(context, object)
 
-          # batch type
+          # mode
           else:
 
             # object type
@@ -572,8 +572,8 @@ def main(context, quickBatch):
       if option.groups:
         for object in bpy.data.objects[:]:
 
-          # batch type
-          if option.batchType in 'SELECTED':
+          # mode
+          if option.mode in 'SELECTED':
             if object.select:
 
               # object type
@@ -593,7 +593,7 @@ def main(context, quickBatch):
                     # populate
                     populate(context, group)
 
-          # batch type
+          # mode
           else:
 
             # object type
@@ -626,8 +626,8 @@ def main(context, quickBatch):
       if option.constraints:
         for object in bpy.data.objects[:]:
 
-          # batch type
-          if option.batchType in 'SELECTED':
+          # mode
+          if option.mode in 'SELECTED':
             if object.select:
               for constraint in object.constraints[:]:
 
@@ -643,7 +643,7 @@ def main(context, quickBatch):
                   # populate
                   populate(context, constraint)
 
-          # batch type
+          # mode
           else:
             for constraint in object.constraints[:]:
 
@@ -669,8 +669,8 @@ def main(context, quickBatch):
       if option.modifiers:
         for object in bpy.data.objects[:]:
 
-          # batch type
-          if option.batchType in 'SELECTED':
+          # mode
+          if option.mode in 'SELECTED':
             if object.select:
               for modifier in object.modifiers[:]:
 
@@ -686,7 +686,7 @@ def main(context, quickBatch):
                   # populate
                   populate(context, modifier)
 
-          # batch type
+          # mode
           else:
             for modifier in object.modifiers[:]:
 
@@ -713,8 +713,8 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if object.type not in 'EMPTY':
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
 
                 # object type
@@ -747,7 +747,7 @@ def main(context, quickBatch):
                       # populate
                       populate(context, object.data)
 
-            # batch type
+            # mode
             else:
 
               # object type
@@ -809,8 +809,8 @@ def main(context, quickBatch):
       if option.boneGroups:
         for object in bpy.data.objects[:]:
 
-          # batch type
-          if option.batchType in 'SELECTED':
+          # mode
+          if option.mode in 'SELECTED':
             if object.select:
               if object.type in 'ARMATURE':
                 for group in object.pose.bone_groups[:]:
@@ -819,7 +819,7 @@ def main(context, quickBatch):
                     # populate
                     populate(context, group)
 
-          # batch type
+          # mode
           else:
             if object.type in 'ARMATURE':
               for group in object.pose.bone_groups[:]:
@@ -838,8 +838,8 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if object.type in 'ARMATURE':
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
 
                 # edit mode
@@ -858,7 +858,7 @@ def main(context, quickBatch):
                       # populate
                       populate(context, bone)
 
-            # batch type
+            # mode
             else:
 
               # edit mode
@@ -886,8 +886,8 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if object.type in 'ARMATURE':
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
                 for bone in object.pose.bones[:]:
                   if bone.bone.select:
@@ -911,7 +911,7 @@ def main(context, quickBatch):
                     # clear storage
                     storage.batch.constraints.clear()
 
-            # batch type
+            # mode
             else:
               for bone in object.pose.bones[:]:
                 for constraint in bone.constraints[:]:
@@ -939,8 +939,8 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if hasattr(object, 'vertex_groups'):
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
                 for group in object.vertex_groups[:]:
 
@@ -962,7 +962,7 @@ def main(context, quickBatch):
                 # clear storage
                 storage.batch.vertexGroups.clear()
 
-            # batch type
+            # mode
             else:
               for group in object.vertex_groups[:]:
 
@@ -991,8 +991,8 @@ def main(context, quickBatch):
           if hasattr(object.data, 'shape_keys'):
             if hasattr(object.data.shape_keys, 'key_blocks'):
 
-              # batch type
-              if option.batchType in 'SELECTED':
+              # mode
+              if option.mode in 'SELECTED':
                 if object.select:
                   for block in object.data.shape_keys.key_blocks[:]:
 
@@ -1008,7 +1008,7 @@ def main(context, quickBatch):
                       # populate
                       populate(context, block)
 
-              # batch type
+              # mode
               else:
                 for block in object.data.shape_keys.key_blocks[:]:
 
@@ -1035,15 +1035,15 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if object.type in 'MESH':
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
                 for uv in object.data.uv_textures[:]:
 
                   # populate
                   populate(context, uv)
 
-            # batch type
+            # mode
             else:
              for uv in object.data.uv_textures[:]:
 
@@ -1061,15 +1061,15 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if object.type in 'MESH':
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
                 for color in object.data.vertex_colors[:]:
 
                   # populate
                   populate(context, color)
 
-            # batch type
+            # mode
             else:
               for color in object.data.vertex_colors[:]:
 
@@ -1086,8 +1086,8 @@ def main(context, quickBatch):
       if option.materials:
         for object in bpy.data.objects[:]:
 
-          # batch type
-          if option.batchType in 'SELECTED':
+          # mode
+          if option.mode in 'SELECTED':
             if object.select:
               for slot in object.material_slots[:]:
                 if slot.material != None:
@@ -1113,7 +1113,7 @@ def main(context, quickBatch):
                       # populate
                       populate(context, slot.material)
 
-          # batch type
+          # mode
           else:
             for slot in object.material_slots[:]:
               if slot.material != None:
@@ -1153,8 +1153,8 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if context.scene.render.engine not in 'CYCLES':
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
                 for slot in object.material_slots[:]:
                   if slot.material != None:
@@ -1217,7 +1217,7 @@ def main(context, quickBatch):
                     # clear storage
                     storage.batch.textures.clear()
 
-            # batch type
+            # mode
             else:
               for slot in object.material_slots[:]:
                 if slot.material != None:
@@ -1288,8 +1288,8 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if object.type in 'MESH':
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
                 for system in object.particle_systems[:]:
 
@@ -1305,7 +1305,7 @@ def main(context, quickBatch):
                     # populate
                     populate(context, system)
 
-            # batch type
+            # mode
             else:
               for system in object.particle_systems[:]:
 
@@ -1332,8 +1332,8 @@ def main(context, quickBatch):
         for object in bpy.data.objects[:]:
           if object.type in 'MESH':
 
-            # batch type
-            if option.batchType in 'SELECTED':
+            # mode
+            if option.mode in 'SELECTED':
               if object.select:
                 for system in object.particle_systems[:]:
 
@@ -1367,7 +1367,7 @@ def main(context, quickBatch):
                         # populate
                         populate(context, system.settings)
 
-            # batch type
+            # mode
             else:
               for system in object.particle_systems[:]:
 
@@ -1415,8 +1415,8 @@ def main(context, quickBatch):
     if option.sensors:
       for object in bpy.data.objects[:]:
 
-        # batch type
-        if option.batchType in 'SELECTED':
+        # mode
+        if option.mode in 'SELECTED':
           if object.select:
 
             # object type
@@ -1433,7 +1433,7 @@ def main(context, quickBatch):
               for sensor in object.game.sensors[:]:
                 populate(context, sensor)
 
-        # batch type
+        # mode
         else:
 
           # object type
@@ -1460,8 +1460,8 @@ def main(context, quickBatch):
     if option.controllers:
       for object in bpy.data.objects[:]:
 
-        # batch type
-        if option.batchType in 'SELECTED':
+        # mode
+        if option.mode in 'SELECTED':
           if object.select:
 
             # object type
@@ -1478,7 +1478,7 @@ def main(context, quickBatch):
               for controller in object.game.controllers[:]:
                 populate(context, controller)
 
-        # batch type
+        # mode
         else:
 
           # object type
@@ -1505,8 +1505,8 @@ def main(context, quickBatch):
     if option.actuators:
       for object in bpy.data.objects[:]:
 
-        # batch type
-        if option.batchType in 'SELECTED':
+        # mode
+        if option.mode in 'SELECTED':
           if object.select:
 
             # object type
@@ -1523,7 +1523,7 @@ def main(context, quickBatch):
               for actuator in object.game.actuators[:]:
                 populate(context, actuator)
 
-        # batch type
+        # mode
         else:
 
           # object type
@@ -1546,8 +1546,8 @@ def main(context, quickBatch):
         # clear storage
         storage.batch.actuators.clear()
 
-    # batch type
-    if option.batchType in 'SCENE':
+    # mode
+    if option.mode in 'SCENE':
 
       # actions
       if option.actions:
@@ -2266,8 +2266,8 @@ def main(context, quickBatch):
           # clear storage
           storage.batch.actuators.clear()
 
-    # batch type
-    elif option.batchType in 'GLOBAL':
+    # mode
+    elif option.mode in 'GLOBAL':
 
       # actions
       if option.actions:
@@ -3221,6 +3221,64 @@ def main(context, quickBatch):
       # clear storage
       storage.batch.texts.clear()
 
+    # frame nodes
+    if option.frameNodes:
+
+      # shader
+      for material in bpy.data.materials[:]:
+        if hasattr(material.node_tree, 'nodes'):
+          for node in material.node_tree.nodes[:]:
+
+            # populate
+            populate(context, node)
+
+          # process
+          process(context, storage.batch.nodes)
+
+          # clear storage
+          storage.batch.nodes.clear()
+
+      # compositing
+      for scene in bpy.data.scenes[:]:
+        if hasattr(scene.node_tree, 'nodes'):
+          for node in scene.node_tree.nodes[:]:
+
+            # populate
+            populate(context, node)
+
+          # process
+          process(context, storage.batch.nodes)
+
+          # clear storage
+          storage.batch.nodes.clear()
+
+      # texture
+      for texture in bpy.data.textures[:]:
+        if hasattr(texture.node_tree, 'nodes'):
+          for node in texture.node_tree.nodes[:]:
+
+            # populate
+            populate(context, node)
+
+          # process
+          process(context, storage.batch.nodes)
+
+          # clear storage
+          storage.batch.nodes.clear()
+
+      # groups
+      for group in bpy.data.node_groups[:]:
+        for node in group.nodes[:]:
+
+          # populate
+          populate(context, node)
+
+        # process
+        process(context, storage.batch.nodes)
+
+        # clear storage
+        storage.batch.nodes.clear()
+
 # quick
 def quick(context, object, panel, option):
   '''
@@ -4009,6 +4067,14 @@ def populate(context, datablock):
     if hasattr(datablock.rna_type.base, 'identifier'):
       if datablock.rna_type.base.identifier == 'NodeTree':
         storage.batch.nodeGroups.append([datablock.name, [1, datablock]])
+
+  # frame nodes
+  if option.frameNodes:
+    if datablock.rna_type.identifier == 'NodeFrame':
+      storage.batch.nodes.append([datablock.name, [1, datablock]])
+
+      if tag:
+        datablock.label = name(context, datablock.label)
 
   # texts
   if option.texts:

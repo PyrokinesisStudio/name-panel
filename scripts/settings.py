@@ -228,9 +228,9 @@ class batch:
         Main properties that effect how the batch auto name operator is performed.
       '''
 
-      # batch type
-      batchType = EnumProperty(
-        name = 'Batch Type',
+      # mode
+      mode = EnumProperty(
+        name = 'Mode',
         description = 'How to perform auto naming on datablocks designated below.',
         items = [
           ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
@@ -1038,9 +1038,9 @@ class batch:
       Properties that effect how the batch name operation is performed.
     '''
 
-    # batch type
-    batchType = EnumProperty(
-      name = 'Batch Type',
+    # mode
+    mode = EnumProperty(
+      name = 'Mode',
       description = 'How to perform batch naming on datablocks designated below.',
       items = [
         ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
@@ -1370,6 +1370,13 @@ class batch:
       default = False
     )
 
+    # frame nodes
+    frameNodes = BoolProperty(
+    name = 'Frame Nodes',
+    description = 'Name frame nodes.',
+    default = False
+    )
+
     # node groups
     nodeGroups = BoolProperty(
       name = 'Node Groups',
@@ -1615,9 +1622,9 @@ class batch:
       Properties that effect how the batch copy name operation is performed.
     '''
 
-    # batch type
-    batchType = EnumProperty(
-      name = 'Batch Type',
+    # mode
+    mode = EnumProperty(
+      name = 'Mode',
       description = 'How to perform batch name copying on datablocks designated below.',
       items = [
         ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),

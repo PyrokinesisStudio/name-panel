@@ -29,16 +29,16 @@ def main(context):
   # option
   option = context.scene.BatchAutoName
 
-  # batch type
-  if option.batchType in {'SELECTED', 'OBJECTS'}:
+  # mode
+  if option.mode in {'SELECTED', 'OBJECTS'}:
 
     for object in bpy.data.objects[:]:
 
       # objects
       if option.objects:
 
-        # batch type
-        if option.batchType in 'SELECTED':
+        # mode
+        if option.mode in 'SELECTED':
           if object.select:
 
             # object type
@@ -53,7 +53,7 @@ def main(context):
               # name
               name(context, object, True, False, False, False)
 
-        # batch type
+        # mode
         else:
 
           # object type
@@ -71,8 +71,8 @@ def main(context):
       # constraints
       if option.constraints:
 
-        # batch type
-        if option.batchType in 'SELECTED':
+        # mode
+        if option.mode in 'SELECTED':
           if object.select:
             for constraint in object.constraints[:]:
 
@@ -88,7 +88,7 @@ def main(context):
                 # name
                 name(context, constraint, False, True, False, False)
 
-        # batch type
+        # mode
         else:
           for constraint in object.constraints[:]:
 
@@ -107,8 +107,8 @@ def main(context):
       # modifiers
       if option.modifiers:
 
-        # batch type
-        if option.batchType in 'SELECTED':
+        # mode
+        if option.mode in 'SELECTED':
           if object.select:
             for modifier in object.modifiers[:]:
 
@@ -142,8 +142,8 @@ def main(context):
       if option.objectData:
         if object.type not in 'EMPTY':
 
-          # batch type
-          if option.batchType in 'SELECTED':
+          # mode
+          if option.mode in 'SELECTED':
             if object.select:
 
               # object type
@@ -158,7 +158,7 @@ def main(context):
                 # name
                 name(context, object, False, False, False, True)
 
-          # batch type
+          # mode
           else:
 
             # object type
@@ -176,8 +176,8 @@ def main(context):
       # bone constraints
       if option.boneConstraints:
 
-        # batch type
-        if option.batchType in 'SELECTED':
+        # mode
+        if option.mode in 'SELECTED':
           if object.select:
             if object.type in 'ARMATURE':
               for bone in object.pose.bones[:]:
@@ -212,7 +212,7 @@ def main(context):
                   # name
                   name(context, constraint, False, True, False, False)
 
-  # batch type
+  # mode
   else:
     for object in context.scene.objects[:]:
 

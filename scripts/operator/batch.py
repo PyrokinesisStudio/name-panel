@@ -70,7 +70,7 @@ class name(Operator):
       row = column.row(align=True)
 
       # batch type
-      row.prop(option, 'batchType', expand=True)
+      row.prop(option, 'mode', expand=True)
 
       # column
       column = layout.column(align=True)
@@ -123,7 +123,7 @@ class name(Operator):
 
 
       # column
-      column = layout.column()
+      column = layout.column(align=True)
 
       # label
       column.label(text='Global:')
@@ -148,10 +148,11 @@ class name(Operator):
       row.prop(option, 'keyingSets', text='', icon='KEYINGSET')
       row.prop(option, 'palettes', text='', icon='COLOR')
       row.prop(option, 'brushes', text='', icon='BRUSH_DATA')
+      row.prop(option, 'texts', text='', icon='TEXT')
       row.prop(option, 'nodes', text='', icon='NODE_SEL')
       row.prop(option, 'nodeLabels', text='', icon='NODE')
+      row.prop(option, 'frameNodes', text='', icon='FULLSCREEN')
       row.prop(option, 'nodeGroups', text='', icon='NODETREE')
-      row.prop(option, 'texts', text='', icon='TEXT')
 
       # column
       column = layout.column(align=True)
@@ -166,7 +167,7 @@ class name(Operator):
       row.prop(option, 'linestyles', text='', icon='LINE_DATA')
       row.prop(option, 'linestyleModifiers', text='', icon='MODIFIER')
       row.prop(option, 'linestyleModifierType', text='')
-      
+
       # input fields
       column.separator()
       column.separator()

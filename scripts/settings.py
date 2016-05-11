@@ -1372,9 +1372,9 @@ class batch:
 
     # frame nodes
     frameNodes = BoolProperty(
-    name = 'Frame Nodes',
-    description = 'Name frame nodes.',
-    default = False
+      name = 'Frame Nodes',
+      description = 'Name frame nodes.',
+      default = False
     )
 
     # node groups

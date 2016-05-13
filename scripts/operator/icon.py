@@ -41,14 +41,14 @@ class operator(Operator):
   # owner
   owner = StringProperty(
     name = 'Owner',
-    description = 'The owner of the target datablock.',
+    description = 'The owner\'s name of the target datablock.',
     default = ''
   )
 
   # target
   target = StringProperty(
     name = 'Target',
-    description = 'Datablock target belonging to the object.',
+    description = 'Datablock target\'s name belonging to the owner.',
     default = ''
   )
 
@@ -63,6 +63,13 @@ class operator(Operator):
   view = BoolProperty(
     name = 'View',
     description = 'Center the 3D view on the object.',
+    default = False
+  )
+
+  # active
+  active = BoolProperty(
+    name = 'Active',
+    description = 'Make this the active object.',
     default = False
   )
 
@@ -143,6 +150,15 @@ class operator(Operator):
 
       self.view = False
 
+    # alt
+    if event.alt:
+
+      self.active = False
+
+    else:
+
+      self.active = True
+
     # object
     if self.type not in {'BONE', 'BONE_CONSTRAINT'}: # temporary
 
@@ -152,20 +168,23 @@ class operator(Operator):
         # select active
         context.active_object.select = True
 
-        # if selected
+        # owner selected
         if bpy.data.objects[self.owner].select == True:
 
           # deselect
           bpy.data.objects[self.owner].select = False
 
-        # if selected
+        # owner selected
         else:
 
-          # active object
-          context.scene.objects.active = bpy.data.objects[self.owner]
+          # select owner
+          bpy.data.objects[self.owner].select = True
 
-          # select active
-          context.active_object.select = True
+          # active
+          if self.active:
+
+            # active object
+            context.scene.objects.active = bpy.data.objects[self.owner]
 
         # extend
       else:
@@ -199,16 +218,34 @@ class operator(Operator):
         # select active
         context.active_object.data.bones.active.select = True
 
+        # owner selected
+        if context.active_object.data.bones[self.owner].select == True:
+
+          # deselect
+          context.active_object.data.bones[self.owner].select = False
+
+        # owner selected
+        else:
+
+          # select owner
+          context.active_object.data.bones[self.owner].select = True
+
+          # active
+          if self.active:
+
+            # active bone
+            context.active_object.data.bones.active = context.active_object.data.bones[self.owner]
+
       else:
 
         for bone in context.selected_pose_bones[:]:
           bone.bone.select = False
 
-      # target
-      context.scene.objects[context.active_object.name].data.bones.active = bpy.data.armatures[context.active_object.data.name].bones[self.owner]
+        # target
+        context.active_object.data.bones.active = context.active_object.data.bones[self.owner]
 
-      # select
-      context.active_object.data.bones.active.select = True
+        # select
+        context.active_object.data.bones.active.select = True
 
       # view
       if self.view:
@@ -218,13 +255,14 @@ class operator(Operator):
     # object data
 
     # bone
-    if self.type == 'BONE': # temporary
+    if self.type == 'BONE':
 
       # edit mode
       if context.object.mode in 'EDIT':
 
         # extend
         if self.extend:
+
           # select
           context.active_object.data.edit_bones.active.select = True
 
@@ -233,6 +271,37 @@ class operator(Operator):
 
           # select tail
           context.active_object.data.edit_bones.active.select_tail = True
+
+          # owner selected
+          if context.active_object.data.edit_bones[self.target].select == True:
+
+            # deselect
+            context.active_object.data.edit_bones[self.target].select = False
+
+            # deselect head
+            context.active_object.data.edit_bones[self.target].select_head = False
+
+            # deselect tail
+            context.active_object.data.edit_bones[self.target].select_tail = False
+
+          # owner selected
+          else:
+
+            # deselect
+            context.active_object.data.edit_bones[self.target].select = True
+
+            # deselect head
+            context.active_object.data.edit_bones[self.target].select_head = True
+
+            # deselect tail
+            context.active_object.data.edit_bones[self.target].select_tail = True
+
+            # active
+            if self.active:
+
+              # active bone
+              context.active_object.data.edit_bones.active = context.active_object.data.edit_bones[self.target]
+
 
         # extend
         else:
@@ -247,17 +316,17 @@ class operator(Operator):
             # deselect tail
             bone.select_tail = False
 
-        # active bone
-        context.scene.objects[context.active_object.name].data.edit_bones.active = bpy.data.armatures[context.active_object.data.name].edit_bones[self.target]
+          # active bone
+          context.active_object.data.edit_bones.active = context.active_object.data.edit_bones[self.target]
 
-        # select
-        context.active_object.data.edit_bones.active.select = True
+          # select
+          context.active_object.data.edit_bones.active.select = True
 
-        # select head
-        context.active_object.data.edit_bones.active.select_head = True
+          # select head
+          context.active_object.data.edit_bones.active.select_head = True
 
-        # select tail
-        context.active_object.data.edit_bones.active.select_tail = True
+          # select tail
+          context.active_object.data.edit_bones.active.select_tail = True
 
       # pose mode
       else:
@@ -268,17 +337,35 @@ class operator(Operator):
           # select active
           context.active_object.data.bones.active.select = True
 
+          # owner selected
+          if context.active_object.data.bones[self.target].select == True:
+
+            # deselect
+            context.active_object.data.bones[self.target].select = False
+
+          # owner selected
+          else:
+
+            # select
+            context.active_object.data.bones[self.target].select = True
+
+            # active
+            if self.active:
+
+              # active bone
+              context.active_object.data.bones.active = context.active_object.data.bones[self.target]
+
         # extend
         else:
 
           for bone in context.selected_pose_bones[:]:
             bone.bone.select = False
 
-        # target
-        context.scene.objects[context.active_object.name].data.bones.active = bpy.data.armatures[context.active_object.data.name].bones[self.target]
+          # target
+          context.active_object.data.bones.active = context.active_object.data.bones[self.target]
 
-        # select
-        context.active_object.data.bones.active.select = True
+          # select
+          context.active_object.data.bones.active.select = True
 
       # view
       if self.view:

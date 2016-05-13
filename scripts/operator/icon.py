@@ -152,6 +152,21 @@ class operator(Operator):
         # select active
         context.active_object.select = True
 
+        # if selected
+        if bpy.data.objects[self.owner].select == True:
+
+          # deselect
+          bpy.data.objects[self.owner].select = False
+
+        # if selected
+        else:
+
+          # active object
+          context.scene.objects.active = bpy.data.objects[self.owner]
+
+          # select active
+          context.active_object.select = True
+
         # extend
       else:
 
@@ -159,11 +174,11 @@ class operator(Operator):
         for object in context.scene.objects[:]:
           object.select = False
 
-      # active object
-      context.scene.objects.active = bpy.data.objects[self.owner]
+        # active object
+        context.scene.objects.active = bpy.data.objects[self.owner]
 
-      # select objects
-      context.active_object.select = True
+        # select active
+        context.active_object.select = True
 
       # view
       if self.view:

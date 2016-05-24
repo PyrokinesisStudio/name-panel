@@ -35,7 +35,7 @@ class toolsName(Panel):
   bl_space_type = 'VIEW_3D'
   bl_label = 'Name'
   bl_region_type = 'TOOLS'
-  bl_options = {'HIDE_HEADER'}
+  # bl_options = {'HIDE_HEADER'}
   bl_category = 'Name'
 
   # # poll

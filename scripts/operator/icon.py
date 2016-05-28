@@ -38,18 +38,11 @@ class operator(Operator):
   bl_description = 'Changes active object.'
   bl_options = {'UNDO'}
 
-  # owner
-  owner = StringProperty(
-    name = 'Owner',
-    description = 'The owner\'s name of the target datablock.',
-    default = ''
-  )
-
-  # target
-  target = StringProperty(
-    name = 'Target',
-    description = 'Datablock target\'s name belonging to the owner.',
-    default = ''
+  # active
+  active = BoolProperty(
+    name = 'Active',
+    description = 'Make this the active object.',
+    default = False
   )
 
   # extend
@@ -66,17 +59,24 @@ class operator(Operator):
     default = False
   )
 
-  # active
-  active = BoolProperty(
-    name = 'Active',
-    description = 'Make this the active object.',
-    default = False
+  # owner
+  owner = StringProperty(
+    name = 'Owner',
+    description = 'The owner\'s name of the target datablock.',
+    default = ''
   )
 
-  # type
-  type = EnumProperty(
-    name = 'Type',
-    description = 'The type of datablock for the icon.',
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'Datablock target\'s name belonging to the owner.',
+    default = ''
+  )
+
+  # context
+  context = EnumProperty(
+    name = 'Context',
+    description = 'The context the name panel is in based on last icon clicked',
     items = [
       ('OBJECT', 'Object', '', 'OBJECT_DATA', 0),
       ('GROUP', 'Group', '', 'GROUP', 1),
@@ -117,6 +117,9 @@ class operator(Operator):
     # layout
     layout = self.layout
 
+    # active
+    layout.prop(self, 'active')
+
     # extend
     layout.prop(self, 'extend')
 
@@ -128,6 +131,12 @@ class operator(Operator):
     '''
       Invoke the operator.
     '''
+
+    # panel
+    panel = context.scene.NamePanel
+    panel.owner = self.owner
+    panel.target = self.target
+    panel.context = self.context
 
     # shift
     if event.shift:
@@ -160,7 +169,7 @@ class operator(Operator):
       self.active = True
 
     # object
-    if self.type not in {'BONE', 'BONE_CONSTRAINT'}: # temporary
+    if panel.context not in {'BONE', 'BONE_CONSTRAINT'}: # temporary
 
       # extend
       if self.extend:
@@ -169,22 +178,22 @@ class operator(Operator):
         context.active_object.select = True
 
         # owner selected
-        if bpy.data.objects[self.owner].select == True:
+        if bpy.data.objects[panel.owner].select == True:
 
           # deselect
-          bpy.data.objects[self.owner].select = False
+          bpy.data.objects[panel.owner].select = False
 
         # owner selected
         else:
 
           # select owner
-          bpy.data.objects[self.owner].select = True
+          bpy.data.objects[panel.owner].select = True
 
           # active
           if self.active:
 
             # active object
-            context.scene.objects.active = bpy.data.objects[self.owner]
+            context.scene.objects.active = bpy.data.objects[panel.owner]
 
         # extend
       else:
@@ -194,7 +203,7 @@ class operator(Operator):
           object.select = False
 
         # active object
-        context.scene.objects.active = bpy.data.objects[self.owner]
+        context.scene.objects.active = bpy.data.objects[panel.owner]
 
         # select active
         context.active_object.select = True
@@ -210,7 +219,7 @@ class operator(Operator):
     # grease pencil
 
     # constraint
-    if self.type == 'BONE_CONSTRAINT':
+    if panel.context == 'BONE_CONSTRAINT':
 
       # extend
       if self.extend:
@@ -219,22 +228,22 @@ class operator(Operator):
         context.active_object.data.bones.active.select = True
 
         # owner selected
-        if context.active_object.data.bones[self.owner].select == True:
+        if context.active_object.data.bones[panel.owner].select == True:
 
           # deselect
-          context.active_object.data.bones[self.owner].select = False
+          context.active_object.data.bones[panel.owner].select = False
 
         # owner selected
         else:
 
           # select owner
-          context.active_object.data.bones[self.owner].select = True
+          context.active_object.data.bones[panel.owner].select = True
 
           # active
           if self.active:
 
             # active bone
-            context.active_object.data.bones.active = context.active_object.data.bones[self.owner]
+            context.active_object.data.bones.active = context.active_object.data.bones[panel.owner]
 
       else:
 
@@ -242,7 +251,7 @@ class operator(Operator):
           bone.bone.select = False
 
         # target
-        context.active_object.data.bones.active = context.active_object.data.bones[self.owner]
+        context.active_object.data.bones.active = context.active_object.data.bones[panel.owner]
 
         # select
         context.active_object.data.bones.active.select = True
@@ -255,7 +264,7 @@ class operator(Operator):
     # object data
 
     # bone
-    if self.type == 'BONE':
+    if panel.context == 'BONE':
 
       # edit mode
       if context.object.mode in 'EDIT':
@@ -273,34 +282,34 @@ class operator(Operator):
           context.active_object.data.edit_bones.active.select_tail = True
 
           # owner selected
-          if context.active_object.data.edit_bones[self.target].select == True:
+          if context.active_object.data.edit_bones[panel.target].select == True:
 
             # deselect
-            context.active_object.data.edit_bones[self.target].select = False
+            context.active_object.data.edit_bones[panel.target].select = False
 
             # deselect head
-            context.active_object.data.edit_bones[self.target].select_head = False
+            context.active_object.data.edit_bones[panel.target].select_head = False
 
             # deselect tail
-            context.active_object.data.edit_bones[self.target].select_tail = False
+            context.active_object.data.edit_bones[panel.target].select_tail = False
 
           # owner selected
           else:
 
             # deselect
-            context.active_object.data.edit_bones[self.target].select = True
+            context.active_object.data.edit_bones[panel.target].select = True
 
             # deselect head
-            context.active_object.data.edit_bones[self.target].select_head = True
+            context.active_object.data.edit_bones[panel.target].select_head = True
 
             # deselect tail
-            context.active_object.data.edit_bones[self.target].select_tail = True
+            context.active_object.data.edit_bones[panel.target].select_tail = True
 
             # active
             if self.active:
 
               # active bone
-              context.active_object.data.edit_bones.active = context.active_object.data.edit_bones[self.target]
+              context.active_object.data.edit_bones.active = context.active_object.data.edit_bones[panel.target]
 
 
         # extend
@@ -317,7 +326,7 @@ class operator(Operator):
             bone.select_tail = False
 
           # active bone
-          context.active_object.data.edit_bones.active = context.active_object.data.edit_bones[self.target]
+          context.active_object.data.edit_bones.active = context.active_object.data.edit_bones[panel.target]
 
           # select
           context.active_object.data.edit_bones.active.select = True
@@ -338,22 +347,22 @@ class operator(Operator):
           context.active_object.data.bones.active.select = True
 
           # owner selected
-          if context.active_object.data.bones[self.target].select == True:
+          if context.active_object.data.bones[panel.target].select == True:
 
             # deselect
-            context.active_object.data.bones[self.target].select = False
+            context.active_object.data.bones[panel.target].select = False
 
           # owner selected
           else:
 
             # select
-            context.active_object.data.bones[self.target].select = True
+            context.active_object.data.bones[panel.target].select = True
 
             # active
             if self.active:
 
               # active bone
-              context.active_object.data.bones.active = context.active_object.data.bones[self.target]
+              context.active_object.data.bones.active = context.active_object.data.bones[panel.target]
 
         # extend
         else:
@@ -362,7 +371,7 @@ class operator(Operator):
             bone.bone.select = False
 
           # target
-          context.active_object.data.bones.active = context.active_object.data.bones[self.target]
+          context.active_object.data.bones.active = context.active_object.data.bones[panel.target]
 
           # select
           context.active_object.data.bones.active.select = True

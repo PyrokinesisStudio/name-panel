@@ -43,7 +43,7 @@ import bpy
 from bpy.types import AddonPreferences
 from bpy.props import *
 from .scripts import settings as PropertyGroup
-from .scripts.interface import button, icon, menu, panel
+from .scripts.interface import button, icon, menu, name
 from .scripts.operator import auto, batch, copy, icon, settings, text
 
 # addon
@@ -182,7 +182,7 @@ def register():
 
   # name panel settings
   bpy.types.Scene.NamePanel = PointerProperty(
-    type = PropertyGroup.panel,
+    type = PropertyGroup.name,
     name = 'Name Panel Settings',
     description = 'Storage location for the name panel settings.'
   )
@@ -195,13 +195,13 @@ def register():
   if addon:
     try:
       if addon.preferences['location'] == 0:
-        bpy.utils.unregister_class(panel.UIName)
+        bpy.utils.unregister_class(name.UIName)
       else:
-        bpy.utils.unregister_class(panel.toolsName)
+        bpy.utils.unregister_class(name.toolsName)
     except:
-      bpy.utils.unregister_class(panel.UIName)
+      bpy.utils.unregister_class(name.UIName)
   else:
-    bpy.utils.unregister_class(panel.UIName)
+    bpy.utils.unregister_class(name.UIName)
 
 # unregister
 def unregister():

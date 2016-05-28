@@ -24,10 +24,51 @@ from bpy.props import *
 from . import storage
 
 # panel
-class panel(PropertyGroup):
+class name(PropertyGroup):
   '''
     Properties that effect how name panel displays the datablocks within the users current selection.
   '''
+
+  # owner
+  owner = StringProperty(
+    name = 'Owner',
+    description = 'The owner\'s name of the target datablock.',
+    default = ''
+  )
+
+  # target
+  target = StringProperty(
+    name = 'Target',
+    description = 'Datablock target\'s name belonging to the owner.',
+    default = ''
+  )
+
+  # context
+  context = EnumProperty(
+    name = 'Context',
+    description = 'The context the name panel is in based on last icon clicked',
+    items = [
+      ('OBJECT', 'Object', '', 'OBJECT_DATA', 0),
+      ('GROUP', 'Group', '', 'GROUP', 1),
+      ('ACTION', 'Action', '', 'ACTION', 2),
+      ('GREASE_PENCIL', 'Grease Pencil', '', 'GREASEPENCIL', 3),
+      ('CONSTRAINT', 'Constraint', '', 'CONSTRAINT', 4),
+      ('MODIFIER', 'Modifier', '', 'MODIFIER', 5),
+      ('OBJECT_DATA', 'Object Data', '', 'MESH_DATA', 6),
+      ('BONE_GROUP', 'Bone Group', '', 'GROUP_BONE', 7),
+      ('BONE', 'Bone', '', 'BONE_DATA', 8),
+      ('BONE_CONSTRAINT', 'Bone Constraint', '', 'CONSTRAINT_BONE', 9),
+      ('VERTEX_GROUP', 'Vertex Group', '', 'GROUP_VERTEX', 10),
+      ('SHAPEKEY', 'Shapekey', '', 'SHAPEKEY_DATA', 11),
+      ('UV', 'UV Map', '', 'GROUP_UVS', 12),
+      ('VERTEX_COLOR', 'Vertex Colors', '', 'GROUP_VCOL', 13),
+      ('MATERIAL', 'Material', '', 'MATERIAL', 14),
+      ('TEXTURE', 'Texture', '', 'TEXTURE', 15),
+      ('PARTICLE_SYSTEM', 'Particle System', '', 'PARTICLES', 16),
+      ('PARTICLE_SETTING', 'Particle Settings', '', 'DOT', 17)
+    ],
+    default = 'OBJECT'
+  )
 
   # pin active object
   pinActiveObject = BoolProperty(
@@ -1697,49 +1738,3 @@ class batch:
       description = 'Use the names available from the active object to paste to the other datablock names.',
       default = False
     )
-
-# icon
-class icon:
-  '''
-    Contains Classes;
-      object (PropertyGroup)
-      group (PropertyGroup)
-      action (PropertyGroup)
-      constraint (PropertyGroup)
-      modifier (PropertyGroup)
-      objectData (PropertyGroup)
-      vertexGroup (PropertyGroup)
-      shapekey (PropertyGroup)
-      uv (PropertyGroup)
-      vertexColor (PropertyGroup)
-      material (PropertyGroup)
-      texture (PropertyGroup)
-      bone (PropertyGroup)
-      boneConstraint (PropertyGroup)
-  '''
-
-  # object
-  # 'ARMATURE'
-  # 'CURVE'
-  # 'CAMERA'
-  # 'EMPTY'
-  # 'LATTICE'
-  # 'META'
-  # 'MESH'
-  # 'LAMP'
-  # 'SPEAKER'
-  # 'SURFACE'
-  # 'FONT'
-  # group
-  # action
-  # constraint
-  # modifier
-  # object data
-  # vertex group
-  # shapekey
-  # uv
-  # vertex color
-  # material
-  # texture
-  # bone
-  # bone constraint

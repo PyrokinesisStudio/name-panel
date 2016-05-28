@@ -17,6 +17,7 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
+# imports
 import bpy
 import re
 from bpy.types import Panel
@@ -87,45 +88,45 @@ def main(self, context):
   # layout
   layout = self.layout
 
-  # option
-  option = context.scene.NamePanel
+  # panel
+  panel = context.scene.NamePanel
 
   # column
   column = layout.column(align=True)
 
   # filter
-  filters(self, context, column, option)
+  filters(self, context, column, panel)
 
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # mode
-  if option.mode == 'SELECTED':
+  if panel.mode == 'SELECTED':
 
     # member
-    member = gather(context, {object.name: [] for object in context.selected_objects}) if option.search != '' else {}
+    member = gather(context, {object.name: [] for object in context.selected_objects}) if panel.search != '' else {}
 
   # mode
   else:
 
     # member
-    member = gather(context, {object.name: [] for object in context.scene.objects if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]}) if option.search != '' else {}
+    member = gather(context, {object.name: [] for object in context.scene.objects if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]}) if panel.search != '' else {}
 
   # pin active object
-  if option.pinActiveObject:
+  if panel.pinActiveObject:
     if context.active_object:
 
       # search
       if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if re.search(search, item, re.I) != None]:
 
         # populate
-        populate(self, context, layout, context.active_object, option)
+        populate(self, context, layout, context.active_object, panel)
 
     # display names
-    if option.displayNames:
+    if panel.displayNames:
 
       # mode
-      if option.mode == 'SELECTED':
+      if panel.mode == 'SELECTED':
 
         # objects
         objects = [[object.name, object] for object in context.selected_objects]
@@ -138,7 +139,7 @@ def main(self, context):
             if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
 
               # populate
-              populate(self, context, layout, datablock[1], option)
+              populate(self, context, layout, datablock[1], panel)
 
       # mode
       else:
@@ -154,16 +155,16 @@ def main(self, context):
             if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
 
               # populate
-              populate(self, context, layout, datablock[1], option)
+              populate(self, context, layout, datablock[1], panel)
 
   # pin active object
   else:
 
     # display names
-    if option.displayNames:
+    if panel.displayNames:
 
       # mode
-      if option.mode == 'SELECTED':
+      if panel.mode == 'SELECTED':
 
         # objects
         objects = [[object.name, object] for object in context.selected_objects]
@@ -175,7 +176,7 @@ def main(self, context):
           if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
 
             # populate
-            populate(self, context, layout, datablock[1], option)
+            populate(self, context, layout, datablock[1], panel)
 
       # mode
       else:
@@ -190,17 +191,17 @@ def main(self, context):
           if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
 
             # populate
-            populate(self, context, layout, datablock[1], option)
+            populate(self, context, layout, datablock[1], panel)
     else:
 
       # search
       if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if re.search(search, item, re.I) != None]:
 
         # populate
-        populate(self, context, layout, context.active_object, option)
+        populate(self, context, layout, context.active_object, panel)
 
 # filters
-def filters(self, context, layout, option):
+def filters(self, context, layout, panel):
   '''
     The name panel filters
   '''
@@ -212,25 +213,25 @@ def filters(self, context, layout, option):
   row.scale_y = 1.25
 
   # icon toggle
-  if option.filters:
+  if panel.filters:
     iconToggle = 'RADIOBUT_ON'
   else:
     iconToggle = 'RADIOBUT_OFF'
 
   # filters
-  row.prop(option, 'filters', text='Filters', icon=iconToggle, toggle=True)
+  row.prop(panel, 'filters', text='Filters', icon=iconToggle, toggle=True)
 
   # display names
-  row.prop(option, 'displayNames', text='', icon='ZOOM_SELECTED')
+  row.prop(panel, 'displayNames', text='', icon='ZOOM_SELECTED')
 
   # options
-  row.prop(option, 'options', text='', icon='SETTINGS')
+  row.prop(panel, 'options', text='', icon='SETTINGS')
 
   # # operator menu
   row.menu('VIEW3D_MT_name_panel_specials', text='', icon='COLLAPSEMENU')
 
   # filters
-  if option.filters:
+  if panel.filters:
 
     # separator
     layout.separator()
@@ -242,25 +243,25 @@ def filters(self, context, layout, option):
     row.scale_x = 5 # hack: forces buttons to line up correctly
 
     # action
-    row.prop(option, 'action', text='', icon='ACTION')
+    row.prop(panel, 'action', text='', icon='ACTION')
 
     # grease pencil
-    row.prop(option, 'greasePencil', text='', icon='GREASEPENCIL')
+    row.prop(panel, 'greasePencil', text='', icon='GREASEPENCIL')
 
     # groups
-    row.prop(option, 'groups', text='', icon='GROUP')
+    row.prop(panel, 'groups', text='', icon='GROUP')
 
     # constraints
-    row.prop(option, 'constraints', text='', icon='CONSTRAINT')
+    row.prop(panel, 'constraints', text='', icon='CONSTRAINT')
 
     # modifiers
-    row.prop(option, 'modifiers', text='', icon='MODIFIER')
+    row.prop(panel, 'modifiers', text='', icon='MODIFIER')
 
     # bone groups
-    row.prop(option, 'boneGroups', text='', icon='GROUP_BONE')
+    row.prop(panel, 'boneGroups', text='', icon='GROUP_BONE')
 
     # bone constraints
-    row.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
+    row.prop(panel, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
 
     # row
     row = layout.row(align=True)
@@ -269,55 +270,55 @@ def filters(self, context, layout, option):
     row.scale_x = 5 # hack: forces buttons to line up correctly
 
     # vertex groups
-    row.prop(option, 'vertexGroups', text='', icon='GROUP_VERTEX')
+    row.prop(panel, 'vertexGroups', text='', icon='GROUP_VERTEX')
 
     # shapekeys
-    row.prop(option, 'shapekeys', text='', icon='SHAPEKEY_DATA')
+    row.prop(panel, 'shapekeys', text='', icon='SHAPEKEY_DATA')
 
     # uvs
-    row.prop(option, 'uvs', text='', icon='GROUP_UVS')
+    row.prop(panel, 'uvs', text='', icon='GROUP_UVS')
 
     # vertex colors
-    row.prop(option, 'vertexColors', text='', icon='GROUP_VCOL')
+    row.prop(panel, 'vertexColors', text='', icon='GROUP_VCOL')
 
     # materials
-    row.prop(option, 'materials', text='', icon='MATERIAL')
+    row.prop(panel, 'materials', text='', icon='MATERIAL')
 
     # textures
-    row.prop(option, 'textures', text='', icon='TEXTURE')
+    row.prop(panel, 'textures', text='', icon='TEXTURE')
 
     # particles systems
-    row.prop(option, 'particleSystems', text='', icon='PARTICLES')
+    row.prop(panel, 'particleSystems', text='', icon='PARTICLES')
 
     # separator
     layout.separator()
 
     # hide search
-    if option.hideSearch:
+    if panel.hideSearch:
 
       # row
       row = layout.row(align=True)
 
       # search
-      row.prop(option, 'search', text='', icon='VIEWZOOM')
+      row.prop(panel, 'search', text='', icon='VIEWZOOM')
       row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
-      row.prop(option, 'regex', text='', icon='SCRIPTPLUGINS')
+      row.prop(panel, 'regex', text='', icon='SCRIPTPLUGINS')
       row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
 
   # hide search
-  if not option.hideSearch:
+  if not panel.hideSearch:
 
     # row
     row = layout.row(align=True)
 
     # search
-    row.prop(option, 'search', text='', icon='VIEWZOOM')
+    row.prop(panel, 'search', text='', icon='VIEWZOOM')
     row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
-    row.prop(option, 'regex', text='', icon='SCRIPTPLUGINS')
+    row.prop(panel, 'regex', text='', icon='SCRIPTPLUGINS')
     row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
 
   # enabled
-  if option.displayNames:
+  if panel.displayNames:
 
     # separator()
     layout.separator()
@@ -326,7 +327,7 @@ def filters(self, context, layout, option):
     row = layout.row()
 
     # mode
-    row.prop(option, 'mode', expand=True)
+    row.prop(panel, 'mode', expand=True)
 
 # gather
 def gather(context, member):
@@ -334,12 +335,12 @@ def gather(context, member):
     Creates a object datablock dictionary for name panel.
   '''
 
-  # option
-  option = context.scene.NamePanel
+  # panel
+  panel = context.scene.NamePanel
 
   # selected
-  if option.displayNames:
-    if option.mode == 'SELECTED':
+  if panel.displayNames:
+    if panel.mode == 'SELECTED':
       for object in context.selected_objects:
         sort(context, member, object)
 
@@ -358,14 +359,14 @@ def sort(context, member, object):
     Sorts object related datablocks for search panel population.
   '''
 
-  # option
-  option = context.scene.NamePanel
+  # panel
+  panel = context.scene.NamePanel
 
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # group
-  if option.groups:
+  if panel.groups:
     for group in bpy.data.groups[:]:
       for groupobject in group.objects[:]:
         if groupobject == object:
@@ -377,7 +378,7 @@ def sort(context, member, object):
             member[object.name].append(group.name)
 
   # action
-  if option.action:
+  if panel.action:
     if hasattr(object.animation_data, 'action'):
       if hasattr(object.animation_data.action, 'name'):
 
@@ -388,7 +389,7 @@ def sort(context, member, object):
           member[object.name].append(object.animation_data.action.name)
 
   # grease pencil
-  if option.greasePencil:
+  if panel.greasePencil:
     if hasattr(object.grease_pencil, 'name'):
 
       # layers
@@ -410,7 +411,7 @@ def sort(context, member, object):
             member[object.name].append(layer.info)
 
   # constraints
-  if option.constraints:
+  if panel.constraints:
     for constraint in object.constraints[:]:
 
       # search
@@ -420,7 +421,7 @@ def sort(context, member, object):
         member[object.name].append(constraint.name)
 
   # modifiers
-  if option.modifiers:
+  if panel.modifiers:
     for modifier in object.modifiers[:]:
 
       if modifier.type == 'PARTICLE_SYSTEM':
@@ -456,7 +457,7 @@ def sort(context, member, object):
         member[object.name].append(modifier.name)
 
         # particle systems
-        if option.particleSystems:
+        if panel.particleSystems:
           if modifier.type in 'PARTICLE_SYSTEM':
 
             # search
@@ -481,7 +482,7 @@ def sort(context, member, object):
                       member[object.name].append(slot.texture.name)
 
   # materials
-  if option.materials:
+  if panel.materials:
     for slot in object.material_slots:
       if slot.material != None:
 
@@ -495,7 +496,7 @@ def sort(context, member, object):
           member[object.name].append(slot.material.name)
 
           # textures
-          if option.textures:
+          if panel.textures:
             if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
               for tslot in slot.material.texture_slots[:]:
                 if hasattr(tslot, 'texture'):
@@ -517,7 +518,7 @@ def sort(context, member, object):
       member[object.name].append(object.data.name)
 
   # vertex groups
-  if option.vertexGroups:
+  if panel.vertexGroups:
     if hasattr(object, 'vertex_groups'):
       for group in object.vertex_groups[:]:
 
@@ -528,7 +529,7 @@ def sort(context, member, object):
           member[object.name].append(group.name)
 
   # shapekeys
-  if option.shapekeys:
+  if panel.shapekeys:
     if hasattr(object.data, 'shape_keys'):
       if hasattr(object.data.shape_keys, 'key_blocks'):
         for key in object.data.shape_keys.key_blocks[:]:
@@ -540,7 +541,7 @@ def sort(context, member, object):
             member[object.name].append(key.name)
 
   # uvs
-  if option.uvs:
+  if panel.uvs:
     if object.type in 'MESH':
       for uv in object.data.uv_textures[:]:
 
@@ -551,7 +552,7 @@ def sort(context, member, object):
           member[object.name].append(uv.name)
 
   # vertex colors
-  if option.vertexColors:
+  if panel.vertexColors:
     if object.type in 'MESH':
       for vertexColor in object.data.vertex_colors[:]:
 
@@ -562,7 +563,7 @@ def sort(context, member, object):
           member[object.name].append(vertexColor.name)
 
   # bone groups
-  if option.boneGroups:
+  if panel.boneGroups:
     if object.type in 'ARMATURE':
       for group in object.pose.bone_groups[:]:
 
@@ -590,7 +591,7 @@ def sort(context, member, object):
           member[object.name].append(context.active_bone.name)
 
         # bone constraints
-        if option.boneConstraints:
+        if panel.boneConstraints:
           if object.mode in 'POSE':
             for constraint in context.active_pose_bone.constraints[:]:
 
@@ -601,7 +602,7 @@ def sort(context, member, object):
                 member[object.name].append(constraint.name)
 
         # display bones
-        if option.displayBones:
+        if panel.displayBones:
 
           # pose mode
           if object.mode in 'POSE':
@@ -632,7 +633,7 @@ def sort(context, member, object):
                 member[object.name].append(bone.name)
 
               # bone constraints
-              if option.boneConstraints:
+              if panel.boneConstraints:
                 if object.mode in 'POSE':
                   for constraint in bone.constraints[:]:
 
@@ -645,58 +646,58 @@ def sort(context, member, object):
   return member
 
 # populate
-def populate(self, context, layout, object, option):
+def populate(self, context, layout, object, panel):
   '''
     Populates the name panel with datablock names.
   '''
 
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # column
   column = layout.column()
 
   # object
-  Object(self, context, column, object, option)
+  Object(self, context, column, object, panel)
 
   # action
-  block.object.action(self, context, column, object, option)
+  block.object.action(self, context, column, object, panel)
 
   # group
-  block.object.group(self, context, column, object, option)
+  block.object.group(self, context, column, object, panel)
 
   # grease pencil
-  block.object.greasePencil(self, context, column, object, option)
+  block.object.greasePencil(self, context, column, object, panel)
 
   # constraint
-  block.object.constraint(self, context, column, object, option)
+  block.object.constraint(self, context, column, object, panel)
 
   # modifier
-  block.object.modifier(self, context, column, object, option)
+  block.object.modifier(self, context, column, object, panel)
 
   # material
-  block.object.material(self, context, column, object, option)
+  block.object.material(self, context, column, object, panel)
 
   # object data
-  ObjectData(self, context, column, object, option)
+  ObjectData(self, context, column, object, panel)
 
   # vertex group
-  block.objectData.vertexGroup(self, context, column, object, option)
+  block.objectData.vertexGroup(self, context, column, object, panel)
 
   # shapekey
-  block.objectData.shapekey(self, context, column, object, option)
+  block.objectData.shapekey(self, context, column, object, panel)
 
   # uv
-  block.objectData.uv(self, context, column, object, option)
+  block.objectData.uv(self, context, column, object, panel)
 
   # vertex color
-  block.objectData.vertexColor(self, context, column, object, option)
+  block.objectData.vertexColor(self, context, column, object, panel)
 
   # material
-  block.objectData.material(self, context, column, object, option)
+  block.objectData.material(self, context, column, object, panel)
 
   # bone group
-  block.objectData.boneGroup(self, context, column, object, option)
+  block.objectData.boneGroup(self, context, column, object, panel)
 
   # row
   row = column.row()
@@ -708,7 +709,7 @@ def populate(self, context, layout, object, option):
   if object == context.active_object:
 
     # bone
-    block.bone(self, context, column, object, option)
+    block.bone(self, context, column, object, panel)
 
 # block
 class block:
@@ -735,16 +736,16 @@ class block:
     '''
 
     # group
-    def group(self, context, layout, object, option):
+    def group(self, context, layout, object, panel):
       '''
         group related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # groups
-      if option.groups:
+      if panel.groups:
         for group in bpy.data.groups[:]:
           for groupObject in group.objects[:]:
             if groupObject == object:
@@ -753,19 +754,19 @@ class block:
               if search == '' or re.search(search, group.name, re.I):
 
                 # group
-                Group(self, context, layout, group, object)
+                Group(self, context, layout, group, object, panel)
 
     # action
-    def action(self, context, layout, object, option):
+    def action(self, context, layout, object, panel):
       '''
         action related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # action
-      if option.action:
+      if panel.action:
         if hasattr(object.animation_data, 'action'):
           if hasattr(object.animation_data.action, 'name'):
 
@@ -773,19 +774,19 @@ class block:
             if search == '' or re.search(search, object.animation_data.action.name, re.I):
 
               # action
-              Action(self, context, layout, object.animation_data.action, object)
+              Action(self, context, layout, object.animation_data.action, object, panel)
 
     # greasePencil
-    def greasePencil(self, context, layout, object, option):
+    def greasePencil(self, context, layout, object, panel):
       '''
         grease pencil related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # grease pencil
-      if option.greasePencil:
+      if panel.greasePencil:
         if hasattr(object.grease_pencil, 'name'):
 
           # layers
@@ -795,7 +796,7 @@ class block:
           if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers if re.search(search, item, re.I) != None]:
 
             # grease pencil
-            GreasePencil(self, context, layout, object.grease_pencil, object, option)
+            GreasePencil(self, context, layout, object.grease_pencil, object, panel)
 
             # pencil layers
             for layer in bpy.data.objects[object.name].grease_pencil.layers[:]:
@@ -804,38 +805,38 @@ class block:
               if search == '' or re.search(search, layer.info, re.I):
 
                 # pencil layer
-                PencilLayer(self, context, layout, layer, object, option)
+                PencilLayer(self, context, layout, layer, object, panel)
 
     # constraint
-    def constraint(self, context, layout, object, option):
+    def constraint(self, context, layout, object, panel):
       '''
         Constraint related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # constraints
-      if option.constraints:
+      if panel.constraints:
         for constraint in object.constraints[:]:
 
           # search
           if search == '' or re.search(search, constraint.name, re.I):
 
             # constraint
-            Constraint(self, context, layout, constraint, object, None, option)
+            Constraint(self, context, layout, constraint, object, None, panel)
 
     # modifier
-    def modifier(self, context, layout, object, option):
+    def modifier(self, context, layout, object, panel):
       '''
         Modifier related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # modifiers
-      if option.modifiers:
+      if panel.modifiers:
         for modifier in object.modifiers[:]:
 
           # particle
@@ -870,10 +871,10 @@ class block:
           if search == '' or re.search(search, modifier.name, re.I) or [re.search(search, item, re.I) for item in member if re.search(search, item, re.I) != None]:
 
             # modifier
-            Modifier(self, context, layout, modifier, object, option)
+            Modifier(self, context, layout, modifier, object, panel)
 
             # texture
-            if option.textures:
+            if panel.textures:
               if modifier.type in {'DISPLACE', 'WARP'}:
                 if modifier.texture:
 
@@ -881,7 +882,7 @@ class block:
                   if search == '' or re.search(search, modifier.texture.name, re.I):
 
                     # texture
-                    Texture(self, context, layout, modifier, object, option)
+                    Texture(self, context, layout, modifier, object, panel)
 
               # mask texture
               elif modifier.type in {'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_PROXIMITY'}:
@@ -891,20 +892,20 @@ class block:
                   if search == '' or re.search(search, modifier.mask_texture.name, re.I):
 
                     # mask texture
-                    MaskTexture(self, context, layout, modifier, object, option)
+                    MaskTexture(self, context, layout, modifier, object, panel)
 
             # particle systems
-            if option.particleSystems:
+            if panel.particleSystems:
               if modifier.type in 'PARTICLE_SYSTEM':
 
                 # search
                 if search == '' or re.search(search, particle[0], re.I) or re.search(search, particle[1], re.I) or [re.search(search, item, re.I) for item in texture if re.search(search, item, re.I) != None]:
 
                   # particle
-                  Particle(self, context, layout, modifier, object, option)
+                  Particle(self, context, layout, modifier, object, panel)
 
                   # texture
-                  if option.textures:
+                  if panel.textures:
                     # if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
                     for slot in modifier.particle_system.settings.texture_slots[:]:
                       if hasattr(slot, 'texture'):
@@ -914,22 +915,22 @@ class block:
                           if search == '' or re.search(search, slot.texture.name, re.I):
 
                             # texture
-                            Texture(self, context, layout, slot, object, option)
+                            Texture(self, context, layout, slot, object, panel)
 
       else:
         context.scene['NamePanel']['particleSystems'] = 0
 
     # material
-    def material(self, context, layout, object, option):
+    def material(self, context, layout, object, panel):
       '''
         Material related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # materials
-      if option.materials:
+      if panel.materials:
         for slot in object.material_slots:
           if slot.link == 'OBJECT':
             if slot.material != None:
@@ -941,10 +942,10 @@ class block:
               if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
 
                 # material
-                Material(self, context, layout, slot, object, option)
+                Material(self, context, layout, slot, object, panel)
 
                 # textures
-                if option.textures:
+                if panel.textures:
                   if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
                     for tslot in slot.material.texture_slots[:]:
                       if hasattr(tslot, 'texture'):
@@ -954,7 +955,7 @@ class block:
                           if search == '' or re.search(search, tslot.texture.name, re.I):
 
                             # texture
-                            Texture(self, context, layout, tslot, object, option)
+                            Texture(self, context, layout, tslot, object, panel)
 
   # object data
   class objectData:
@@ -969,16 +970,16 @@ class block:
     '''
 
     # vertex group
-    def vertexGroup(self, context, layout, object, option):
+    def vertexGroup(self, context, layout, object, panel):
       '''
         Vertex group related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # vertex groups
-      if option.vertexGroups:
+      if panel.vertexGroups:
         if hasattr(object, 'vertex_groups'):
           for group in object.vertex_groups[:]:
 
@@ -986,19 +987,19 @@ class block:
             if search == '' or re.search(search, group.name, re.I):
 
               # vertex group
-              VertexGroup(self, context, layout, group, object, option)
+              VertexGroup(self, context, layout, group, object, panel)
 
     # shapekey
-    def shapekey(self, context, layout, object, option):
+    def shapekey(self, context, layout, object, panel):
       '''
         Shapekey related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # shapekeys
-      if option.shapekeys:
+      if panel.shapekeys:
         if hasattr(object.data, 'shape_keys'):
           if hasattr(object.data.shape_keys, 'key_blocks'):
             for key in object.data.shape_keys.key_blocks[:]:
@@ -1007,19 +1008,19 @@ class block:
               if search == '' or re.search(search, key.name, re.I):
 
                 # shapekey
-                Shapekey(self, context, layout, key, object, option)
+                Shapekey(self, context, layout, key, object, panel)
 
     # uv
-    def uv(self, context, layout, object, option):
+    def uv(self, context, layout, object, panel):
       '''
         UV related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # uvs
-      if option.uvs:
+      if panel.uvs:
         if object.type in 'MESH':
           for uv in object.data.uv_textures[:]:
 
@@ -1027,19 +1028,19 @@ class block:
             if search == '' or re.search(search, uv.name, re.I):
 
               # uv
-              UV(self, context, layout, uv, object, option)
+              UV(self, context, layout, uv, object, panel)
 
     # vertex color
-    def vertexColor(self, context, layout, object, option):
+    def vertexColor(self, context, layout, object, panel):
       '''
         Vertex color related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # vertex colors
-      if option.vertexColors:
+      if panel.vertexColors:
         if object.type in 'MESH':
           for vertexColor in object.data.vertex_colors[:]:
 
@@ -1047,19 +1048,19 @@ class block:
             if search == '' or re.search(search, vertexColor.name, re.I):
 
               # vertex color
-              VertexColor(self, context, layout, vertexColor, object, option)
+              VertexColor(self, context, layout, vertexColor, object, panel)
 
     # material
-    def material(self, context, layout, object, option):
+    def material(self, context, layout, object, panel):
       '''
         Material related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # materials
-      if option.materials:
+      if panel.materials:
         for slot in object.material_slots:
           if slot.link == 'DATA':
             if slot.material != None:
@@ -1071,10 +1072,10 @@ class block:
               if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
 
                 # material
-                Material(self, context, layout, slot, object, option)
+                Material(self, context, layout, slot, object, panel)
 
                 # textures
-                if option.textures:
+                if panel.textures:
                   if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
                     for tslot in slot.material.texture_slots[:]:
                       if hasattr(tslot, 'texture'):
@@ -1084,19 +1085,19 @@ class block:
                           if search == '' or re.search(search, tslot.texture.name, re.I):
 
                             # texture
-                            Texture(self, context, layout, tslot, object, option)
+                            Texture(self, context, layout, tslot, object, panel)
 
     # bone groups
-    def boneGroup(self, context, layout, object, option):
+    def boneGroup(self, context, layout, object, panel):
       '''
         Bone group related code block.
       '''
 
       # search
-      search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # bone groups
-      if option.boneGroups:
+      if panel.boneGroups:
         if object.type in 'ARMATURE':
           for group in object.pose.bone_groups[:]:
 
@@ -1107,13 +1108,13 @@ class block:
               BoneGroup(self, context, layout, group, object)
 
   # bones
-  def bone(self, context, layout, object, option):
+  def bone(self, context, layout, object, panel):
     '''
       Bone related code block.
     '''
 
     # search
-    search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+    search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
     # active bone
     if object.type in 'ARMATURE':
@@ -1127,11 +1128,11 @@ class block:
             constraints = []
 
           # display bones
-          if option.displayBones:
+          if panel.displayBones:
 
             row = layout.row()
 
-            row.prop(option, 'boneMode', expand=True)
+            row.prop(panel, 'boneMode', expand=True)
 
             layout.separator()
 
@@ -1139,10 +1140,10 @@ class block:
           if search == '' or re.search(search, context.active_bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
             # bone
-            Bone(self, context, layout, context.active_bone, object, option)
+            Bone(self, context, layout, context.active_bone, object, panel)
 
             # bone constraints
-            if option.boneConstraints:
+            if panel.boneConstraints:
               if object.mode in 'POSE':
                 bone = context.active_pose_bone
                 if bone:
@@ -1152,7 +1153,7 @@ class block:
                     if search == '' or re.search(search, constraint.name, re.I):
 
                       # constraint
-                      Constraint(self, context, layout, constraint, object, bone, option)
+                      Constraint(self, context, layout, constraint, object, bone, panel)
 
                   # constraints
                   if constraints != []:
@@ -1164,7 +1165,7 @@ class block:
                     row.separator()
 
           # display bones
-          if option.displayBones:
+          if panel.displayBones:
 
             # pose mode
             if object.mode in 'POSE':
@@ -1179,7 +1180,7 @@ class block:
               bones = object.data.edit_bones[:]
 
             # selected
-            if option.boneMode == 'SELECTED':
+            if panel.boneMode == 'SELECTED':
 
               # bones
               bones = [[bone.name, bone] for bone in bones if bone.select]
@@ -1204,10 +1205,10 @@ class block:
                 if search == '' or re.search(search, bone[1].name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
 
                   # bone
-                  Bone(self, context, layout, bone[1], object, option)
+                  Bone(self, context, layout, bone[1], object, panel)
 
                   # bone constraints
-                  if option.boneConstraints:
+                  if panel.boneConstraints:
                     if object.mode in 'POSE':
                       for constraint in object.pose.bones[bone[1].name].constraints[:]:
 
@@ -1215,7 +1216,7 @@ class block:
                         if search == '' or re.search(search, constraint.name, re.I):
 
                           # constraint
-                          Constraint(self, context, layout, constraint, object, bone[1], option)
+                          Constraint(self, context, layout, constraint, object, bone[1], panel)
 
                       # constraints
                       if constraints != []:
@@ -1227,12 +1228,12 @@ class block:
                         row.separator()
 
 # object
-def Object(self, context, layout, datablock, option):
+def Object(self, context, layout, datablock, panel):
   '''
     The object name row.
   '''
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # active object
   if datablock == context.active_object:
@@ -1261,13 +1262,13 @@ def Object(self, context, layout, datablock, option):
     op = sub.operator('view3d.name_panel_icon', text='', icon=icon.object(datablock))
     op.owner = datablock.name
     op.target = datablock.name
-    op.type = 'OBJECT'
+    op.context = 'OBJECT'
 
     # object
     row.prop(datablock, 'name', text='')
 
     # options
-    if option.options:
+    if panel.options:
 
       # hide
       row.prop(datablock, 'hide', text='')
@@ -1279,7 +1280,7 @@ def Object(self, context, layout, datablock, option):
       row.prop(datablock, 'hide_render', text='')
 
 # group
-def Group(self, context, layout, datablock, object):
+def Group(self, context, layout, datablock, object, panel):
   '''
     The object group name row.
   '''
@@ -1297,7 +1298,7 @@ def Group(self, context, layout, datablock, object):
   op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'GROUP'
+  op.context = 'GROUP'
 
   # label
   # sub.label(text='', icon='GROUP')
@@ -1306,7 +1307,7 @@ def Group(self, context, layout, datablock, object):
   row.prop(datablock, 'name', text='')
 
 # action
-def Action(self, context, layout, datablock, object):
+def Action(self, context, layout, datablock, object, panel):
   '''
     The object action name row.
   '''
@@ -1324,19 +1325,19 @@ def Action(self, context, layout, datablock, object):
   op = sub.operator('view3d.name_panel_icon', text='', icon='ACTION', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'ACTION'
+  op.context = 'ACTION'
 
   # name
   row.prop(datablock, 'name', text='')
 
 # grease pencil
-def GreasePencil(self, context, layout, datablock, object, option):
+def GreasePencil(self, context, layout, datablock, object, panel):
   '''
     The object grease pencil name row.
   '''
 
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -1352,13 +1353,13 @@ def GreasePencil(self, context, layout, datablock, object, option):
   op = sub.operator('view3d.name_panel_icon', text='', icon='GREASEPENCIL', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'GREASE_PENCIL'
+  op.context = 'GREASE_PENCIL'
 
   # name
   row.prop(datablock, 'name', text='')
 
 # pencil layer
-def PencilLayer(self, context, layout, datablock, object, option):
+def PencilLayer(self, context, layout, datablock, object, panel):
   '''
     The object pencil layer name row.
   '''
@@ -1382,7 +1383,7 @@ def PencilLayer(self, context, layout, datablock, object, option):
   row.prop(datablock, 'info', text='')
 
   # options
-  if option.options:
+  if panel.options:
 
     # lock
     row.prop(datablock, 'lock', text='')
@@ -1391,7 +1392,7 @@ def PencilLayer(self, context, layout, datablock, object, option):
     row.prop(datablock, 'hide', text='')
 
 # constraint
-def Constraint(self, context, layout, datablock, object, bone, option):
+def Constraint(self, context, layout, datablock, object, bone, panel):
   '''
     The object or pose bone constraint name row.
   '''
@@ -1430,7 +1431,7 @@ def Constraint(self, context, layout, datablock, object, bone, option):
       op = sub.operator('view3d.name_panel_icon', text='', icon='CONSTRAINT', emboss=False)
       op.owner = object.name if not bone else bone.name
       op.target = datablock.name
-      op.type = 'CONSTRAINT' if not bone else 'BONE_CONSTRAINT'
+      op.context = 'CONSTRAINT' if not bone else 'BONE_CONSTRAINT'
 
   except:
 
@@ -1438,13 +1439,13 @@ def Constraint(self, context, layout, datablock, object, bone, option):
     op = sub.operator('view3d.name_panel_icon', text='', icon='CONSTRAINT', emboss=False)
     op.owner = object.name if not bone else bone.name
     op.target = datablock.name
-    op.type = 'CONSTRAINT' if not bone else 'BONE_CONSTRAINT'
+    op.context = 'CONSTRAINT' if not bone else 'BONE_CONSTRAINT'
 
   # name
   row.prop(datablock, 'name', text='')
 
   # options
-  if option.options:
+  if panel.options:
 
     # influence
     if datablock.type not in {'RIGID_BODY_JOINT', 'NULL'}:
@@ -1468,13 +1469,13 @@ def Constraint(self, context, layout, datablock, object, bone, option):
     row.prop(datablock, 'mute', text='', icon=iconView)
 
 # modifier
-def Modifier(self, context, layout, datablock, object, option):
+def Modifier(self, context, layout, datablock, object, panel):
   '''
     The object modifier name row.
   '''
 
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -1503,7 +1504,7 @@ def Modifier(self, context, layout, datablock, object, option):
       op = sub.operator('view3d.name_panel_icon', text='', icon=icon.modifier(datablock), emboss=False)
       op.owner = object.name
       op.target = datablock.name
-      op.type = 'MODIFIER'
+      op.context = 'MODIFIER'
 
   except:
 
@@ -1511,13 +1512,13 @@ def Modifier(self, context, layout, datablock, object, option):
     op = sub.operator('view3d.name_panel_icon', text='', icon=icon.modifier(datablock), emboss=False)
     op.owner = object.name
     op.target = datablock.name
-    op.type = 'MODIFIER'
+    op.context = 'MODIFIER'
 
   # name
   row.prop(datablock, 'name', text='')
 
   # options
-  if option.options:
+  if panel.options:
     if datablock.type not in {'COLLISION', 'SOFT_BODY'}:
 
       # icon render
@@ -1539,13 +1540,13 @@ def Modifier(self, context, layout, datablock, object, option):
       row.prop(datablock, 'show_viewport', text='', icon=iconView)
 
 # object data
-def ObjectData(self, context, layout, datablock, option):
+def ObjectData(self, context, layout, datablock, panel):
   '''
     The object data name row.
   '''
 
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -1578,13 +1579,13 @@ def ObjectData(self, context, layout, datablock, option):
       op = sub.operator('view3d.name_panel_icon', text='', icon=icon.objectData(datablock))
       op.owner = datablock.name
       op.target = datablock.name
-      op.type = 'OBJECT_DATA'
+      op.context = 'OBJECT_DATA'
 
       # name
       row.prop(datablock.data, 'name', text='')
 
 # vertex group
-def VertexGroup(self, context, layout, datablock, object, option):
+def VertexGroup(self, context, layout, datablock, object, panel):
   '''
     The object data vertex group name row.
   '''
@@ -1602,13 +1603,13 @@ def VertexGroup(self, context, layout, datablock, object, option):
   op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP_VERTEX', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'VERTEX_GROUP'
+  op.context = 'VERTEX_GROUP'
 
   # name
   row.prop(datablock, 'name', text='')
 
   # options
-  if option.options:
+  if panel.options:
 
     # icon lock
     if datablock.lock_weight:
@@ -1620,7 +1621,7 @@ def VertexGroup(self, context, layout, datablock, object, option):
     row.prop(datablock, 'lock_weight', text='', icon=iconLock)
 
 # shapekey
-def Shapekey(self, context, layout, datablock, object, option):
+def Shapekey(self, context, layout, datablock, object, panel):
   '''
     The object animation data data shapekey name row.
   '''
@@ -1638,13 +1639,13 @@ def Shapekey(self, context, layout, datablock, object, option):
   op = sub.operator('view3d.name_panel_icon', text='', icon='SHAPEKEY_DATA', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'SHAPEKEY'
+  op.context = 'SHAPEKEY'
 
   # name
   row.prop(datablock, 'name', text='')
 
   # options
-  if option.options:
+  if panel.options:
     if datablock != object.data.shape_keys.key_blocks[0]:
 
       # sub
@@ -1660,7 +1661,7 @@ def Shapekey(self, context, layout, datablock, object, option):
     row.prop(datablock, 'mute', text='', icon='RESTRICT_VIEW_OFF')
 
 # uv
-def UV(self, context, layout, datablock, object, option):
+def UV(self, context, layout, datablock, object, panel):
   '''
     The object data uv name row.
   '''
@@ -1678,13 +1679,13 @@ def UV(self, context, layout, datablock, object, option):
   op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP_UVS', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'UV'
+  op.context = 'UV'
 
   # name
   row.prop(datablock, 'name', text='')
 
   # options
-  if option.options:
+  if panel.options:
 
     # icon active
     if datablock.active_render:
@@ -1696,7 +1697,7 @@ def UV(self, context, layout, datablock, object, option):
     row.prop(datablock, 'active_render', text='', icon=iconActive)
 
 # vertex color
-def VertexColor(self, context, layout, datablock, object, option):
+def VertexColor(self, context, layout, datablock, object, panel):
   '''
     The object data vertex color name row.
   '''
@@ -1714,13 +1715,13 @@ def VertexColor(self, context, layout, datablock, object, option):
   op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP_VCOL', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'VERTEX_COLOR'
+  op.context = 'VERTEX_COLOR'
 
   # name
   row.prop(datablock, 'name', text='')
 
   # options
-  if option.options:
+  if panel.options:
 
     # icon active
     if datablock.active_render:
@@ -1732,13 +1733,13 @@ def VertexColor(self, context, layout, datablock, object, option):
     row.prop(datablock, 'active_render', text='', icon=iconActive)
 
 # material
-def Material(self, context, layout, datablock, object, option):
+def Material(self, context, layout, datablock, object, panel):
   '''
     The object material name row.
   '''
 
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -1754,13 +1755,13 @@ def Material(self, context, layout, datablock, object, option):
   op = sub.operator('view3d.name_panel_icon', text='', icon='MATERIAL', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'MATERIAL'
+  op.context = 'MATERIAL'
 
   # name
   row.prop(datablock.material, 'name', text='')
 
 # texture
-def Texture(self, context, layout, datablock, object, option):
+def Texture(self, context, layout, datablock, object, panel):
   '''
     The texture name row.
   '''
@@ -1778,13 +1779,13 @@ def Texture(self, context, layout, datablock, object, option):
   op = sub.operator('view3d.name_panel_icon', text='', icon='TEXTURE', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'TEXTURE'
+  op.context = 'TEXTURE'
 
   # name
   row.prop(datablock.texture, 'name', text='')
 
   # options
-  if option.options:
+  if panel.options:
     if hasattr(datablock, 'use'):
 
       # icon toggle
@@ -1797,7 +1798,7 @@ def Texture(self, context, layout, datablock, object, option):
       row.prop(datablock, 'use', text='', icon=iconToggle)
 
 # mask texture
-def MaskTexture(self, context, layout, datablock, object, option):
+def MaskTexture(self, context, layout, datablock, object, panel):
   '''
     The mask texture name row.
   '''
@@ -1815,13 +1816,13 @@ def MaskTexture(self, context, layout, datablock, object, option):
   op = sub.operator('view3d.name_panel_icon', text='', icon='TEXTURE', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'TEXTURE'
+  op.context = 'TEXTURE'
 
   # name
   row.prop(datablock.mask_texture, 'name', text='')
 
   # options
-  if option.options:
+  if panel.options:
     if hasattr(datablock, 'use'):
 
       # icon toggle
@@ -1834,13 +1835,13 @@ def MaskTexture(self, context, layout, datablock, object, option):
       row.prop(datablock, 'use', text='', icon=iconToggle)
 
 # particle
-def Particle(self, context, layout, datablock, object, option):
+def Particle(self, context, layout, datablock, object, panel):
   '''
     The modifier particle system and setting name row.
   '''
 
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -1856,7 +1857,7 @@ def Particle(self, context, layout, datablock, object, option):
   op = sub.operator('view3d.name_panel_icon', text='', icon='PARTICLES', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'PARTICLE_SYSTEM'
+  op.context = 'PARTICLE_SYSTEM'
 
   # name
   row.prop(datablock.particle_system, 'name', text='')
@@ -1877,7 +1878,7 @@ def Particle(self, context, layout, datablock, object, option):
     op = sub.operator('view3d.name_panel_icon', text='', icon='DOT', emboss=False)
     op.owner = object.name
     op.target = datablock.name
-    op.type = 'PARTICLE_SETTING'
+    op.context = 'PARTICLE_SETTING'
 
     # name
     row.prop(datablock.particle_system.settings, 'name', text='')
@@ -1901,19 +1902,19 @@ def BoneGroup(self, context, layout, datablock, object):
   op = sub.operator('view3d.name_panel_icon', text='', icon='GROUP_BONE', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.type = 'BONE_GROUP'
+  op.context = 'BONE_GROUP'
 
   # name
   row.prop(datablock, 'name', text='')
 
 # bone
-def Bone(self, context, layout, datablock, object, option):
+def Bone(self, context, layout, datablock, object, panel):
   '''
     The object data bone.
   '''
 
   # search
-  search = context.scene.NamePanel.search if option.regex else re.escape(context.scene.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -1931,7 +1932,7 @@ def Bone(self, context, layout, datablock, object, option):
   if datablock == context.active_bone:
 
     # display bones
-    sub.prop(option, 'displayBones', text='', icon='BONE_DATA')
+    sub.prop(panel, 'displayBones', text='', icon='BONE_DATA')
 
   # pose mode
   if object.mode in 'POSE':
@@ -1943,7 +1944,7 @@ def Bone(self, context, layout, datablock, object, option):
       op = sub.operator('view3d.name_panel_icon', text='', icon='BONE_DATA')
       op.owner = object.name
       op.target = datablock.name
-      op.type = 'BONE'
+      op.context = 'BONE'
 
       # name
       row.prop(datablock, 'name', text='')
@@ -1955,7 +1956,7 @@ def Bone(self, context, layout, datablock, object, option):
       row.prop(datablock, 'name', text='')
 
     # options
-    if option.options:
+    if panel.options:
 
       # icon view
       if datablock.hide:
@@ -1985,13 +1986,13 @@ def Bone(self, context, layout, datablock, object, option):
       op = sub.operator('view3d.name_panel_icon', text='', icon='BONE_DATA')
       op.owner = object.name
       op.target = datablock.name
-      op.type = 'BONE'
+      op.context = 'BONE'
 
     # name
     row.prop(datablock, 'name', text='')
 
     # options
-    if option.options:
+    if panel.options:
 
       # icon view
       if datablock.hide:
@@ -2028,7 +2029,7 @@ def Bone(self, context, layout, datablock, object, option):
     row.separator()
 
   elif object.mode in 'POSE':
-    if not option.boneConstraints or bpy.data.objects[object.name].pose.bones[datablock.name].constraints[:] == []:
+    if not panel.boneConstraints or bpy.data.objects[object.name].pose.bones[datablock.name].constraints[:] == []:
 
       # row
       row = layout.row()

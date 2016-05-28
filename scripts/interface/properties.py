@@ -20,3 +20,42 @@
 # imports
 import bpy
 from bpy.types import Panel
+
+# tools properties
+class toolsProperties(Panel):
+  '''
+    Name Panel context sensitive properties panel for the 3D View toolshelf.
+  '''
+  bl_idname = 'VIEW3D_PT_TOOLS_properties'
+  bl_space_type = 'VIEW_3D'
+  bl_label = 'Name'
+  bl_region_type = 'TOOLS'
+  bl_category = 'Name'
+
+  # draw
+  def draw(self, context):
+    '''
+    Name panel body.
+    '''
+
+    # main
+    main(self, context)
+
+# UI properties
+class toolsProperties(Panel):
+  '''
+    Name Panel context sensitive properties panel for the 3D View property shelf.
+  '''
+  bl_idname = 'VIEW3D_PT_UI_properties'
+  bl_space_type = 'VIEW_3D'
+  bl_label = 'Name'
+  bl_region_type = 'UI'
+
+  # draw
+  def draw(self, context):
+    '''
+      Name panel body.
+    '''
+
+    # main
+    main(self, context)

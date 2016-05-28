@@ -30,7 +30,7 @@ bl_info = {
   'name': 'Name Panel',
   'author': 'Trentin Frederick (proxe)',
   'version': (1, 6),
-  'blender': (2, 77, 0),
+  'blender': (2, 67, 0),
   'location': '3D View → Tool or Property Shelf → Name',
   'description': 'In panel datablock name stack with batch name tools.',
   'wiki_url': 'https://cgcookiemarkets.com/all-products/name-panel/?view=docs',

@@ -27,16 +27,15 @@ from . import icon
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
 
-# name
+# tools name
 class toolsName(Panel):
   '''
     Name panel.
   '''
-  bl_idname = 'VIEW3D_PT_toolshelf_name'
+  bl_idname = 'VIEW3D_PT_TOOLS_name'
   bl_space_type = 'VIEW_3D'
   bl_label = 'Name'
   bl_region_type = 'TOOLS'
-  # bl_options = {'HIDE_HEADER'}
   bl_category = 'Name'
 
   # # poll
@@ -54,12 +53,12 @@ class toolsName(Panel):
     # main
     main(self, context)
 
-# name
+# UI name
 class UIName(Panel):
   '''
     Name panel.
   '''
-  bl_idname = 'VIEW3D_PT_propertyshelf_name'
+  bl_idname = 'VIEW3D_PT_UI_name'
   bl_space_type = 'VIEW_3D'
   bl_label = 'Name'
   bl_region_type = 'UI'

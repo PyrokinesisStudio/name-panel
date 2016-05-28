@@ -33,7 +33,7 @@ bl_info = {
   'blender': (2, 77, 0),
   'location': '3D View → Tool or Property Shelf → Name',
   'description': 'In panel datablock name stack with batch name tools.',
-  # 'wiki_ur': 'https://cgcookiemarkets.com/all-products/name-panel/?view=docs',
+  'wiki_url': 'https://cgcookiemarkets.com/all-products/name-panel/?view=docs',
   'tracker_url': 'https://github.com/trentinfrederick/name-panel/issues',
   'category': '3D View'
 }

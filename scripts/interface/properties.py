@@ -28,34 +28,40 @@ class toolsProperties(Panel):
   '''
   bl_idname = 'VIEW3D_PT_TOOLS_properties'
   bl_space_type = 'VIEW_3D'
-  bl_label = 'Name'
+  bl_label = 'Properties'
   bl_region_type = 'TOOLS'
   bl_category = 'Name'
 
   # draw
   def draw(self, context):
     '''
-    Name panel body.
+    Properties panel body.
     '''
 
     # main
     main(self, context)
 
 # UI properties
-class toolsProperties(Panel):
+class UIProperties(Panel):
   '''
     Name Panel context sensitive properties panel for the 3D View property shelf.
   '''
   bl_idname = 'VIEW3D_PT_UI_properties'
   bl_space_type = 'VIEW_3D'
-  bl_label = 'Name'
+  bl_label = 'Properties'
   bl_region_type = 'UI'
 
   # draw
   def draw(self, context):
     '''
-      Name panel body.
+      Properties panel body.
     '''
 
     # main
     main(self, context)
+
+# main
+def main(self, context):
+  '''
+    Get the owner, target and context of name panel and populate accordingly.
+  '''

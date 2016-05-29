@@ -43,7 +43,7 @@ import bpy
 from bpy.types import AddonPreferences
 from bpy.props import *
 from .scripts import settings as PropertyGroup
-from .scripts.interface import button, icon, menu, name
+from .scripts.interface import button, icon, menu, name, properties
 from .scripts.operator import auto, batch, copy, icon, settings, text
 
 # addon
@@ -196,12 +196,16 @@ def register():
     try:
       if addon.preferences['location'] == 0:
         bpy.utils.unregister_class(name.UIName)
+        bpy.utils.unregister_class(properties.UIProperties)
       else:
         bpy.utils.unregister_class(name.toolsName)
+        bpy.utils.unregister_class(properties.toolsProperties)
     except:
       bpy.utils.unregister_class(name.UIName)
+      bpy.utils.unregister_class(properties.UIProperties)
   else:
     bpy.utils.unregister_class(name.UIName)
+    bpy.utils.unregister_class(properties.UIProperties)
 
 # unregister
 def unregister():

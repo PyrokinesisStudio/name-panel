@@ -1855,7 +1855,7 @@ def Particle(self, context, layout, datablock, object, panel):
   # icon
   op = sub.operator('view3d.name_panel_icon', text='', icon='PARTICLES', emboss=False)
   op.owner = object.name
-  op.target = datablock.name
+  op.target = datablock.particle_system.name
   op.context = 'PARTICLE_SYSTEM'
 
   # name
@@ -1876,7 +1876,7 @@ def Particle(self, context, layout, datablock, object, panel):
     # icon
     op = sub.operator('view3d.name_panel_icon', text='', icon='DOT', emboss=False)
     op.owner = object.name
-    op.target = datablock.name
+    op.target = datablock.particle_system.settings.name
     op.context = 'PARTICLE_SETTING'
 
     # name

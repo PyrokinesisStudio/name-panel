@@ -722,7 +722,7 @@ def main(context, quickBatch):
                   if object.data.users == 1:
 
                     # populate
-                    populate(context, object.data)
+                    populate(context, object.data, object)
                   else:
 
                     # shared
@@ -730,14 +730,14 @@ def main(context, quickBatch):
                       shared.objectData.append(object.data.name)
 
                       # populate
-                      populate(context, object.data)
+                      populate(context, object.data, object)
 
                 # object type
                 elif option.objectType in object.type:
                   if object.data.users == 1:
 
                     # populate
-                    populate(context, object.data)
+                    populate(context, object.data, object)
                   else:
 
                     # shared shared
@@ -745,7 +745,7 @@ def main(context, quickBatch):
                       shared.objectData.append(object.data.name)
 
                       # populate
-                      populate(context, object.data)
+                      populate(context, object.data, object)
 
             # mode
             else:
@@ -763,7 +763,7 @@ def main(context, quickBatch):
                     shared.objectData.append(object.data.name)
 
                     # populate
-                    populate(context, object.data)
+                    populate(context, object.data, object)
 
               # object type
               elif option.objectType in object.type:
@@ -778,7 +778,7 @@ def main(context, quickBatch):
                     shared.objectData.append(object.data.name)
 
                     # populate
-                    populate(context, object.data)
+                    populate(context, object.data, object)
 
         # clear shared
         shared.objectData.clear()
@@ -3825,7 +3825,7 @@ def quick(context, object, panel, option):
       storage.batch.particleSettings.clear()
 
 # populate
-def populate(context, datablock):
+def populate(context, datablock, source):
   '''
     Sort datablocks into proper storage list.
   '''
@@ -3878,36 +3878,36 @@ def populate(context, datablock):
 
     # cameras
     if datablock.rna_type.identifier == 'Camera':
-      storage.batch.cameras.append([datablock.name, [1, datablock]])
+      storage.batch.cameras.append([datablock.name, [1, datablock, source]])
 
     # meshes
     if datablock.rna_type.identifier == 'Mesh':
-      storage.batch.meshes.append([datablock.name, [1, datablock]])
+      storage.batch.meshes.append([datablock.name, [1, datablock, source]])
 
     # curves
     if datablock.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-      storage.batch.curves.append([datablock.name, [1, datablock]])
+      storage.batch.curves.append([datablock.name, [1, datablock, source]])
 
     # lamps
     if hasattr(datablock.rna_type.base, 'identifier'):
       if datablock.rna_type.base.identifier == 'Lamp':
-        storage.batch.lamps.append([datablock.name, [1, datablock]])
+        storage.batch.lamps.append([datablock.name, [1, datablock, source]])
 
     # lattices
     if datablock.rna_type.identifier == 'Lattice':
-      storage.batch.lattices.append([datablock.name, [1, datablock]])
+      storage.batch.lattices.append([datablock.name, [1, datablock, source]])
 
     # metaballs
     if datablock.rna_type.identifier == 'MetaBall':
-      storage.batch.metaballs.append([datablock.name, [1, datablock]])
+      storage.batch.metaballs.append([datablock.name, [1, datablock, source]])
 
     # speakers
     if datablock.rna_type.identifier == 'Speaker':
-      storage.batch.speakers.append([datablock.name, [1, datablock]])
+      storage.batch.speakers.append([datablock.name, [1, datablock, source]])
 
     # armatures
     if datablock.rna_type.identifier == 'Armature':
-      storage.batch.armatures.append([datablock.name, [1, datablock]])
+      storage.batch.armatures.append([datablock.name, [1, datablock, source]])
 
   # bones
   if option.bones:
@@ -4085,25 +4085,17 @@ def process(context, collection):
   '''
     Process collection, send names to name.
   '''
-  # if not collection == []:
 
   # option
   option = context.scene.BatchName
 
-  # count
+  # counter
   counter = [
     # 'datablock.name', ...
   ]
 
-  # datablocks
-  datablocks = [
-    # ['datablock.name', datablock], [...
-  ]
-
-  # duplicates
-  duplicates = [
-    # 'datablock.name', ...
-  ]
+  # sort
+  collection.sort()
 
   # collection
   for item in collection[:]:
@@ -4113,102 +4105,176 @@ def process(context, collection):
 
       # name
       item[0] = name(context, (re.split(r'\W[0-9]*$|_[0-9]*$', item[0]))[0])
+
+    # sort
     else:
+
+      # name
       item[0] = name(context, item[0])
 
     # count
     counter.append(item[0])
 
-  # name count
+  # start
   i = 0
+
+  # collection
   for item in collection[:]:
 
-    # name count
+    # count
     item[1][0] = counter.count(counter[i])
+
+    # add
     i += 1
 
-  # randomize
+  # clear counter
+  counter.clear()
+
+  # collection
   for item in collection[:]:
 
     # sort
     if option.sort:
+
+      # count
       if item[1][0] > 1:
 
-        # randomize name
+        # name
         if hasattr(item[1][1], 'name'):
+
+          # randomize name
           item[1][1].name = str(random())
+
+        # info
         elif hasattr(item[1][1], 'info'):
+
+          # randomize name
           item[1][1].info = str(random())
+
+        # bl_label
         elif hasattr(item[1][1], 'bl_label'):
+
+          # randomize name
           item[1][1].bl_label = str(random())
+
+      # sort only
       elif not option.sortOnly:
 
-        # randomize name
+        # name
         if hasattr(item[1][1], 'name'):
+
+          # randomize name
           item[1][1].name = str(random())
+
+        # info
         elif hasattr(item[1][1], 'info'):
+
+          # randomize name
           item[1][1].info = str(random())
+
+        # bl_label
         elif hasattr(item[1][1], 'bl_label'):
+
+          # randomize name
           item[1][1].bl_label = str(random())
+
+    # sort
     else:
 
-      # randomize name
+      # name
       if hasattr(item[1][1], 'name'):
+
+        # randomize name
         item[1][1].name = str(random())
+
+      # info
       elif hasattr(item[1][1], 'info'):
+
+        # randomize name
         item[1][1].info = str(random())
+
+      # bl_label
       elif hasattr(item[1][1], 'bl_label'):
+
+        # randomize name
         item[1][1].bl_label = str(random())
+
+  # list
+  list = []
 
   # sort
   if option.sort:
-    i = 0
-    for item in collection[:]:
-      datablocks.append([item[0], i])
-      i += 1
-    i = 0
-    for item in sorted(datablocks):
 
-      # name count
-      if collection[item[1]][1][0] > 1:
+    # start
+    i = 0
+
+    # datablocks
+    for item in collection[:]:
+
+      # count
+      if item[1][0] > 1:
 
         # duplicates
-        if collection[item[1]][0] not in duplicates:
+        if item[0] not in list:
 
           # suffix last
           if option.suffixLast:
 
             # rename
-            rename = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0]))) + option.suffix
+            rename = item[0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(item[1][0]))) + option.suffix
+
+          # suffix lasr
           else:
 
             # rename
-            rename = collection[item[1]][0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(collection[item[1]][1][0])))
+            rename = item[0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(item[1][0])))
 
           # name
-          if hasattr(collection[item[1]][1][1], 'name'):
-            collection[item[1]][1][1].name = rename
-          elif hasattr(collection[item[1]][1][1], 'info'):
-            collection[item[1]][1][1].info = rename
-          elif hasattr(collection[item[1]][1][1], 'bl_label'):
-            collection[item[1]][1][1].bl_label = rename
+          if hasattr(item[1][1], 'name'):
+
+            # rename
+            item[1][1].name = rename
+
+          # info
+          elif hasattr(item[1][1], 'info'):
+
+            # rename
+            item[1][1].info = rename
+
+          # bl_label
+          elif hasattr(item[1][1], 'bl_label'):
+
+            # rename
+            item[1][1].bl_label = rename
+
+          # add
           i += 1
-        if i == collection[item[1]][1][0]:
+
+        # count
+        if i == item[1][0]:
+
+          # reset
           i = 0
 
           # duplicates
-          duplicates.append(collection[item[1]][0])
+          list.append(item[0])
 
-  # assign names
+  # sort only
   if not option.sortOnly:
+
+    # collection
     for item in collection[:]:
-      if item[0] not in duplicates:
+
+      # duplicates
+      if item[0] not in list:
 
         # suffix last
         if option.suffixLast:
 
           # rename
           rename = item[0] + option.suffix
+
+        # suffix last
         else:
 
           # rename
@@ -4216,20 +4282,93 @@ def process(context, collection):
 
         # name
         if hasattr(item[1][1], 'name'):
+
+          # rename
           item[1][1].name = rename
+
+        # info
         elif hasattr(item[1][1], 'info'):
+
+          # rename
           item[1][1].info = rename
+
+        # bl_label
         elif hasattr(item[1][1], 'bl_label'):
+
+          # rename
           item[1][1].bl_label = rename
 
-  # clear counter
-  counter.clear()
+  # link
+  if option.link:
 
-  # clear datablocks
-  datablocks.clear()
+    list = []
 
-  # clear duplicates
-  duplicates.clear()
+    for item in collection[:]:
+
+      if item[0] not in list:
+
+        source = item[1]
+
+        source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
+
+        list.append(item[0])
+
+      if item[1][1] != source[1]:
+
+        # groups
+        # if item[1][1].rna_type.identifier == 'Group':
+        #
+        # # actions
+        # if item[1][1].rna_type.identifier == 'Action':
+        #
+        # # grease pencils
+        # if item[1][1].rna_type.identifier == 'GreasePencil':
+        #
+        # cameras
+        if item[1][1].rna_type.identifier == 'Camera':
+          item[1][2].data = source[1]
+
+        # meshes
+        if item[1][1].rna_type.identifier == 'Mesh':
+          item[1][2].data = source[1]
+
+        # curves
+        if item[1][1].rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
+          item[1][2].data = source[1]
+
+        # lamps
+        if hasattr(item[1][1].rna_type.base, 'identifier'):
+          if item[1][1].rna_type.base.identifier == 'Lamp':
+            item[1][2].data = source[1]
+
+        # lattices
+        if item[1][1].rna_type.identifier == 'Lattice':
+          item[1][2].data = source[1]
+
+        # metaballs
+        if item[1][1].rna_type.identifier == 'MetaBall':
+          item[1][2].data = source[1]
+
+        # speakers
+        if item[1][1].rna_type.identifier == 'Speaker':
+          item[1][2].data = source[1]
+
+        # armatures
+        if item[1][1].rna_type.identifier == 'Armature':
+          item[1][2].data = source[1]
+
+        # # materials
+        # if item[1][1].rna_type.identifier == 'Material':
+        #
+        # # textures
+        # if hasattr(item[1][1].rna_type.base, 'identifier'):
+        #
+        # # particle systems
+        # if item[1][1].rna_type.identifier == 'ParticleSystem':
+        #
+        # # particle settings
+        # if item[1][1].rna_type.identifier == 'ParticleSettings':
+
 
 # name
 def name(context, oldName):

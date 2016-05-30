@@ -106,12 +106,12 @@ class name(Operator):
     try:
 
       # size
-      size = 300 if addon.preferences['largePopups'] == 0 else 450
+      size = 320 if addon.preferences['largePopups'] == 0 else 450
 
     except:
 
       # size
-      size = 300
+      size = 320
 
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

@@ -187,6 +187,13 @@ def register():
     description = 'Storage location for the name panel settings.'
   )
 
+  # properties panel settings
+  bpy.types.Scene.PropertiesPanel = PointerProperty(
+    type = PropertyGroup.properties,
+    name = 'Properties Panel Settings',
+    description = 'Storage location for the properties panel settings.'
+  )
+
   # append
   bpy.types.OUTLINER_HT_header.append(button.batchName)
 

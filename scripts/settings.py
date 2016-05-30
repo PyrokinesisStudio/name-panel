@@ -23,7 +23,7 @@ from bpy.types import PropertyGroup
 from bpy.props import *
 from . import storage
 
-# panel
+# name
 class name(PropertyGroup):
   '''
     Properties that effect how name panel displays the datablocks within the users current selection.
@@ -244,6 +244,19 @@ class name(PropertyGroup):
     name = 'Display Bones',
     description = 'Display additional bone names.',
     default = False
+  )
+
+# properties
+class properties(PropertyGroup):
+  '''
+    Properties that effect how properties panel displays the options.
+  '''
+
+  # display active
+  displayActive = BoolProperty(
+    name = 'Display Active',
+    description = 'Prefer to display the active objects options instead of the last icon clicked when applicable.',
+    default = True
   )
 
 class batch:
@@ -1645,17 +1658,24 @@ class batch:
 
     # separator
     separator = StringProperty(
-        name = 'Separator',
-        description = 'The separator to use between the name and number.',
-        default = '.'
+      name = 'Separator',
+      description = 'The separator to use between the name and number.',
+      default = '.'
     )
 
     # sort only
     sortOnly = BoolProperty(
-       name = 'Only Sort Duplicates',
-       description = 'Only effect names during the naming process that need to be numbered.',
-       default = False
-     )
+     name = 'Only Sort Duplicates',
+     description = 'Only effect names during the naming process that need to be numbered.',
+     default = False
+    )
+
+    # link
+    link = BoolProperty(
+      name = 'Link Duplicates',
+      description = 'If possible link the original duplicate name to the other duplicates location.',
+      default = False
+    )
 
   # copy
   class copy(PropertyGroup):

@@ -755,7 +755,7 @@ def main(context, quickBatch):
                 if object.data.users == 1:
 
                   # populate
-                  populate(context, object.data)
+                  populate(context, object.data, object)
                 else:
 
                   # shared shared
@@ -770,7 +770,7 @@ def main(context, quickBatch):
                 if object.data.users == 1:
 
                   # populate
-                  populate(context, object.data)
+                  populate(context, object.data, object)
                 else:
 
                   # shared shared
@@ -1097,13 +1097,13 @@ def main(context, quickBatch):
                     if option.objectType in 'ALL':
 
                       # populate
-                      populate(context, slot.material)
+                      populate(context, slot.material, slot)
 
                     # object type
                     elif option.objectType in object.type:
 
                       # populate
-                      populate(context, slot.material)
+                      populate(context, slot.material, slot)
                   else:
 
                     # shared
@@ -1111,7 +1111,7 @@ def main(context, quickBatch):
                       shared.materials.append(slot.material)
 
                       # populate
-                      populate(context, slot.material)
+                      populate(context, slot.material, slot)
 
           # mode
           else:
@@ -1123,13 +1123,13 @@ def main(context, quickBatch):
                   if option.objectType in 'ALL':
 
                     # populate
-                    populate(context, slot.material)
+                    populate(context, slot.material, slot)
 
                   # object type
                   elif option.objectType in object.type:
 
                     # populate
-                    populate(context, slot.material)
+                    populate(context, slot.material, slot)
                 else:
 
                   # shared
@@ -1137,13 +1137,13 @@ def main(context, quickBatch):
                     shared.materials.append(slot.material)
 
                     # populate
-                    populate(context, slot.material)
+                    populate(context, slot.material, slot)
 
-          # process
-          process(context, storage.batch.materials)
+        # process
+        process(context, storage.batch.materials)
 
-          # clear storage
-          storage.batch.materials.clear()
+        # clear storage
+        storage.batch.materials.clear()
 
         # clear shared
         shared.materials.clear()
@@ -3937,7 +3937,7 @@ def populate(context, datablock, source):
   # materials
   if option.materials:
     if datablock.rna_type.identifier == 'Material':
-      storage.batch.materials.append([datablock.name, [1, datablock]])
+      storage.batch.materials.append([datablock.name, [1, datablock, source]])
 
   # textures
   if option.textures:
@@ -4357,9 +4357,10 @@ def process(context, collection):
         if item[1][1].rna_type.identifier == 'Armature':
           item[1][2].data = source[1]
 
-        # # materials
-        # if item[1][1].rna_type.identifier == 'Material':
-        #
+        # materials
+        if item[1][1].rna_type.identifier == 'Material':
+          item[1][2].material = source[1]
+
         # # textures
         # if hasattr(item[1][1].rna_type.base, 'identifier'):
         #

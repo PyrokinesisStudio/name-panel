@@ -1167,13 +1167,13 @@ def main(context, quickBatch):
                             if option.objectType in 'ALL':
 
                               # populate
-                              populate(context, texslot.texture)
+                              populate(context, texslot.texture, texslot)
 
                             # object type
                             elif option.objectType in object.type:
 
                               # populate
-                              populate(context, texslot.texture)
+                              populate(context, texslot.texture, texslot)
                           else:
 
                             # shared
@@ -1181,7 +1181,7 @@ def main(context, quickBatch):
                               shared.textures.append(texslot.texture)
 
                               # populate
-                              populate(context, texslot.texture)
+                              populate(context, texslot.texture, texslot)
                     else:
 
                       # shared
@@ -1195,13 +1195,13 @@ def main(context, quickBatch):
                               if option.objectType in 'ALL':
 
                                 # populate
-                                populate(context, texslot.texture)
+                                populate(context, texslot.texture, texslot)
 
                               # object type
                               elif option.objectType in object.type:
 
                                 # populate
-                                populate(context, texslot.texture)
+                                populate(context, texslot.texture, texslot)
                             else:
 
                               # shared
@@ -1209,7 +1209,7 @@ def main(context, quickBatch):
                                 shared.textures.append(texslot.texture)
 
                                 # populate
-                                populate(context, texslot.texture)
+                                populate(context, texslot.texture, texslot)
 
                     # process
                     process(context, storage.batch.textures)
@@ -1230,13 +1230,13 @@ def main(context, quickBatch):
                           if option.objectType in 'ALL':
 
                             # populate
-                            populate(context, texslot.texture)
+                            populate(context, texslot.texture, texslot)
 
                           # object type
                           elif option.objectType in object.type:
 
                             # populate
-                            populate(context, texslot.texture)
+                            populate(context, texslot.texture, texslot)
                         else:
 
                           # shared
@@ -1244,7 +1244,7 @@ def main(context, quickBatch):
                             shared.textures.append(texslot.texture)
 
                             # populate
-                            populate(context, texslot.texture)
+                            populate(context, texslot.texture, texslot)
                   else:
 
                     # shared
@@ -1258,27 +1258,27 @@ def main(context, quickBatch):
                             if option.objectType in 'ALL':
 
                               # populate
-                              populate(context, texslot.texture)
+                              populate(context, texslot.texture, texslot)
 
                             # object type
                             elif option.objectType in object.type:
 
                               # populate
-                              populate(context, texslot.texture)
+                              populate(context, texslot.texture, texslot)
                           else:
 
                             # shared
                             if texslot.texture not in shared.textures[:]:
-                              shared.textures.append(texslot.texture)
+                              shared.textures.append(texslot.texture, texslot)
 
                               # populate
-                              populate(context, texslot.texture)
+                              populate(context, texslot.texture, texslot)
 
-                  # process
-                  process(context, storage.batch.textures)
+        # process
+        process(context, storage.batch.textures)
 
-                  # clear storage
-                  storage.batch.textures.clear()
+        # clear storage
+        storage.batch.textures.clear()
 
         # clear shared
         shared.textures.clear()
@@ -3825,7 +3825,7 @@ def quick(context, object, panel, option):
       storage.batch.particleSettings.clear()
 
 # populate
-def populate(context, datablock, source):
+def populate(context, datablock, source=None):
   '''
     Sort datablocks into proper storage list.
   '''
@@ -3943,7 +3943,7 @@ def populate(context, datablock, source):
   if option.textures:
     if hasattr(datablock.rna_type.base, 'identifier'):
       if datablock.rna_type.base.identifier == 'Texture':
-        storage.batch.textures.append([datablock.name, [1, datablock]])
+        storage.batch.textures.append([datablock.name, [1, datablock, source]])
 
   # particle systems
   if option.particleSystems:
@@ -4361,9 +4361,11 @@ def process(context, collection):
         if item[1][1].rna_type.identifier == 'Material':
           item[1][2].material = source[1]
 
-        # # textures
-        # if hasattr(item[1][1].rna_type.base, 'identifier'):
-        #
+        # textures
+        if hasattr(item[1][1].rna_type.base, 'identifier'):
+          if item[1][1].rna_type.base.identifier == 'Texture':
+            item[1][2].texture = source[1]
+
         # # particle systems
         # if item[1][1].rna_type.identifier == 'ParticleSystem':
         #

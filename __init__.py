@@ -111,11 +111,15 @@ class preferences(AddonPreferences):
     split.scale_y = 2
 
     # blender market
-    prop = split.operator('wm.url_open', text='BlenderMarket')
+    prop = split.operator('wm.url_open', text='Blender Market')
     prop.url = 'https://cgcookiemarkets.com/all-products/name-panel/'
 
+    # gumroad
+    prop = split.operator('wm.url_open', text='Gumroad')
+    prop.url = 'https://gumroad.com/l/UyXd'
+
     # blender artists
-    prop = split.operator('wm.url_open', text='BlenderArtists')
+    prop = split.operator('wm.url_open', text='Blender Artists')
     prop.url = 'http://blenderartists.org/forum/showthread.php?272086'
 
     # github

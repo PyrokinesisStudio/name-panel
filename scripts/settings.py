@@ -65,7 +65,7 @@ class name(PropertyGroup):
       ('MATERIAL', 'Material', '', 'MATERIAL', 14),
       ('TEXTURE', 'Texture', '', 'TEXTURE', 15),
       ('PARTICLE_SYSTEM', 'Particle System', '', 'PARTICLES', 16),
-      ('PARTICLE_SETTING', 'Particle Settings', '', 'DOT', 17)
+      ('PARTICLE_SETTING', 'Particle Settings', '', 'MOD_PARTICLES', 17)
     ],
     default = 'OBJECT'
   )

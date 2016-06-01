@@ -249,13 +249,13 @@ def main(context, quickBatch):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, object.animation_data.action)
+                  populate(context, object.animation_data.action, object.animation_data)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, object.animation_data.action)
+                  populate(context, object.animation_data.action, object.animation_data)
 
             # mode
             else:
@@ -264,13 +264,13 @@ def main(context, quickBatch):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, object.animation_data.action)
+                populate(context, object.animation_data.action, object.animation_data)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, object.animation_data.action)
+                populate(context, object.animation_data.action, object.animation_data)
 
         # clear duplicates
         actions = []
@@ -353,7 +353,7 @@ def main(context, quickBatch):
                   if object.grease_pencil.users == 1:
 
                     # populate
-                    populate(context, object.grease_pencil)
+                    populate(context, object.grease_pencil, object)
                   else:
 
                     # shared
@@ -361,14 +361,14 @@ def main(context, quickBatch):
                       shared.greasePencils.append(object.grease_pencil)
 
                       # populate
-                      populate(context, object.grease_pencil)
+                      populate(context, object.grease_pencil, object)
 
                 # object type
                 elif option.objectType in object.type:
                   if object.grease_pencil.users == 1:
 
                     # populate
-                    populate(context, object.grease_pencil)
+                    populate(context, object.grease_pencil, object)
                   else:
 
                     # shared
@@ -376,7 +376,7 @@ def main(context, quickBatch):
                       shared.greasePencils.append(object.grease_pencil)
 
                       # populate
-                      populate(context, object.grease_pencil)
+                      populate(context, object.grease_pencil, object)
 
             # mode
             else:
@@ -386,7 +386,7 @@ def main(context, quickBatch):
                 if object.grease_pencil.users == 1:
 
                   # populate
-                  populate(context, object.grease_pencil)
+                  populate(context, object.grease_pencil, object)
                 else:
 
                   # shared
@@ -394,14 +394,14 @@ def main(context, quickBatch):
                     shared.greasePencils.append(object.grease_pencil)
 
                     # populate
-                    populate(context, object.grease_pencil)
+                    populate(context, object.grease_pencil, object)
 
               # object type
               elif option.objectType in object.type:
                 if object.grease_pencil.users == 1:
 
                   # populate
-                  populate(context, object.grease_pencil)
+                  populate(context, object.grease_pencil, object)
 
                 else:
 
@@ -410,14 +410,14 @@ def main(context, quickBatch):
                     shared.greasePencils.append(object.grease_pencil)
 
                     # populate
-                    populate(context, object.grease_pencil)
+                    populate(context, object.grease_pencil, object)
 
 
-          # process
-          process(context, storage.batch.greasePencils)
+        # process
+        process(context, storage.batch.greasePencils)
 
-          # clear storage
-          storage.batch.greasePencils.clear()
+        # clear storage
+        storage.batch.greasePencils.clear()
 
         # clear shared
         shared.greasePencils.clear()
@@ -1342,7 +1342,7 @@ def main(context, quickBatch):
                     if system.settings.users == 1:
 
                       # populate
-                      populate(context, system.settings)
+                      populate(context, system.settings, system)
                     else:
 
                       # shared
@@ -1350,14 +1350,14 @@ def main(context, quickBatch):
                         shared.particleSettings.append(system.settings)
 
                         # populate
-                        populate(context, system.settings)
+                        populate(context, system.settings, system)
 
                   # object type
                   elif option.objectType in object.type:
                     if system.settings.users == 1:
 
                       # populate
-                      populate(context, system.settings)
+                      populate(context, system.settings, system)
                     else:
 
                       # shared
@@ -1365,7 +1365,7 @@ def main(context, quickBatch):
                         shared.particleSettings.append(system.settings)
 
                         # populate
-                        populate(context, system.settings)
+                        populate(context, system.settings, system)
 
             # mode
             else:
@@ -1376,7 +1376,7 @@ def main(context, quickBatch):
                   if system.settings.users == 1:
 
                     # populate
-                    populate(context, system.settings)
+                    populate(context, system.settings, system)
                   else:
 
                     # shared
@@ -1384,14 +1384,14 @@ def main(context, quickBatch):
                       shared.particleSettings.append(system.settings)
 
                       # populate
-                      populate(context, system.settings)
+                      populate(context, system.settings, system)
 
                 # object type
                 elif option.objectType in object.type:
                   if system.settings.users == 1:
 
                     # populate
-                    populate(context, system.settings)
+                    populate(context, system.settings, system)
                   else:
 
                     # shared
@@ -1399,17 +1399,16 @@ def main(context, quickBatch):
                       shared.particleSettings.append(system.settings)
 
                       # populate
-                      populate(context, system.settings)
+                      populate(context, system.settings, system)
 
-          # process
-          process(context, storage.batch.particleSettings)
+        # process
+        process(context, storage.batch.particleSettings)
 
-          # clear storage
-          storage.batch.particleSettings.clear()
+        # clear storage
+        storage.batch.particleSettings.clear()
 
         # clear shared
         shared.particleSettings.clear()
-
 
     # sensors
     if option.sensors:
@@ -1559,13 +1558,13 @@ def main(context, quickBatch):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, object.animation_data.action)
+                populate(context, object.animation_data.action, object.animation_data)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, object.animation_data.action)
+                populate(context, object.animation_data.action, object.animation_data)
 
         # clear duplicates
         actions = []
@@ -1627,7 +1626,7 @@ def main(context, quickBatch):
               if object.grease_pencil.users == 1:
 
                 # populate
-                populate(context, object.grease_pencil)
+                populate(context, object.grease_pencil, object)
 
               else:
 
@@ -1636,14 +1635,14 @@ def main(context, quickBatch):
                   shared.greasePencils.append(object.grease_pencil)
 
                   # populate
-                  populate(context, object.grease_pencil)
+                  populate(context, object.grease_pencil, object)
 
             # object type
             elif option.objectType in object.type:
               if object.grease_pencil.users == 1:
 
                 # populate
-                populate(context, object.grease_pencil)
+                populate(context, object.grease_pencil, object)
 
               else:
 
@@ -1652,17 +1651,16 @@ def main(context, quickBatch):
                   shared.greasePencils.append(object.grease_pencil)
 
                   # populate
-                  populate(context, object.grease_pencil)
+                  populate(context, object.grease_pencil, object)
 
-          # process
-          process(context, storage.batch.greasePencils)
+        # process
+        process(context, storage.batch.greasePencils)
 
-          # clear storage
-          storage.batch.greasePencils.clear()
+        # clear storage
+        storage.batch.greasePencils.clear()
 
         # clear shared
         shared.greasePencils.clear()
-
 
       # pencil layers
       if option.pencilLayers:
@@ -1828,7 +1826,7 @@ def main(context, quickBatch):
               if object.data.users == 1:
 
                 # populate
-                populate(context, object.data)
+                populate(context, object.data, object)
               else:
 
                 # shared shared
@@ -1836,14 +1834,14 @@ def main(context, quickBatch):
                   shared.objectData.append(object.data.name)
 
                   # populate
-                  populate(context, object.data)
+                  populate(context, object.data, object)
 
             # object type
             elif option.objectType in object.type:
               if object.data.users == 1:
 
                 # populate
-                populate(context, object.data)
+                populate(context, object.data, object)
               else:
 
                 # shared shared
@@ -1851,7 +1849,7 @@ def main(context, quickBatch):
                   shared.objectData.append(object.data.name)
 
                   # populate
-                  populate(context, object.data)
+                  populate(context, object.data, object)
 
         # clear shared
         shared.objectData.clear()
@@ -2031,13 +2029,13 @@ def main(context, quickBatch):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, slot.material)
+                  populate(context, slot.material, slot)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, slot.material)
+                  populate(context, slot.material, slot)
               else:
 
                 # shared
@@ -2045,14 +2043,14 @@ def main(context, quickBatch):
                   shared.materials.append(slot.material)
 
                   # populate
-                  populate(context, slot.material)
+                  populate(context, slot.material, slot)
 
 
-          # process
-          process(context, storage.batch.materials)
+        # process
+        process(context, storage.batch.materials)
 
-          # clear storage
-          storage.batch.materials.clear()
+        # clear storage
+        storage.batch.materials.clear()
 
         # clear shared
         shared.materials.clear()
@@ -2072,13 +2070,13 @@ def main(context, quickBatch):
                         if option.objectType in 'ALL':
 
                           # populate
-                          populate(context, texslot.texture)
+                          populate(context, texslot.texture, texslot)
 
                         # object type
                         elif option.objectType in object.type:
 
                           # populate
-                          populate(context, texslot.texture)
+                          populate(context, texslot.texture, texslot)
                       else:
 
                         # shared
@@ -2086,7 +2084,7 @@ def main(context, quickBatch):
                           shared.textures.append(texslot.texture)
 
                           # populate
-                          populate(context, texslot.texture)
+                          populate(context, texslot.texture, texslot)
                 else:
 
                   # shared
@@ -2100,13 +2098,13 @@ def main(context, quickBatch):
                           if option.objectType in 'ALL':
 
                             # populate
-                            populate(context, texslot.texture)
+                            populate(context, texslot.texture, texslot)
 
                           # object type
                           elif option.objectType in object.type:
 
                             # populate
-                            populate(context, texslot.texture)
+                            populate(context, texslot.texture, texslot)
                         else:
 
                           # shared
@@ -2114,13 +2112,13 @@ def main(context, quickBatch):
                             shared.textures.append(texslot.texture)
 
                             # populate
-                            populate(context, texslot.texture)
+                            populate(context, texslot.texture, texslot)
 
-                # process
-                process(context, storage.batch.textures)
+        # process
+        process(context, storage.batch.textures)
 
-                # clear storage
-                storage.batch.textures.clear()
+        # clear storage
+        storage.batch.textures.clear()
 
         # clear shared
         shared.textures.clear()
@@ -2160,7 +2158,7 @@ def main(context, quickBatch):
                 if system.settings.users == 1:
 
                   # populate
-                  populate(context, system.settings)
+                  populate(context, system.settings, system)
                 else:
 
                   # shared
@@ -2168,14 +2166,14 @@ def main(context, quickBatch):
                     shared.particleSettings.append(system.settings)
 
                     # populate
-                    populate(context, system.settings)
+                    populate(context, system.settings, system)
 
               # object type
               elif option.objectType in object.type:
                 if system.settings.users == 1:
 
                   # populate
-                  populate(context, system.settings)
+                  populate(context, system.settings, system)
                 else:
 
                   # shared
@@ -2183,13 +2181,13 @@ def main(context, quickBatch):
                     shared.particleSettings.append(system.settings)
 
                     # populate
-                    populate(context, system.settings)
+                    populate(context, system.settings, system)
 
-          # process
-          process(context, storage.batch.particleSettings)
+        # process
+        process(context, storage.batch.particleSettings)
 
-          # clear storage
-          storage.batch.particleSettings.clear()
+        # clear storage
+        storage.batch.particleSettings.clear()
 
         # clear shared
         shared.particleSettings.clear()
@@ -3849,12 +3847,12 @@ def populate(context, datablock, source=None):
   # actions
   if option.actions or option.actionGroups:
     if datablock.rna_type.identifier == 'Action':
-      storage.batch.actions.append([datablock.name, [1, datablock]])
+      storage.batch.actions.append([datablock.name, [1, datablock, source]])
 
   # grease pencils
   if option.greasePencil:
     if datablock.rna_type.identifier == 'GreasePencil':
-      storage.batch.greasePencils.append([datablock.name, [1, datablock]])
+      storage.batch.greasePencils.append([datablock.name, [1, datablock, source]])
 
   # pencil layers
   if option.pencilLayers:
@@ -3953,7 +3951,7 @@ def populate(context, datablock, source=None):
   # particle settings
   if option.particleSettings:
     if datablock.rna_type.identifier == 'ParticleSettings':
-      storage.batch.particleSettings.append([datablock.name, [1, datablock]])
+      storage.batch.particleSettings.append([datablock.name, [1, datablock, source]])
 
   # line style
   if option.linestyles:
@@ -4095,7 +4093,10 @@ def process(context, collection):
   ]
 
   # sort
-  collection.sort()
+  try:
+    collection.sort()
+  except:
+    pass
 
   # collection
   for item in collection[:]:
@@ -4301,77 +4302,78 @@ def process(context, collection):
   # link
   if option.link:
 
-    list = []
+    try:
 
-    for item in collection[:]:
+      list = []
 
-      if item[0] not in list:
+      for item in collection[:]:
 
-        source = item[1]
+        if item[0] not in list:
 
-        source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
+          source = item[1]
 
-        list.append(item[0])
+          source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
-      if item[1][1] != source[1]:
+          list.append(item[0])
 
-        # groups
-        # if item[1][1].rna_type.identifier == 'Group':
-        #
-        # # actions
-        # if item[1][1].rna_type.identifier == 'Action':
-        #
-        # # grease pencils
-        # if item[1][1].rna_type.identifier == 'GreasePencil':
-        #
-        # cameras
-        if item[1][1].rna_type.identifier == 'Camera':
-          item[1][2].data = source[1]
+        if item[1][1] != source[1]:
 
-        # meshes
-        if item[1][1].rna_type.identifier == 'Mesh':
-          item[1][2].data = source[1]
+          # actions
+          if item[1][1].rna_type.identifier == 'Action':
+            item[1][2].action = source[1]
 
-        # curves
-        if item[1][1].rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-          item[1][2].data = source[1]
+          # grease pencils
+          if item[1][1].rna_type.identifier == 'GreasePencil':
+            item[1][2].grease_pencil = source[1]
 
-        # lamps
-        if hasattr(item[1][1].rna_type.base, 'identifier'):
-          if item[1][1].rna_type.base.identifier == 'Lamp':
+          # cameras
+          if item[1][1].rna_type.identifier == 'Camera':
             item[1][2].data = source[1]
 
-        # lattices
-        if item[1][1].rna_type.identifier == 'Lattice':
-          item[1][2].data = source[1]
+          # meshes
+          if item[1][1].rna_type.identifier == 'Mesh':
+            item[1][2].data = source[1]
 
-        # metaballs
-        if item[1][1].rna_type.identifier == 'MetaBall':
-          item[1][2].data = source[1]
+          # curves
+          if item[1][1].rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
+            item[1][2].data = source[1]
 
-        # speakers
-        if item[1][1].rna_type.identifier == 'Speaker':
-          item[1][2].data = source[1]
+          # lamps
+          if hasattr(item[1][1].rna_type.base, 'identifier'):
+            if item[1][1].rna_type.base.identifier == 'Lamp':
+              item[1][2].data = source[1]
 
-        # armatures
-        if item[1][1].rna_type.identifier == 'Armature':
-          item[1][2].data = source[1]
+          # lattices
+          if item[1][1].rna_type.identifier == 'Lattice':
+            item[1][2].data = source[1]
 
-        # materials
-        if item[1][1].rna_type.identifier == 'Material':
-          item[1][2].material = source[1]
+          # metaballs
+          if item[1][1].rna_type.identifier == 'MetaBall':
+            item[1][2].data = source[1]
 
-        # textures
-        if hasattr(item[1][1].rna_type.base, 'identifier'):
-          if item[1][1].rna_type.base.identifier == 'Texture':
-            item[1][2].texture = source[1]
+          # speakers
+          if item[1][1].rna_type.identifier == 'Speaker':
+            item[1][2].data = source[1]
 
-        # # particle systems
-        # if item[1][1].rna_type.identifier == 'ParticleSystem':
-        #
-        # # particle settings
-        # if item[1][1].rna_type.identifier == 'ParticleSettings':
+          # armatures
+          if item[1][1].rna_type.identifier == 'Armature':
+            item[1][2].data = source[1]
 
+          # materials
+          if item[1][1].rna_type.identifier == 'Material':
+            item[1][2].material = source[1]
+
+          # textures
+          if hasattr(item[1][1].rna_type.base, 'identifier'):
+            if item[1][1].rna_type.base.identifier == 'Texture':
+              item[1][2].texture = source[1]
+
+          # particle settings
+          if item[1][1].rna_type.identifier == 'ParticleSettings':
+            item[1][2].settings = source[1]
+
+    except:
+      pass
 
 # name
 def name(context, oldName):

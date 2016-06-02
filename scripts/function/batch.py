@@ -78,56 +78,6 @@ def main(context, quickBatch):
           # quick
           quick(context, object, panel, option)
 
-        # sort
-        if option.sort:
-          storage.batch.objects.sort()
-          storage.batch.cameras.sort()
-          storage.batch.meshes.sort()
-          storage.batch.curves.sort()
-          storage.batch.lamps.sort()
-          storage.batch.lattices.sort()
-          storage.batch.metaballs.sort()
-          storage.batch.speakers.sort()
-          storage.batch.armatures.sort()
-
-          # all
-        all = [
-          # object
-          storage.batch.objects,
-
-          # cameras
-          storage.batch.cameras,
-
-          # meshes
-          storage.batch.meshes,
-
-          # curves
-          storage.batch.curves,
-
-          # lamps
-          storage.batch.lamps,
-
-          # lattices
-          storage.batch.lattices,
-
-          # metaballs
-          storage.batch.metaballs,
-
-          # speakers
-          storage.batch.speakers,
-
-          # armatures
-          storage.batch.armatures,
-        ]
-        for collection in all:
-          if collection != []:
-
-            # process
-            process(context, collection)
-
-            # clear storage
-            collection.clear()
-
       # mode
       else:
         for object in context.scene.objects[:]:
@@ -136,99 +86,76 @@ def main(context, quickBatch):
             # quick
             quick(context, object, panel, option)
 
-        # sort
-        if option.sort:
-          storage.batch.objects.sort()
-          storage.batch.cameras.sort()
-          storage.batch.meshes.sort()
-          storage.batch.curves.sort()
-          storage.batch.lamps.sort()
-          storage.batch.lattices.sort()
-          storage.batch.metaballs.sort()
-          storage.batch.speakers.sort()
-          storage.batch.armatures.sort()
-
-        # all
-        all = [
-          # object
-          storage.batch.objects,
-
-          # cameras
-          storage.batch.cameras,
-
-          # meshes
-          storage.batch.meshes,
-
-          # curves
-          storage.batch.curves,
-
-          # lamps
-          storage.batch.lamps,
-
-          # lattices
-          storage.batch.lattices,
-
-          # metaballs
-          storage.batch.metaballs,
-
-          # speakers
-          storage.batch.speakers,
-
-          # armatures
-          storage.batch.armatures,
-        ]
-        for collection in all:
-          if collection != []:
-
-            # process
-            process(context, collection)
-
-            # clear storage
-            collection.clear()
-
     # display names
     else:
 
       # quick
       quick(context, context.active_object, panel, option)
 
-      # all
-      all = [
-        # object
-        storage.batch.objects,
+    # all
+    all = [
+      # group
+      storage.batch.groups,
 
-        # cameras
-        storage.batch.cameras,
+      # actions
+      storage.batch.actions,
 
-        # meshes
-        storage.batch.meshes,
+      # grease pencil
+      storage.batch.greasePencils,
 
-        # curves
-        storage.batch.curves,
+      # object
+      storage.batch.objects,
 
-        # lamps
-        storage.batch.lamps,
+      # cameras
+      storage.batch.cameras,
 
-        # lattices
-        storage.batch.lattices,
+      # meshes
+      storage.batch.meshes,
 
-        # metaballs
-        storage.batch.metaballs,
+      # curves
+      storage.batch.curves,
 
-        # speakers
-        storage.batch.speakers,
+      # lamps
+      storage.batch.lamps,
 
-        # armatures
-        storage.batch.armatures,
-        ]
-      for collection in all:
-        if collection != []:
+      # lattices
+      storage.batch.lattices,
 
-          # process
-          process(context, collection)
+      # metaballs
+      storage.batch.metaballs,
 
-          # clear storage
-          collection.clear()
+      # speakers
+      storage.batch.speakers,
+
+      # armatures
+      storage.batch.armatures,
+
+      # bones
+      storage.batch.bones,
+
+      # material
+      storage.batch.materials,
+
+      # texture
+      storage.batch.textures,
+
+      # particle settings
+      storage.batch.particleSettings
+    ]
+
+    # process
+    for collection in all:
+      if collection != []:
+
+        # clear duplicates
+        list = []
+        [list.append(item) for item in collection if item not in list]
+
+        # process
+        process(context, list)
+
+        # clear storage
+        collection.clear()
 
   # quick batch
   else:
@@ -326,18 +253,6 @@ def main(context, quickBatch):
         for action in actions:
           for group in action[1][1].groups:
             group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
-
-          # bones
-          if option.bones:
-
-            # fix paths
-            for curve in action[1][1].fcurves[:]:
-              if 'pose' in curve.data_path:
-                if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
-                  try:
-                    curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
-                  except:
-                    pass
 
       # grease pencil
       if option.greasePencil:
@@ -1603,18 +1518,6 @@ def main(context, quickBatch):
         for action in actions:
           for group in action[1][1].groups:
             group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
-
-          # bones
-          if option.bones:
-
-            # fix paths
-            for curve in action[1][1].fcurves[:]:
-              if 'pose' in curve.data_path:
-                if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
-                  try:
-                    curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
-                  except:
-                    pass
 
       # grease pencil
       if option.greasePencil:
@@ -3292,8 +3195,8 @@ def quick(context, object, panel, option):
     # ignore Object
     if not option.ignoreObject:
 
-      # storage
-      storage.batch.objects.append([object.name, [1, object]])
+      # populate
+      populate(context, object)
 
   # action
   if panel.action:
@@ -3306,8 +3209,8 @@ def quick(context, object, panel, option):
           # search
           if search == '' or re.search(search, object.animation_data.action.name, re.I):
 
-            # name
-            object.animation_data.action.name = name(context, object.animation_data.action.name) if not option.suffixLast else name(object.animation_data.action.name) + option.suffix
+            # populate
+            populate(context, object.animation_data.action, object.animation_data)
 
   # grease pencils
   if panel.greasePencil:
@@ -3319,8 +3222,8 @@ def quick(context, object, panel, option):
         # search
         if search == '' or re.search(search, object.grease_pencil.name, re.I):
 
-          # name
-          object.grease_pencil.name = name(context, object.grease_pencil.name) if not option.suffixLast else name(context, object.grease_pencil.name) + option.suffix
+          # populate
+          populate(context, object.grease_pencil, object)
 
         # layers
         for layer in object.grease_pencil.layers[:]:
@@ -3328,8 +3231,8 @@ def quick(context, object, panel, option):
           # search
           if search == '' or re.search(search, layer.info, re.I):
 
-            # append
-            storage.batch.pencilLayers.append([layer.info, [1, layer]])
+            # populate
+            populate(context, layer)
 
         # process
         process(context, storage.batch.pencilLayers)
@@ -3349,8 +3252,8 @@ def quick(context, object, panel, option):
             # search
             if search == '' or re.search(search, group.name, re.I):
 
-              # name
-              group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
+              # populate
+              populate(context, group)
 
   # constraints
   if panel.constraints:
@@ -3362,8 +3265,8 @@ def quick(context, object, panel, option):
         # search
         if search == '' or re.search(search, constraint.name, re.I):
 
-          # append
-          storage.batch.constraints.append([constraint.name, [1, constraint]])
+          # populate
+          populate(context, constraint)
 
       # process
       process(context, storage.batch.constraints)
@@ -3381,8 +3284,8 @@ def quick(context, object, panel, option):
         # search
         if search == '' or re.search(search, modifier.name, re.I):
 
-          # append
-          storage.batch.modifiers.append([modifier.name, [1, modifier]])
+          # populate
+          populate(context, modifier)
 
       # process
       process(context, storage.batch.modifiers)
@@ -3402,7 +3305,7 @@ def quick(context, object, panel, option):
           if search == '' or re.search(search, group.name, re.I):
 
             # populate
-            storage.batch.boneGroups.append([group.name, [1, group]])
+            populate(context, group)
 
         # process
         process(context, storage.batch.boneGroups)
@@ -3442,14 +3345,8 @@ def quick(context, object, panel, option):
                 # search
                 if search == '' or re.search(search, bone.name, re.I):
 
-                  # append
-                  storage.batch.bones.append([bone.name, [1, bone]])
-
-              # process
-              process(context, storage.batch.bones)
-
-              # clear storage
-              storage.batch.bones.clear()
+                  # populate
+                  populate(context, bone)
 
             # bone mode
             else:
@@ -3472,14 +3369,8 @@ def quick(context, object, panel, option):
                 # search
                 if search == '' or re.search(search, bone.name, re.I):
 
-                  # append
-                  storage.batch.bones.append([bone.name, [1, bone]])
-
-              # process
-              process(context, storage.batch.bones)
-
-              # clear storage
-              storage.batch.bones.clear()
+                  # populate
+                  populate(context, bone)
 
           # display bones
           else:
@@ -3572,38 +3463,8 @@ def quick(context, object, panel, option):
       # search
       if search == '' or re.search(search, object.data.name, re.I):
 
-        # cameras
-        if object.data.rna_type.identifier == 'Camera':
-          storage.batch.cameras.append([object.data.name, [1, object.data]])
-
-        # meshes
-        if object.data.rna_type.identifier == 'Mesh':
-          storage.batch.meshes.append([object.data.name, [1, object.data]])
-
-        # curves
-        if object.data.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-          storage.batch.curves.append([object.data.name, [1, object.data]])
-
-        # lamps
-        if hasattr(object.data.rna_type.base, 'identifier'):
-          if object.data.rna_type.base.identifier == 'Lamp':
-            storage.batch.lamps.append([object.data.name, [1, object.data]])
-
-        # lattices
-        if object.data.rna_type.identifier == 'Lattice':
-          storage.batch.lattices.append([object.data.name, [1, object.data]])
-
-        # metaballs
-        if object.data.rna_type.identifier == 'MetaBall':
-          storage.batch.metaballs.append([object.data.name, [1, object.data]])
-
-        # speakers
-        if object.data.rna_type.identifier == 'Speaker':
-          storage.batch.speakers.append([object.data.name, [1, object.data]])
-
-        # armatures
-        if object.data.rna_type.identifier == 'Armature':
-          storage.batch.armatures.append([object.data.name, [1, object.data]])
+        # populate
+        populate(context, object.data, object)
 
   # vertex groups
   if panel.vertexGroups:
@@ -3617,7 +3478,7 @@ def quick(context, object, panel, option):
           if search == '' or re.search(search, group.name, re.I):
 
             # populate
-            storage.batch.vertexGroups.append([group.name, [1, group]])
+            populate(context, group)
 
         # process
         process(context, storage.batch.vertexGroups)
@@ -3638,7 +3499,7 @@ def quick(context, object, panel, option):
             if search == '' or re.search(search, key.name, re.I):
 
               # populate
-              storage.batch.shapekeys.append([key.name, [1, key]])
+              populate(context, key)
 
           # process
           process(context, storage.batch.shapekeys)
@@ -3657,8 +3518,8 @@ def quick(context, object, panel, option):
           # search
           if search == '' or re.search(search, uv.name, re.I):
 
-            # append
-            storage.batch.uvs.append([uv.name, [1, uv]])
+            # populate
+            populate(context, uv)
 
         # process
         process(context, storage.batch.uvs)
@@ -3677,8 +3538,8 @@ def quick(context, object, panel, option):
           # search
           if search == '' or re.search(search, vertexColor.name, re.I):
 
-            # append
-            storage.batch.vertexColors.append([vertexColor.name, [1, vertexColor]])
+            # populate
+            populate(context, vertexColor)
 
         # process
         process(context, storage.batch.vertexColors)
@@ -3697,14 +3558,8 @@ def quick(context, object, panel, option):
           # search
           if search == '' or re.search(search, slot.material.name, re.I):
 
-            # append
-            storage.batch.materials.append([slot.material.name, [1, slot.material]])
-
-      # process
-      process(context, storage.batch.materials)
-
-      # clear storage
-      storage.batch.materials.clear()
+            # populate
+            populate(context, slot.material, slot)
 
   # textures
   if panel.textures:
@@ -3723,14 +3578,8 @@ def quick(context, object, panel, option):
                   # search
                   if search == '' or re.search(search, tslot.texture.name, re.I):
 
-                    # append
-                    storage.batch.textures.append([tslot.texture.name, [1, tslot.texture]])
-
-            # process
-            process(context, storage.batch.textures)
-
-            # clear storage
-            storage.batch.textures.clear()
+                    # populate
+                    populate(context, tslot.texture, tslot)
 
       # particle system textures
       if panel.particleSystems:
@@ -3743,14 +3592,8 @@ def quick(context, object, panel, option):
                   # search
                   if search == '' or re.search(search, slot.texture.name, re.I):
 
-                    # append
-                    storage.batch.textures.append([slot.texture.name, [1, slot.texture]])
-
-            # process
-            process(context, storage.batch.textures)
-
-            # clear storage
-            storage.batch.textures.clear()
+                    # populate
+                    populate(context, slot.texture, slot)
 
       # modifier textures
       if panel.modifiers:
@@ -3763,8 +3606,8 @@ def quick(context, object, panel, option):
               # search
               if search == '' or re.search(search, modifier.texture.name, re.I):
 
-                # append
-                storage.batch.textures.append([modifier.texture.name, [1, modifier.texture]])
+                # populate
+                populate(context, modifier.texture, modifier)
 
           # mask texture
           elif modifier.type in {'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_PROXIMITY'}:
@@ -3773,14 +3616,8 @@ def quick(context, object, panel, option):
               # search
               if search == '' or re.search(search, modifier.mask_texture.name, re.I):
 
-                # append
-                storage.batch.textures.append([modifier.mask_texture.name, [1, modifier.mask_texture]])
-
-        # process
-        process(context, storage.batch.textures)
-
-        # clear storage
-        storage.batch.textures.clear()
+                # populate
+                populate(context, modifier.mask_texture)
 
   # particle systems
   if panel.particleSystems:
@@ -3793,8 +3630,8 @@ def quick(context, object, panel, option):
           # search
           if search == '' or re.search(search, modifier.particle_system.name, re.I):
 
-            # append
-            storage.batch.particleSystems.append([modifier.particle_system.name, [1, modifier.particle_system]])
+            # populate
+            populate(context, modifier.particle_system)
 
       # process
       process(context, storage.batch.particleSystems)
@@ -3813,14 +3650,8 @@ def quick(context, object, panel, option):
           # search
           if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
 
-            # append
-            storage.batch.particleSettings.append([modifier.particle_system.settings.name, [1, modifier.particle_system.settings]])
-
-      # process
-      process(context, storage.batch.particleSettings)
-
-      # clear storage
-      storage.batch.particleSettings.clear()
+            # populate
+            populate(context, modifier.particle_system.settings, modifier.particle_system)
 
 # populate
 def populate(context, datablock, source=None):
@@ -3835,249 +3666,208 @@ def populate(context, datablock, source=None):
   option = context.scene.BatchName
 
   # objects
-  if option.objects:
-    if datablock.rna_type.identifier == 'Object':
-      storage.batch.objects.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Object':
+    storage.batch.objects.append([datablock.name, [1, datablock]])
 
   # groups
-  if option.groups:
-    if datablock.rna_type.identifier == 'Group':
-      storage.batch.groups.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Group':
+    storage.batch.groups.append([datablock.name, [1, datablock]])
 
   # actions
-  if option.actions or option.actionGroups:
-    if datablock.rna_type.identifier == 'Action':
-      storage.batch.actions.append([datablock.name, [1, datablock, source]])
+  if datablock.rna_type.identifier == 'Action':
+    storage.batch.actions.append([datablock.name, [1, datablock, source]])
 
   # grease pencils
-  if option.greasePencil:
-    if datablock.rna_type.identifier == 'GreasePencil':
-      storage.batch.greasePencils.append([datablock.name, [1, datablock, source]])
+  if datablock.rna_type.identifier == 'GreasePencil':
+    storage.batch.greasePencils.append([datablock.name, [1, datablock, source]])
 
   # pencil layers
-  if option.pencilLayers:
-    if datablock.rna_type.identifier == 'GPencilLayer':
-      storage.batch.pencilLayers.append([datablock.info, [1, datablock]])
+  if datablock.rna_type.identifier == 'GPencilLayer':
+    storage.batch.pencilLayers.append([datablock.info, [1, datablock]])
 
   # constraints
-  if option.constraints or option.boneConstraints:
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier == 'Constraint':
-        storage.batch.constraints.append([datablock.name, [1, datablock]])
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if datablock.rna_type.base.identifier == 'Constraint':
+      storage.batch.constraints.append([datablock.name, [1, datablock]])
 
   # modifiers
-  if option.modifiers:
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier in 'Modifier':
-        storage.batch.modifiers.append([datablock.name, [1, datablock]])
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if datablock.rna_type.base.identifier in 'Modifier':
+      storage.batch.modifiers.append([datablock.name, [1, datablock]])
 
-  # object data
-  if option.objectData:
+  # cameras
+  if datablock.rna_type.identifier == 'Camera':
+    storage.batch.cameras.append([datablock.name, [1, datablock, source]])
 
-    # cameras
-    if datablock.rna_type.identifier == 'Camera':
-      storage.batch.cameras.append([datablock.name, [1, datablock, source]])
+  # meshes
+  if datablock.rna_type.identifier == 'Mesh':
+    storage.batch.meshes.append([datablock.name, [1, datablock, source]])
 
-    # meshes
-    if datablock.rna_type.identifier == 'Mesh':
-      storage.batch.meshes.append([datablock.name, [1, datablock, source]])
+  # curves
+  if datablock.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
+    storage.batch.curves.append([datablock.name, [1, datablock, source]])
 
-    # curves
-    if datablock.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-      storage.batch.curves.append([datablock.name, [1, datablock, source]])
+  # lamps
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if datablock.rna_type.base.identifier == 'Lamp':
+      storage.batch.lamps.append([datablock.name, [1, datablock, source]])
 
-    # lamps
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier == 'Lamp':
-        storage.batch.lamps.append([datablock.name, [1, datablock, source]])
+  # lattices
+  if datablock.rna_type.identifier == 'Lattice':
+    storage.batch.lattices.append([datablock.name, [1, datablock, source]])
 
-    # lattices
-    if datablock.rna_type.identifier == 'Lattice':
-      storage.batch.lattices.append([datablock.name, [1, datablock, source]])
+  # metaballs
+  if datablock.rna_type.identifier == 'MetaBall':
+    storage.batch.metaballs.append([datablock.name, [1, datablock, source]])
 
-    # metaballs
-    if datablock.rna_type.identifier == 'MetaBall':
-      storage.batch.metaballs.append([datablock.name, [1, datablock, source]])
+  # speakers
+  if datablock.rna_type.identifier == 'Speaker':
+    storage.batch.speakers.append([datablock.name, [1, datablock, source]])
 
-    # speakers
-    if datablock.rna_type.identifier == 'Speaker':
-      storage.batch.speakers.append([datablock.name, [1, datablock, source]])
-
-    # armatures
-    if datablock.rna_type.identifier == 'Armature':
-      storage.batch.armatures.append([datablock.name, [1, datablock, source]])
+  # armatures
+  if datablock.rna_type.identifier == 'Armature':
+    storage.batch.armatures.append([datablock.name, [1, datablock, source]])
 
   # bones
-  if option.bones:
-    if datablock.rna_type.identifier in {'PoseBone', 'EditBone', 'Bone'}:
-      storage.batch.bones.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier in {'PoseBone', 'EditBone', 'Bone'}:
+    storage.batch.bones.append([datablock.name, [1, datablock]])
 
   # vertex groups
-  if option.vertexGroups:
-    if datablock.rna_type.identifier == 'VertexGroup':
-      storage.batch.vertexGroups.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'VertexGroup':
+    storage.batch.vertexGroups.append([datablock.name, [1, datablock]])
 
   # shapekeys
-  if option.shapekeys:
-    if datablock.rna_type.identifier == 'ShapeKey':
-      storage.batch.shapekeys.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'ShapeKey':
+    storage.batch.shapekeys.append([datablock.name, [1, datablock]])
 
   # uvs
-  if option.uvs:
-    if datablock.rna_type.identifier == 'MeshTexturePolyLayer':
-      storage.batch.uvs.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'MeshTexturePolyLayer':
+    storage.batch.uvs.append([datablock.name, [1, datablock]])
 
   # vertex colors
-  if option.vertexColors:
-    if datablock.rna_type.identifier == 'MeshLoopColorLayer':
-      storage.batch.vertexColors.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'MeshLoopColorLayer':
+    storage.batch.vertexColors.append([datablock.name, [1, datablock]])
 
   # materials
-  if option.materials:
-    if datablock.rna_type.identifier == 'Material':
-      storage.batch.materials.append([datablock.name, [1, datablock, source]])
+  if datablock.rna_type.identifier == 'Material':
+    storage.batch.materials.append([datablock.name, [1, datablock, source]])
 
   # textures
-  if option.textures:
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier == 'Texture':
-        storage.batch.textures.append([datablock.name, [1, datablock, source]])
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if datablock.rna_type.base.identifier == 'Texture':
+      storage.batch.textures.append([datablock.name, [1, datablock, source]])
 
   # particle systems
-  if option.particleSystems:
-    if datablock.rna_type.identifier == 'ParticleSystem':
-      storage.batch.particleSystems.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'ParticleSystem':
+    storage.batch.particleSystems.append([datablock.name, [1, datablock]])
 
   # particle settings
-  if option.particleSettings:
-    if datablock.rna_type.identifier == 'ParticleSettings':
-      storage.batch.particleSettings.append([datablock.name, [1, datablock, source]])
+  if datablock.rna_type.identifier == 'ParticleSettings':
+    storage.batch.particleSettings.append([datablock.name, [1, datablock, source]])
 
   # line style
-  if option.linestyles:
-    if datablock.rna_type.identifier == 'FreestyleLineStyle':
-      storage.batch.linestyles.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'FreestyleLineStyle':
+    storage.batch.linestyles.append([datablock.name, [1, datablock]])
 
   # line style modifiers
-  if option.linestyleModifiers:
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if hasattr(datablock.rna_type.base.base, 'identifier'):
-        if datablock.rna_type.base.base.identifier == 'LineStyleModifier':
-          storage.batch.modifiers.append([datablock.name, [1, datablock]])
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if hasattr(datablock.rna_type.base.base, 'identifier'):
+      if datablock.rna_type.base.base.identifier == 'LineStyleModifier':
+        storage.batch.modifiers.append([datablock.name, [1, datablock]])
 
   # sensors
-  if option.sensors:
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier == 'Sensor':
-        storage.batch.sensors.append([datablock.name, [1, datablock]])
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if datablock.rna_type.base.identifier == 'Sensor':
+      storage.batch.sensors.append([datablock.name, [1, datablock]])
 
   # controllers
-  if option.controllers:
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier == 'Controller':
-        storage.batch.controllers.append([datablock.name, [1, datablock]])
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if datablock.rna_type.base.identifier == 'Controller':
+      storage.batch.controllers.append([datablock.name, [1, datablock]])
 
   # actuators
-  if option.actuators:
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier == 'Actuator':
-        storage.batch.actuators.append([datablock.name, [1, datablock]])
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if datablock.rna_type.base.identifier == 'Actuator':
+      storage.batch.actuators.append([datablock.name, [1, datablock]])
 
   # scenes
-  if option.scenes:
-    if datablock.rna_type.identifier == 'Scene':
-      storage.batch.scenes.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Scene':
+    storage.batch.scenes.append([datablock.name, [1, datablock]])
 
   # render layers
-  if option.renderLayers:
-    if datablock.rna_type.identifier == 'SceneRenderLayer':
-      storage.batch.renderLayers.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'SceneRenderLayer':
+    storage.batch.renderLayers.append([datablock.name, [1, datablock]])
 
   # worlds
-  if option.worlds:
-    if datablock.rna_type.identifier == 'World':
-      storage.batch.worlds.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'World':
+    storage.batch.worlds.append([datablock.name, [1, datablock]])
 
   # libraries
-  if option.libraries:
-    if datablock.rna_type.identifier == 'Library':
-      storage.batch.libraries.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Library':
+    storage.batch.libraries.append([datablock.name, [1, datablock]])
 
   # images
-  if option.images:
-    if datablock.rna_type.identifier == 'Image':
-      storage.batch.images.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Image':
+    storage.batch.images.append([datablock.name, [1, datablock]])
 
   # masks
-  if option.masks:
-    if datablock.rna_type.identifier == 'Mask':
-      storage.batch.masks.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Mask':
+    storage.batch.masks.append([datablock.name, [1, datablock]])
 
   # sequences
-  if option.sequences:
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier == 'Sequence':
-        storage.batch.sequences.append([datablock.name, [1, datablock]])
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if datablock.rna_type.base.identifier == 'Sequence':
+      storage.batch.sequences.append([datablock.name, [1, datablock]])
 
   # movie clips
-  if option.movieClips:
-    if datablock.rna_type.identifier == 'MovieClip':
-      storage.batch.movieClips.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'MovieClip':
+    storage.batch.movieClips.append([datablock.name, [1, datablock]])
 
   # sounds
-  if option.sounds:
-    if datablock.rna_type.identifier == 'Sound':
-      storage.batch.sounds.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Sound':
+    storage.batch.sounds.append([datablock.name, [1, datablock]])
 
   # screens
-  if option.screens:
-    if datablock.rna_type.identifier == 'Screen':
-      storage.batch.screens.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Screen':
+    storage.batch.screens.append([datablock.name, [1, datablock]])
 
   # keying sets
-  if option.keyingSets:
-    if datablock.rna_type.identifier == 'KeyingSet':
-      storage.batch.keyingSets.append([datablock.bl_label, [1, datablock]])
+  if datablock.rna_type.identifier == 'KeyingSet':
+    storage.batch.keyingSets.append([datablock.bl_label, [1, datablock]])
 
   # palettes
-  if option.palettes:
-    if datablock.rna_type.identifier == 'Palette':
-      storage.batch.palettes.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Palette':
+    storage.batch.palettes.append([datablock.name, [1, datablock]])
 
   # brushes
-  if option.brushes:
-    if datablock.rna_type.identifier == 'Brush':
-      storage.batch.brushes.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Brush':
+    storage.batch.brushes.append([datablock.name, [1, datablock]])
 
   # nodes
-  if option.nodes:
-    if hasattr(datablock.rna_type.base, 'base'):
-      if hasattr(datablock.rna_type.base.base, 'base'):
-        if hasattr(datablock.rna_type.base.base.base, 'identifier'):
-          if datablock.rna_type.base.base.base.identifier == 'Node':
-            storage.batch.nodes.append([datablock.name, [1, datablock]])
+  if hasattr(datablock.rna_type.base, 'base'):
+    if hasattr(datablock.rna_type.base.base, 'base'):
+      if hasattr(datablock.rna_type.base.base.base, 'identifier'):
+        if datablock.rna_type.base.base.base.identifier == 'Node':
+          storage.batch.nodes.append([datablock.name, [1, datablock]])
 
-            if tag:
-              datablock.label = name(context, datablock.label)
+          if tag:
+            datablock.label = name(context, datablock.label)
 
   # node groups
-  if option.nodeGroups:
-    if hasattr(datablock.rna_type.base, 'identifier'):
-      if datablock.rna_type.base.identifier == 'NodeTree':
-        storage.batch.nodeGroups.append([datablock.name, [1, datablock]])
+  if hasattr(datablock.rna_type.base, 'identifier'):
+    if datablock.rna_type.base.identifier == 'NodeTree':
+      storage.batch.nodeGroups.append([datablock.name, [1, datablock]])
 
   # frame nodes
-  if option.frameNodes:
-    if datablock.rna_type.identifier == 'NodeFrame':
-      storage.batch.nodes.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'NodeFrame':
+    storage.batch.nodes.append([datablock.name, [1, datablock]])
 
-      if tag:
-        datablock.label = name(context, datablock.label)
+    if tag:
+      datablock.label = name(context, datablock.label)
 
   # texts
-  if option.texts:
-    if datablock.rna_type.identifier == 'Text':
-      storage.batch.texts.append([datablock.name, [1, datablock]])
+  if datablock.rna_type.identifier == 'Text':
+    storage.batch.texts.append([datablock.name, [1, datablock]])
 
 def process(context, collection):
   '''
@@ -4312,7 +4102,7 @@ def process(context, collection):
 
           source = item[1]
 
-          source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
+          # source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           list.append(item[0])
 

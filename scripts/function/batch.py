@@ -94,7 +94,7 @@ def main(context, quickBatch):
 
     # all
     all = [
-      # group
+      # groups
       storage.batch.groups,
 
       # actions
@@ -133,10 +133,10 @@ def main(context, quickBatch):
       # bones
       storage.batch.bones,
 
-      # material
+      # materials
       storage.batch.materials,
 
-      # texture
+      # textures
       storage.batch.textures,
 
       # particle settings

@@ -29,7 +29,7 @@
 bl_info = {
   'name': 'Name Panel',
   'author': 'Trentin Frederick (proxe)',
-  'version': (1, 6),
+  'version': (1, 6, 1),
   'blender': (2, 67, 0),
   'location': '3D View → Tool or Property Shelf → Name',
   'description': 'In panel datablock name stack with batch name tools.',

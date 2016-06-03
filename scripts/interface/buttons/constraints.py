@@ -165,14 +165,14 @@ class ConstraintButtons:
       row = col.row(align=True)
       row.prop(con, "use_location", text="")
       sub = row.row(align=True)
-      # sub.active = con.use_location
+      sub.active = con.use_location
       sub.prop(con, "weight", text="Position", slider=True)
 
       col = split.column()
       row = col.row(align=True)
       row.prop(con, "use_rotation", text="")
       sub = row.row(align=True)
-      # sub.active = con.use_rotation
+      sub.active = con.use_rotation
       sub.prop(con, "orient_weight", text="Rotation", slider=True)
 
   def IK_COPY_POSE(self, context, layout, con):
@@ -186,7 +186,7 @@ class ConstraintButtons:
     split.row().prop(con, "use_location")
     row = split.row()
     row.prop(con, "weight", text="Weight", slider=True)
-    # row.active = con.use_location
+    row.active = con.use_location
     split = layout.split(percentage=0.33)
     row = split.row()
     row.label(text="Lock:")
@@ -194,13 +194,13 @@ class ConstraintButtons:
     row.prop(con, "lock_location_x", text="X")
     row.prop(con, "lock_location_y", text="Y")
     row.prop(con, "lock_location_z", text="Z")
-    # split.active = con.use_location
+    split.active = con.use_location
 
     split = layout.split(percentage=0.33)
     split.row().prop(con, "use_rotation")
     row = split.row()
     row.prop(con, "orient_weight", text="Weight", slider=True)
-    # row.active = con.use_rotation
+    row.active = con.use_rotation
     split = layout.split(percentage=0.33)
     row = split.row()
     row.label(text="Lock:")
@@ -208,7 +208,7 @@ class ConstraintButtons:
     row.prop(con, "lock_rotation_x", text="X")
     row.prop(con, "lock_rotation_y", text="Y")
     row.prop(con, "lock_rotation_z", text="Z")
-    # split.active = con.use_rotation
+    split.active = con.use_rotation
 
   def IK_DISTANCE(self, context, layout, con):
     self.target_template(layout, con)
@@ -251,21 +251,21 @@ class ConstraintButtons:
     col = split.column(align=True)
     col.prop(con, "use_limit_x")
     sub = col.column(align=True)
-    # sub.active = con.use_limit_x
+    sub.active = con.use_limit_x
     sub.prop(con, "min_x", text="Min")
     sub.prop(con, "max_x", text="Max")
 
     col = split.column(align=True)
     col.prop(con, "use_limit_y")
     sub = col.column(align=True)
-    # sub.active = con.use_limit_y
+    sub.active = con.use_limit_y
     sub.prop(con, "min_y", text="Min")
     sub.prop(con, "max_y", text="Max")
 
     col = split.column(align=True)
     col.prop(con, "use_limit_z")
     sub = col.column(align=True)
-    # sub.active = con.use_limit_z
+    sub.active = con.use_limit_z
     sub.prop(con, "min_z", text="Min")
     sub.prop(con, "max_z", text="Max")
 
@@ -281,31 +281,31 @@ class ConstraintButtons:
     col = split.column()
     col.prop(con, "use_min_x")
     sub = col.column()
-    # sub.active = con.use_min_x
+    sub.active = con.use_min_x
     sub.prop(con, "min_x", text="")
     col.prop(con, "use_max_x")
     sub = col.column()
-    # sub.active = con.use_max_x
+    sub.active = con.use_max_x
     sub.prop(con, "max_x", text="")
 
     col = split.column()
     col.prop(con, "use_min_y")
     sub = col.column()
-    # sub.active = con.use_min_y
+    sub.active = con.use_min_y
     sub.prop(con, "min_y", text="")
     col.prop(con, "use_max_y")
     sub = col.column()
-    # sub.active = con.use_max_y
+    sub.active = con.use_max_y
     sub.prop(con, "max_y", text="")
 
     col = split.column()
     col.prop(con, "use_min_z")
     sub = col.column()
-    # sub.active = con.use_min_z
+    sub.active = con.use_min_z
     sub.prop(con, "min_z", text="")
     col.prop(con, "use_max_z")
     sub = col.column()
-    # sub.active = con.use_max_z
+    sub.active = con.use_max_z
     sub.prop(con, "max_z", text="")
 
     row = layout.row()
@@ -322,31 +322,31 @@ class ConstraintButtons:
     col = split.column()
     col.prop(con, "use_min_x")
     sub = col.column()
-    # sub.active = con.use_min_x
+    sub.active = con.use_min_x
     sub.prop(con, "min_x", text="")
     col.prop(con, "use_max_x")
     sub = col.column()
-    # sub.active = con.use_max_x
+    sub.active = con.use_max_x
     sub.prop(con, "max_x", text="")
 
     col = split.column()
     col.prop(con, "use_min_y")
     sub = col.column()
-    # sub.active = con.use_min_y
+    sub.active = con.use_min_y
     sub.prop(con, "min_y", text="")
     col.prop(con, "use_max_y")
     sub = col.column()
-    # sub.active = con.use_max_y
+    sub.active = con.use_max_y
     sub.prop(con, "max_y", text="")
 
     col = split.column()
     col.prop(con, "use_min_z")
     sub = col.column()
-    # sub.active = con.use_min_z
+    sub.active = con.use_min_z
     sub.prop(con, "min_z", text="")
     col.prop(con, "use_max_z")
     sub = col.column()
-    # sub.active = con.use_max_z
+    sub.active = con.use_max_z
     sub.prop(con, "max_z", text="")
 
     row = layout.row()
@@ -365,19 +365,19 @@ class ConstraintButtons:
     col = split.column()
     col.prop(con, "use_x", text="X")
     sub = col.column()
-    # sub.active = con.use_x
+    sub.active = con.use_x
     sub.prop(con, "invert_x", text="Invert")
 
     col = split.column()
     col.prop(con, "use_y", text="Y")
     sub = col.column()
-    # sub.active = con.use_y
+    sub.active = con.use_y
     sub.prop(con, "invert_y", text="Invert")
 
     col = split.column()
     col.prop(con, "use_z", text="Z")
     sub = col.column()
-    # sub.active = con.use_z
+    sub.active = con.use_z
     sub.prop(con, "invert_z", text="Invert")
 
     layout.prop(con, "use_offset")
@@ -392,19 +392,19 @@ class ConstraintButtons:
     col = split.column()
     col.prop(con, "use_x", text="X")
     sub = col.column()
-    # sub.active = con.use_x
+    sub.active = con.use_x
     sub.prop(con, "invert_x", text="Invert")
 
     col = split.column()
     col.prop(con, "use_y", text="Y")
     sub = col.column()
-    # sub.active = con.use_y
+    sub.active = con.use_y
     sub.prop(con, "invert_y", text="Invert")
 
     col = split.column()
     col.prop(con, "use_z", text="Z")
     sub = col.column()
-    # sub.active = con.use_z
+    sub.active = con.use_z
     sub.prop(con, "invert_z", text="Invert")
 
     layout.prop(con, "use_offset")
@@ -509,15 +509,15 @@ class ConstraintButtons:
     col = split.column(align=True)
     col.prop(con, "use_bulge_min", text="Volume Min")
     sub = col.column()
-    # sub.active = con.use_bulge_min
+    sub.active = con.use_bulge_min
     sub.prop(con, "bulge_min", text="")
     col = split.column(align=True)
     col.prop(con, "use_bulge_max", text="Volume Max")
     sub = col.column()
-    # sub.active = con.use_bulge_max
+    sub.active = con.use_bulge_max
     sub.prop(con, "bulge_max", text="")
     col = layout.column()
-    # col.active = con.use_bulge_min or con.use_bulge_max
+    col.active = con.use_bulge_min or con.use_bulge_max
     col.prop(con, "bulge_smooth", text="Smooth")
 
     row = layout.row()
@@ -573,19 +573,19 @@ class ConstraintButtons:
       col = split.column()
       col.prop(con, "use_angular_limit_x", text="Angle X")
       sub = col.column()
-      # sub.active = con.use_angular_limit_x
+      sub.active = con.use_angular_limit_x
       sub.prop(con, "limit_angle_max_x", text="")
 
       col = split.column()
       col.prop(con, "use_angular_limit_y", text="Angle Y")
       sub = col.column()
-      # sub.active = con.use_angular_limit_y
+      sub.active = con.use_angular_limit_y
       sub.prop(con, "limit_angle_max_y", text="")
 
       col = split.column()
       col.prop(con, "use_angular_limit_z", text="Angle Z")
       sub = col.column()
-      # sub.active = con.use_angular_limit_z
+      sub.active = con.use_angular_limit_z
       sub.prop(con, "limit_angle_max_z", text="")
 
     elif con.pivot_type == 'GENERIC_6_DOF':
@@ -595,21 +595,21 @@ class ConstraintButtons:
       col = split.column(align=True)
       col.prop(con, "use_limit_x", text="X")
       sub = col.column(align=True)
-      # sub.active = con.use_limit_x
+      sub.active = con.use_limit_x
       sub.prop(con, "limit_min_x", text="Min")
       sub.prop(con, "limit_max_x", text="Max")
 
       col = split.column(align=True)
       col.prop(con, "use_limit_y", text="Y")
       sub = col.column(align=True)
-      # sub.active = con.use_limit_y
+      sub.active = con.use_limit_y
       sub.prop(con, "limit_min_y", text="Min")
       sub.prop(con, "limit_max_y", text="Max")
 
       col = split.column(align=True)
       col.prop(con, "use_limit_z", text="Z")
       sub = col.column(align=True)
-      # sub.active = con.use_limit_z
+      sub.active = con.use_limit_z
       sub.prop(con, "limit_min_z", text="Min")
       sub.prop(con, "limit_max_z", text="Max")
 
@@ -618,21 +618,21 @@ class ConstraintButtons:
       col = split.column(align=True)
       col.prop(con, "use_angular_limit_x", text="Angle X")
       sub = col.column(align=True)
-      # sub.active = con.use_angular_limit_x
+      sub.active = con.use_angular_limit_x
       sub.prop(con, "limit_angle_min_x", text="Min")
       sub.prop(con, "limit_angle_max_x", text="Max")
 
       col = split.column(align=True)
       col.prop(con, "use_angular_limit_y", text="Angle Y")
       sub = col.column(align=True)
-      # sub.active = con.use_angular_limit_y
+      sub.active = con.use_angular_limit_y
       sub.prop(con, "limit_angle_min_y", text="Min")
       sub.prop(con, "limit_angle_max_y", text="Max")
 
       col = split.column(align=True)
       col.prop(con, "use_angular_limit_z", text="Angle Z")
       sub = col.column(align=True)
-      # sub.active = con.use_angular_limit_z
+      sub.active = con.use_angular_limit_z
       sub.prop(con, "limit_angle_min_z", text="Min")
       sub.prop(con, "limit_angle_max_z", text="Max")
 
@@ -645,10 +645,10 @@ class ConstraintButtons:
       col.prop(con, "use_angular_limit_x", text="Angle X")
 
       col = row.column()
-      # col.active = con.use_angular_limit_x
+      col.active = con.use_angular_limit_x
       col.prop(con, "limit_angle_min_x", text="Min")
       col = row.column()
-      # col.active = con.use_angular_limit_x
+      col.active = con.use_angular_limit_x
       col.prop(con, "limit_angle_max_x", text="Max")
 
   def CLAMP_TO(self, context, layout, con):
@@ -781,15 +781,15 @@ class ConstraintButtons:
       col = split.column(align=True)
       col.prop(con, "use_bulge_min", text="Volume Min")
       sub = col.column()
-      # sub.active = con.use_bulge_min
+      sub.active = con.use_bulge_min
       sub.prop(con, "bulge_min", text="")
       col = split.column(align=True)
       col.prop(con, "use_bulge_max", text="Volume Max")
       sub = col.column()
-      # sub.active = con.use_bulge_max
+      sub.active = con.use_bulge_max
       sub.prop(con, "bulge_max", text="")
       col = layout.column()
-      # col.active = con.use_bulge_min or con.use_bulge_max
+      col.active = con.use_bulge_min or con.use_bulge_max
       col.prop(con, "bulge_smooth", text="Smooth")
 
   def PIVOT(self, context, layout, con):
@@ -824,7 +824,7 @@ class ConstraintButtons:
     row.prop(con, "use_3d_position")
 
     sub = row.column()
-    # sub.active = not con.use_3d_position
+    sub.active = not con.use_3d_position
     sub.prop(con, "use_undistorted_position")
 
     col = layout.column()
@@ -847,7 +847,7 @@ class ConstraintButtons:
     col.prop(con, "camera")
 
     row = col.row()
-    # row.active = not con.use_3d_position
+    row.active = not con.use_3d_position
     row.prop(con, "depth_object")
 
     layout.operator("clip.constraint_to_fcurve")

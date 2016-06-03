@@ -549,11 +549,14 @@ class ModifierButtons:
 
     col = split.column()
 
-    # col.enabled = ob.mode != 'EDIT'
-    col.operator("object.multires_subdivide", text="Subdivide")
-    col.operator("object.multires_higher_levels_delete", text="Delete Higher")
-    col.operator("object.multires_reshape", text="Reshape")
-    col.operator("object.multires_base_apply", text="Apply Base")
+    sub = col.column()
+    sub.enabled = False
+    sub.operator("object.multires_subdivide", text="Subdivide")
+    sub.operator("object.multires_higher_levels_delete", text="Delete Higher")
+    sub.operator("object.multires_reshape", text="Reshape")
+    sub.operator("object.multires_base_apply", text="Apply Base")
+
+    col.enabled = ob.mode != 'EDIT'
     col.prop(md, "use_subsurf_uv")
     col.prop(md, "show_only_control_edges")
 

@@ -414,13 +414,13 @@ class ModifierButtons:
     row.label(text="Anchors Vertex Group:")
 
     row = layout.row()
-    # row.enabled = not is_bind
+    row.enabled = not is_bind
     row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
 
     layout.separator()
 
     row = layout.row()
-    # row.enabled = bool(md.vertex_group)
+    row.enabled = bool(md.vertex_group)
     row.operator("object.laplaciandeform_bind", text="Unbind" if is_bind else "Bind")
 
   def LAPLACIANSMOOTH(self, layout, ob, md):
@@ -642,7 +642,7 @@ class ModifierButtons:
       layout.operator("object.ocean_bake").free = False
 
     split = layout.split()
-    # split.enabled = not md.is_cached
+    split.enabled = not md.is_cached
 
     col = split.column(align=True)
     col.prop(md, "frame_start", text="Start")
@@ -653,7 +653,7 @@ class ModifierButtons:
     col.prop(md, "filepath", text="")
 
     split = layout.split()
-    # split.enabled = not md.is_cached
+    split.enabled = not md.is_cached
 
     col = split.column()
     col.active = md.use_foam

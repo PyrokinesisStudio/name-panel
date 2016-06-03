@@ -67,7 +67,7 @@ class ModifierButtons:
     row = split.row(align=True)
     row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
     sub = row.row(align=True)
-    # sub.active = bool(md.vertex_group)
+    sub.active = bool(md.vertex_group)
     sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
     split.prop(md, "use_multi_modifier")
@@ -89,28 +89,28 @@ class ModifierButtons:
     col = split.column()
     col.prop(md, "use_constant_offset")
     sub = col.column()
-    # sub.active = md.use_constant_offset
+    sub.active = md.use_constant_offset
     sub.prop(md, "constant_offset_displace", text="")
 
     col.separator()
 
     col.prop(md, "use_merge_vertices", text="Merge")
     sub = col.column()
-    # sub.active = md.use_merge_vertices
+    sub.active = md.use_merge_vertices
     sub.prop(md, "use_merge_vertices_cap", text="First Last")
     sub.prop(md, "merge_threshold", text="Distance")
 
     col = split.column()
     col.prop(md, "use_relative_offset")
     sub = col.column()
-    # sub.active = md.use_relative_offset
+    sub.active = md.use_relative_offset
     sub.prop(md, "relative_offset_displace", text="")
 
     col.separator()
 
     col.prop(md, "use_object_offset")
     sub = col.column()
-    # sub.active = md.use_object_offset
+    sub.active = md.use_object_offset
     sub.prop(md, "offset_object", text="")
 
     layout.separator()
@@ -165,7 +165,7 @@ class ModifierButtons:
     col = split.column()
     col.prop(md, "use_random_order")
     sub = col.column()
-    # sub.active = md.use_random_order
+    sub.active = md.use_random_order
     sub.prop(md, "seed")
 
   def MESH_CACHE(self, layout, ob, md):
@@ -275,7 +275,7 @@ class ModifierButtons:
 
       col = split.column()
       row = col.row()
-      # row.active = has_vgroup
+      row.active = has_vgroup
       row.prop(md, "vertex_group_factor")
 
       col.prop(md, "use_collapse_triangulate")
@@ -309,7 +309,7 @@ class ModifierButtons:
     col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
 
     col = split.column(align=True)
-    # col.active = has_texture
+    col.active = has_texture
     col.label(text="Texture Coordinates:")
     col.prop(md, "texture_coords", text="")
     if md.texture_coords == 'OBJECT':
@@ -334,7 +334,7 @@ class ModifierButtons:
     col = split.column()
     col.prop(md, "use_edge_angle", text="Edge Angle")
     sub = col.column()
-    # sub.active = md.use_edge_angle
+    sub.active = md.use_edge_angle
     sub.prop(md, "split_angle")
 
     split.prop(md, "use_edge_sharp", text="Sharp Edges")
@@ -346,7 +346,7 @@ class ModifierButtons:
     col.label(text="Vertex group:")
     col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
     sub = col.column()
-    # sub.active = bool(md.vertex_group)
+    sub.active = bool(md.vertex_group)
     sub.prop(md, "protect")
     col.label(text="Particle UV")
     col.prop_search(md, "particle_uv", ob.data, "uv_textures", text="")
@@ -410,7 +410,7 @@ class ModifierButtons:
     layout.prop(md, "iterations")
 
     row = layout.row()
-    # row.active = not is_bind
+    row.active = not is_bind
     row.label(text="Anchors Vertex Group:")
 
     row = layout.row()
@@ -473,21 +473,21 @@ class ModifierButtons:
       row = col.row(align=True)
       row.prop(md, "armature", text="")
       sub = row.row(align=True)
-      # sub.active = (md.armature is not None)
+      sub.active = (md.armature is not None)
       sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
     elif md.mode == 'VERTEX_GROUP':
       col.label(text="Vertex Group:")
       row = col.row(align=True)
       row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
       sub = row.row(align=True)
-      # sub.active = bool(md.vertex_group)
+      sub.active = bool(md.vertex_group)
       sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
   def MESH_DEFORM(self, layout, ob, md):
     split = layout.split()
 
     col = split.column()
-    # col.active = not md.is_bound
+    col.active = not md.is_bound
     col.label(text="Object:")
     col.prop(md, "object", text="")
 
@@ -497,7 +497,7 @@ class ModifierButtons:
     row = col.row(align=True)
     row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
     sub = row.row(align=True)
-    # sub.active = bool(md.vertex_group)
+    sub.active = bool(md.vertex_group)
     sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
     layout.separator()
@@ -563,6 +563,7 @@ class ModifierButtons:
     layout.separator()
 
     col = layout.column()
+    col.enabled = False
     row = col.row()
     if md.is_external:
       row.operator("object.multires_external_pack", text="Pack External")
@@ -612,7 +613,7 @@ class ModifierButtons:
     col = split.column()
     col.prop(md, "wave_alignment", text="Alignment")
     sub = col.column()
-    # sub.active = (md.wave_alignment > 0.0)
+    sub.active = (md.wave_alignment > 0.0)
     sub.prop(md, "wave_direction", text="Direction")
     sub.prop(md, "damping")
 
@@ -625,11 +626,11 @@ class ModifierButtons:
     col = split.column()
     col.prop(md, "use_foam")
     sub = col.row()
-    # sub.active = md.use_foam
+    sub.active = md.use_foam
     sub.prop(md, "foam_coverage", text="Coverage")
 
     col = split.column()
-    # col.active = md.use_foam
+    col.active = md.use_foam
     col.label("Foam Data Layer Name:")
     col.prop(md, "foam_layer_name", text="")
 
@@ -655,7 +656,7 @@ class ModifierButtons:
     # split.enabled = not md.is_cached
 
     col = split.column()
-    # col.active = md.use_foam
+    col.active = md.use_foam
     col.prop(md, "bake_foam_fade")
 
     col = split.column()
@@ -682,7 +683,7 @@ class ModifierButtons:
     layout.prop(md, "use_path", text="Create Along Paths")
 
     split = layout.split()
-    # split.active = md.use_path
+    split.active = md.use_path
     col = split.column()
     col.row().prop(md, "axis", expand=True)
     col.prop(md, "use_preserve_shape")
@@ -707,10 +708,10 @@ class ModifierButtons:
 
     col = split.column()
     row = col.row()
-    # row.active = (md.object is None or md.use_object_screw_offset is False)
+    row.active = (md.object is None or md.use_object_screw_offset is False)
     row.prop(md, "screw_offset")
     row = col.row()
-    # row.active = (md.object is not None)
+    row.active = (md.object is not None)
     row.prop(md, "use_object_screw_offset")
     col.prop(md, "use_normal_calculate")
     col.prop(md, "use_normal_flip")
@@ -827,11 +828,11 @@ class ModifierButtons:
     row = col.row(align=True)
     row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
     sub = row.row(align=True)
-    # sub.active = bool(md.vertex_group)
+    sub.active = bool(md.vertex_group)
     sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
     sub = col.row()
-    # sub.active = bool(md.vertex_group)
+    sub.active = bool(md.vertex_group)
     sub.prop(md, "thickness_vertex_group", text="Factor")
 
     col.label(text="Crease:")
@@ -848,7 +849,7 @@ class ModifierButtons:
     col.prop(md, "use_quality_normals")
     col.prop(md, "use_rim")
     col_rim = col.column()
-    # col_rim.active = md.use_rim
+    col_rim.active = md.use_rim
     col_rim.prop(md, "use_rim_only")
 
     col.separator()
@@ -859,7 +860,7 @@ class ModifierButtons:
     row = sub.split(align=True, percentage=0.4)
     row.prop(md, "material_offset", text="")
     row = row.row(align=True)
-    # row.active = md.use_rim
+    row.active = md.use_rim
     row.prop(md, "material_offset_rim", text="Rim")
 
   def SUBSURF(self, layout, ob, md):
@@ -962,7 +963,7 @@ class ModifierButtons:
     col = split.column()
     col.prop(md, "use_normal")
     sub = col.column()
-    # sub.active = md.use_normal
+    sub.active = md.use_normal
     sub.prop(md, "use_normal_x", text="X")
     sub.prop(md, "use_normal_y", text="Y")
     sub.prop(md, "use_normal_z", text="Z")
@@ -1023,7 +1024,7 @@ class ModifierButtons:
     layout.prop(md, "use_smooth_shade")
     layout.prop(md, "use_remove_disconnected")
     row = layout.row()
-    # row.active = md.use_remove_disconnected
+    row.active = md.use_remove_disconnected
     row.prop(md, "threshold")
 
   @staticmethod
@@ -1072,13 +1073,13 @@ class ModifierButtons:
     col = split.column()
     col.prop(md, "use_add")
     sub = col.column()
-    # sub.active = md.use_add
+    sub.active = md.use_add
     sub.prop(md, "add_threshold")
 
     col = col.column()
     col.prop(md, "use_remove")
     sub = col.column()
-    # sub.active = md.use_remove
+    sub.active = md.use_remove
     sub.prop(md, "remove_threshold")
 
     layout.separator()
@@ -1239,10 +1240,10 @@ class ModifierButtons:
     row = col.row(align=True)
     row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
     sub = row.row(align=True)
-    # sub.active = has_vgroup
+    sub.active = has_vgroup
     sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
     row = col.row(align=True)
-    # row.active = has_vgroup
+    row.active = has_vgroup
     row.prop(md, "thickness_vertex_group", text="Factor")
 
     col.prop(md, "use_crease", text="Crease Edges")
@@ -1262,7 +1263,7 @@ class ModifierButtons:
     row = layout.row(align=True)
     row.prop(md, "object")
     sub = row.row(align=True)
-    # sub.active = bool(md.object)
+    sub.active = bool(md.object)
     sub.prop(md, "use_object_transform", text="", icon='GROUP')
 
     layout.separator()
@@ -1271,7 +1272,7 @@ class ModifierButtons:
     split.prop(md, "use_vert_data")
     use_vert = md.use_vert_data
     row = split.row()
-    # row.active = use_vert
+    row.active = use_vert
     row.prop(md, "vert_mapping", text="")
     if use_vert:
       col = layout.column(align=True)
@@ -1292,7 +1293,7 @@ class ModifierButtons:
     split.prop(md, "use_edge_data")
     use_edge = md.use_edge_data
     row = split.row()
-    # row.active = use_edge
+    row.active = use_edge
     row.prop(md, "edge_mapping", text="")
     if use_edge:
       col = layout.column(align=True)
@@ -1306,7 +1307,7 @@ class ModifierButtons:
     split.prop(md, "use_loop_data")
     use_loop = md.use_loop_data
     row = split.row()
-    # row.active = use_loop
+    row.active = use_loop
     row.prop(md, "loop_mapping", text="")
     if use_loop:
       col = layout.column(align=True)
@@ -1335,7 +1336,7 @@ class ModifierButtons:
     split.prop(md, "use_poly_data")
     use_poly = md.use_poly_data
     row = split.row()
-    # row.active = use_poly
+    row.active = use_poly
     row.prop(md, "poly_mapping", text="")
     if use_poly:
       col = layout.column(align=True)
@@ -1349,7 +1350,7 @@ class ModifierButtons:
     col = split.column()
     row = col.row(align=True)
     sub = row.row(align=True)
-    # sub.active = md.use_max_distance
+    sub.active = md.use_max_distance
     sub.prop(md, "max_distance")
     row.prop(md, "use_max_distance", text="", icon='STYLUS_PRESSURE')
 
@@ -1365,12 +1366,12 @@ class ModifierButtons:
 
     col = split.column()
     row = col.row()
-    # row.active = bool(md.object)
+    row.active = bool(md.object)
     row.operator("object.datalayout_transfer", text="Generate Data Layers")
     row = col.row(align=True)
     row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
     sub = row.row(align=True)
-    # sub.active = bool(md.vertex_group)
+    sub.active = bool(md.vertex_group)
     sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
   def NORMAL_EDIT(self, layout, ob, md):
@@ -1386,13 +1387,13 @@ class ModifierButtons:
     col = split.column()
     col.prop(md, "target", text="")
     sub = col.column(align=True)
-    # sub.active = needs_object_offset
+    sub.active = needs_object_offset
     sub.prop(md, "offset")
     row = col.row(align=True)
 
     col = split.column()
     row = col.row()
-    # row.active = (md.mode == 'DIRECTIONAL')
+    row.active = (md.mode == 'DIRECTIONAL')
     row.prop(md, "use_direction_parallel")
 
     subcol = col.column(align=True)
@@ -1402,7 +1403,7 @@ class ModifierButtons:
     row = subcol.row(align=True)
     row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
     sub = row.row(align=True)
-    # sub.active = has_vgroup
+    sub.active = has_vgroup
     sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
   def CORRECTIVE_SMOOTH(self, layout, ob, md):

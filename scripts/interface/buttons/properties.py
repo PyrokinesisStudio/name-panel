@@ -292,6 +292,9 @@ def Constraint(self, context, layout, datablock):
     The constraint properties.
   '''
 
+  # label
+  layout.label(text=datablock.name + ':')
+
   # constraint buttons
   ConstraintButtons.main(self, context, layout, datablock)
 
@@ -300,6 +303,9 @@ def Modifier(self, context, layout, object, datablock):
   '''
     The modifier properties.
   '''
+
+  # label
+  layout.label(text=datablock.name + ':')
 
   # modifier buttons
   ModifierButtons.main(self, context, layout, datablock, object)
@@ -332,13 +338,16 @@ def Bone(self, context, layout, datablock):
   layout.label(text='Nothing to show')
 
 # bone constraint
-def BoneConstraints(self, context, layout, datablock):
+def BoneConstraint(self, context, layout, datablock):
   '''
     The bone constraints properties.
   '''
 
   # label
-  layout.label(text='Nothing to show')
+  layout.label(text=datablock.name + ':')
+
+  # constraint buttons
+  ConstraintButtons.main(self, context, layout, datablock)
 
 # vertex group
 def VertexGroup(self, context, layout, datablock):

@@ -1756,10 +1756,8 @@ def main(context, quickBatch):
             for curve in action[1][1].fcurves[:]:
               if 'pose' in curve.data_path:
                 if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
-                  try:
-                    curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
-                  except:
-                    pass
+                  try: curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
+                  except: pass
 
         # clear storage
         storage.batch.actions.clear()
@@ -3445,12 +3443,8 @@ def process(context, collection):
       collection.remove(item)
 
   # sort
-  try:
-    collection.sort()
-  except:
-    pass
-
-
+  try: collection.sort()
+  except: pass
 
   # collection
   for item in collection[:]:

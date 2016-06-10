@@ -140,32 +140,26 @@ class operator(Operator):
 
     # shift
     if event.shift:
-
-      # extend
       self.extend = True
 
     # shift
     else:
-
       self.extend = False
 
     # ctrl
     if event.ctrl:
-
       self.view = True
 
     # ctrl
     else:
-
       self.view = False
 
     # alt
     if event.alt:
-
       self.active = False
 
+    # alt
     else:
-
       self.active = True
 
     # object

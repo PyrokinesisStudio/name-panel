@@ -25,30 +25,6 @@ from .. import storage
 
 tag = False
 
-# shared
-class shared:
-  '''
-    Contains Lists;
-      greasePencils
-      objectData
-      materials
-      textures
-  '''
-
-  # grease pencils
-  greasePencils = []
-
-  particleSettings = []
-
-  # object data
-  objectData = []
-
-  # materials
-  materials = []
-
-  # textures
-  textures = []
-
 # main
 def main(context, quickBatch):
   '''
@@ -265,77 +241,36 @@ def main(context, quickBatch):
 
                 # object type
                 if option.objectType in 'ALL':
-                  if object.grease_pencil.users == 1:
 
-                    # populate
-                    populate(context, object.grease_pencil, object)
-                  else:
-
-                    # shared
-                    if object.grease_pencil not in shared.greasePencils[:]:
-                      shared.greasePencils.append(object.grease_pencil)
-
-                      # populate
-                      populate(context, object.grease_pencil, object)
+                  # populate
+                  populate(context, object.grease_pencil, object)
 
                 # object type
                 elif option.objectType in object.type:
-                  if object.grease_pencil.users == 1:
 
-                    # populate
-                    populate(context, object.grease_pencil, object)
-                  else:
-
-                    # shared
-                    if object.grease_pencil not in shared.greasePencils[:]:
-                      shared.greasePencils.append(object.grease_pencil)
-
-                      # populate
-                      populate(context, object.grease_pencil, object)
+                  # populate
+                  populate(context, object.grease_pencil, object)
 
             # mode
             else:
 
               # object type
               if option.objectType in 'ALL':
-                if object.grease_pencil.users == 1:
 
-                  # populate
-                  populate(context, object.grease_pencil, object)
-                else:
-
-                  # shared
-                  if object.grease_pencil not in shared.greasePencils[:]:
-                    shared.greasePencils.append(object.grease_pencil)
-
-                    # populate
-                    populate(context, object.grease_pencil, object)
+                # populate
+                populate(context, object.grease_pencil, object)
 
               # object type
               elif option.objectType in object.type:
-                if object.grease_pencil.users == 1:
 
-                  # populate
-                  populate(context, object.grease_pencil, object)
-
-                else:
-
-                  # shared
-                  if object.grease_pencil not in shared.greasePencils[:]:
-                    shared.greasePencils.append(object.grease_pencil)
-
-                    # populate
-                    populate(context, object.grease_pencil, object)
-
+                # populate
+                populate(context, object.grease_pencil, object)
 
         # process
         process(context, storage.batch.greasePencils)
 
         # clear storage
         storage.batch.greasePencils.clear()
-
-        # clear shared
-        shared.greasePencils.clear()
 
       # pencil layers
       if option.pencilLayers:
@@ -348,99 +283,48 @@ def main(context, quickBatch):
 
                 # object type
                 if option.objectType in 'ALL':
-                  if object.grease_pencil.users == 1:
 
-                    # layers
-                    for layer in object.grease_pencil.layers[:]:
+                  # layers
+                  for layer in object.grease_pencil.layers[:]:
 
-                      # populate
-                      populate(context, layer)
-                  else:
-
-                    # shared
-                    if object.grease_pencil not in shared.greasePencils[:]:
-                      shared.greasePencils.append(object.grease_pencil)
-
-                      # layers
-                      for layer in object.grease_pencil.layers[:]:
-
-                        # populate
-                        populate(context, layer)
+                    # populate
+                    populate(context, layer)
 
                 # object type
                 elif option.objectType in object.type:
-                  if object.grease_pencil.users == 1:
 
-                    # layers
-                    for layer in object.grease_pencil.layers[:]:
+                  # layers
+                  for layer in object.grease_pencil.layers[:]:
 
-                      # populate
-                      populate(context, layer)
-                  else:
-
-                    # shared
-                    if object.grease_pencil not in shared.greasePencils[:]:
-                      shared.greasePencils.append(object.grease_pencil)
-
-                      # layers
-                      for layer in object.grease_pencil.layers[:]:
-
-                        # populate
-                        populate(context, layer)
+                    # populate
+                    populate(context, layer)
 
             # mode
             else:
 
               # object type
               if option.objectType in 'ALL':
-                if object.grease_pencil.users == 1:
 
-                  # layers
-                  for layer in object.grease_pencil.layers[:]:
+                # layers
+                for layer in object.grease_pencil.layers[:]:
 
-                    # populate
-                    populate(context, layer)
-                else:
-
-                  # shared
-                  if object.grease_pencil not in shared.greasePencils[:]:
-                    shared.greasePencils.append(object.grease_pencil)
-
-                    # layers
-                    for layer in object.grease_pencil.layers[:]:
-
-                      # populate
-                      populate(context, layer)
+                  # populate
+                  populate(context, layer)
 
               # object type
               elif option.objectType in object.type:
-                if object.grease_pencil.users == 1:
 
-                  # layers
-                  for layer in object.grease_pencil.layers[:]:
+                # layers
+                for layer in object.grease_pencil.layers[:]:
 
-                    # populate
-                    populate(context, layer)
-                else:
-
-                  # shared
-                  if object.grease_pencil not in shared.greasePencils[:]:
-                    shared.greasePencils.append(object.grease_pencil)
-
-                    # layers
-                    for layer in object.grease_pencil.layers[:]:
-
-                      # populate
-                      populate(context, layer)
+                  # populate
+                  populate(context, layer)
 
             # process
             process(context, storage.batch.pencilLayers)
 
             # clear storage
             storage.batch.pencilLayers.clear()
-
-        # clear shared
-        shared.greasePencils.clear()
 
       # objects
       if option.objects:
@@ -634,69 +518,30 @@ def main(context, quickBatch):
 
                 # object type
                 if option.objectType in 'ALL':
-                  if object.data.users == 1:
 
-                    # populate
-                    populate(context, object.data, object)
-                  else:
-
-                    # shared
-                    if object.data.name not in shared.objectData[:]:
-                      shared.objectData.append(object.data.name)
-
-                      # populate
-                      populate(context, object.data, object)
+                  # populate
+                  populate(context, object.data, object)
 
                 # object type
                 elif option.objectType in object.type:
-                  if object.data.users == 1:
 
-                    # populate
-                    populate(context, object.data, object)
-                  else:
-
-                    # shared shared
-                    if object.data.name not in shared.objectData[:]:
-                      shared.objectData.append(object.data.name)
-
-                      # populate
-                      populate(context, object.data, object)
+                  # populate
+                  populate(context, object.data, object)
 
             # mode
             else:
 
               # object type
               if option.objectType in 'ALL':
-                if object.data.users == 1:
 
-                  # populate
-                  populate(context, object.data, object)
-                else:
-
-                  # shared shared
-                  if object.data.name not in shared.objectData[:]:
-                    shared.objectData.append(object.data.name)
-
-                    # populate
-                    populate(context, object.data, object)
+                # populate
+                populate(context, object.data, object)
 
               # object type
               elif option.objectType in object.type:
-                if object.data.users == 1:
 
-                  # populate
-                  populate(context, object.data, object)
-                else:
-
-                  # shared shared
-                  if object.data.name not in shared.objectData[:]:
-                    shared.objectData.append(object.data.name)
-
-                    # populate
-                    populate(context, object.data, object)
-
-        # clear shared
-        shared.objectData.clear()
+                # populate
+                populate(context, object.data, object)
 
         # object data
         objectData = [
@@ -1006,33 +851,6 @@ def main(context, quickBatch):
             if object.select:
               for slot in object.material_slots[:]:
                 if slot.material != None:
-                  if slot.material.users == 1:
-
-                    # object type
-                    if option.objectType in 'ALL':
-
-                      # populate
-                      populate(context, slot.material, slot)
-
-                    # object type
-                    elif option.objectType in object.type:
-
-                      # populate
-                      populate(context, slot.material, slot)
-                  else:
-
-                    # shared
-                    if slot.material not in shared.materials[:]:
-                      shared.materials.append(slot.material)
-
-                      # populate
-                      populate(context, slot.material, slot)
-
-          # mode
-          else:
-            for slot in object.material_slots[:]:
-              if slot.material != None:
-                if slot.material.users == 1:
 
                   # object type
                   if option.objectType in 'ALL':
@@ -1045,23 +863,29 @@ def main(context, quickBatch):
 
                     # populate
                     populate(context, slot.material, slot)
-                else:
 
-                  # shared
-                  if slot.material not in shared.materials[:]:
-                    shared.materials.append(slot.material)
+          # mode
+          else:
+            for slot in object.material_slots[:]:
+              if slot.material != None:
 
-                    # populate
-                    populate(context, slot.material, slot)
+                # object type
+                if option.objectType in 'ALL':
+
+                  # populate
+                  populate(context, slot.material, slot)
+
+                # object type
+                elif option.objectType in object.type:
+
+                  # populate
+                  populate(context, slot.material, slot)
 
         # process
         process(context, storage.batch.materials)
 
         # clear storage
         storage.batch.materials.clear()
-
-        # clear shared
-        shared.materials.clear()
 
       # textures
       if option.textures:
@@ -1073,130 +897,45 @@ def main(context, quickBatch):
               if object.select:
                 for slot in object.material_slots[:]:
                   if slot.material != None:
-                    if slot.material.users == 1:
-                      for texslot in slot.material.texture_slots[:]:
-                        if texslot != None:
-                          if texslot.texture.users == 1:
+                    for texslot in slot.material.texture_slots[:]:
+                      if texslot != None:
 
-                            # object type
-                            if option.objectType in 'ALL':
+                        # object type
+                        if option.objectType in 'ALL':
 
-                              # populate
-                              populate(context, texslot.texture, texslot)
+                          # populate
+                          populate(context, texslot.texture, texslot)
 
-                            # object type
-                            elif option.objectType in object.type:
+                        # object type
+                        elif option.objectType in object.type:
 
-                              # populate
-                              populate(context, texslot.texture, texslot)
-                          else:
-
-                            # shared
-                            if texslot.texture not in shared.textures[:]:
-                              shared.textures.append(texslot.texture)
-
-                              # populate
-                              populate(context, texslot.texture, texslot)
-                    else:
-
-                      # shared
-                      if slot.material not in shared.materials[:]:
-                        shared.materials.append(slot.material)
-                        for texslot in slot.material.texture_slots[:]:
-                          if texslot != None:
-                            if texslot.texture.users == 1:
-
-                              # object type
-                              if option.objectType in 'ALL':
-
-                                # populate
-                                populate(context, texslot.texture, texslot)
-
-                              # object type
-                              elif option.objectType in object.type:
-
-                                # populate
-                                populate(context, texslot.texture, texslot)
-                            else:
-
-                              # shared
-                              if texslot.texture not in shared.textures[:]:
-                                shared.textures.append(texslot.texture)
-
-                                # populate
-                                populate(context, texslot.texture, texslot)
-
-                    # process
-                    process(context, storage.batch.textures)
-
-                    # clear storage
-                    storage.batch.textures.clear()
+                          # populate
+                          populate(context, texslot.texture, texslot)
 
             # mode
             else:
               for slot in object.material_slots[:]:
                 if slot.material != None:
-                  if slot.material.users == 1:
-                    for texslot in slot.material.texture_slots[:]:
-                      if texslot != None:
-                        if texslot.texture.users == 1:
+                  for texslot in slot.material.texture_slots[:]:
+                    if texslot != None:
 
-                          # object type
-                          if option.objectType in 'ALL':
+                      # object type
+                      if option.objectType in 'ALL':
 
-                            # populate
-                            populate(context, texslot.texture, texslot)
+                        # populate
+                        populate(context, texslot.texture, texslot)
 
-                          # object type
-                          elif option.objectType in object.type:
+                      # object type
+                      elif option.objectType in object.type:
 
-                            # populate
-                            populate(context, texslot.texture, texslot)
-                        else:
-
-                          # shared
-                          if texslot.texture not in shared.textures[:]:
-                            shared.textures.append(texslot.texture)
-
-                            # populate
-                            populate(context, texslot.texture, texslot)
-                  else:
-
-                    # shared
-                    if slot.material not in shared.materials[:]:
-                      shared.materials.append(slot.material)
-                      for texslot in slot.material.texture_slots[:]:
-                        if texslot != None:
-                          if texslot.texture.users == 1:
-
-                            # object type
-                            if option.objectType in 'ALL':
-
-                              # populate
-                              populate(context, texslot.texture, texslot)
-
-                            # object type
-                            elif option.objectType in object.type:
-
-                              # populate
-                              populate(context, texslot.texture, texslot)
-                          else:
-
-                            # shared
-                            if texslot.texture not in shared.textures[:]:
-                              shared.textures.append(texslot.texture, texslot)
-
-                              # populate
-                              populate(context, texslot.texture, texslot)
+                        # populate
+                        populate(context, texslot.texture, texslot)
 
         # process
         process(context, storage.batch.textures)
 
         # clear storage
         storage.batch.textures.clear()
-
-        # clear shared
-        shared.textures.clear()
 
       # particle systems
       if option.particleSystems:
@@ -1254,33 +993,15 @@ def main(context, quickBatch):
 
                   # object type
                   if option.objectType in 'ALL':
-                    if system.settings.users == 1:
 
-                      # populate
-                      populate(context, system.settings, system)
-                    else:
-
-                      # shared
-                      if system.settings not in shared.particleSettings[:]:
-                        shared.particleSettings.append(system.settings)
-
-                        # populate
-                        populate(context, system.settings, system)
+                    # populate
+                    populate(context, system.settings, system)
 
                   # object type
                   elif option.objectType in object.type:
-                    if system.settings.users == 1:
 
-                      # populate
-                      populate(context, system.settings, system)
-                    else:
-
-                      # shared
-                      if system.settings not in shared.particleSettings[:]:
-                        shared.particleSettings.append(system.settings)
-
-                        # populate
-                        populate(context, system.settings, system)
+                    # populate
+                    populate(context, system.settings, system)
 
             # mode
             else:
@@ -1288,42 +1009,21 @@ def main(context, quickBatch):
 
                 # object type
                 if option.objectType in 'ALL':
-                  if system.settings.users == 1:
 
-                    # populate
-                    populate(context, system.settings, system)
-                  else:
-
-                    # shared
-                    if system.settings not in shared.particleSettings[:]:
-                      shared.particleSettings.append(system.settings)
-
-                      # populate
-                      populate(context, system.settings, system)
+                  # populate
+                  populate(context, system.settings, system)
 
                 # object type
                 elif option.objectType in object.type:
-                  if system.settings.users == 1:
 
-                    # populate
-                    populate(context, system.settings, system)
-                  else:
-
-                    # shared
-                    if system.settings not in shared.particleSettings[:]:
-                      shared.particleSettings.append(system.settings)
-
-                      # populate
-                      populate(context, system.settings, system)
+                  # populate
+                  populate(context, system.settings, system)
 
         # process
         process(context, storage.batch.particleSettings)
 
         # clear storage
         storage.batch.particleSettings.clear()
-
-        # clear shared
-        shared.particleSettings.clear()
 
     # sensors
     if option.sensors:
@@ -1526,44 +1226,21 @@ def main(context, quickBatch):
 
             # object type
             if option.objectType in 'ALL':
-              if object.grease_pencil.users == 1:
 
-                # populate
-                populate(context, object.grease_pencil, object)
-
-              else:
-
-                # shared
-                if object.grease_pencil not in shared.greasePencils[:]:
-                  shared.greasePencils.append(object.grease_pencil)
-
-                  # populate
-                  populate(context, object.grease_pencil, object)
+              # populate
+              populate(context, object.grease_pencil, object)
 
             # object type
             elif option.objectType in object.type:
-              if object.grease_pencil.users == 1:
 
-                # populate
-                populate(context, object.grease_pencil, object)
-
-              else:
-
-                # shared
-                if object.grease_pencil not in shared.greasePencils[:]:
-                  shared.greasePencils.append(object.grease_pencil)
-
-                  # populate
-                  populate(context, object.grease_pencil, object)
+              # populate
+              populate(context, object.grease_pencil, object)
 
         # process
         process(context, storage.batch.greasePencils)
 
         # clear storage
         storage.batch.greasePencils.clear()
-
-        # clear shared
-        shared.greasePencils.clear()
 
       # pencil layers
       if option.pencilLayers:
@@ -1572,54 +1249,27 @@ def main(context, quickBatch):
 
             # object type
             if option.objectType in 'ALL':
-              if object.grease_pencil.users == 1:
 
-                # layers
-                for layer in object.grease_pencil.layers[:]:
+              # layers
+              for layer in object.grease_pencil.layers[:]:
 
-                  # populate
-                  populate(context, layer)
-              else:
-
-                # shared
-                if object.grease_pencil not in shared.greasePencils[:]:
-                  shared.greasePencils.append(object.grease_pencil)
-
-                  # layers
-                  for layer in object.grease_pencil.layers[:]:
-
-                    # populate
-                    populate(context, layer)
+                # populate
+                populate(context, layer)
 
             # object type
             elif option.objectType in object.type:
-              if object.grease_pencil.users == 1:
 
-                # layers
-                for layer in object.grease_pencil.layers[:]:
+              # layers
+              for layer in object.grease_pencil.layers[:]:
 
-                  # populate
-                  populate(context, layer)
-              else:
-
-                # shared
-                if object.grease_pencil not in shared.greasePencils[:]:
-                  shared.greasePencils.append(object.grease_pencil)
-
-                  # layers
-                  for layer in object.grease_pencil.layers[:]:
-
-                    # populate
-                    populate(context, layer)
+                # populate
+                populate(context, layer)
 
             # process
             process(context, storage.batch.pencilLayers)
 
             # clear storage
             storage.batch.pencilLayers.clear()
-
-        # clear shared
-        shared.greasePencils.clear()
 
       # objects
       if option.objects:
@@ -1726,36 +1376,15 @@ def main(context, quickBatch):
 
             # object type
             if option.objectType in 'ALL':
-              if object.data.users == 1:
 
-                # populate
-                populate(context, object.data, object)
-              else:
-
-                # shared shared
-                if object.data.name not in shared.objectData[:]:
-                  shared.objectData.append(object.data.name)
-
-                  # populate
-                  populate(context, object.data, object)
+              # populate
+              populate(context, object.data, object)
 
             # object type
             elif option.objectType in object.type:
-              if object.data.users == 1:
 
-                # populate
-                populate(context, object.data, object)
-              else:
-
-                # shared shared
-                if object.data.name not in shared.objectData[:]:
-                  shared.objectData.append(object.data.name)
-
-                  # populate
-                  populate(context, object.data, object)
-
-        # clear shared
-        shared.objectData.clear()
+              # populate
+              populate(context, object.data, object)
 
         # object data
         objectData = [
@@ -1926,28 +1555,18 @@ def main(context, quickBatch):
         for object in context.scene.objects[:]:
           for slot in object.material_slots[:]:
             if slot.material != None:
-              if slot.material.users == 1:
 
-                # object type
-                if option.objectType in 'ALL':
+              # object type
+              if option.objectType in 'ALL':
 
-                  # populate
-                  populate(context, slot.material, slot)
+                # populate
+                populate(context, slot.material, slot)
 
-                # object type
-                elif option.objectType in object.type:
+              # object type
+              elif option.objectType in object.type:
 
-                  # populate
-                  populate(context, slot.material, slot)
-              else:
-
-                # shared
-                if slot.material not in shared.materials[:]:
-                  shared.materials.append(slot.material)
-
-                  # populate
-                  populate(context, slot.material, slot)
-
+                # populate
+                populate(context, slot.material, slot)
 
         # process
         process(context, storage.batch.materials)
@@ -1955,76 +1574,32 @@ def main(context, quickBatch):
         # clear storage
         storage.batch.materials.clear()
 
-        # clear shared
-        shared.materials.clear()
-
       # textures
       if option.textures:
         for object in context.scene.objects[:]:
           if context.scene.render.engine not in 'CYCLES':
             for slot in object.material_slots[:]:
               if slot.material != None:
-                if slot.material.users == 1:
-                  for texslot in slot.material.texture_slots[:]:
-                    if texslot != None:
-                      if texslot.texture.users == 1:
+                for texslot in slot.material.texture_slots[:]:
+                  if texslot != None:
 
-                        # object type
-                        if option.objectType in 'ALL':
+                    # object type
+                    if option.objectType in 'ALL':
 
-                          # populate
-                          populate(context, texslot.texture, texslot)
+                      # populate
+                      populate(context, texslot.texture, texslot)
 
-                        # object type
-                        elif option.objectType in object.type:
+                    # object type
+                    elif option.objectType in object.type:
 
-                          # populate
-                          populate(context, texslot.texture, texslot)
-                      else:
-
-                        # shared
-                        if texslot.texture not in shared.textures[:]:
-                          shared.textures.append(texslot.texture)
-
-                          # populate
-                          populate(context, texslot.texture, texslot)
-                else:
-
-                  # shared
-                  if slot.material not in shared.materials[:]:
-                    shared.materials.append(slot.material)
-                    for texslot in slot.material.texture_slots[:]:
-                      if texslot != None:
-                        if texslot.texture.users == 1:
-
-                          # object type
-                          if option.objectType in 'ALL':
-
-                            # populate
-                            populate(context, texslot.texture, texslot)
-
-                          # object type
-                          elif option.objectType in object.type:
-
-                            # populate
-                            populate(context, texslot.texture, texslot)
-                        else:
-
-                          # shared
-                          if texslot.texture not in shared.textures[:]:
-                            shared.textures.append(texslot.texture)
-
-                            # populate
-                            populate(context, texslot.texture, texslot)
+                      # populate
+                      populate(context, texslot.texture, texslot)
 
         # process
         process(context, storage.batch.textures)
 
         # clear storage
         storage.batch.textures.clear()
-
-        # clear shared
-        shared.textures.clear()
 
       # particle systems
       if option.particleSystems:
@@ -2058,42 +1633,21 @@ def main(context, quickBatch):
 
               # object type
               if option.objectType in 'ALL':
-                if system.settings.users == 1:
 
-                  # populate
-                  populate(context, system.settings, system)
-                else:
-
-                  # shared
-                  if system.settings not in shared.particleSettings[:]:
-                    shared.particleSettings.append(system.settings)
-
-                    # populate
-                    populate(context, system.settings, system)
+                # populate
+                populate(context, system.settings, system)
 
               # object type
               elif option.objectType in object.type:
-                if system.settings.users == 1:
 
-                  # populate
-                  populate(context, system.settings, system)
-                else:
-
-                  # shared
-                  if system.settings not in shared.particleSettings[:]:
-                    shared.particleSettings.append(system.settings)
-
-                    # populate
-                    populate(context, system.settings, system)
+                # populate
+                populate(context, system.settings, system)
 
         # process
         process(context, storage.batch.particleSettings)
 
         # clear storage
         storage.batch.particleSettings.clear()
-
-        # clear shared
-        shared.particleSettings.clear()
 
       # sensors
       if option.sensors:
@@ -3882,11 +3436,21 @@ def process(context, collection):
     # 'datablock.name', ...
   ]
 
+  # clean duplicates
+  list = []
+  for item in collection[:]:
+    if item[1][1] not in list[:]:
+      list.append(item[1][1])
+    else:
+      collection.remove(item)
+
   # sort
   try:
     collection.sort()
   except:
     pass
+
+
 
   # collection
   for item in collection[:]:

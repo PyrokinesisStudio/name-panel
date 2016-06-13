@@ -31,7 +31,7 @@ bl_info = {
   'author': 'Trentin Frederick (proxe)',
   'version': (1, 6, 2),
   'blender': (2, 67, 0),
-  'location': '3D View → Tool or Property Shelf → Name',
+  'location': '3D View \N{Rightwards Arrow} Tool or Property Shelf \N{Rightwards Arrow} Name',
   'description': 'In panel datablock name stack with batch name tools.',
   'wiki_url': 'https://cgcookiemarkets.com/all-products/name-panel/?view=docs',
   'tracker_url': 'https://github.com/trentinfrederick/name-panel/issues',
@@ -91,7 +91,7 @@ class preferences(AddonPreferences):
     row = layout.row()
 
     # pop ups
-    row.prop(self, 'popups')
+    # row.prop(self, 'popups')
 
     # pop ups
     row.prop(self, 'largePopups')

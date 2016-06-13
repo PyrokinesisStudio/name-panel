@@ -49,8 +49,8 @@ class reset(Operator):
 
   # names
   names = BoolProperty(
-    name = 'Auto Name → Names',
-    description = 'Reset the option values for batch auto name → name settings.',
+    name = 'Auto Name \N{Rightwards Arrow} Names',
+    description = 'Reset the option values for batch auto name \N{Rightwards Arrow} name settings.',
     default = False
   )
 
@@ -131,8 +131,8 @@ class transfer(Operator):
 
   # names
   names = BoolProperty(
-    name = 'Auto Name → Names',
-    description = 'Transfer the option values for the auto name → names.',
+    name = 'Auto Name \N{Rightwards Arrow} Names',
+    description = 'Transfer the option values for the auto name \N{Rightwards Arrow} names.',
     default = True
   )
 

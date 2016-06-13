@@ -1405,40 +1405,11 @@ def Constraint(self, context, layout, datablock, object, bone, panel):
   # scale
   sub.scale_x = 1.6
 
-  try:
-
-    # popups
-    if addon.preferences['popups'] == 1:
-      if object.type in 'ARMATURE' and object.mode in 'POSE':
-
-        # icon
-        op = sub.operator('view3d.name_panel_constraint_settings', text='', icon='CONSTRAINT', emboss=False)
-        op.object = object.name
-        op.bone = bone.name
-        op.target = datablock.name
-
-      else:
-
-        # icon
-        op = sub.operator('view3d.name_panel_constraint_settings', text='', icon='CONSTRAINT', emboss=False)
-        op.object = object.name
-        op.target = datablock.name
-
-    else:
-
-      # icon
-      op = sub.operator('view3d.name_panel_icon', text='', icon='CONSTRAINT', emboss=False)
-      op.owner = object.name if not bone else bone.name
-      op.target = datablock.name
-      op.context = 'CONSTRAINT' if not bone else 'BONE_CONSTRAINT'
-
-  except:
-
-    # icon
-    op = sub.operator('view3d.name_panel_icon', text='', icon='CONSTRAINT', emboss=False)
-    op.owner = object.name if not bone else bone.name
-    op.target = datablock.name
-    op.context = 'CONSTRAINT' if not bone else 'BONE_CONSTRAINT'
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon='CONSTRAINT', emboss=False)
+  op.owner = object.name if not bone else bone.name
+  op.target = datablock.name
+  op.context = 'CONSTRAINT' if not bone else 'BONE_CONSTRAINT'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1486,32 +1457,11 @@ def Modifier(self, context, layout, datablock, object, panel):
   # scale
   sub.scale_x = 1.6
 
-  # popups
-  try:
-
-    # pop ups
-    if addon.preferences['popups'] == 1:
-
-      # icon
-      op = sub.operator('view3d.name_panel_modifier_settings', text='', icon=icon.modifier(datablock), emboss=False)
-      op.object = object.name
-      op.target = datablock.name
-
-    else:
-
-      # icon
-      op = sub.operator('view3d.name_panel_icon', text='', icon=icon.modifier(datablock), emboss=False)
-      op.owner = object.name
-      op.target = datablock.name
-      op.context = 'MODIFIER'
-
-  except:
-
-    # icon
-    op = sub.operator('view3d.name_panel_icon', text='', icon=icon.modifier(datablock), emboss=False)
-    op.owner = object.name
-    op.target = datablock.name
-    op.context = 'MODIFIER'
+  # icon
+  op = sub.operator('view3d.name_panel_icon', text='', icon=icon.modifier(datablock), emboss=False)
+  op.owner = object.name
+  op.target = datablock.name
+  op.context = 'MODIFIER'
 
   # name
   row.prop(datablock, 'name', text='')

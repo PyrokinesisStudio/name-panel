@@ -56,13 +56,6 @@ class preferences(AddonPreferences):
   '''
   bl_idname = __name__
 
-  # popups
-  popups = BoolProperty(
-    name = 'Pop-ups',
-    description = 'Enable settings pop-up for modifiers and constraints. (Experimental!)',
-    default = False
-  )
-
   # large popups
   largePopups = BoolProperty(
     name = 'Large Pop-ups',
@@ -89,9 +82,6 @@ class preferences(AddonPreferences):
 
     # row
     row = layout.row()
-
-    # pop ups
-    # row.prop(self, 'popups')
 
     # pop ups
     row.prop(self, 'largePopups')

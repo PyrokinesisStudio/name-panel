@@ -89,13 +89,9 @@ class name(Operator):
     '''
       Execute the operator.
     '''
-    globalUndo = context.user_preferences.edit.use_global_undo
-    context.user_preferences.edit.use_global_undo = False
 
     # main
     auto.main(context)
-
-    context.user_preferences.edit.use_global_undo = globalUndo
     return {'FINISHED'}
 
   # invoke

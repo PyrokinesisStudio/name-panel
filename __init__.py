@@ -46,6 +46,7 @@ from .scripts import settings as PropertyGroup
 from .scripts.interface import button, icon, menu, name, properties
 from .scripts.interface.operator import auto, batch, copy, icon, settings, text
 from .scripts.interface.operator.preferences import auto, batch, copy
+from .scripts.interface.operator.preferences import name as nameD
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__)
@@ -84,6 +85,9 @@ class preferences(AddonPreferences):
     # row
     row = layout.row(align=True)
     row.scale_y = 1.5
+
+    # name panel
+    row.operator('wm.name_panel_defaults', text='Panel')
 
     # auto name
     row.operator('wm.batch_auto_name_defaults', text='Auto Name')

@@ -30,6 +30,9 @@ class name(PropertyGroup):
     Properties that effect how name panel displays the datablocks within the users current selection.
   '''
 
+  # default
+  default = defaults['name panel']
+
   # owner
   owner = StringProperty(
     name = 'Owner',
@@ -75,49 +78,49 @@ class name(PropertyGroup):
   pinActiveObject = BoolProperty(
     name = 'Pin Active Object',
     description = 'Keeps the active object at the top of the stack.',
-    default = True
+    default = default['pin active object']
   )
 
   # hide search
   hideSearch = BoolProperty(
     name = 'Hide Search',
     description = 'Only display the search field in the name panel when the filters option is toggled on.',
-    default = True
+    default = default['hide search']
   )
 
   # filters
   filters = BoolProperty(
     name = 'Filters',
     description = 'Show options for whether datablock names are displayed.',
-    default = False
+    default = default['filters']
   )
 
   # options
   options = BoolProperty(
     name = 'Options',
     description = 'Show shortcut options next to datablock names.',
-    default = False
+    default = default['options']
   )
 
   # display names
   displayNames = BoolProperty(
     name = 'Display Names',
     description = 'Display additional object names in the name stack.',
-    default = False
+    default = default['display names']
   )
 
   # search
   search = StringProperty(
     name = 'Search',
     description = 'Search filter.',
-    default = ''
+    default = default['search']
   )
 
   # regex
   regex = BoolProperty(
     name = 'Regular Expressions',
     description = 'Enable regular expressions.',
-    default = False
+    default = default['regex']
   )
 
   # mode
@@ -128,105 +131,105 @@ class name(PropertyGroup):
       ('SELECTED', 'Selected', 'Display selected objects.'),
       ('LAYERS', 'Layers', 'Display objects in active scene layers.')
     ],
-    default = 'SELECTED'
+    default = default['mode']
   )
 
   # groups
   groups = BoolProperty(
     name = 'Groups',
     description = 'Display group name.',
-    default = False
+    default = default['groups']
   )
 
   # action
   action = BoolProperty(
     name = 'Action',
     description = 'Display action name.',
-    default = False
+    default = default['action']
   )
 
   # grease pencil
   greasePencil = BoolProperty(
     name = 'Grease Pencil',
     description = 'Display grease pencil and layer names',
-    default = False
+    default = default['grease pencil']
   )
 
   # constraints
   constraints = BoolProperty(
     name = 'Constraints',
     description = 'Display constraint names.',
-    default = False
+    default = default['constraints']
   )
 
   # modifiers
   modifiers = BoolProperty(
     name = 'Modifiers',
     description = 'Display modifier names.',
-    default = False
+    default = default['modifiers']
   )
 
   # bone groups
   boneGroups = BoolProperty(
     name = 'Bone Groups',
     description = 'Display bone group names.',
-    default = False
+    default = default['bone groups']
   )
 
   # bone constraints
   boneConstraints = BoolProperty(
     name = 'Bone Constraints',
     description = 'Display bone constraint names.',
-    default = False
+    default = default['bone constraints']
   )
 
   # vertex groups
   vertexGroups = BoolProperty(
     name = 'Vertex Groups',
     description = 'Display vertex group names.',
-    default = False
+    default = default['vertex groups']
   )
 
   # shapekeys
   shapekeys = BoolProperty(
     name = 'Shapekeys',
     description = 'Display shapekey names.',
-    default = False
+    default = default['shapekeys']
   )
 
   # uvs
   uvs = BoolProperty(
     name = 'UV\'s',
     description = 'Display uv names.',
-    default = False
+    default = default['uvs']
   )
 
   # vertex color
   vertexColors = BoolProperty(
     name = 'Vertex Colors',
     description = 'Display vertex color names.',
-    default = False
+    default = default['vertex color']
   )
 
   # materials
   materials = BoolProperty(
     name = 'Materials',
     description = 'Display material names.',
-    default = False
+    default = default['materials']
   )
 
   # textures
   textures = BoolProperty(
     name = 'Textures.',
     description = 'Display material texture names.',
-    default = False
+    default = default['textures']
   )
 
   # particle systems
   particleSystems = BoolProperty(
     name = 'Particle Systems',
     description = 'Display the particle system and setting names. (Modifier filter must be active)',
-    default = False
+    default = default['particle systems']
   )
 
   # bone mode
@@ -237,14 +240,14 @@ class name(PropertyGroup):
       ('SELECTED', 'Selected', 'Display the selected bones.'),
       ('LAYERS', 'Layers', 'Display bones in active armature layers.',)
     ],
-    default = 'SELECTED'
+    default = default['bone mode']
   )
 
   # display bones
   displayBones = BoolProperty(
     name = 'Display Bones',
     description = 'Display additional bone names.',
-    default = False
+    default = default['display bones']
   )
 
 # properties

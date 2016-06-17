@@ -227,6 +227,33 @@ class batch:
 
   # defaults (never used directly)
   defaults = {
+    'name panel': {
+      'pin active object': True,
+      'hide search': True,
+      'filters': False,
+      'options': False,
+      'display names': False,
+      'search': '',
+      'regex': False,
+      'mode': 'SELECTED',
+      'groups': False,
+      'action': False,
+      'grease pencil': False,
+      'constraints': False,
+      'modifiers': False,
+      'bone groups': False,
+      'bone constraints': False,
+      'vertex groups': False,
+      'shapekeys': False,
+      'uvs': False,
+      'vertex color': False,
+      'materials': False,
+      'textures': False,
+      'particle systems': False,
+      'bone mode': 'SELECTED',
+      'display bones': False,
+    },
+
     'auto name': {
       'mode': 'SELECTED',
       'objects': False,

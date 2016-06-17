@@ -234,8 +234,6 @@ class name(Operator):
       # input fields
       column.separator()
       column.separator()
-      column.separator()
-      column.separator()
 
     # custom name
     column = layout.column(align=True)

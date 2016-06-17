@@ -20,6 +20,7 @@
 # imports
 import bpy
 from .. import storage
+from ..defaults import defaults
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
@@ -112,7 +113,7 @@ def reset(context, panel, auto, names, name, copy):
   if auto:
 
     # default
-    default = storage.batch.defaults['auto name']
+    default = defaults['auto name']
 
     # auto name option
     batchAutoNameOption = context.scene.BatchAutoName
@@ -148,7 +149,7 @@ def reset(context, panel, auto, names, name, copy):
   if names:
 
     # default
-    default = storage.batch.defaults['auto name']['object names']
+    default = defaults['auto name']['object names']
 
     # object name
     objectName = context.scene.BatchAutoName_ObjectNames
@@ -190,7 +191,7 @@ def reset(context, panel, auto, names, name, copy):
     objectName.lamp = default['lamp']
 
     # default
-    default = storage.batch.defaults['auto name']['constraint names']
+    default = defaults['auto name']['constraint names']
 
     # constraint name
     constraintName = context.scene.BatchAutoName_ConstraintNames
@@ -280,7 +281,7 @@ def reset(context, panel, auto, names, name, copy):
     constraintName.shrinkwrap = default['shrinkwrap']
 
     # default
-    default = storage.batch.defaults['auto name']['modifier names']
+    default = defaults['auto name']['modifier names']
 
     # modifier name
     modifierName = context.scene.BatchAutoName_ModifierNames
@@ -436,7 +437,7 @@ def reset(context, panel, auto, names, name, copy):
     modifierName.softBody = default['soft body']
 
     # default
-    default = storage.batch.defaults['auto name']['object data names']
+    default = defaults['auto name']['object data names']
 
     # object data name
     objectDataName = context.scene.BatchAutoName_ObjectDataNames
@@ -478,7 +479,7 @@ def reset(context, panel, auto, names, name, copy):
   if name:
 
     # default
-    default = storage.batch.defaults['batch name']
+    default = defaults['batch name']
 
     # name option
     batchNameOption = context.scene.BatchName
@@ -733,7 +734,7 @@ def reset(context, panel, auto, names, name, copy):
   if copy:
 
     # default
-    default = storage.batch.defaults['copy name']
+    default = defaults['copy name']
 
     # copy option
     batchCopyOption = context.scene.BatchCopyName

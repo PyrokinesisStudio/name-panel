@@ -34,7 +34,7 @@ class name(Operator):
   bl_idname = 'wm.batch_auto_name_defaults'
   bl_label = 'Auto Name Defaults'
   bl_description = 'Adjust the default settings for the auto name operator.'
-  bl_options = {'REGISTER', 'UNDO'}
+  bl_options = {'INTERNAL'}
 
   # check
   def check(self, context):
@@ -102,7 +102,7 @@ class name(Operator):
     '''
 
     # main
-    # auto.main(context)
+    auto.main(context)
 
     # transfer settings
     settings.transfer(context, False, True, True, False, False)
@@ -129,7 +129,7 @@ class objects(Operator):
   bl_idname = 'wm.batch_auto_name_object_name_defaults'
   bl_label = 'Object Names:'
   bl_description = 'Change the names used for objects.'
-  bl_options = {'UNDO'}
+  bl_options = {'INTERNAL'}
 
   # draw
   def draw(self, context):
@@ -219,7 +219,8 @@ class objects(Operator):
     '''
       Execute the operator.
     '''
-    # do nothing
+    # objects
+    auto.objects(context)
     return {'FINISHED'}
 
   # invoke
@@ -243,7 +244,7 @@ class constraints(Operator):
   bl_idname = 'wm.batch_auto_name_constraint_name_defaults'
   bl_label = 'Constraint Names:'
   bl_description = 'Change the names used for constraints.'
-  bl_options = {'UNDO'}
+  bl_options = {'INTERNAL'}
 
   # draw
   def draw(self, context):
@@ -419,7 +420,8 @@ class constraints(Operator):
     '''
       Execute the operator.
     '''
-    # do nothing
+    # constraints
+    auto.constraints(context)
     return {'FINISHED'}
 
   # invoke
@@ -443,7 +445,7 @@ class modifiers(Operator):
   bl_idname = 'wm.batch_auto_name_modifier_name_defaults'
   bl_label = 'Modifier Names:'
   bl_description = 'Change the names used for modifiers.'
-  bl_options = {'UNDO'}
+  bl_options = {'INTERNAL'}
 
   # draw
   def draw(self, context):
@@ -729,7 +731,8 @@ class modifiers(Operator):
     '''
       Execute the operator.
     '''
-    # do nothing
+    # modifiers
+    auto.modifiers(context)
     return {'FINISHED'}
 
   # invoke
@@ -753,7 +756,7 @@ class objectData(Operator):
   bl_idname = 'wm.batch_auto_name_object_data_name_defaults'
   bl_label = 'Object Data Names:'
   bl_description = 'Change the names used for objects data.'
-  bl_options = {'UNDO'}
+  bl_options = {'INTERNAL'}
 
   # draw
   def draw(self, context):
@@ -837,7 +840,8 @@ class objectData(Operator):
     '''
       Execute the operator.
     '''
-    # do nothing
+    # object data
+    auto.objectData
     return {'FINISHED'}
 
   # invoke

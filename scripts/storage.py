@@ -225,6 +225,7 @@ class batch:
       ('TIP_REMOVER', 'Tip Remover', '', 'MODIFIER', 23)
     ]
 
+  # defaults (never used directly)
   defaults = {
     'auto name': {
       'mode': 'SELECTED',

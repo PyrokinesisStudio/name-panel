@@ -45,7 +45,7 @@ from bpy.props import *
 from .scripts import settings as PropertyGroup
 from .scripts.interface import button, icon, menu, name, properties
 from .scripts.interface.operator import auto, batch, copy, icon, settings, text
-from .scripts.interface.operator.preferences import auto as autoDefaults
+from .scripts.interface.operator.preferences import auto, batch, copy
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__)
@@ -89,13 +89,15 @@ class preferences(AddonPreferences):
     row.operator('wm.batch_auto_name_defaults', text='Auto Name')
 
     # batch name
-    row.operator('wm.url_open', text='Batch Name')
+    op = row.operator('wm.batch_name_defaults', text='Batch Name')
+    op.quickBatch = False
 
     # batch name
-    row.operator('wm.url_open', text='Quick Batch')
+    op = row.operator('wm.batch_name_defaults', text='Quick Batch')
+    op.quickBatch = True
 
     # batch name copy
-    row.operator('wm.url_open', text='Batch Name Copy')
+    row.operator('wm.batch_copy_name_defaults', text='Batch Name Copy')
 
     # row
     row = layout.row()

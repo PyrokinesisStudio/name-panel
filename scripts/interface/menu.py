@@ -47,13 +47,6 @@ class specials(Menu):
 
     # batch copy
     layout.operator('view3d.batch_copy_name', icon='COPYDOWN')
-    layout.separator()
-
-    # batch reset
-    layout.operator('wm.reset_name_panel_settings', icon='FILE_REFRESH')
-
-    # batch transfer
-    layout.operator('wm.transfer_name_panel_settings', icon='RECOVER_AUTO')
 
     # separator
     layout.separator()

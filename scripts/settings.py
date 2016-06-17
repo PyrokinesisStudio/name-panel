@@ -22,6 +22,7 @@ import bpy
 from bpy.types import PropertyGroup
 from bpy.props import *
 from . import storage
+from .defaults import defaults
 
 # name
 class name(PropertyGroup):
@@ -283,7 +284,7 @@ class batch:
       '''
 
       # default
-      default = storage.batch.defaults['auto name']
+      default = defaults['auto name']
 
       # mode
       mode = EnumProperty(
@@ -362,7 +363,7 @@ class batch:
         Properties that effect the names used when auto naming objects.
       '''
       # default
-      default = storage.batch.defaults['auto name']['object names']
+      default = defaults['auto name']['object names']
 
       # prefix
       prefix = BoolProperty(
@@ -455,7 +456,7 @@ class batch:
       '''
 
       # default
-      default = storage.batch.defaults['auto name']['constraint names']
+      default = defaults['auto name']['constraint names']
 
       # prefix
       prefix = BoolProperty(
@@ -660,7 +661,7 @@ class batch:
       '''
 
       # default
-      default = storage.batch.defaults['auto name']['modifier names']
+      default = defaults['auto name']['modifier names']
 
       # prefix
       prefix = BoolProperty(
@@ -1019,7 +1020,7 @@ class batch:
       '''
 
       # default
-      default = storage.batch.defaults['auto name']['object data names']
+      default = defaults['auto name']['object data names']
 
       # prefix
       prefix = BoolProperty(
@@ -1077,13 +1078,6 @@ class batch:
         default = default['lattice']
       )
 
-      # empty
-      empty = StringProperty(
-        name = 'Empty',
-        description = 'Name used for empty objects.',
-        default = default['empty']
-      )
-
       # speaker
       speaker = StringProperty(
         name = 'Speaker',
@@ -1112,7 +1106,7 @@ class batch:
     '''
 
     # default
-    default = storage.batch.defaults['batch name']
+    default = defaults['batch name']
 
     # mode
     mode = EnumProperty(
@@ -1711,7 +1705,7 @@ class batch:
     '''
 
     # default
-    default = storage.batch.defaults['copy name']
+    default = defaults['copy name']
 
     # mode
     mode = EnumProperty(

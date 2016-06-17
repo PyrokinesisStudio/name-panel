@@ -21,7 +21,7 @@
 import bpy
 from bpy.props import BoolProperty
 from bpy.types import Operator
-from ...function import batch
+from ...function import batch, settings
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
@@ -43,6 +43,10 @@ class name(Operator):
     default = False
   )
 
+  # check
+  def check(self, context):
+    return True
+
   # draw
   def draw(self, context):
     '''
@@ -55,8 +59,6 @@ class name(Operator):
     # option
     option = context.scene.BatchName
 
-    # filter
-
     # column
     column = layout.column(align=True)
 
@@ -64,13 +66,21 @@ class name(Operator):
     if not self.quickBatch:
 
       # label
-      column.label(text='Filter:')
+      column.label(text='Targets:')
 
       # row
       row = column.row(align=True)
 
       # batch type
       row.prop(option, 'mode', expand=True)
+
+      # reset
+      op = row.operator('wm.reset_name_panel_settings', text='', icon='LOAD_FACTORY')
+      op.panel = False
+      op.auto = False
+      op.names = False
+      op.name = True
+      op.copy = False
 
       # column
       column = layout.column(align=True)
@@ -180,32 +190,46 @@ class name(Operator):
       # label
       column.label(text='Ignore:')
 
+      # split
+      split = layout.split(align=True, percentage=0.9)
+
       # column
-      column = layout.column(align=True)
+      column = split.column(align=True)
 
-      split = column.split(align=True)
+      # row
+      row = column.row(align=True)
+      row.scale_x = 5
+      row.prop(option, 'ignoreObject', text='', icon='OBJECT_DATA')
+      row.prop(option, 'ignoreAction', text='', icon='ACTION')
+      row.prop(option, 'ignoreGreasePencil', text='', icon='GREASEPENCIL')
+      row.prop(option, 'ignoreGroup', text='', icon='GROUP')
+      row.prop(option, 'ignoreConstraint', text='', icon='CONSTRAINT')
+      row.prop(option, 'ignoreModifier', text='', icon='MODIFIER')
+      row.prop(option, 'ignoreBone', text='', icon='BONE_DATA')
+      row.prop(option, 'ignoreBoneGroup', text='', icon='GROUP_BONE')
+      row.prop(option, 'ignoreBoneConstraint', text='', icon='CONSTRAINT_BONE')
 
-      split.prop(option, 'ignoreObject', text='', icon='OBJECT_DATA')
-      split.prop(option, 'ignoreAction', text='', icon='ACTION')
-      split.prop(option, 'ignoreGreasePencil', text='', icon='GREASEPENCIL')
-      split.prop(option, 'ignoreGroup', text='', icon='GROUP')
-      split.prop(option, 'ignoreConstraint', text='', icon='CONSTRAINT')
-      split.prop(option, 'ignoreModifier', text='', icon='MODIFIER')
-      split.prop(option, 'ignoreBone', text='', icon='BONE_DATA')
-      split.prop(option, 'ignoreBoneGroup', text='', icon='GROUP_BONE')
-      split.prop(option, 'ignoreBoneConstraint', text='', icon='CONSTRAINT_BONE')
+      # row
+      row = column.row(align=True)
+      row.scale_x = 5
+      row.prop(option, 'ignoreObjectData', text='', icon='MESH_DATA')
+      row.prop(option, 'ignoreVertexGroup', text='', icon='GROUP_VERTEX')
+      row.prop(option, 'ignoreShapekey', text='', icon='SHAPEKEY_DATA')
+      row.prop(option, 'ignoreUV', text='', icon='GROUP_UVS')
+      row.prop(option, 'ignoreVertexColor', text='', icon='GROUP_VCOL')
+      row.prop(option, 'ignoreMaterial', text='', icon='MATERIAL')
+      row.prop(option, 'ignoreTexture', text='', icon='TEXTURE')
+      row.prop(option, 'ignoreParticleSystem', text='', icon='PARTICLES')
+      row.prop(option, 'ignoreParticleSetting', text='', icon='MOD_PARTICLES')
 
-      split = column.split(align=True)
-      split.prop(option, 'ignoreObjectData', text='', icon='MESH_DATA')
-      split.prop(option, 'ignoreVertexGroup', text='', icon='GROUP_VERTEX')
-      split.prop(option, 'ignoreShapekey', text='', icon='SHAPEKEY_DATA')
-      split.prop(option, 'ignoreUV', text='', icon='GROUP_UVS')
-      split.prop(option, 'ignoreVertexColor', text='', icon='GROUP_VCOL')
-      split.prop(option, 'ignoreMaterial', text='', icon='MATERIAL')
-      split.prop(option, 'ignoreTexture', text='', icon='TEXTURE')
-      split.prop(option, 'ignoreParticleSystem', text='', icon='PARTICLES')
-      split.prop(option, 'ignoreParticleSetting', text='', icon='MOD_PARTICLES')
-
+      column = split.column(align=True)
+      column.scale_y = 2
+      op = column.operator('wm.reset_name_panel_settings', text='', icon='LOAD_FACTORY')
+      op.panel = False
+      op.auto = False
+      op.names = False
+      op.name = True
+      op.copy = False
 
       # input fields
       column.separator()
@@ -284,6 +308,9 @@ class name(Operator):
 
     # main
     batch.main(context, self.quickBatch)
+
+    # transfer settings
+    settings.transfer(context, False, False, False, True, False)
     return {'FINISHED'}
 
   # invoke
@@ -292,14 +319,9 @@ class name(Operator):
       Invoke the operator panel/menu, control its width.
     '''
 
-    try:
-
-      # size
-      size = 320 if addon.preferences['largePopups'] == 0 else 450
-    except:
-
-      # size
-      size = 320
+    # size
+    try: size = 320 if addon.preferences['largePopups'] == 0 else 450
+    except: size = 320
 
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

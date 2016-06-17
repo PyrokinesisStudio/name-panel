@@ -21,7 +21,7 @@
 #
 #  Author: Trentin Frederick (a.k.a, proxe)
 #  Contact: trentin.shaun.frederick@gmail.com
-#  Version: 1.6.2
+#  Version: 1.6.3
 #
 # ##### END INFO BLOCK #####
 
@@ -29,7 +29,7 @@
 bl_info = {
   'name': 'Name Panel',
   'author': 'Trentin Frederick (proxe)',
-  'version': (1, 6, 2),
+  'version': (1, 6, 3),
   'blender': (2, 67, 0),
   'location': '3D View \N{Rightwards Arrow} Tool or Property Shelf \N{Rightwards Arrow} Name',
   'description': 'In panel datablock name stack with batch name tools.',
@@ -45,6 +45,7 @@ from bpy.props import *
 from .scripts import settings as PropertyGroup
 from .scripts.interface import button, icon, menu, name, properties
 from .scripts.interface.operator import auto, batch, copy, icon, settings, text
+from .scripts.interface.operator.preferences import auto as autoDefaults
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__)
@@ -81,6 +82,22 @@ class preferences(AddonPreferences):
     layout = self.layout
 
     # row
+    row = layout.row(align=True)
+    row.scale_y = 1.5
+
+    # auto name
+    row.operator('wm.batch_auto_name_defaults', text='Auto Name')
+
+    # batch name
+    row.operator('wm.url_open', text='Batch Name')
+
+    # batch name
+    row.operator('wm.url_open', text='Quick Batch')
+
+    # batch name copy
+    row.operator('wm.url_open', text='Batch Name Copy')
+
+    # row
     row = layout.row()
 
     # pop ups
@@ -91,6 +108,8 @@ class preferences(AddonPreferences):
 
     # row
     row = layout.row()
+
+    # location
     row.prop(self, 'location', expand=True)
 
     # label

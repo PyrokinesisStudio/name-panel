@@ -19,6 +19,10 @@
 
 # imports
 import bpy
+from .. import storage
+
+# addon
+addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
 
 # reset
 def reset(context, panel, auto, names, name, copy):
@@ -107,613 +111,659 @@ def reset(context, panel, auto, names, name, copy):
   # auto
   if auto:
 
+    # default
+    default = storage.batch.defaults['auto name']
+
     # auto name option
     batchAutoNameOption = context.scene.BatchAutoName
 
-    # type
-    batchAutoNameOption.batchType = 'SELECTED'
+    # mode
+    batchAutoNameOption.mode = default['mode']
 
     # objects
-    batchAutoNameOption.objects = False
+    batchAutoNameOption.objects = default['objects']
 
     # constraints
-    batchAutoNameOption.constraints = False
+    batchAutoNameOption.constraints = default['constraints']
 
     # modifiers
-    batchAutoNameOption.modifiers = False
+    batchAutoNameOption.modifiers = default['modifiers']
 
-    # objectData
-    batchAutoNameOption.objectData = False
+    # object data
+    batchAutoNameOption.objectData = default['object data']
 
-    # bone Constraints
-    batchAutoNameOption.boneConstraints = False
+    # bone constraints
+    batchAutoNameOption.boneConstraints = default['bone constraints']
 
     # object type
-    batchAutoNameOption.objectType = 'ALL'
+    batchAutoNameOption.objectType = default['object type']
 
     # constraint type
-    batchAutoNameOption.constraintType = 'ALL'
+    batchAutoNameOption.constraintType = default['constraint type']
 
     # modifier type
-    batchAutoNameOption.modifierType = 'ALL'
+    batchAutoNameOption.modifierType = default['modifier type']
 
   # names
   if names:
+
+    # default
+    default = storage.batch.defaults['auto name']['object names']
 
     # object name
     objectName = context.scene.BatchAutoName_ObjectNames
 
     # prefix
-    objectName.prefix = False
+    objectName.prefix = default['prefix']
 
     # mesh
-    objectName.mesh = 'Mesh'
+    objectName.mesh = default['mesh']
 
     # curve
-    objectName.curve = 'Curve'
+    objectName.curve = default['curve']
 
     # surface
-    objectName.surface = 'Surface'
+    objectName.surface = default['surface']
 
     # meta
-    objectName.meta = 'Meta'
+    objectName.meta = default['meta']
 
     # font
-    objectName.font = 'Text'
+    objectName.font = default['font']
 
     # armature
-    objectName.armature = 'Armature'
+    objectName.armature = default['armature']
 
     # lattice
-    objectName.lattice = 'Lattice'
+    objectName.lattice = default['lattice']
 
     # empty
-    objectName.empty = 'Empty'
+    objectName.empty = default['empty']
 
     # speaker
-    objectName.speaker = 'Speaker'
+    objectName.speaker = default['speaker']
 
     # camera
-    objectName.camera = 'Camera'
+    objectName.camera = default['camera']
 
     # lamp
-    objectName.lamp = 'Lamp'
+    objectName.lamp = default['lamp']
+
+    # default
+    default = storage.batch.defaults['auto name']['constraint names']
 
     # constraint name
     constraintName = context.scene.BatchAutoName_ConstraintNames
 
     # prefix
-    constraintName.prefix = False
+    constraintName.prefix = default['prefix']
 
     # camera solver
-    constraintName.cameraSolver = 'Camera Solver'
+    constraintName.cameraSolver = default['camera solver']
 
     # follow track
-    constraintName.followTrack = 'Follow Track'
+    constraintName.followTrack = default['follow track']
 
     # object solver
-    constraintName.objectSolver = 'Object Solver'
+    constraintName.objectSolver = default['object solver']
 
     # copy location
-    constraintName.copyLocation = 'Copy Location'
+    constraintName.copyLocation = default['copy location']
 
     # copy rotation
-    constraintName.copyRotation = 'Copy Rotation'
+    constraintName.copyRotation = default['copy rotation']
 
     # copy scale
-    constraintName.copyScale = 'Copy Scale'
+    constraintName.copyScale = default['copy scale']
 
     # copy transforms
-    constraintName.copyTransforms = 'Copy Transforms'
+    constraintName.copyTransforms = default['copy transforms']
 
     # limit distance
-    constraintName.limitDistance = 'Limit Distance'
+    constraintName.limitDistance = default['limit distance']
 
     # limit location
-    constraintName.limitLocation = 'Limit Location'
+    constraintName.limitLocation = default['limit location']
 
     # limit rotation
-    constraintName.limitRotation = 'Limit Rotation'
+    constraintName.limitRotation = default['limit rotation']
 
     # limit scale
-    constraintName.limitScale = 'Limit Scale'
+    constraintName.limitScale = default['limit scale']
 
     # maintain volume
-    constraintName.maintainVolume = 'Maintain Volume'
+    constraintName.maintainVolume = default['maintain volume']
 
     # transform
-    constraintName.transform = 'Transform'
+    constraintName.transform = default['transform']
 
     # clamp to
-    constraintName.clampTo = 'Clamp To'
+    constraintName.clampTo = default['clamp to']
 
     # damped track
-    constraintName.dampedTrack = 'Damped Track'
+    constraintName.dampedTrack = default['damped track']
 
     # inverse kinematics
-    constraintName.inverseKinematics = 'Inverse Kinematics'
+    constraintName.inverseKinematics = default['inverse kinematics']
 
     # locked track
-    constraintName.lockedTrack = 'Locked Track'
+    constraintName.lockedTrack = default['locked track']
 
     # spline inverse kinematics
-    constraintName.splineInverseKinematics = 'Spline Inverse Kinematics'
+    constraintName.splineInverseKinematics = default['spline inverse kinematics']
 
     # stretch to
-    constraintName.stretchTo = 'Stretch To'
+    constraintName.stretchTo = default['stretch to']
 
     # track to
-    constraintName.trackTo = 'Track To'
+    constraintName.trackTo = default['track to']
 
     # action
-    constraintName.action = 'Action'
+    constraintName.action = default['action']
 
     # child of
-    constraintName.childOf = 'Child Of'
+    constraintName.childOf = default['child of']
 
     # floor
-    constraintName.floor = 'Floor'
+    constraintName.floor = default['floor']
 
     # follow path
-    constraintName.followPath = 'Follow Path'
+    constraintName.followPath = default['follow path']
 
     # pivot
-    constraintName.pivot = 'Pivot'
+    constraintName.pivot = default['pivot']
 
     # rigid body joint
-    constraintName.rigidBodyJoint = 'Rigid Body Joint'
+    constraintName.rigidBodyJoint = default['rigid body joint']
 
     # shrinkwrap
-    constraintName.shrinkwrap = 'Shrinkwrap'
+    constraintName.shrinkwrap = default['shrinkwrap']
+
+    # default
+    default = storage.batch.defaults['auto name']['modifier names']
 
     # modifier name
     modifierName = context.scene.BatchAutoName_ModifierNames
 
     # prefix
-    modifierName.prefix = False
+    modifierName.prefix = default['prefix']
 
     # data transfer
-    modifierName.dataTransfer = 'Data Transfer'
+    modifierName.dataTransfer = default['data transfer']
 
     # mesh cache
-    modifierName.meshCache = 'Mesh Cache'
+    modifierName.meshCache = default['mesh cache']
 
     # normal edit
-    modifierName.normalEdit = 'Normal Edit'
+    modifierName.normalEdit = default['normal edit']
 
     # uv project
-    modifierName.uvProject = 'UV Project'
+    modifierName.uvProject = default['uv project']
 
     # uv warp
-    modifierName.uvWarp = 'UV Warp'
+    modifierName.uvWarp = default['uv warp']
 
     # vertex weight edit
-    modifierName.vertexWeightEdit = 'Vertex Weight Edit'
+    modifierName.vertexWeightEdit = default['vertex weight edit']
 
     # vertex weight mix
-    modifierName.vertexWeightMix = 'Vertex Weight Mix'
+    modifierName.vertexWeightMix = default['vertex weight mix']
 
     # vertex weight proximity
-    modifierName.vertexWeightProximity = 'Vertex Weight Proximity'
+    modifierName.vertexWeightProximity = default['vertex weight proximity']
 
     # array
-    modifierName.array = 'Array'
+    modifierName.array = default['array']
 
     # bevel
-    modifierName.bevel = 'Bevel'
+    modifierName.bevel = default['bevel']
 
     # boolean
-    modifierName.boolean = 'Boolean'
+    modifierName.boolean = default['boolean']
 
     # build
-    modifierName.build = 'Build'
+    modifierName.build = default['build']
 
     # decimate
-    modifierName.decimate = 'Decimate'
+    modifierName.decimate = default['decimate']
 
     # edge split
-    modifierName.edgeSplit = 'Edge Split'
+    modifierName.edgeSplit = default['edge split']
 
     # mask
-    modifierName.mask = 'Mask'
+    modifierName.mask = default['mask']
 
     # mirror
-    modifierName.mirror = 'Mirror'
+    modifierName.mirror = default['mirror']
 
     # multiresolution
-    modifierName.multiresolution = 'Multiresolution'
+    modifierName.multiresolution = default['multiresolution']
 
     # remesh
-    modifierName.remesh = 'Remesh'
+    modifierName.remesh = default['remesh']
 
     # screw
-    modifierName.screw = 'Screw'
+    modifierName.screw = default['screw']
 
     # skin
-    modifierName.skin = 'Skin'
+    modifierName.skin = default['skin']
 
     # solidify
-    modifierName.solidify = 'Solidify'
+    modifierName.solidify = default['solidify']
 
     # subdivision surface
-    modifierName.subdivisionSurface = 'Subdivision Surface'
+    modifierName.subdivisionSurface = default['subdivision surface']
 
     # triangulate
-    modifierName.triangulate = 'Triangulate'
+    modifierName.triangulate = default['triangulate']
 
     # wireframe
-    modifierName.wireframe = 'Wireframe'
+    modifierName.wireframe = default['wireframe']
 
     # armature
-    modifierName.armature = 'Armature'
+    modifierName.armature = default['armature']
 
     # cast
-    modifierName.cast = 'Cast'
+    modifierName.cast = default['cast']
 
     # corrective smooth
-    modifierName.correctiveSmooth = 'Corrective Smooth'
+    modifierName.correctiveSmooth = default['corrective smooth']
 
     # curve
-    modifierName.curve = 'Curve'
+    modifierName.curve = default['curve']
 
     # displace
-    modifierName.displace = 'Displace'
+    modifierName.displace = default['displace']
 
     # hook
-    modifierName.hook = 'Hook'
+    modifierName.hook = default['hook']
 
     # laplacian smooth
-    modifierName.laplacianSmooth = 'Laplacian Smooth'
+    modifierName.laplacianSmooth = default['laplacian smooth']
 
     # laplacian deform
-    modifierName.laplacianDeform = 'Laplacian Deform'
+    modifierName.laplacianDeform = default['laplacian deform']
 
     # lattice
-    modifierName.lattice = 'Lattice'
+    modifierName.lattice = default['lattice']
 
     # mesh deform
-    modifierName.meshDeform = 'Mesh Deform'
+    modifierName.meshDeform = default['mesh deform']
 
     # shrinkwrap
-    modifierName.shrinkwrap = 'Shrinkwrap'
+    modifierName.shrinkwrap = default['shrinkwrap']
 
     # simple deform
-    modifierName.simpleDeform = 'Simple Deform'
+    modifierName.simpleDeform = default['simple deform']
 
     # smooth
-    modifierName.smooth = 'Smooth'
+    modifierName.smooth = default['smooth']
 
     # warp
-    modifierName.warp = 'Warp'
+    modifierName.warp = default['warp']
 
     # wave
-    modifierName.wave = 'Wave'
+    modifierName.wave = default['wave']
 
     # cloth
-    modifierName.cloth = 'Cloth'
+    modifierName.cloth = default['cloth']
 
     # collision
-    modifierName.collision = 'Collision'
+    modifierName.collision = default['collision']
 
     # dynamic paint
-    modifierName.dynamicPaint = 'Dynamic Paint'
+    modifierName.dynamicPaint = default['dynamic paint']
 
     # explode
-    modifierName.explode = 'Explode'
+    modifierName.explode = default['explode']
 
     # fluid simulation
-    modifierName.fluidSimulation = 'Fluid Simulation'
+    modifierName.fluidSimulation = default['fluid simulation']
 
     # ocean
-    modifierName.ocean = 'Ocean'
+    modifierName.ocean = default['ocean']
 
     # particle instance
-    modifierName.particleInstance = 'Particle Instance'
+    modifierName.particleInstance = default['particle instance']
 
     # particle system
-    modifierName.particleSystem = 'Particle System'
+    modifierName.particleSystem = default['particle system']
 
     # smoke
-    modifierName.smoke = 'Smoke'
+    modifierName.smoke = default['smoke']
 
     # soft body
-    modifierName.softBody = 'Soft Body'
+    modifierName.softBody = default['soft body']
 
-    # object data names
-
-    # mesh
-    modifierName.mesh = 'Mesh'
-
-    # curve
-    modifierName.curve = 'Curve'
-
-    # surface
-    modifierName.surface = 'Surface'
-
-    # meta
-    modifierName.meta = 'Meta'
-
-    # font
-    modifierName.font = 'Text'
-
-    # armature
-    modifierName.armature = 'Armature'
-
-    # lattice
-    modifierName.lattice = 'Lattice'
-
-    # empty
-    modifierName.empty = 'Empty'
-
-    # speaker
-    modifierName.speaker = 'Speaker'
-
-    # camera
-    modifierName.camera = 'Camera'
-
-    # lamp
-    modifierName.lamp = 'Lamp'
+    # default
+    default = storage.batch.defaults['auto name']['object data names']
 
     # object data name
     objectDataName = context.scene.BatchAutoName_ObjectDataNames
 
     # prefix
-    objectDataName.prefix = False
+    objectDataName.prefix = default['prefix']
 
     # mesh
-    objectDataName.mesh = 'Mesh'
+    objectDataName.mesh = default['mesh']
 
     # curve
-    objectDataName.curve = 'Curve'
+    objectDataName.curve = default['curve']
 
     # surface
-    objectDataName.surface = 'Surface'
+    objectDataName.surface = default['surface']
 
     # meta
-    objectDataName.meta = 'Meta'
+    objectDataName.meta = default['meta']
 
     # font
-    objectDataName.font = 'Text'
+    objectDataName.font = default['font']
 
     # armature
-    objectDataName.armature = 'Armature'
+    objectDataName.armature = default['armature']
 
     # lattice
-    objectDataName.lattice = 'Lattice'
+    objectDataName.lattice = default['lattice']
 
     # speaker
-    objectDataName.speaker = 'Speaker'
+    objectDataName.speaker = default['speaker']
 
     # camera
-    objectDataName.camera = 'Camera'
+    objectDataName.camera = default['camera']
 
     # lamp
-    objectDataName.lamp = 'Lamp'
+    objectDataName.lamp = default['lamp']
 
   # name
   if name:
 
+    # default
+    default = storage.batch.defaults['batch name']
+
     # name option
     batchNameOption = context.scene.BatchName
 
-    # type
-    batchNameOption.batchType = 'SELECTED'
+    # mode
+    batchNameOption.mode = default['mode']
 
     # actions
-    batchNameOption.actions = False
+    batchNameOption.actions = default['actions']
 
     # action groups
-    batchNameOption.actionGroups = False
+    batchNameOption.actionGroups = default['action groups']
 
     # grease pencil
-    batchNameOption.greasePencil = False
+    batchNameOption.greasePencil = default['grease pencil']
 
     # pencil layers
-    batchNameOption.pencilLayers = False
+    batchNameOption.pencilLayers = default['pencil layers']
 
     # objects
-    batchNameOption.objects = False
+    batchNameOption.objects = default['objects']
 
     # groups
-    batchNameOption.groups = False
+    batchNameOption.groups = default['groups']
 
     # constraints
-    batchNameOption.constraints = False
+    batchNameOption.constraints = default['constraints']
 
     # modifiers
-    batchNameOption.modifiers = False
+    batchNameOption.modifiers = default['modifiers']
 
     # object data
-    batchNameOption.objectData = False
+    batchNameOption.objectData = default['object data']
 
     # bone groups
-    batchNameOption.boneGroups = False
+    batchNameOption.boneGroups = default['bone groups']
 
     # bones
-    batchNameOption.bones = False
+    batchNameOption.bones = default['bones']
 
     # bone constraints
-    batchNameOption.boneConstraints = False
+    batchNameOption.boneConstraints = default['bone constraints']
 
     # vertex groups
-    batchNameOption.vertexGroups = False
+    batchNameOption.vertexGroups = default['vertex groups']
 
     # shapekeys
-    batchNameOption.shapekeys = False
+    batchNameOption.shapekeys = default['shapekeys']
 
     # uvs
-    batchNameOption.uvs = False
+    batchNameOption.uvs = default['uvs']
 
     # vertex colors
-    batchNameOption.vertexColors = False
+    batchNameOption.vertexColors = default['vertex colors']
 
     # materials
-    batchNameOption.materials = False
+    batchNameOption.materials = default['materials']
 
     # textures
-    batchNameOption.textures = False
+    batchNameOption.textures = default['textures']
 
     # particle systems
-    batchNameOption.particleSystems = False
+    batchNameOption.particleSystems = default['particle systems']
 
     # particle settings
-    batchNameOption.particleSettings = False
+    batchNameOption.particleSettings = default['particle settings']
 
     # object type
-    batchNameOption.objectType = 'ALL'
+    batchNameOption.objectType = default['object type']
 
     # constraint type
-    batchNameOption.constraintType = 'ALL'
+    batchNameOption.constraintType = default['constraint type']
 
     # modifier type
-    batchNameOption.modifierType = 'ALL'
+    batchNameOption.modifierType = default['modifier type']
 
     # sensors
-    batchNameOption.sensors = False
+    batchNameOption.sensors = default['sensors']
 
     # controllers
-    batchNameOption.controllers = False
+    batchNameOption.controllers = default['controllers']
 
     # actuators
-    batchNameOption.actuators = False
+    batchNameOption.actuators = default['actuators']
 
     # line sets
-    batchNameOption.lineSets = False
+    batchNameOption.lineSets = default['line sets']
 
     # linestyles
-    batchNameOption.linestyles = False
+    batchNameOption.linestyles = default['linestyles']
 
     # linestyle modifiers
-    batchNameOption.linestyleModifiers = False
+    batchNameOption.linestyleModifiers = default['linestyle modifiers']
 
     # linestyle modifier type
-    batchNameOption.linestyleModifierType = 'ALL'
+    batchNameOption.linestyleModifierType = default['linestyle modifier type']
 
     # scenes
-    batchNameOption.scenes = False
+    batchNameOption.scenes = default['scenes']
 
     # render layers
-    batchNameOption.renderLayers = False
+    batchNameOption.renderLayers = default['render layers']
 
     # worlds
-    batchNameOption.worlds = False
+    batchNameOption.worlds = default['worlds']
 
     # libraries
-    batchNameOption.libraries = False
+    batchNameOption.libraries = default['libraries']
 
     # images
-    batchNameOption.images = False
+    batchNameOption.images = default['images']
 
     # masks
-    batchNameOption.masks = False
+    batchNameOption.masks = default['masks']
 
     # sequences
-    batchNameOption.sequences = False
+    batchNameOption.sequences = default['sequences']
 
     # movie clips
-    batchNameOption.movieClips = False
+    batchNameOption.movieClips = default['movie clips']
 
     # sounds
-    batchNameOption.sounds = False
+    batchNameOption.sounds = default['sounds']
 
     # screens
-    batchNameOption.screens = False
+    batchNameOption.screens = default['screens']
 
     # keying sets
-    batchNameOption.keyingSets = False
+    batchNameOption.keyingSets = default['keying sets']
 
     # palettes
-    batchNameOption.palettes = False
+    batchNameOption.palettes = default['palettes']
 
     # brushes
-    batchNameOption.brushes = False
+    batchNameOption.brushes = default['brushes']
 
     # nodes
-    batchNameOption.nodes = False
+    batchNameOption.nodes = default['nodes']
 
     # node labels
-    batchNameOption.nodeLabels = False
+    batchNameOption.nodeLabels = default['node labels']
+
+    # frame nodes
+    batchNameOption.frameNodes = default['frame nodes']
 
     # node groups
-    batchNameOption.nodeGroups = False
+    batchNameOption.nodeGroups = default['node groups']
 
     # texts
-    batchNameOption.texts = False
+    batchNameOption.texts = default['texts']
+
+    # ignore action
+    batchNameOption.ignoreAction = default['ignore action']
+
+    # ignore grease pencil
+    batchNameOption.ignoreGreasePencil = default['ignore grease pencil']
+
+    # ignore object
+    batchNameOption.ignoreObject = default['ignore object']
+
+    # ignore group
+    batchNameOption.ignoreGroup = default['ignore group']
+
+    # ignore constraint
+    batchNameOption.ignoreConstraint = default['ignore constraint']
+
+    # ignore modifier
+    batchNameOption.ignoreModifier = default['ignore modifier']
+
+    # ignore bone
+    batchNameOption.ignoreBone = default['ignore bone']
+
+    # ignore bone group
+    batchNameOption.ignoreBoneGroup = default['ignore bone group']
+
+    # ignore bone constraint
+    batchNameOption.ignoreBoneConstraint = default['ignore bone constraint']
+
+    # ignore object data
+    batchNameOption.ignoreObjectData = default['ignore object data']
+
+    # ignore vertex group
+    batchNameOption.ignoreVertexGroup = default['ignore vertex group']
+
+    # ignore shapekey
+    batchNameOption.ignoreShapekey = default['ignore shapekey']
+
+    # ignore uv
+    batchNameOption.ignoreUV = default['ignore uv']
+
+    # ignore vertex color
+    batchNameOption.ignoreVertexColor = default['ignore vertex color']
+
+    # ignore material
+    batchNameOption.ignoreMaterial = default['ignore material']
+
+    # ignore texture
+    batchNameOption.ignoreTexture = default['ignore texture']
+
+    # ignore particle system
+    batchNameOption.ignoreParticleSystem = default['ignore particle system']
+
+    # ignore particle setting
+    batchNameOption.ignoreParticleSetting = default['ignore particle setting']
 
     # custom name
-    batchNameOption.customName = ''
+    batchNameOption.customName = default['custom name']
 
     # find
-    batchNameOption.find = ''
+    batchNameOption.find = default['find']
 
     # regex
-    batchNameOption.regex = False
+    batchNameOption.regex = default['regex']
 
     # replace
-    batchNameOption.replace = ''
+    batchNameOption.replace = default['replace']
 
     # prefix
-    batchNameOption.prefix = ''
+    batchNameOption.prefix = default['prefix']
 
     # suffix
-    batchNameOption.suffix = ''
+    batchNameOption.suffix = default['suffix']
 
     # suffix last
-    batchNameOption.suffixLast = False
+    batchNameOption.suffixLast = default['suffix last']
 
     # trim start
-    batchNameOption.trimStart = 0
+    batchNameOption.trimStart = default['trim start']
 
     # trim end
-    batchNameOption.trimEnd = 0
+    batchNameOption.trimEnd = default['trim end']
 
     # sort
-    batchNameOption.sort = False
+    batchNameOption.sort = default['sort']
 
     # start
-    batchNameOption.start = 1
+    batchNameOption.start = default['start']
 
     # padding
-    batchNameOption.padding = 0
+    batchNameOption.padding = default['padding']
 
     # separator
-    batchNameOption.separator = '.'
+    batchNameOption.separator = default['separator']
 
     # sort only
-    batchNameOption.sortOnly = False
+    batchNameOption.sortOnly = default['sort only']
+
+    # link
+    batchNameOption.link = default['link']
 
   # copy
   if copy:
 
+    # default
+    default = storage.batch.defaults['copy name']
+
     # copy option
     batchCopyOption = context.scene.BatchCopyName
 
-    # type
-    batchCopyOption.batchType = 'SELECTED'
+    # mode
+    batchCopyOption.mode = default['mode']
 
     # source
-    batchCopyOption.source = 'OBJECT'
+    batchCopyOption.source = default['source']
 
     # objects
-    batchCopyOption.objects = False
+    batchCopyOption.objects = default['objects']
 
     # object data
-    batchCopyOption.objectData = False
+    batchCopyOption.objectData = default['object data']
 
     # materials
-    batchCopyOption.materials = False
+    batchCopyOption.materials = default['materials']
 
     # textures
-    batchCopyOption.textures = False
+    batchCopyOption.textures = default['textures']
 
     # particle systems
-    batchCopyOption.particleSystems = False
+    batchCopyOption.particleSystems = default['particle systems']
 
     # particle settings
-    batchCopyOption.particleSettings = False
+    batchCopyOption.particleSettings = default['particle settings']
 
     # use active object
-    batchCopyOption.useActiveObject = False
+    batchCopyOption.useActiveObject = default['use active object']
 
 # transfer
 def transfer(context, panel, auto, names, name, copy):
@@ -810,7 +860,7 @@ def transfer(context, panel, auto, names, name, copy):
         batchAutoNameOption = context.scene.BatchAutoName
 
         # type
-        scene.BatchAutoName.batchType = batchAutoNameOption.batchType
+        scene.BatchAutoName.mode = batchAutoNameOption.mode
 
         # objects
         scene.BatchAutoName.objects = batchAutoNameOption.objects
@@ -1165,7 +1215,7 @@ def transfer(context, panel, auto, names, name, copy):
         batchNameOption = context.scene.BatchName
 
         # batch type
-        scene.BatchName.batchType = batchNameOption.batchType
+        scene.BatchName.mode = batchNameOption.mode
 
         # actions
         scene.BatchName.actions = batchNameOption.actions
@@ -1305,11 +1355,68 @@ def transfer(context, panel, auto, names, name, copy):
         # node labels
         scene.BatchName.nodeLabels = batchNameOption.nodeLabels
 
+        # frame nodes
+        scene.BatchName.frameNodes = batchNameOption.frameNodes
+
         # node groups
         scene.BatchName.nodeGroups = batchNameOption.nodeGroups
 
         # texts
         scene.BatchName.texts = batchNameOption.texts
+
+        # ignore action
+        scene.BatchName.ignoreAction = batchNameOption.ignoreAction
+
+        # ignore grease pencil
+        scene.BatchName.ignoreGreasePencil = batchNameOption.ignoreGreasePencil
+
+        # ignore object
+        scene.BatchName.ignoreObject = batchNameOption.ignoreObject
+
+        # ignore group
+        scene.BatchName.ignoreGroup = batchNameOption.ignoreGroup
+
+        # ignore constraint
+        scene.BatchName.ignoreConstraint = batchNameOption.ignoreConstraint
+
+        # ignore modifier
+        scene.BatchName.ignoreModifier = batchNameOption.ignoreModifier
+
+        # ignore bone
+        scene.BatchName.ignoreBone = batchNameOption.ignoreBone
+
+        # ignore bone group
+        scene.BatchName.ignoreBoneGroup = batchNameOption.ignoreBoneGroup
+
+        # ignore bone constraint
+        scene.BatchName.ignoreBoneConstraint = batchNameOption.ignoreBoneConstraint
+
+        # ignore object data
+        scene.BatchName.ignoreObjectData = batchNameOption.ignoreObjectData
+
+        # ignore vertex group
+        scene.BatchName.ignoreVertexGroup = batchNameOption.ignoreVertexGroup
+
+        # ignore shapekey
+        scene.BatchName.ignoreShapekey = batchNameOption.ignoreShapekey
+
+        # ignore uv
+        scene.BatchName.ignoreUV = batchNameOption.ignoreUV
+
+        # ignore vertex color
+        scene.BatchName.ignoreVertexColor = batchNameOption.ignoreVertexColor
+
+        # ignore material
+        scene.BatchName.ignoreMaterial = batchNameOption.ignoreMaterial
+
+        # ignore texture
+        scene.BatchName.ignoreTexture = batchNameOption.ignoreTexture
+
+        # ignore particle system
+        scene.BatchName.ignoreParticleSystem = batchNameOption.ignoreParticleSystem
+
+        # ignore particle setting
+        scene.BatchName.ignoreParticleSetting = batchNameOption.ignoreParticleSetting
 
         # custom name
         scene.BatchName.customName = batchNameOption.customName
@@ -1353,6 +1460,9 @@ def transfer(context, panel, auto, names, name, copy):
         # sort only
         scene.BatchName.sortOnly = batchNameOption.sortOnly
 
+        # link
+        scene.BatchName.link = batchNameOption.link
+
   # copy
   if copy:
     for scene in bpy.data.scenes[:]:
@@ -1362,7 +1472,7 @@ def transfer(context, panel, auto, names, name, copy):
         batchCopyOption = context.scene.BatchCopyName
 
         # type
-        scene.BatchCopyName.batchType = batchCopyOption.batchType
+        scene.BatchCopyName.mode = batchCopyOption.mode
 
         # source
         scene.BatchCopyName.source = batchCopyOption.source

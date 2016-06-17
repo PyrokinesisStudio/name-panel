@@ -578,10 +578,8 @@ def sort(context, member, object):
       if object.mode in {'POSE', 'EDIT'}:
 
         # constraints
-        try:
-          constraints = [item.name for item in context.active_pose_bone.constraints[:]]
-        except:
-          constraints = []
+        try: constraints = [item.name for item in context.active_pose_bone.constraints[:]]
+        except: constraints = []
 
         # search
         if search == '' or re.search(search, context.active_bone.name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:
@@ -1121,10 +1119,8 @@ class block:
         if object.mode in {'POSE', 'EDIT'}:
 
           # constraints
-          try:
-            constraints = [item.name for item in context.active_pose_bone.constraints[:]]
-          except:
-            constraints = []
+          try: constraints = [item.name for item in context.active_pose_bone.constraints[:]]
+          except: constraints = []
 
           # display bones
           if panel.displayBones:
@@ -1195,10 +1191,8 @@ class block:
               if bone[1] != context.active_bone:
 
                 # constraints
-                try:
-                  constraints = [item.name for item in object.pose.bones[bone[1].name].constraints[:]]
-                except:
-                  constraints = []
+                try: constraints = [item.name for item in object.pose.bones[bone[1].name].constraints[:]]
+                except: constraints = []
 
                 # search
                 if search == '' or re.search(search, bone[1].name, re.I) or [re.search(search, item, re.I) for item in constraints if re.search(search, item, re.I) != None]:

@@ -20,7 +20,7 @@
 # imports
 import bpy
 from bpy.types import Operator
-from ...function import copy
+from ...function import copy, settings
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
@@ -43,6 +43,10 @@ class name(Operator):
     '''
     return context.space_data.type in 'VIEW_3D'
 
+  # check
+  def check(self, context):
+    return True
+
   # draw
   def draw(self, context):
     '''
@@ -55,8 +59,19 @@ class name(Operator):
     # option
     option = context.scene.BatchCopyName
 
-    # batch type
-    layout.prop(option, 'mode', expand=True)
+    # row
+    row = layout.row(align=True)
+
+    # mode
+    row.prop(option, 'mode', expand=True)
+
+    # reset settings
+    op = row.operator('wm.reset_name_panel_settings', text='', icon='LOAD_FACTORY')
+    op.panel = False
+    op.auto = False
+    op.names = False
+    op.name = False
+    op.copy = True
 
     # column
     column = layout.column(align=True)
@@ -90,6 +105,9 @@ class name(Operator):
 
     # copy
     copy.main(context)
+
+    # transfer settings
+    settings.transfer(context, False, False, False, False, True)
     return {'FINISHED'}
 
   # invoke
@@ -97,15 +115,10 @@ class name(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-    try:
 
-      # size
-      size = 180 if addon.preferences['largePopups'] == 0 else 270
-
-    except:
-
-      # size
-      size = 180
+    # size
+    try: size = 210 if addon.preferences['largePopups'] == 0 else 340
+    except: size = 210
 
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

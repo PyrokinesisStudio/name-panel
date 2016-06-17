@@ -50,10 +50,10 @@ class specials(Menu):
     layout.separator()
 
     # batch reset
-    layout.operator('view3d.reset_name_panel_settings', icon='FILE_REFRESH')
+    layout.operator('wm.reset_name_panel_settings', icon='FILE_REFRESH')
 
     # batch transfer
-    layout.operator('view3d.transfer_name_panel_settings', icon='RECOVER_AUTO')
+    layout.operator('wm.transfer_name_panel_settings', icon='RECOVER_AUTO')
 
     # separator
     layout.separator()

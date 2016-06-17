@@ -20,7 +20,8 @@
 # imports
 import bpy
 from bpy.types import Operator
-from ...function import auto, settings
+from ....function import settings
+from ....function.preferences import auto
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
@@ -30,18 +31,10 @@ class name(Operator):
   '''
     Automatically name datablocks based on type.
   '''
-  bl_idname = 'view3d.batch_auto_name'
-  bl_label = 'Auto Name'
-  bl_description = 'Automatically name datablocks based on type.'
-  bl_options = {'UNDO'}
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
+  bl_idname = 'wm.batch_auto_name_defaults'
+  bl_label = 'Auto Name Defaults'
+  bl_description = 'Adjust the default settings for the auto name operator.'
+  bl_options = {'REGISTER', 'UNDO'}
 
   # check
   def check(self, context):
@@ -95,12 +88,12 @@ class name(Operator):
 
     # settings
     column = layout.column()
-    column.label(text='Name Settings:')
+    column.label(text='Name Setting Defaults:')
     split = column.split(align=True)
-    split.operator('view3d.batch_auto_name_object_names', text='Objects')
-    split.operator('view3d.batch_auto_name_constraint_names', text='Constraints')
-    split.operator('view3d.batch_auto_name_modifier_names', text='Modifiers')
-    split.operator('view3d.batch_auto_name_object_data_names', text='Object Data')
+    split.operator('wm.batch_auto_name_object_name_defaults', text='Objects')
+    split.operator('wm.batch_auto_name_constraint_name_defaults', text='Constraints')
+    split.operator('wm.batch_auto_name_modifier_name_defaults', text='Modifiers')
+    split.operator('wm.batch_auto_name_object_data_name_defaults', text='Object Data')
 
   # execute
   def execute(self, context):
@@ -109,7 +102,7 @@ class name(Operator):
     '''
 
     # main
-    auto.main(context)
+    # auto.main(context)
 
     # transfer settings
     settings.transfer(context, False, True, True, False, False)
@@ -133,7 +126,7 @@ class objects(Operator):
   '''
     Invoke the auto name object names dialogue.
   '''
-  bl_idname = 'view3d.batch_auto_name_object_names'
+  bl_idname = 'wm.batch_auto_name_object_name_defaults'
   bl_label = 'Object Names:'
   bl_description = 'Change the names used for objects.'
   bl_options = {'UNDO'}
@@ -247,7 +240,7 @@ class constraints(Operator):
   '''
     Invoke the auto name constraint names dialogue.
   '''
-  bl_idname = 'view3d.batch_auto_name_constraint_names'
+  bl_idname = 'wm.batch_auto_name_constraint_name_defaults'
   bl_label = 'Constraint Names:'
   bl_description = 'Change the names used for constraints.'
   bl_options = {'UNDO'}
@@ -447,7 +440,7 @@ class modifiers(Operator):
   '''
     Invoke the auto name modifier names dialogue.
   '''
-  bl_idname = 'view3d.batch_auto_name_modifier_names'
+  bl_idname = 'wm.batch_auto_name_modifier_name_defaults'
   bl_label = 'Modifier Names:'
   bl_description = 'Change the names used for modifiers.'
   bl_options = {'UNDO'}
@@ -757,7 +750,7 @@ class objectData(Operator):
   '''
     Invoke the auto name object data names dialogue.
   '''
-  bl_idname = 'view3d.batch_auto_name_object_data_names'
+  bl_idname = 'wm.batch_auto_name_object_data_name_defaults'
   bl_label = 'Object Data Names:'
   bl_description = 'Change the names used for objects data.'
   bl_options = {'UNDO'}

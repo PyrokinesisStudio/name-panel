@@ -28,7 +28,7 @@ class reset(Operator):
   '''
     Reset option values.
   '''
-  bl_idname = 'view3d.reset_name_panel_settings'
+  bl_idname = 'wm.reset_name_panel_settings'
   bl_label = 'Reset Settings'
   bl_description = 'Reset name panel options to their default values.'
   bl_options = {'REGISTER', 'UNDO'}
@@ -68,14 +68,6 @@ class reset(Operator):
     default = True
   )
 
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
-
   # draw
   def draw(self, context):
     '''
@@ -110,7 +102,7 @@ class transfer(Operator):
   '''
     Transfer option values.
   '''
-  bl_idname = 'view3d.transfer_name_panel_settings'
+  bl_idname = 'wm.transfer_name_panel_settings'
   bl_label = 'Transfer Settings'
   bl_description = 'Transfer current name panel option values to other scenes.'
   bl_options = {'REGISTER', 'UNDO'}
@@ -149,14 +141,6 @@ class transfer(Operator):
     description = 'Transfer the option values for batch name copy.',
     default = True
   )
-
-  # poll
-  @classmethod
-  def poll(cls, context):
-    '''
-      Space data type must be in 3D view.
-    '''
-    return context.space_data.type in 'VIEW_3D'
 
   # draw
   def draw(self, context):

@@ -282,6 +282,9 @@ class batch:
         Main properties that effect how the batch auto name operator is performed.
       '''
 
+      # default
+      default = storage.batch.defaults['auto name']
+
       # mode
       mode = EnumProperty(
         name = 'Mode',
@@ -291,41 +294,42 @@ class batch:
           ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
           ('OBJECTS', 'All Objects', 'Effect all objects and object related datablock names in the file.')
         ],
-        default = 'SELECTED'
+        default = default['mode']
       )
 
       # objects
       objects = BoolProperty(
         name = 'Objects',
         description = 'Name objects.',
-        default = False
+        default = default['objects']
       )
 
       # constraints
       constraints = BoolProperty(
         name = 'Constraints',
         description = 'Name constraints.',
-        default = False
+        default = default['constraints']
       )
 
       # modifiers
       modifiers = BoolProperty(
         name = 'Modifiers',
         description = 'Name modifiers.',
-        default = False
+        default = default['modifiers']
       )
 
-      # objectData
+      # object data
       objectData = BoolProperty(
         name = 'Object Data',
         description = 'Name object data.',
-        default = False
+        default = default['object data']
       )
 
-      # bone Constraints
+      # bone constraints
       boneConstraints = BoolProperty(
         name = 'Bone Constraints',
-        description = 'Name bone constraints.'
+        description = 'Name bone constraints.',
+        default = default['bone constraints']
       )
 
       # object type
@@ -333,7 +337,7 @@ class batch:
         name = 'Object Type',
         description = 'Type of objects to be effected.',
         items = storage.batch.menu.objects,
-        default = 'ALL'
+        default = default['object type']
       )
 
       # constraint type
@@ -341,7 +345,7 @@ class batch:
         name = 'Constraint Type',
         description = 'Type of constraints to be effected.',
         items = storage.batch.menu.constraints,
-        default = 'ALL'
+        default = default['constraint type']
       )
 
       # modifier type
@@ -349,7 +353,7 @@ class batch:
         name = 'Modifier Type',
         description = 'Type of modifiers to be effected.',
         items = storage.batch.menu.modifiers,
-        default = 'ALL'
+        default = default['modifier type']
       )
 
     # object
@@ -357,88 +361,91 @@ class batch:
       '''
         Properties that effect the names used when auto naming objects.
       '''
+      # default
+      default = storage.batch.defaults['auto name']['object names']
 
       # prefix
       prefix = BoolProperty(
         name = 'Prefix',
-        description = 'Prefix the names of the objects with the values below.'
+        description = 'Prefix the names of the objects with the values below.',
+        default = default['prefix']
       )
 
       # mesh
       mesh = StringProperty(
         name = 'Mesh',
         description = 'Name used for mesh objects.',
-        default = 'Mesh'
+        default = default['mesh']
       )
 
       # curve
       curve = StringProperty(
         name = 'Curve',
         description = 'Name used for curve objects.',
-        default = 'Curve'
+        default = default['curve']
       )
 
       # surface
       surface = StringProperty(
         name = 'Surface',
         description = 'Name used for surface objects.',
-        default = 'Surface'
+        default = default['surface']
       )
 
       # meta
       meta = StringProperty(
         name = 'Meta',
         description = 'Name used for meta objects.',
-        default = 'Meta'
+        default = default['meta']
       )
 
       # font
       font = StringProperty(
         name = 'Text',
         description = 'Name used for font objects.',
-        default = 'Text'
+        default = default['font']
       )
 
       # armature
       armature = StringProperty(
         name = 'Armature',
         description = 'Name used for armature objects.',
-        default = 'Armature'
+        default = default['armature']
       )
 
       # lattice
       lattice = StringProperty(
         name = 'Lattice',
         description = 'Name used for lattice objects.',
-        default = 'Lattice'
+        default = default['lattice']
       )
 
       # empty
       empty = StringProperty(
         name = 'Empty',
         description = 'Name used for empty objects.',
-        default = 'Empty'
+        default = default['empty']
       )
 
       # speaker
       speaker = StringProperty(
         name = 'Speaker',
         description = 'Name used for speaker objects.',
-        default = 'Speaker'
+        default = default['speaker']
       )
 
       # camera
       camera = StringProperty(
         name = 'Camera',
         description = 'Name used for camera objects.',
-        default = 'Camera'
+        default = default['camera']
       )
 
       # lamp
       lamp = StringProperty(
         name = 'Lamp',
         description = 'Name used for lamp objects.',
-        default = 'Lamp'
+        default = default['lamp']
       )
 
     # constraints
@@ -447,199 +454,203 @@ class batch:
         Properties that effect the names used when auto naming constraints.
       '''
 
+      # default
+      default = storage.batch.defaults['auto name']['constraint names']
+
       # prefix
       prefix = BoolProperty(
         name = 'Prefix',
-        description = 'Prefix the names of the constraints with the values below.'
+        description = 'Prefix the names of the constraints with the values below.',
+        default = default['prefix']
       )
 
       # camera solver
       cameraSolver = StringProperty(
         name = 'Camera Solver',
         description = 'Name used for camera solver constraints.',
-        default = 'Camera Solver'
+        default = default['camera solver']
       )
 
       # follow track
       followTrack = StringProperty(
         name = 'Follow Track',
         description = 'Name used for follow track constraints.',
-        default = 'Follow Track'
+        default = default['follow track']
       )
 
       # object solver
       objectSolver = StringProperty(
         name = 'Object Solver',
         description = 'Name used for object solver constraints.',
-        default = 'Object Solver'
+        default = default['object solver']
       )
 
       # copy location
       copyLocation = StringProperty(
         name = 'Copy Location',
         description = 'Name used for copy location constraints.',
-        default = 'Copy Location'
+        default = default['copy location']
       )
 
       # copy rotation
       copyRotation = StringProperty(
         name = 'Copy Rotation',
         description = 'Name used for copy rotation constraints.',
-        default = 'Copy Rotation'
+        default = default['copy rotation']
       )
 
       # copy scale
       copyScale = StringProperty(
         name = 'Copy Scale',
         description = 'Name used for copy scale constraints.',
-        default = 'Copy Scale'
+        default = default['copy scale']
       )
 
       # copy transforms
       copyTransforms = StringProperty(
         name = 'Copy Transforms',
         description = 'Name used for copy transforms constraints.',
-        default = 'Copy Transforms'
+        default = default['copy transforms']
       )
 
       # limit distance
       limitDistance = StringProperty(
         name = 'Limit Distance',
         description = 'Name used for limit distance constraints.',
-        default = 'Limit Distance'
+        default = default['limit distance']
       )
 
       # limit location
       limitLocation = StringProperty(
         name = 'Limit Location',
         description = 'Name used for limit location constraints.',
-        default = 'Limit Location'
+        default = default['limit location']
       )
 
       # limit rotation
       limitRotation = StringProperty(
         name = 'Limit Rotation',
         description = 'Name used for limit rotation constraints.',
-        default = 'Limit Rotation'
+        default = default['limit rotation']
       )
 
       # limit scale
       limitScale = StringProperty(
         name = 'Limit Scale',
         description = 'Name used for limit scale constraints.',
-        default = 'Limit Scale'
+        default = default['limit scale']
       )
 
       # maintain volume
       maintainVolume = StringProperty(
         name = 'Maintain Volume',
         description = 'Name used for maintain volume constraints.',
-        default = 'Maintain Volume'
+        default = default['maintain volume']
       )
 
       # transform
       transform = StringProperty(
         name = 'Transform',
         description = 'Name used for transform constraints.',
-        default = 'Transform'
+        default = default['transform']
       )
 
       # clamp to
       clampTo = StringProperty(
         name = 'Clamp To',
         description = 'Name used for clamp to constraints.',
-        default = 'Clamp To'
+        default = default['clamp to']
       )
 
       # damped track
       dampedTrack = StringProperty(
         name = 'Damped Track',
         description = 'Name used for damped track constraints.',
-        default = 'Damped Track'
+        default = default['damped track']
       )
 
       # inverse kinematics
       inverseKinematics = StringProperty(
         name = 'Inverse Kinematics',
         description = 'Name used for inverse kinematics constraints.',
-        default = 'Inverse Kinematics'
+        default = default['inverse kinematics']
       )
 
       # locked track
       lockedTrack = StringProperty(
          name = 'Locked Track',
          description = 'Name used for locked track constraints.',
-         default = 'Locked Track'
+         default = default['locked track']
       )
 
       # spline inverse kinematics
       splineInverseKinematics = StringProperty(
          name = 'Spline Inverse Kinematics',
          description = 'Name used for spline inverse kinematics constraints.',
-         default = 'Spline Inverse Kinematics'
+         default = default['spline inverse kinematics']
       )
 
       # stretch to
       stretchTo = StringProperty(
          name = 'Stretch To',
          description = 'Name used for stretch to constraints.',
-         default = 'Stretch To'
+         default = default['stretch to']
       )
 
       # track to
       trackTo = StringProperty(
          name = 'Track To',
          description = 'Name used for track to constraints.',
-         default = 'Track To'
+         default = default['track to']
       )
 
       # action
       action = StringProperty(
          name = 'Action',
          description = 'Name used for action constraints.',
-         default = 'Action'
+         default = default['action']
       )
 
       # child of
       childOf = StringProperty(
          name = 'Child Of',
          description = 'Name used for child of constraints.',
-         default = 'Child Of'
+         default = default['child of']
       )
 
       # floor
       floor = StringProperty(
          name = 'Floor',
          description = 'Name used for floor constraints.',
-         default = 'Floor'
+         default = default['floor']
       )
 
       # follow path
       followPath = StringProperty(
          name = 'Follow Path',
          description = 'Name used for follow path constraints.',
-         default = 'Follow Path'
+         default = default['follow path']
       )
 
       # pivot
       pivot = StringProperty(
          name = 'Pivot',
          description = 'Name used for pivot constraints.',
-         default = 'Pivot'
+         default = default['pivot']
       )
 
       # rigid body joint
       rigidBodyJoint = StringProperty(
          name = 'Rigid Body Joint',
          description = 'Name used for rigid body joint constraints.',
-         default = 'Rigid Body Joint'
+         default = default['rigid body joint']
       )
 
       # shrinkwrap
       shrinkwrap = StringProperty(
          name = 'Shrinkwrap',
          description = 'Name used for shrinkwrap constraints.',
-         default = 'Shrinkwrap'
+         default = default['shrinkwrap']
       )
 
     # modifier
@@ -648,353 +659,357 @@ class batch:
         Properties that effect the names used when auto naming modifiers.
       '''
 
+      # default
+      default = storage.batch.defaults['auto name']['modifier names']
+
       # prefix
       prefix = BoolProperty(
         name = 'Prefix',
-        description = 'Prefix the names of the modifiers with the values below.'
+        description = 'Prefix the names of the modifiers with the values below.',
+        default = default['prefix']
       )
 
       # data transfer
       dataTransfer = StringProperty(
         name = 'Data Transfer',
         description = 'Name used for data transfer modifiers.',
-        default = 'Data Transfer'
+        default = default['data transfer']
       )
 
       # mesh cache
       meshCache = StringProperty(
         name = 'Mesh Cache',
         description = 'Name used for mesh cache modifiers.',
-        default = 'Mesh Cache'
+        default = default['mesh cache']
       )
 
       # normal edit
       normalEdit = StringProperty(
         name = 'Normal Edit',
         description = 'Name used for normal edit modifiers.',
-        default = 'Normal Edit'
+        default = default['normal edit']
       )
 
       # uv project
       uvProject = StringProperty(
         name = 'UV Project',
         description = 'Name used for uv project modifiers.',
-        default = 'UV Project'
+        default = default['uv project']
       )
 
       # uv warp
       uvWarp = StringProperty(
         name = 'UV Warp',
         description = 'Name used for uv warp modifiers.',
-        default = 'UV Warp'
+        default = default['uv warp']
       )
 
       # vertex weight edit
       vertexWeightEdit = StringProperty(
         name = 'Vertex Weight Edit',
         description = 'Name used for vertex weight edit modifiers.',
-        default = 'Vertex Weight Edit'
+        default = default['vertex weight edit']
       )
 
       # vertex weight mix
       vertexWeightMix = StringProperty(
         name = 'Vertex Weight Mix',
         description = 'Name used for vertex weight mix modifiers.',
-        default = 'Vertex Weight Mix'
+        default = default['vertex weight mix']
       )
 
       # vertex weight proximity
       vertexWeightProximity = StringProperty(
         name = 'Vertex Weight Proximity',
         description = 'Name used for vertex weight proximity modifiers.',
-        default = 'Vertex Weight Proximity'
+        default = default['vertex weight proximity']
       )
 
       # array
       array = StringProperty(
         name = 'Array',
         description = 'Name used for array modifiers.',
-        default = 'Array'
+        default = default['array']
       )
 
       # bevel
       bevel = StringProperty(
         name = 'Bevel',
         description = 'Name used for bevel modifiers.',
-        default = 'Bevel'
+        default = default['bevel']
       )
 
       # boolean
       boolean = StringProperty(
         name = 'Boolean',
         description = 'Name used for boolean modifiers.',
-        default = 'Boolean'
+        default = default['boolean']
       )
 
       # build
       build = StringProperty(
         name = 'Build',
         description = 'Name used for build modifiers.',
-        default = 'Build'
+        default = default['build']
       )
 
       # decimate
       decimate = StringProperty(
         name = 'Decimate',
         description = 'Name used for decimate modifiers.',
-        default = 'Decimate'
+        default = default['decimate']
       )
 
       # edge split
       edgeSplit = StringProperty(
         name = 'Edge Split',
         description = 'Name used for edge split modifiers.',
-        default = 'Edge Split'
+        default = default['edge split']
       )
 
       # mask
       mask = StringProperty(
         name = 'Mask',
         description = 'Name used for mask modifiers.',
-        default = 'Mask'
+        default = default['mask']
       )
 
       # mirror
       mirror = StringProperty(
         name = 'Mirror',
         description = 'Name used for mirror modifiers.',
-        default = 'Mirror'
+        default = default['mirror']
       )
 
       # multiresolution
       multiresolution = StringProperty(
         name = 'Multiresolution',
         description = 'Name used for multiresolution modifiers.',
-        default = 'Multiresolution'
+        default = default['multiresolution']
       )
 
       # remesh
       remesh = StringProperty(
         name = 'Remesh',
         description = 'Name used for remesh modifiers.',
-        default = 'Remesh'
+        default = default['remesh']
       )
 
       # screw
       screw = StringProperty(
         name = 'Screw',
         description = 'Name used for screw modifiers.',
-        default = 'Screw'
+        default = default['screw']
       )
 
       # skin
       skin = StringProperty(
         name = 'Skin',
         description = 'Name used for skin modifiers.',
-        default = 'Skin'
+        default = default['skin']
       )
 
       # solidify
       solidify = StringProperty(
         name = 'Solidify',
         description = 'Name used for solidify modifiers.',
-        default = 'Solidify'
+        default = default['solidify']
       )
 
       # subdivision surface
       subdivisionSurface = StringProperty(
         name = 'Subdivision Surface',
         description = 'Name used for subdivision surface modifiers.',
-        default = 'Subdivision Surface'
+        default = default['subdivision surface']
       )
 
       # triangulate
       triangulate = StringProperty(
         name = 'Triangulate',
         description = 'Name used for triangulate modifiers.',
-        default = 'Triangulate'
+        default = default['triangulate']
       )
 
       # wireframe
       wireframe = StringProperty(
         name = 'Wireframe',
         description = 'Name used for wireframe modifiers.',
-        default = 'Wireframe'
+        default = default['wireframe']
       )
 
       # armature
       armature = StringProperty(
         name = 'Armature',
         description = 'Name used for armature modifiers.',
-        default = 'Armature'
+        default = default['armature']
       )
 
       # cast
       cast = StringProperty(
         name = 'Cast',
         description = 'Name used for cast modifiers.',
-        default = 'Cast'
+        default = default['cast']
       )
 
       # corrective smooth
       correctiveSmooth = StringProperty(
         name = 'Corrective Smooth',
         description = 'Name used for corrective smooth modifiers.',
-        default = 'Corrective Smooth'
+        default = default['corrective smooth']
       )
 
       # curve
       curve = StringProperty(
         name = 'Curve',
         description = 'Name used for curve modifiers.',
-        default = 'Curve'
+        default = default['curve']
       )
 
       # displace
       displace = StringProperty(
         name = 'Displace',
         description = 'Name used for displace modifiers.',
-        default = 'Displace'
+        default = default['displace']
       )
 
       # hook
       hook = StringProperty(
         name = 'Hook',
         description = 'Name used for hook modifiers.',
-        default = 'Hook'
+        default = default['hook']
       )
 
       # laplacian smooth
       laplacianSmooth = StringProperty(
         name = 'Laplacian Smooth',
         description = 'Name used for laplacian smooth modifiers.',
-        default = 'Laplacian Smooth'
+        default = default['laplacian smooth']
       )
 
       # laplacian deform
       laplacianDeform = StringProperty(
         name = 'Laplacian Deform',
         description = 'Name used for laplacian deform modifiers.',
-        default = 'Laplacian Deform'
+        default = default['laplacian deform']
       )
 
       # lattice
       lattice = StringProperty(
         name = 'Lattice',
         description = 'Name used for lattice modifiers.',
-        default = 'Lattice'
+        default = default['lattice']
       )
 
       # mesh deform
       meshDeform = StringProperty(
         name = 'Mesh Deform',
         description = 'Name used for mesh deform modifiers.',
-        default = 'Mesh Deform'
+        default = default['mesh deform']
       )
 
       # shrinkwrap
       shrinkwrap = StringProperty(
         name = 'Shrinkwrap',
         description = 'Name used for shrinkwrap modifiers.',
-        default = 'Shrinkwrap'
+        default = default['shrinkwrap']
       )
 
       # simple deform
       simpleDeform = StringProperty(
         name = 'Simple Deform',
         description = 'Name used for simple deform modifiers.',
-        default = 'Simple Deform'
+        default = default['simple deform']
       )
 
       # smooth
       smooth = StringProperty(
         name = 'Smooth',
         description = 'Name used for smooth modifiers.',
-        default = 'Smooth'
+        default = default['smooth']
       )
 
       # warp
       warp = StringProperty(
         name = 'Warp',
         description = 'Name used for warp modifiers.',
-        default = 'Warp'
+        default = default['warp']
       )
 
       # wave
       wave = StringProperty(
         name = 'Wave',
         description = 'Name used for wave modifiers.',
-        default = 'Wave'
+        default = default['wave']
       )
 
       # cloth
       cloth = StringProperty(
         name = 'Cloth',
         description = 'Name used for cloth modifiers.',
-        default = 'Cloth'
+        default = default['cloth']
       )
 
       # collision
       collision = StringProperty(
         name = 'Collision',
         description = 'Name used for collision modifiers.',
-        default = 'Collision'
+        default = default['collision']
       )
 
       # dynamic paint
       dynamicPaint = StringProperty(
         name = 'Dynamic Paint',
         description = 'Name used for dynamic paint modifiers.',
-        default = 'Dynamic Paint'
+        default = default['dynamic paint']
       )
 
       # explode
       explode = StringProperty(
         name = 'Explode',
         description = 'Name used for explode modifiers.',
-        default = 'Explode'
+        default = default['explode']
       )
 
       # fluid simulation
       fluidSimulation = StringProperty(
         name = 'Fluid Simulation',
         description = 'Name used for fluid simulation modifiers.',
-        default = 'Fluid Simulation'
+        default = default['fluid simulation']
       )
 
       # ocean
       ocean = StringProperty(
         name = 'Ocean',
         description = 'Name used for ocean modifiers.',
-        default = 'Ocean'
+        default = default['ocean']
       )
 
       # particle instance
       particleInstance = StringProperty(
         name = 'Particle Instance',
         description = 'Name used for particle instance modifiers.',
-        default = 'Particle Instance'
+        default = default['particle instance']
       )
 
       # particle system
       particleSystem = StringProperty(
         name = 'Particle System',
         description = 'Name used for particle system modifiers.',
-        default = 'Particle System'
+        default = default['particle system']
       )
 
       # smoke
       smoke = StringProperty(
         name = 'Smoke',
         description = 'Name used for smoke modifiers.',
-        default = 'Smoke'
+        default = default['smoke']
       )
 
       # soft body
       softBody = StringProperty(
         name = 'Soft Body',
         description = 'Name used for soft body modifiers.',
-        default = 'Soft Body'
+        default = default['soft body']
       )
 
     # object data
@@ -1003,87 +1018,91 @@ class batch:
         Properties that effect the names used when auto naming objects.
       '''
 
+      # default
+      default = storage.batch.defaults['auto name']['object data names']
+
       # prefix
       prefix = BoolProperty(
         name = 'Prefix',
-        description = 'Prefix the names of the object\'s data with the values below.'
+        description = 'Prefix the names of the object\'s data with the values below.',
+        default = default['prefix']
       )
 
       # mesh
       mesh = StringProperty(
         name = 'Mesh',
         description = 'Name used for mesh objects.',
-        default = 'Mesh'
+        default = default['mesh']
       )
 
       # curve
       curve = StringProperty(
         name = 'Curve',
         description = 'Name used for curve objects.',
-        default = 'Curve'
+        default = default['curve']
       )
 
       # surface
       surface = StringProperty(
         name = 'Surface',
         description = 'Name used for surface objects.',
-        default = 'Surface'
+        default = default['surface']
       )
 
       # meta
       meta = StringProperty(
         name = 'Meta',
         description = 'Name used for meta objects.',
-        default = 'Meta'
+        default = default['meta']
       )
 
       # font
       font = StringProperty(
         name = 'Text',
         description = 'Name used for font objects.',
-        default = 'Text'
+        default = default['font']
       )
 
       # armature
       armature = StringProperty(
         name = 'Armature',
         description = 'Name used for armature objects.',
-        default = 'Armature'
+        default = default['armature']
       )
 
       # lattice
       lattice = StringProperty(
         name = 'Lattice',
         description = 'Name used for lattice objects.',
-        default = 'Lattice'
+        default = default['lattice']
       )
 
       # empty
       empty = StringProperty(
         name = 'Empty',
         description = 'Name used for empty objects.',
-        default = 'Empty'
+        default = default['empty']
       )
 
       # speaker
       speaker = StringProperty(
         name = 'Speaker',
         description = 'Name used for speaker objects.',
-        default = 'Speaker'
+        default = default['speaker']
       )
 
       # camera
       camera = StringProperty(
         name = 'Camera',
         description = 'Name used for camera objects.',
-        default = 'Camera'
+        default = default['camera']
       )
 
       # lamp
       lamp = StringProperty(
         name = 'Lamp',
         description = 'Name used for lamp objects.',
-        default = 'Lamp'
+        default = default['lamp']
       )
 
   # name
@@ -1091,6 +1110,9 @@ class batch:
     '''
       Properties that effect how the batch name operation is performed.
     '''
+
+    # default
+    default = storage.batch.defaults['batch name']
 
     # mode
     mode = EnumProperty(
@@ -1102,147 +1124,147 @@ class batch:
         ('OBJECTS', 'All Objects', 'Effect all objects and object related datablock names in the file.'),
         ('GLOBAL', 'Global', 'Effect all datablocks in the file whether they are attached to an object or not.')
       ],
-      default = 'SELECTED'
+      default = default['mode']
     )
 
     # actions
     actions = BoolProperty(
       name = 'Actions',
       description = 'Name object actions. (Use \'Global\' for all)',
-      default = False
+      default = default['actions']
     )
 
     # action groups
     actionGroups = BoolProperty(
       name = 'Action Groups',
       description = 'Name object action groups. (Use \'Global\' for all)',
-      default = False
+      default = default['action groups']
     )
 
     # grease pencil
     greasePencil = BoolProperty(
       name = 'Grease Pencil',
       description = 'Name object grease pencils. (Use \'Global\' for all)',
-      default = False
+      default = default['grease pencil']
     )
 
     # pencil layers
     pencilLayers = BoolProperty(
       name = 'Grease Pencil Layers',
       description = 'Name object grease pencils layers. (Use \'Global\' for all)',
-      default = False
+      default = default['pencil layers']
     )
 
     # objects
     objects = BoolProperty(
       name = 'Objects',
       description = 'Name objects.',
-      default = False
+      default = default['objects']
     )
 
     # groups
     groups = BoolProperty(
       name = 'Groups',
       description = 'Name object groups. (Use \'Global\' for all)',
-      default = False
+      default = default['groups']
     )
 
     # constraints
     constraints = BoolProperty(
       name = 'Object Constraints',
       description = 'Name object constraints.',
-      default = False
+      default = default['constraints']
     )
 
     # modifiers
     modifiers = BoolProperty(
       name = 'Modifiers',
       description = 'Name object modifiers.',
-      default = False
+      default = default['modifiers']
     )
 
     # object data
     objectData = BoolProperty(
       name = 'Object Data',
       description = 'Name object data. (Use \'Global\' for all)',
-      default = False
+      default = default['object data']
     )
 
     # bone groups
     boneGroups = BoolProperty(
       name = 'Bone Groups',
       description = 'Name armature bone groups.',
-      default = False
+      default = default['bone groups']
     )
 
     # bones
     bones = BoolProperty(
       name = 'Bones',
       description = 'Name armature bones.',
-      default = False
+      default = default['bones']
     )
 
     # bone constraints
     boneConstraints = BoolProperty(
       name = 'Bone Constraints',
       description = 'Name armature bone constraints.',
-      default = False
+      default = default['bone constraints']
     )
 
     # vertex groups
     vertexGroups = BoolProperty(
       name = 'Vertex Groups',
       description = 'Name object vertex groups.',
-      default = False
+      default = default['vertex groups']
     )
 
     # shapekeys
     shapekeys = BoolProperty(
       name = 'Shapekeys',
       description = 'Name object shapekeys.',
-      default = False
+      default = default['shapekeys']
     )
 
     # uvs
     uvs = BoolProperty(
       name = 'UV Maps',
       description = 'Name object uv maps.',
-      default = False
+      default = default['uvs']
     )
 
     # vertex colors
     vertexColors = BoolProperty(
       name = 'Vertex Colors',
       description = 'Name object vertex colors.',
-      default = False
+      default = default['vertex colors']
     )
 
     # materials
     materials = BoolProperty(
       name = 'Materials',
       description = 'Name object materials. (Use \'Global\' for all)',
-      default = False
+      default = default['materials']
     )
 
     # textures
     textures = BoolProperty(
       name = 'Textures',
       description = 'Name object material textures. (Use \'Global\' for all)',
-      default = False
+      default = default['textures']
     )
 
     # particle systems
     particleSystems = BoolProperty(
       name = 'Particle Systems',
       description = 'Name object particle systems. (Use \'Global\' for all)',
-      default = False
+      default = default['particle systems']
     )
 
     # particle settings
     particleSettings = BoolProperty(
       name = 'Particle Settings',
       description = 'Name object particle system settings. (Use \'Global\' for all)',
-      default = False
+      default = default['particle settings']
     )
 
     # object type
@@ -1250,7 +1272,7 @@ class batch:
       name = 'Object Type',
       description = 'Type of objects to be effected.',
       items = storage.batch.menu.objects,
-      default = 'ALL'
+      default = default['object type']
     )
 
     # constraint type
@@ -1258,7 +1280,7 @@ class batch:
       name = 'Constraint Type',
       description = 'Type of constraints to be effected.',
       items = storage.batch.menu.constraints,
-      default = 'ALL'
+      default = default['constraint type']
     )
 
     # modifier type
@@ -1266,49 +1288,49 @@ class batch:
       name = 'Modifier Type',
       description = 'Type of modifiers to be effected.',
       items = storage.batch.menu.modifiers,
-      default = 'ALL'
+      default = default['modifier type']
     )
 
     # sensors
     sensors = BoolProperty(
       name = 'Sensors',
       description = 'Name object game sensors.',
-      default = False
+      default = default['sensors']
     )
 
     # controllers
     controllers = BoolProperty(
       name = 'Controllers',
       description = 'Name object game controllers',
-      default = False
+      default = default['controllers']
     )
 
     # actuators
     actuators = BoolProperty(
       name = 'Actuators',
       description = 'Name object game actuators',
-      default = False
+      default = default['actuators']
     )
 
     # line sets
     lineSets = BoolProperty(
       name = 'Line Sets',
       description = 'Name line sets.',
-      default = False
+      default = default['line sets']
     )
 
     # linestyles
     linestyles = BoolProperty(
       name = 'Linestyles',
       description = 'Name linestyles.',
-      default = False
+      default = default['linestyles']
     )
 
     # linestyle modifiers
     linestyleModifiers = BoolProperty(
-    name = 'Linestyle Modifiers',
-    description = 'Name linestyle modifiers.',
-    default = False
+      name = 'Linestyle Modifiers',
+      description = 'Name linestyle modifiers.',
+      default = default['linestyle modifiers']
     )
 
     # linestyle modifier type
@@ -1316,303 +1338,308 @@ class batch:
       name = 'Linestyle Modifier Type',
       description = 'Type of linestyle modifiers to be effected.',
       items = storage.batch.menu.linestyleModifiers,
-      default = 'ALL'
+      default = default['linestyle modifier type']
     )
 
     # scenes
     scenes = BoolProperty(
       name = 'Scenes',
       description = 'Name scenes.',
-      default = False
+      default = default['scenes']
     )
 
     # render layers
     renderLayers = BoolProperty(
       name = 'Render Layers',
       description = 'Name render layers.',
-      default = False
+      default = default['render layers']
     )
 
     # worlds
     worlds = BoolProperty(
       name = 'Worlds',
       description = 'Name worlds.',
-      default = False
+      default = default['worlds']
     )
 
     # libraries
     libraries = BoolProperty(
       name = 'Libraries',
       description = 'Name libraries.',
-      default = False
+      default = default['libraries']
     )
 
     # images
     images = BoolProperty(
       name = 'Images',
       description = 'Name images.',
-      default = False
+      default = default['images']
     )
 
     # masks
     masks = BoolProperty(
       name = 'Masks',
       description = 'Name masks.',
-      default = False
+      default = default['masks']
     )
 
     # sequences
     sequences = BoolProperty(
       name = 'Sequences',
       description = 'Name sequences.',
-      default = False
+      default = default['sequences']
     )
 
     # movie clips
     movieClips = BoolProperty(
       name = 'Movie Clips',
       description = 'Name movie clips.',
-      default = False
+      default = default['movie clips']
     )
 
     # sounds
     sounds = BoolProperty(
       name = 'Sounds',
       description = 'Name sounds.',
-      default = False
+      default = default['sounds']
     )
 
     # screens
     screens = BoolProperty(
       name = 'Screens',
       description = 'Name screens. (No undo support)',
-      default = False
+      default = default['screens']
     )
 
     # keying sets
     keyingSets = BoolProperty(
       name = 'Keying Sets',
       description = 'Name keying sets.',
-      default = False
+      default = default['keying sets']
     )
 
     # palettes
     palettes = BoolProperty(
       name = 'Palettes',
       description = 'Name color palettes.',
-      default = False
+      default = default['palettes']
     )
 
     # brushes
     brushes = BoolProperty(
       name = 'Brushes',
       description = 'Name brushes.',
-      default = False
+      default = default['brushes']
     )
 
     # nodes
     nodes = BoolProperty(
       name = 'Nodes',
       description = 'Name nodes.',
-      default = False
+      default = default['nodes']
     )
 
     # node labels
     nodeLabels = BoolProperty(
       name = 'Node Labels',
       description = 'Name node labels.',
-      default = False
+      default = default['node labels']
     )
 
     # frame nodes
     frameNodes = BoolProperty(
       name = 'Frame Nodes',
       description = 'Name frame nodes.',
-      default = False
+      default = default['frame nodes']
     )
 
     # node groups
     nodeGroups = BoolProperty(
       name = 'Node Groups',
       description = 'Name node groups.',
-      default = False
+      default = default['node groups']
     )
 
     # texts
     texts = BoolProperty(
       name = 'Texts',
       description = 'Name text documents.',
-      default = False
+      default = default['texts']
     )
 
     # ignore action
     ignoreAction = BoolProperty(
       name = 'Ignore Action',
       description = 'Ignore action names.',
-      default = False
+      default = default['ignore action']
     )
 
     # ignore grease pencil
     ignoreGreasePencil = BoolProperty(
       name = 'Ignore Grease Pencil',
       description = 'Ignore grease pencil names.',
-      default = False
+      default = default['ignore grease pencil']
     )
 
     # ignore object
     ignoreObject = BoolProperty(
       name = 'Ignore Object',
       description = 'Ignore object names.',
-      default = False
+      default = default['ignore object']
     )
 
     # ignore group
-    ignoreGroup  = BoolProperty(
+    ignoreGroup = BoolProperty(
       name = 'Ignore Oject Group',
       description = 'Ignore object group names.',
-      default = False
+      default = default['ignore group']
     )
 
     # ignore constraint
     ignoreConstraint = BoolProperty(
       name = 'Ignore Constraint',
       description = 'Ignore constraint names.',
-      default = False
+      default = default['ignore constraint']
     )
 
     # ignore modifier
     ignoreModifier = BoolProperty(
       name = 'Ignore Modifier',
       description = 'Ignore modifier names.',
-      default = False
+      default = default['ignore modifier']
     )
 
     # ignore bone
     ignoreBone = BoolProperty(
       name = 'Ignore Bone',
       description = 'Ignore bone names.',
-      default = False
+      default = default['ignore bone']
     )
 
     # ignore bone group
-    ignoreBoneGroup  = BoolProperty(
+    ignoreBoneGroup = BoolProperty(
       name = 'Ignore Bone Group',
       description = 'Ignore bone group names.',
-      default = False
+      default = default['ignore bone group']
     )
 
     # ignore bone constraint
     ignoreBoneConstraint = BoolProperty(
       name = 'Ignore Bone Constraint',
       description = 'Ignore bone constraint names.',
-      default = False
+      default = default['ignore bone constraint']
     )
 
     # ignore object data
     ignoreObjectData = BoolProperty(
       name = 'Ignore Object Data',
       description = 'Ignore object data names.',
-      default = False
+      default = default['ignore object data']
     )
 
     # ignore vertex group
     ignoreVertexGroup = BoolProperty(
       name = 'Ignore Vertex Group',
       description = 'Ignore vertex group names.',
-      default = False
+      default = default['ignore vertex group']
     )
 
     # ignore shapekey
     ignoreShapekey = BoolProperty(
       name = 'Ignore Shapekey',
       description = 'Ignore shapekey names.',
-      default = False
+      default = default['ignore shapekey']
     )
 
     # ignore uv
     ignoreUV = BoolProperty(
       name = 'Ignore UV',
       description = 'Ignore uv names.',
-      default = False
+      default = default['ignore uv']
     )
 
     # ignore vertex color
     ignoreVertexColor = BoolProperty(
       name = 'Ignore Vertex Color',
       description = 'Ignore vertex color names.',
-      default = False
+      default = default['ignore vertex color']
     )
 
     # ignore material
     ignoreMaterial = BoolProperty(
       name = 'Ignore Material',
       description = 'Ignore material names.',
-      default = False
+      default = default['ignore material']
     )
 
     # ignore texture
     ignoreTexture = BoolProperty(
       name = 'Ignore Texture',
       description = 'Ignore texture names.',
-      default = False
+      default = default['ignore texture']
     )
 
     # ignore particle system
     ignoreParticleSystem = BoolProperty(
       name = 'Ignore Particle System',
       description = 'Ignore particle system names.',
-      default = False
+      default = default['ignore particle system']
     )
 
     # ignore particle setting
     ignoreParticleSetting = BoolProperty(
       name = 'Ignore Particle Setting',
       description = 'Ignore particle setting names.',
-      default = False
+      default = default['ignore particle setting']
     )
 
     # custom name
     customName = StringProperty(
       name = 'Custom Name',
-      description = 'Designate a new name.'
+      description = 'Designate a new name.',
+      default = default['custom name']
     )
 
     # find
     find = StringProperty(
       name = 'Find',
-      description = 'Find this text in the name and remove it.'
+      description = 'Find this text in the name and remove it.',
+      default = default['find']
     )
 
     # regex
     regex = BoolProperty(
       name = 'Regular Expressions',
       description = 'Enable regular expressions.',
-      default = False
+      default = default['regex']
     )
 
     # replace
     replace = StringProperty(
       name = 'Replace',
-      description = 'Replace found text with the text entered here.'
+      description = 'Replace found text with the text entered here.',
+      default = default['replace']
     )
 
     # prefix
     prefix = StringProperty(
       name = 'Prefix',
-      description = 'Place this text at the beginning of the name.'
+      description = 'Place this text at the beginning of the name.',
+      default = default['prefix']
     )
 
     # suffix
     suffix = StringProperty(
       name = 'Suffix',
-      description = 'Place this text at the end of the name.'
+      description = 'Place this text at the end of the name.',
+      default = default['suffix']
     )
 
     # suffix last
     suffixLast = BoolProperty(
       name = 'Suffix Last',
       description = 'Force the suffix to be placed last when recounting duplicate names.',
-      default = False
+      default = default['suffix last']
     )
 
     # trim start
@@ -1621,7 +1648,7 @@ class batch:
       description = 'Remove this many characters from the beginning of the name.',
       min = 0,
       max = 63,
-      default = 0
+      default = default['trim start']
     )
 
     # trim end
@@ -1630,14 +1657,14 @@ class batch:
       description = 'Remove this many characters from the end of the name.',
       min = 0,
       max = 63,
-      default = 0
+      default = default['trim end']
     )
 
     # sort
     sort = BoolProperty(
       name = 'Sort Duplicates',
       description = 'Recount names that are identical with a trailing number.',
-      default = False
+      default = default['sort']
     )
 
     # start
@@ -1645,7 +1672,7 @@ class batch:
       name = 'Start',
       description = 'Number to start with.',
       min = 0,
-      default = 1
+      default = default['start']
     )
 
     # padding
@@ -1653,28 +1680,28 @@ class batch:
       name = 'Padding',
       description = 'Number of zeroes to place before the final incrementing number.',
       min = 0,
-      default = 0
+      default = default['padding']
     )
 
     # separator
     separator = StringProperty(
       name = 'Separator',
       description = 'The separator to use between the name and number.',
-      default = '.'
+      default = default['separator']
     )
 
     # sort only
     sortOnly = BoolProperty(
      name = 'Only Sort Duplicates',
      description = 'Only effect names during the naming process that need to be numbered.',
-     default = False
+     default = default['sort only']
     )
 
     # link
     link = BoolProperty(
       name = 'Link Duplicates',
       description = 'If possible link the original duplicate name to the other duplicates location.',
-      default = False
+      default = default['link']
     )
 
   # copy
@@ -1682,6 +1709,9 @@ class batch:
     '''
       Properties that effect how the batch copy name operation is performed.
     '''
+
+    # default
+    default = storage.batch.defaults['copy name']
 
     # mode
     mode = EnumProperty(
@@ -1692,7 +1722,7 @@ class batch:
         ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
         ('OBJECTS', 'All Objects', 'Effect all objects and object related datablock names in the file.')
       ],
-      default = 'SELECTED'
+      default = default['mode']
     )
 
     # source
@@ -1707,54 +1737,54 @@ class batch:
         ('PARTICLE_SYSTEM', 'Active Particle System', 'Use the name from the active particle system of the object.', 'PARTICLES', 4),
         ('PARTICLE_SETTINGS', 'Active Particle Settings', 'Use the name from the active particle system\'s settings of the object.', 'MOD_PARTICLES', 5)
       ],
-      default = 'OBJECT'
+      default = default['source']
     )
 
     # objects
     objects = BoolProperty(
       name = 'Object',
       description = 'Paste to objects.',
-      default = False
+      default = default['objects']
     )
 
     # object data
     objectData = BoolProperty(
       name = 'Object Data',
       description = 'Paste to object data.',
-      default = False
+      default = default['object data']
     )
 
     # materials
     materials = BoolProperty(
       name = 'Material',
       description = 'Paste to materials.',
-      default = False
+      default = default['materials']
     )
 
     # textures
     textures = BoolProperty(
       name = 'Texture',
       description = 'Paste to textures.',
-      default = False
+      default = default['textures']
     )
 
     # particle systems
     particleSystems = BoolProperty(
       name = 'Particle System',
       description = 'Paste to particle systems.',
-      default = False
+      default = default['particle systems']
     )
 
     # particle settings
     particleSettings = BoolProperty(
       name = 'Particle Settings',
       description = 'Paste to particle settings.',
-      default = False
+      default = default['particle settings']
     )
 
     # use active object
     useActiveObject = BoolProperty(
       name = 'Use active object',
       description = 'Use the names available from the active object to paste to the other datablock names.',
-      default = False
+      default = default['use active object']
     )

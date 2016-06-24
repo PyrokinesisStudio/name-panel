@@ -30,41 +30,41 @@ class reset(Operator):
   '''
   bl_idname = 'wm.reset_name_panel_settings'
   bl_label = 'Reset Settings'
-  bl_description = 'Reset name panel options to their default values.'
+  bl_description = 'Reset settings to the default values.'
   bl_options = {'REGISTER', 'UNDO'}
 
   # panel
   panel = BoolProperty(
     name = 'Name Panel',
-    description = 'Reset the options values for the name panel.',
+    description = 'Reset the setting values for the name panel.',
     default = False
   )
 
   # auto
   auto = BoolProperty(
     name = 'Auto Name',
-    description = 'Reset the option values for batch auto name.',
+    description = 'Reset the setting values for batch auto name.',
     default = True
   )
 
   # names
   names = BoolProperty(
     name = 'Auto Name \N{Rightwards Arrow} Names',
-    description = 'Reset the option values for batch auto name \N{Rightwards Arrow} name settings.',
+    description = 'Reset the setting values for batch auto name \N{Rightwards Arrow} name settings.',
     default = False
   )
 
   # name
   name = BoolProperty(
     name = 'Batch Name',
-    description = 'Reset the option values for batch name.',
+    description = 'Reset the setting values for batch name.',
     default = True
   )
 
   # copy
   copy = BoolProperty(
     name = 'Batch Name Copy',
-    description = 'Reset the option values for batch name copy.',
+    description = 'Reset the setting values for batch name copy.',
     default = True
   )
 
@@ -104,41 +104,41 @@ class transfer(Operator):
   '''
   bl_idname = 'wm.transfer_name_panel_settings'
   bl_label = 'Transfer Settings'
-  bl_description = 'Transfer current name panel option values to other scenes.'
+  bl_description = 'Transfer current name panel setting values to other scenes.'
   bl_options = {'REGISTER', 'UNDO'}
 
   # panel
   panel = BoolProperty(
     name = 'Name Panel',
-    description = 'Transfer the options values for the name panel.',
+    description = 'Transfer the setting values for the name panel.',
     default = True
   )
 
   # auto
   auto = BoolProperty(
     name = 'Auto Name',
-    description = 'Transfer the option values for auto name.',
+    description = 'Transfer the setting values for auto name.',
     default = True
   )
 
   # names
   names = BoolProperty(
     name = 'Auto Name \N{Rightwards Arrow} Names',
-    description = 'Transfer the option values for the auto name \N{Rightwards Arrow} names.',
+    description = 'Transfer the setting values for the auto name \N{Rightwards Arrow} names.',
     default = True
   )
 
   # name
   name = BoolProperty(
     name = 'Batch Name',
-    description = 'Transfer the option values for batch name.',
+    description = 'Transfer the setting values for batch name.',
     default = True
   )
 
   # copy
   copy = BoolProperty(
     name = 'Batch Name Copy',
-    description = 'Transfer the option values for batch name copy.',
+    description = 'Transfer the setting values for batch name copy.',
     default = True
   )
 

@@ -222,8 +222,11 @@ class name(Operator):
       row.prop(option, 'ignoreParticleSystem', text='', icon='PARTICLES')
       row.prop(option, 'ignoreParticleSetting', text='', icon='MOD_PARTICLES')
 
+      # column
       column = split.column(align=True)
       column.scale_y = 2
+
+      # reset
       op = column.operator('wm.reset_name_panel_settings', text='', icon='LOAD_FACTORY')
       op.panel = False
       op.auto = False
@@ -235,9 +238,13 @@ class name(Operator):
       column.separator()
       column.separator()
 
-    # custom name
+    # column
     column = layout.column(align=True)
+
+    # custom name
     column.prop(option, 'customName')
+
+    # separator
     column.separator()
     column.separator()
 

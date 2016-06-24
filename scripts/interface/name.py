@@ -200,10 +200,7 @@ def filters(self, context, layout, panel):
   row.scale_y = 1.25
 
   # icon toggle
-  if panel.filters:
-    iconToggle = 'RADIOBUT_ON'
-  else:
-    iconToggle = 'RADIOBUT_OFF'
+  iconToggle = 'RADIOBUT_ON' if panel.filters else 'RADIOBUT_OFF'
 
   # filters
   row.prop(panel, 'filters', text='Filters', icon=iconToggle, toggle=True)
@@ -1412,10 +1409,7 @@ def Constraint(self, context, layout, datablock, object, bone, panel):
       sub.prop(datablock, 'influence', text='')
 
     # icon view
-    if datablock.mute:
-      iconView = 'RESTRICT_VIEW_ON'
-    else:
-      iconView = 'RESTRICT_VIEW_OFF'
+    iconView = 'RESTRICT_VIEW_ON' if datablock.mute else 'RESTRICT_VIEW_OFF'
 
     # mute
     row.prop(datablock, 'mute', text='', icon=iconView)
@@ -1453,19 +1447,13 @@ def Modifier(self, context, layout, datablock, object, panel):
     if datablock.type not in {'COLLISION', 'SOFT_BODY'}:
 
       # icon render
-      if datablock.show_render:
-        iconRender = 'RESTRICT_RENDER_OFF'
-      else:
-        iconRender = 'RESTRICT_RENDER_ON'
+      iconRender = 'RESTRICT_RENDER_OFF' if datablock.show_render else 'RESTRICT_RENDER_ON'
 
       # show render
       row.prop(datablock, 'show_render', text='', icon=iconRender)
 
       # icon view
-      if datablock.show_viewport:
-        iconView = 'RESTRICT_VIEW_OFF'
-      else:
-        iconView = 'RESTRICT_VIEW_ON'
+      iconView = 'RESTRICT_VIEW_OFF' if datablock.show_viewport else 'RESTRICT_VIEW_ON'
 
       # show viewport
       row.prop(datablock, 'show_viewport', text='', icon=iconView)
@@ -1543,10 +1531,7 @@ def VertexGroup(self, context, layout, datablock, object, panel):
   if panel.options:
 
     # icon lock
-    if datablock.lock_weight:
-      iconLock = 'LOCKED'
-    else:
-      iconLock = 'UNLOCKED'
+    iconLock = 'LOCKED' if datablock.lock_weight else 'UNLOCKED'
 
     # lock weight
     row.prop(datablock, 'lock_weight', text='', icon=iconLock)
@@ -1619,10 +1604,7 @@ def UV(self, context, layout, datablock, object, panel):
   if panel.options:
 
     # icon active
-    if datablock.active_render:
-      iconActive = 'RESTRICT_RENDER_OFF'
-    else:
-      iconActive = 'RESTRICT_RENDER_ON'
+    iconActive = 'RESTRICT_RENDER_OFF' if datablock.active_render else 'RESTRICT_RENDER_ON'
 
     # active render
     row.prop(datablock, 'active_render', text='', icon=iconActive)
@@ -1655,10 +1637,7 @@ def VertexColor(self, context, layout, datablock, object, panel):
   if panel.options:
 
     # icon active
-    if datablock.active_render:
-      iconActive = 'RESTRICT_RENDER_OFF'
-    else:
-      iconActive = 'RESTRICT_RENDER_ON'
+    iconActive = 'RESTRICT_RENDER_OFF' if datablock.active_render else 'RESTRICT_RENDER_ON'
 
     # active_render
     row.prop(datablock, 'active_render', text='', icon=iconActive)
@@ -1720,10 +1699,7 @@ def Texture(self, context, layout, datablock, object, panel):
     if hasattr(datablock, 'use'):
 
       # icon toggle
-      if datablock.use:
-        iconToggle = 'RADIOBUT_ON'
-      else:
-        iconToggle = 'RADIOBUT_OFF'
+      iconToggle = 'RADIOBUT_ON' if datablock.use else 'RADIOBUT_OFF'
 
       # use
       row.prop(datablock, 'use', text='', icon=iconToggle)
@@ -1757,10 +1733,7 @@ def MaskTexture(self, context, layout, datablock, object, panel):
     if hasattr(datablock, 'use'):
 
       # icon toggle
-      if datablock.use:
-        iconToggle = 'RADIOBUT_ON'
-      else:
-        iconToggle = 'RADIOBUT_OFF'
+      iconToggle = 'RADIOBUT_ON' if datablock.use else 'RADIOBUT_OFF'
 
       # use
       row.prop(datablock, 'use', text='', icon=iconToggle)
@@ -1890,19 +1863,13 @@ def Bone(self, context, layout, datablock, object, panel):
     if panel.options:
 
       # icon view
-      if datablock.hide:
-        iconView = 'RESTRICT_VIEW_ON'
-      else:
-        iconView = 'RESTRICT_VIEW_OFF'
+      iconView = 'RESTRICT_VIEW_ON' if datablock.hide else 'RESTRICT_VIEW_OFF'
 
       # hide
       row.prop(datablock, 'hide', text='', icon=iconView)
 
       # icon hide select
-      if datablock.hide_select:
-        iconSelect = 'RESTRICT_SELECT_ON'
-      else:
-        iconSelect = 'RESTRICT_SELECT_OFF'
+      iconSelect = 'RESTRICT_SELECT_ON' if datablock.hide_select else 'RESTRICT_SELECT_OFF'
 
       # hide select
       row.prop(datablock, 'hide_select', text='', icon=iconSelect)
@@ -1926,28 +1893,19 @@ def Bone(self, context, layout, datablock, object, panel):
     if panel.options:
 
       # icon view
-      if datablock.hide:
-        iconView = 'RESTRICT_VIEW_ON'
-      else:
-        iconView = 'RESTRICT_VIEW_OFF'
+      iconView = 'RESTRICT_VIEW_ON' if datablock.hide else 'RESTRICT_VIEW_OFF'
 
       # hide
       row.prop(datablock, 'hide', text='', icon=iconView)
 
       # icon select
-      if datablock.hide_select:
-        iconSelect = 'RESTRICT_SELECT_ON'
-      else:
-        iconSelect = 'RESTRICT_SELECT_OFF'
+      iconSelect = 'RESTRICT_SELECT_ON' if datablock.hide_select else 'RESTRICT_SELECT_OFF'
 
       # hide select
       row.prop(datablock, 'hide_select', text='', icon=iconSelect)
 
       # icon lock
-      if datablock.lock:
-        iconLock = 'LOCKED'
-      else:
-        iconLock = 'UNLOCKED'
+      iconLock = 'LOCKED' if datablock.lock else 'UNLOCKED'
 
       # lock
       row.prop(datablock, 'lock', text='', icon=iconLock)

@@ -63,10 +63,7 @@ class name(Operator):
     row.scale_y = 1.25
 
     # icon toggle
-    if panel.filters:
-      iconToggle = 'RADIOBUT_ON'
-    else:
-      iconToggle = 'RADIOBUT_OFF'
+    iconToggle = 'RADIOBUT_ON' if panel.filters else 'RADIOBUT_OFF'
 
     # filters
     row.prop(panel, 'filters', text='Filters', icon=iconToggle, toggle=True)
@@ -170,7 +167,7 @@ class name(Operator):
     # enabled
     if panel.displayNames:
 
-      # separator()
+      # separator
       column.separator()
 
       # row
@@ -179,7 +176,7 @@ class name(Operator):
       # mode
       row.prop(panel, 'mode', expand=True)
 
-    # separator()
+    # separator
     column.separator()
     column.separator()
 
@@ -192,8 +189,13 @@ class name(Operator):
     # display bones
     if panel.displayBones:
 
+      # separator
+      column.separator()
+
+      # row
       row = column.row()
 
+      # bone mode
       row.prop(panel, 'boneMode', expand=True)
 
   # execute

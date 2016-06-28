@@ -3434,8 +3434,6 @@ def process(self, context, collection):
     else:
       collection.remove(item)
 
-  print(list)
-
   # sort
   try: collection.sort()
   except: pass

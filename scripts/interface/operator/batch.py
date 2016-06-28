@@ -312,7 +312,7 @@ class name(Operator):
     '''
 
     # main
-    batch.main(context, self.quickBatch)
+    batch.main(self, context, self.quickBatch)
 
     # transfer settings
     settings.transfer(context, False, False, False, True, False)

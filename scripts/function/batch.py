@@ -23,10 +23,11 @@ import re
 from random import random
 from .. import storage
 
+# tag
 tag = False
 
 # main
-def main(context, quickBatch):
+def main(self, context, quickBatch):
   '''
     Send datablock values to populate then send collections to process, action group & lineset names are sent to name.
   '''
@@ -52,21 +53,21 @@ def main(context, quickBatch):
         for object in context.selected_objects[:]:
 
           # quick
-          quick(context, object, panel, option)
+          quick(self, context, object, panel, option)
 
       # mode
-      else:
+      else: # panel.mode == 'LAYERS'
         for object in context.scene.objects[:]:
           if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]:
 
             # quick
-            quick(context, object, panel, option)
+            quick(self, context, object, panel, option)
 
     # display names
-    else:
+    else: # not panel.displayNames
 
       # quick
-      quick(context, context.active_object, panel, option)
+      quick(self, context, context.active_object, panel, option)
 
     # all
     all = [
@@ -123,18 +124,14 @@ def main(context, quickBatch):
     for collection in all:
       if collection != []:
 
-        # clear duplicates
-        list = []
-        [list.append(item) for item in collection if item not in list]
-
         # process
-        process(context, list)
+        process(self, context, collection)
 
         # clear storage
         collection.clear()
 
   # quick batch
-  else:
+  else: # not quickBatch
 
     # mode
     if option.mode in {'SELECTED', 'OBJECTS'}:
@@ -181,7 +178,7 @@ def main(context, quickBatch):
         storage.batch.actions.clear()
 
         # process
-        process(context, actions)
+        process(self, context, actions)
 
       # action groups
       if option.actionGroups:
@@ -228,7 +225,7 @@ def main(context, quickBatch):
         # name action groups
         for action in actions:
           for group in action[1][1].groups:
-            group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
+            group.name = name(self, context, group.name) if not option.suffixLast else name(self, context, group.name) + option.suffix
 
       # grease pencil
       if option.greasePencil:
@@ -267,7 +264,7 @@ def main(context, quickBatch):
                 populate(context, object.grease_pencil, object)
 
         # process
-        process(context, storage.batch.greasePencils)
+        process(self, context, storage.batch.greasePencils)
 
         # clear storage
         storage.batch.greasePencils.clear()
@@ -321,7 +318,7 @@ def main(context, quickBatch):
                   populate(context, layer)
 
             # process
-            process(context, storage.batch.pencilLayers)
+            process(self, context, storage.batch.pencilLayers)
 
             # clear storage
             storage.batch.pencilLayers.clear()
@@ -362,7 +359,7 @@ def main(context, quickBatch):
               populate(context, object)
 
         # process
-        process(context, storage.batch.objects)
+        process(self, context, storage.batch.objects)
 
         # clear storage
         storage.batch.objects.clear()
@@ -419,7 +416,7 @@ def main(context, quickBatch):
         storage.batch.groups.clear()
 
         # process
-        process(context, objectGroups)
+        process(self, context, objectGroups)
 
       # constraints
       if option.constraints:
@@ -459,7 +456,7 @@ def main(context, quickBatch):
                 populate(context, constraint)
 
           # process
-          process(context, storage.batch.constraints)
+          process(self, context, storage.batch.constraints)
 
           # clear storage
           storage.batch.constraints.clear()
@@ -502,7 +499,7 @@ def main(context, quickBatch):
                 populate(context, modifier)
 
           # process
-          process(context, storage.batch.modifiers)
+          process(self, context, storage.batch.modifiers)
 
           # clear storage
           storage.batch.modifiers.clear()
@@ -560,7 +557,7 @@ def main(context, quickBatch):
           if collection != []:
 
             # process
-            process(context, collection)
+            process(self, context, collection)
 
             # clear storage
             collection.clear()
@@ -588,7 +585,7 @@ def main(context, quickBatch):
                 populate(context, group)
 
           # process
-          process(context, storage.batch.boneGroups)
+          process(self, context, storage.batch.boneGroups)
 
           # clear storage
           storage.batch.boneGroups.clear()
@@ -636,7 +633,7 @@ def main(context, quickBatch):
                     populate(context, bone)
 
             # process
-            process(context, storage.batch.bones)
+            process(self, context, storage.batch.bones)
 
             # clear storage
             storage.batch.bones.clear()
@@ -666,7 +663,7 @@ def main(context, quickBatch):
                         populate(context, constraint)
 
                     # process
-                    process(context, storage.batch.constraints)
+                    process(self, context, storage.batch.constraints)
 
                     # clear storage
                     storage.batch.constraints.clear()
@@ -689,7 +686,7 @@ def main(context, quickBatch):
                     populate(context, constraint)
 
                 # process
-                process(context, storage.batch.constraints)
+                process(self, context, storage.batch.constraints)
 
                 # clear storage
                 storage.batch.constraints.clear()
@@ -717,7 +714,7 @@ def main(context, quickBatch):
                     populate(context, group)
 
                 # process
-                process(context, storage.batch.vertexGroups)
+                process(self, context, storage.batch.vertexGroups)
 
                 # clear storage
                 storage.batch.vertexGroups.clear()
@@ -739,7 +736,7 @@ def main(context, quickBatch):
                   populate(context, group)
 
               # process
-              process(context, storage.batch.vertexGroups)
+              process(self, context, storage.batch.vertexGroups)
 
               # clear storage
               storage.batch.vertexGroups.clear()
@@ -785,7 +782,7 @@ def main(context, quickBatch):
                     populate(context, block)
 
               # process
-              process(context, storage.batch.shapekeys)
+              process(self, context, storage.batch.shapekeys)
 
               # clear storage
               storage.batch.shapekeys.clear()
@@ -811,7 +808,7 @@ def main(context, quickBatch):
                 populate(context, uv)
 
             # process
-            process(context, storage.batch.uvs)
+            process(self, context, storage.batch.uvs)
 
             # clear storage
             storage.batch.uvs.clear()
@@ -837,7 +834,7 @@ def main(context, quickBatch):
                 populate(context, color)
 
             # process
-            process(context, storage.batch.vertexColors)
+            process(self, context, storage.batch.vertexColors)
 
             # clear storage
             storage.batch.vertexColors.clear()
@@ -882,7 +879,7 @@ def main(context, quickBatch):
                   populate(context, slot.material, slot)
 
         # process
-        process(context, storage.batch.materials)
+        process(self, context, storage.batch.materials)
 
         # clear storage
         storage.batch.materials.clear()
@@ -932,7 +929,7 @@ def main(context, quickBatch):
                         populate(context, texslot.texture, texslot)
 
         # process
-        process(context, storage.batch.textures)
+        process(self, context, storage.batch.textures)
 
         # clear storage
         storage.batch.textures.clear()
@@ -976,7 +973,7 @@ def main(context, quickBatch):
                   populate(context, system)
 
             # process
-            process(context, storage.batch.particleSystems)
+            process(self, context, storage.batch.particleSystems)
 
             # clear storage
             storage.batch.particleSystems.clear()
@@ -1020,7 +1017,7 @@ def main(context, quickBatch):
                   populate(context, system.settings, system)
 
         # process
-        process(context, storage.batch.particleSettings)
+        process(self, context, storage.batch.particleSettings)
 
         # clear storage
         storage.batch.particleSettings.clear()
@@ -1065,7 +1062,7 @@ def main(context, quickBatch):
               populate(context, sensor)
 
         # process
-        process(context, storage.batch.sensors)
+        process(self, context, storage.batch.sensors)
 
         # clear storage
         storage.batch.sensors.clear()
@@ -1110,7 +1107,7 @@ def main(context, quickBatch):
               populate(context, controller)
 
         # process
-        process(context, storage.batch.controllers)
+        process(self, context, storage.batch.controllers)
 
         # clear storage
         storage.batch.controllers.clear()
@@ -1155,7 +1152,7 @@ def main(context, quickBatch):
               populate(context, actuator)
 
         # process
-        process(context, storage.batch.actuators)
+        process(self, context, storage.batch.actuators)
 
         # clear storage
         storage.batch.actuators.clear()
@@ -1189,7 +1186,7 @@ def main(context, quickBatch):
         storage.batch.actions.clear()
 
         # process
-        process(context, actions)
+        process(self, context, actions)
 
       # action groups
       if option.actionGroups:
@@ -1217,7 +1214,7 @@ def main(context, quickBatch):
         # name action groups
         for action in actions:
           for group in action[1][1].groups:
-            group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
+            group.name = name(self, context, group.name) if not option.suffixLast else name(self, context, group.name) + option.suffix
 
       # grease pencil
       if option.greasePencil:
@@ -1237,7 +1234,7 @@ def main(context, quickBatch):
               populate(context, object.grease_pencil, object)
 
         # process
-        process(context, storage.batch.greasePencils)
+        process(self, context, storage.batch.greasePencils)
 
         # clear storage
         storage.batch.greasePencils.clear()
@@ -1266,7 +1263,7 @@ def main(context, quickBatch):
                 populate(context, layer)
 
             # process
-            process(context, storage.batch.pencilLayers)
+            process(self, context, storage.batch.pencilLayers)
 
             # clear storage
             storage.batch.pencilLayers.clear()
@@ -1288,7 +1285,7 @@ def main(context, quickBatch):
             populate(context, object)
 
         # process
-        process(context, storage.batch.objects)
+        process(self, context, storage.batch.objects)
 
         # clear storage
         storage.batch.objects.clear()
@@ -1321,7 +1318,7 @@ def main(context, quickBatch):
         storage.batch.groups.clear()
 
         # process
-        process(context, objectGroups)
+        process(self, context, objectGroups)
 
       # constraints
       if option.constraints:
@@ -1341,7 +1338,7 @@ def main(context, quickBatch):
               populate(context, constraint)
 
           # process
-          process(context, storage.batch.constraints)
+          process(self, context, storage.batch.constraints)
 
           # clear storage
           storage.batch.constraints.clear()
@@ -1364,7 +1361,7 @@ def main(context, quickBatch):
               populate(context, modifier)
 
           # process
-          process(context, storage.batch.modifiers)
+          process(self, context, storage.batch.modifiers)
 
           # clear storage
           storage.batch.modifiers.clear()
@@ -1401,7 +1398,7 @@ def main(context, quickBatch):
           if collection != []:
 
             # process
-            process(context, collection)
+            process(self, context, collection)
 
             # clear storage
             collection.clear()
@@ -1416,7 +1413,7 @@ def main(context, quickBatch):
               populate(context, group)
 
           # process
-          process(context, storage.batch.boneGroups)
+          process(self, context, storage.batch.boneGroups)
 
           # clear storage
           storage.batch.boneGroups.clear()
@@ -1441,7 +1438,7 @@ def main(context, quickBatch):
                   populate(context, bone)
 
             # process
-            process(context, storage.batch.bones)
+            process(self, context, storage.batch.bones)
 
             # clear storage
             storage.batch.bones.clear()
@@ -1466,7 +1463,7 @@ def main(context, quickBatch):
                   populate(context, constraint)
 
               # process
-              process(context, storage.batch.constraints)
+              process(self, context, storage.batch.constraints)
 
               # clear storage
               storage.batch.constraints.clear()
@@ -1490,7 +1487,7 @@ def main(context, quickBatch):
                 populate(context, group)
 
             # process
-            process(context, storage.batch.vertexGroups)
+            process(self, context, storage.batch.vertexGroups)
 
             # clear storage
             storage.batch.vertexGroups.clear()
@@ -1515,7 +1512,7 @@ def main(context, quickBatch):
                   populate(context, block)
 
               # process
-              process(context, storage.batch.shapekeys)
+              process(self, context, storage.batch.shapekeys)
 
               # clear storage
               storage.batch.shapekeys.clear()
@@ -1530,7 +1527,7 @@ def main(context, quickBatch):
               populate(context, uv)
 
             # process
-            process(context, storage.batch.uvs)
+            process(self, context, storage.batch.uvs)
 
             # clear storage
             storage.batch.uvs.clear()
@@ -1545,7 +1542,7 @@ def main(context, quickBatch):
               populate(context, color)
 
             # process
-            process(context, storage.batch.vertexColors)
+            process(self, context, storage.batch.vertexColors)
 
             # clear storage
             storage.batch.vertexColors.clear()
@@ -1569,7 +1566,7 @@ def main(context, quickBatch):
                 populate(context, slot.material, slot)
 
         # process
-        process(context, storage.batch.materials)
+        process(self, context, storage.batch.materials)
 
         # clear storage
         storage.batch.materials.clear()
@@ -1596,7 +1593,7 @@ def main(context, quickBatch):
                       populate(context, texslot.texture, texslot)
 
         # process
-        process(context, storage.batch.textures)
+        process(self, context, storage.batch.textures)
 
         # clear storage
         storage.batch.textures.clear()
@@ -1620,7 +1617,7 @@ def main(context, quickBatch):
                 populate(context, system)
 
             # process
-            process(context, storage.batch.particleSystems)
+            process(self, context, storage.batch.particleSystems)
 
             # clear storage
             storage.batch.particleSystems.clear()
@@ -1644,7 +1641,7 @@ def main(context, quickBatch):
                 populate(context, system.settings, system)
 
         # process
-        process(context, storage.batch.particleSettings)
+        process(self, context, storage.batch.particleSettings)
 
         # clear storage
         storage.batch.particleSettings.clear()
@@ -1668,7 +1665,7 @@ def main(context, quickBatch):
               populate(context, sensor)
 
           # process
-          process(context, storage.batch.sensors)
+          process(self, context, storage.batch.sensors)
 
           # clear storage
           storage.batch.sensors.clear()
@@ -1692,7 +1689,7 @@ def main(context, quickBatch):
               populate(context, controller)
 
           # process
-          process(context, storage.batch.controllers)
+          process(self, context, storage.batch.controllers)
 
           # clear storage
           storage.batch.controllers.clear()
@@ -1716,7 +1713,7 @@ def main(context, quickBatch):
               populate(context, actuator)
 
           # process
-          process(context, storage.batch.actuators)
+          process(self, context, storage.batch.actuators)
 
           # clear storage
           storage.batch.actuators.clear()
@@ -1732,7 +1729,7 @@ def main(context, quickBatch):
           populate(context, action)
 
         # process
-        process(context, storage.batch.actions)
+        process(self, context, storage.batch.actions)
 
         # clear storage
         storage.batch.actions.clear()
@@ -1747,7 +1744,7 @@ def main(context, quickBatch):
         # process
         for action in storage.batch.actions:
           for group in action[1][1].groups:
-            group.name = name(context, group.name) if not option.suffixLast else name(context, group.name) + option.suffix
+            group.name = name(self, context, group.name) if not option.suffixLast else name(self, context, group.name) + option.suffix
 
           # bones
           if option.bones:
@@ -1770,7 +1767,7 @@ def main(context, quickBatch):
           populate(context, pencil)
 
         # process
-        process(context, storage.batch.greasePencils)
+        process(self, context, storage.batch.greasePencils)
 
         # clear storage
         storage.batch.greasePencils.clear()
@@ -1786,7 +1783,7 @@ def main(context, quickBatch):
             populate(context, layer)
 
           # process
-          process(context, storage.batch.pencilLayers)
+          process(self, context, storage.batch.pencilLayers)
 
           # clear storage
           storage.batch.pencilLayers.clear()
@@ -1808,7 +1805,7 @@ def main(context, quickBatch):
             populate(context, object)
 
         # process
-        process(context, storage.batch.objects)
+        process(self, context, storage.batch.objects)
 
         # clear storage
         storage.batch.objects.clear()
@@ -1821,7 +1818,7 @@ def main(context, quickBatch):
           populate(context, group)
 
         # process
-        process(context, storage.batch.groups)
+        process(self, context, storage.batch.groups)
 
         # clear storage
         storage.batch.groups.clear()
@@ -1862,7 +1859,7 @@ def main(context, quickBatch):
                 populate(context, constraint)
 
           # process
-          process(context, storage.batch.constraints)
+          process(self, context, storage.batch.constraints)
 
           # clear storage
           storage.batch.constraints.clear()
@@ -1903,7 +1900,7 @@ def main(context, quickBatch):
                 populate(context, modifier)
 
           # process
-          process(context, storage.batch.modifiers)
+          process(self, context, storage.batch.modifiers)
 
           # clear storage
           storage.batch.modifiers.clear()
@@ -1918,7 +1915,7 @@ def main(context, quickBatch):
           populate(context, camera)
 
         # process
-        process(context, storage.batch.cameras)
+        process(self, context, storage.batch.cameras)
 
         # clear storage
         storage.batch.cameras.clear()
@@ -1930,7 +1927,7 @@ def main(context, quickBatch):
           populate(context, mesh)
 
         # process
-        process(context, storage.batch.meshes)
+        process(self, context, storage.batch.meshes)
 
         # clear storage
         storage.batch.meshes.clear()
@@ -1942,7 +1939,7 @@ def main(context, quickBatch):
           populate(context, curve)
 
         # process
-        process(context, storage.batch.curves)
+        process(self, context, storage.batch.curves)
 
         # clear storage
         storage.batch.curves.clear()
@@ -1954,7 +1951,7 @@ def main(context, quickBatch):
           populate(context, lamp)
 
         # process
-        process(context, storage.batch.lamps)
+        process(self, context, storage.batch.lamps)
 
         # clear storage
         storage.batch.lamps.clear()
@@ -1966,7 +1963,7 @@ def main(context, quickBatch):
           populate(context, lattice)
 
         # process
-        process(context, storage.batch.lattices)
+        process(self, context, storage.batch.lattices)
 
         # clear storage
         storage.batch.lattices.clear()
@@ -1978,7 +1975,7 @@ def main(context, quickBatch):
           populate(context, metaball)
 
         # process
-        process(context, storage.batch.metaballs)
+        process(self, context, storage.batch.metaballs)
 
         # clear storage
         storage.batch.metaballs.clear()
@@ -1990,7 +1987,7 @@ def main(context, quickBatch):
           populate(context, speaker)
 
         # process
-        process(context, storage.batch.speakers)
+        process(self, context, storage.batch.speakers)
 
         # clear storage
         storage.batch.speakers.clear()
@@ -2002,7 +1999,7 @@ def main(context, quickBatch):
           populate(context, armature)
 
         # process
-        process(context, storage.batch.armatures)
+        process(self, context, storage.batch.armatures)
 
         # clear storage
         storage.batch.armatures.clear()
@@ -2017,7 +2014,7 @@ def main(context, quickBatch):
               populate(context, group)
 
             # process
-            process(context, storage.batch.boneGroups)
+            process(self, context, storage.batch.boneGroups)
 
             # clear storage
             storage.batch.boneGroups.clear()
@@ -2031,7 +2028,7 @@ def main(context, quickBatch):
             populate(context, bone)
 
           # process
-          process(context, storage.batch.bones)
+          process(self, context, storage.batch.bones)
 
           # clear storage
           storage.batch.bones.clear()
@@ -2047,7 +2044,7 @@ def main(context, quickBatch):
                 populate(context, constraint)
 
               # process
-              process(context, storage.batch.constraints)
+              process(self, context, storage.batch.constraints)
 
               # clear storage
               storage.batch.constraints.clear()
@@ -2062,7 +2059,7 @@ def main(context, quickBatch):
               populate(context, group)
 
             # process
-            process(context, storage.batch.vertexGroups)
+            process(self, context, storage.batch.vertexGroups)
 
             # clear storage
             storage.batch.vertexGroups.clear()
@@ -2079,7 +2076,7 @@ def main(context, quickBatch):
               populate(context, block)
 
             # process
-            process(context, storage.batch.shapekeys)
+            process(self, context, storage.batch.shapekeys)
 
             # clear storage
             storage.batch.shapekeys.clear()
@@ -2094,7 +2091,7 @@ def main(context, quickBatch):
               populate(context, uv)
 
             # process
-            process(context, storage.batch.uvs)
+            process(self, context, storage.batch.uvs)
 
             # clear storage
             storage.batch.uvs.clear()
@@ -2109,7 +2106,7 @@ def main(context, quickBatch):
               populate(context, color)
 
             # process
-            process(context, storage.batch.vertexColors)
+            process(self, context, storage.batch.vertexColors)
 
             # clear storage
             storage.batch.vertexColors.clear()
@@ -2122,7 +2119,7 @@ def main(context, quickBatch):
           populate(context, material)
 
         # process
-        process(context, storage.batch.materials)
+        process(self, context, storage.batch.materials)
 
         # clear storage
         storage.batch.materials.clear()
@@ -2135,7 +2132,7 @@ def main(context, quickBatch):
           populate(context, texture)
 
         # process
-        process(context, storage.batch.textures)
+        process(self, context, storage.batch.textures)
 
         # clear storage
         storage.batch.textures.clear()
@@ -2150,7 +2147,7 @@ def main(context, quickBatch):
               populate(context, system)
 
             # process
-            process(context, storage.batch.particleSystems)
+            process(self, context, storage.batch.particleSystems)
 
             # clear storage
             storage.batch.particleSystems.clear()
@@ -2163,7 +2160,7 @@ def main(context, quickBatch):
           populate(context, settings)
 
         # process
-        process(context, storage.batch.particleSettings)
+        process(self, context, storage.batch.particleSettings)
 
         # clear storage
         storage.batch.particleSettings.clear()
@@ -2187,7 +2184,7 @@ def main(context, quickBatch):
               populate(context, sensor)
 
           # process
-          process(context, storage.batch.sensors)
+          process(self, context, storage.batch.sensors)
 
           # clear storage
           storage.batch.sensors.clear()
@@ -2211,7 +2208,7 @@ def main(context, quickBatch):
               populate(context, controller)
 
           # process
-          process(context, storage.batch.controllers)
+          process(self, context, storage.batch.controllers)
 
           # clear storage
           storage.batch.controllers.clear()
@@ -2235,7 +2232,7 @@ def main(context, quickBatch):
               populate(context, actuator)
 
           # process
-          process(context, storage.batch.actuators)
+          process(self, context, storage.batch.actuators)
 
           # clear storage
           storage.batch.actuators.clear()
@@ -2246,7 +2243,7 @@ def main(context, quickBatch):
         for layer in scene.render.layers[:]:
           for lineset in layer.freestyle_settings.linesets[:]:
             if hasattr(lineset, 'name'):
-              lineset.name = name(context, lineset.name) if not option.suffixLast else name(context, lineset.name) + option.suffix
+              lineset.name = name(self, context, lineset.name) if not option.suffixLast else name(self, context, lineset.name) + option.suffix
 
     # linestyles
     if option.linestyles:
@@ -2256,7 +2253,7 @@ def main(context, quickBatch):
         populate(context, style)
 
       # process
-      process(context, storage.batch.linestyles)
+      process(self, context, storage.batch.linestyles)
 
       # clear storage
       storage.batch.linestyles.clear()
@@ -2282,7 +2279,7 @@ def main(context, quickBatch):
             populate(context, modifier)
 
         # process
-        process(context, storage.batch.modifiers)
+        process(self, context, storage.batch.modifiers)
 
         # clear storage
         storage.batch.modifiers.clear()
@@ -2304,7 +2301,7 @@ def main(context, quickBatch):
             populate(context, modifier)
 
         # process
-        process(context, storage.batch.modifiers)
+        process(self, context, storage.batch.modifiers)
 
         # clear storage
         storage.batch.modifiers.clear()
@@ -2326,7 +2323,7 @@ def main(context, quickBatch):
             populate(context, modifier)
 
         # process
-        process(context, storage.batch.modifiers)
+        process(self, context, storage.batch.modifiers)
 
         # clear storage
         storage.batch.modifiers.clear()
@@ -2348,7 +2345,7 @@ def main(context, quickBatch):
             populate(context, modifier)
 
         # process
-        process(context, storage.batch.modifiers)
+        process(self, context, storage.batch.modifiers)
 
         # clear storage
         storage.batch.modifiers.clear()
@@ -2361,7 +2358,7 @@ def main(context, quickBatch):
         populate(context, scene)
 
       # process
-      process(context, storage.batch.scenes)
+      process(self, context, storage.batch.scenes)
 
       # clear storage
       storage.batch.scenes.clear()
@@ -2375,7 +2372,7 @@ def main(context, quickBatch):
           populate(context, layer)
 
         # process
-        process(context, storage.batch.renderLayers)
+        process(self, context, storage.batch.renderLayers)
 
         # clear storage
         storage.batch.renderLayers.clear()
@@ -2388,7 +2385,7 @@ def main(context, quickBatch):
         populate(context, world)
 
       # process
-      process(context, storage.batch.worlds)
+      process(self, context, storage.batch.worlds)
 
       # clear storage
       storage.batch.worlds.clear()
@@ -2401,7 +2398,7 @@ def main(context, quickBatch):
         populate(context, library)
 
       # process
-      process(context, storage.batch.libraries)
+      process(self, context, storage.batch.libraries)
 
       # clear storage
       storage.batch.libraries.clear()
@@ -2414,7 +2411,7 @@ def main(context, quickBatch):
         populate(context, image)
 
       # process
-      process(context, storage.batch.images)
+      process(self, context, storage.batch.images)
 
       # clear storage
       storage.batch.images.clear()
@@ -2427,7 +2424,7 @@ def main(context, quickBatch):
         populate(context, mask)
 
       # process
-      process(context, storage.batch.masks)
+      process(self, context, storage.batch.masks)
 
       # clear storage
       storage.batch.masks.clear()
@@ -2442,7 +2439,7 @@ def main(context, quickBatch):
             populate(context, sequence)
 
           # process
-          process(context, storage.batch.sequences)
+          process(self, context, storage.batch.sequences)
 
           # clear storage
           storage.batch.sequences.clear()
@@ -2455,7 +2452,7 @@ def main(context, quickBatch):
         populate(context, clip)
 
       # process
-      process(context, storage.batch.movieClips)
+      process(self, context, storage.batch.movieClips)
 
       # clear storage
       storage.batch.movieClips.clear()
@@ -2468,7 +2465,7 @@ def main(context, quickBatch):
         populate(context, sound)
 
       # process
-      process(context, storage.batch.sounds)
+      process(self, context, storage.batch.sounds)
 
       # clear storage
       storage.batch.sounds.clear()
@@ -2481,7 +2478,7 @@ def main(context, quickBatch):
         populate(context, screen)
 
       # process
-      process(context, storage.batch.screens)
+      process(self, context, storage.batch.screens)
 
       # clear storage
       storage.batch.screens.clear()
@@ -2495,7 +2492,7 @@ def main(context, quickBatch):
           populate(context, keyingSet)
 
         # process
-        process(context, storage.batch.keyingSets)
+        process(self, context, storage.batch.keyingSets)
 
         # clear storage
         storage.batch.keyingSets.clear()
@@ -2508,7 +2505,7 @@ def main(context, quickBatch):
         populate(context, palette)
 
       # process
-      process(context, storage.batch.palettes)
+      process(self, context, storage.batch.palettes)
 
       # clear storage
       storage.batch.palettes.clear()
@@ -2521,7 +2518,7 @@ def main(context, quickBatch):
         populate(context, brush)
 
       # process
-      process(context, storage.batch.brushes)
+      process(self, context, storage.batch.brushes)
 
       # clear storage
       storage.batch.brushes.clear()
@@ -2538,7 +2535,7 @@ def main(context, quickBatch):
             populate(context, node)
 
           # process
-          process(context, storage.batch.nodes)
+          process(self, context, storage.batch.nodes)
 
           # clear storage
           storage.batch.nodes.clear()
@@ -2552,7 +2549,7 @@ def main(context, quickBatch):
             populate(context, node)
 
           # process
-          process(context, storage.batch.nodes)
+          process(self, context, storage.batch.nodes)
 
           # clear storage
           storage.batch.nodes.clear()
@@ -2566,7 +2563,7 @@ def main(context, quickBatch):
             populate(context, node)
 
           # process
-          process(context, storage.batch.nodes)
+          process(self, context, storage.batch.nodes)
 
           # clear storage
           storage.batch.nodes.clear()
@@ -2579,7 +2576,7 @@ def main(context, quickBatch):
           populate(context, node)
 
         # process
-        process(context, storage.batch.nodes)
+        process(self, context, storage.batch.nodes)
 
         # clear storage
         storage.batch.nodes.clear()
@@ -2599,7 +2596,7 @@ def main(context, quickBatch):
             populate(context, node)
 
           # process
-          process(context, storage.batch.nodeLabels)
+          process(self, context, storage.batch.nodeLabels)
 
           # clear storage
           storage.batch.nodeLabels.clear()
@@ -2613,7 +2610,7 @@ def main(context, quickBatch):
             populate(context, node)
 
           # process
-          process(context, storage.batch.nodeLabels)
+          process(self, context, storage.batch.nodeLabels)
 
           # clear storage
           storage.batch.nodeLabels.clear()
@@ -2627,7 +2624,7 @@ def main(context, quickBatch):
             populate(context, node)
 
           # process
-          process(context, storage.batch.nodeLabels)
+          process(self, context, storage.batch.nodeLabels)
 
           # clear storage
           storage.batch.nodeLabels.clear()
@@ -2640,7 +2637,7 @@ def main(context, quickBatch):
           populate(context, node)
 
         # process
-        process(context, storage.batch.nodeLabels)
+        process(self, context, storage.batch.nodeLabels)
 
         # clear storage
         storage.batch.nodeLabels.clear()
@@ -2656,7 +2653,7 @@ def main(context, quickBatch):
         populate(context, group)
 
       # process
-      process(context, storage.batch.nodeGroups)
+      process(self, context, storage.batch.nodeGroups)
 
       # clear storage
       storage.batch.nodeGroups.clear()
@@ -2669,7 +2666,7 @@ def main(context, quickBatch):
         populate(context, text)
 
       # process
-      process(context, storage.batch.texts)
+      process(self, context, storage.batch.texts)
 
       # clear storage
       storage.batch.texts.clear()
@@ -2686,7 +2683,7 @@ def main(context, quickBatch):
             populate(context, node)
 
           # process
-          process(context, storage.batch.nodes)
+          process(self, context, storage.batch.nodes)
 
           # clear storage
           storage.batch.nodes.clear()
@@ -2700,7 +2697,7 @@ def main(context, quickBatch):
             populate(context, node)
 
           # process
-          process(context, storage.batch.nodes)
+          process(self, context, storage.batch.nodes)
 
           # clear storage
           storage.batch.nodes.clear()
@@ -2714,7 +2711,7 @@ def main(context, quickBatch):
             populate(context, node)
 
           # process
-          process(context, storage.batch.nodes)
+          process(self, context, storage.batch.nodes)
 
           # clear storage
           storage.batch.nodes.clear()
@@ -2727,13 +2724,13 @@ def main(context, quickBatch):
           populate(context, node)
 
         # process
-        process(context, storage.batch.nodes)
+        process(self, context, storage.batch.nodes)
 
         # clear storage
         storage.batch.nodes.clear()
 
 # quick
-def quick(context, object, panel, option):
+def quick(self, context, object, panel, option):
   '''
     Quick batch mode for main.
   '''
@@ -2787,7 +2784,7 @@ def quick(context, object, panel, option):
             populate(context, layer)
 
         # process
-        process(context, storage.batch.pencilLayers)
+        process(self, context, storage.batch.pencilLayers)
 
         # clear storage
         storage.batch.pencilLayers.clear()
@@ -2821,7 +2818,7 @@ def quick(context, object, panel, option):
           populate(context, constraint)
 
       # process
-      process(context, storage.batch.constraints)
+      process(self, context, storage.batch.constraints)
 
       # clear storage
       storage.batch.constraints.clear()
@@ -2840,7 +2837,7 @@ def quick(context, object, panel, option):
           populate(context, modifier)
 
       # process
-      process(context, storage.batch.modifiers)
+      process(self, context, storage.batch.modifiers)
 
       # clear storage
       storage.batch.modifiers.clear()
@@ -2860,7 +2857,7 @@ def quick(context, object, panel, option):
             populate(context, group)
 
         # process
-        process(context, storage.batch.boneGroups)
+        process(self, context, storage.batch.boneGroups)
 
         # clear storage
         storage.batch.boneGroups.clear()
@@ -2934,7 +2931,7 @@ def quick(context, object, panel, option):
               if search == '' or re.search(search, context.active_bone, re.I):
 
                 # name
-                context.active_bone.name = name(context, context.active_bone.name) if option.suffixLast else name(context, context.active_bone.name) + option.suffix
+                context.active_bone.name = name(self, context, context.active_bone.name) if option.suffixLast else name(self, context, context.active_bone.name) + option.suffix
 
             # mode
             elif object.mode == 'POSE':
@@ -2943,7 +2940,7 @@ def quick(context, object, panel, option):
               if search == '' or re.search(search, context.active_pose_bone, re.I):
 
                 # name
-                context.active_pose_bone.name = name(context, context.active_pose_bone.name) if option.suffixLast else name(context, context.active_pose_bone.name) + option.suffix
+                context.active_pose_bone.name = name(self, context, context.active_pose_bone.name) if option.suffixLast else name(self, context, context.active_pose_bone.name) + option.suffix
 
     # bone constraints
     if panel.boneConstraints:
@@ -2967,7 +2964,7 @@ def quick(context, object, panel, option):
                     storage.batch.constraints.append([constraint.name, [1, constraint]])
 
                 # process
-                process(context, storage.batch.constraints)
+                process(self, context, storage.batch.constraints)
 
                 # clear storage
                 storage.batch.constraints.clear()
@@ -2985,7 +2982,7 @@ def quick(context, object, panel, option):
                       storage.batch.constraints.append([constraint.name, [1, constraint]])
 
                   # process
-                  process(context, storage.batch.constraints)
+                  process(self, context, storage.batch.constraints)
 
                   # clear storage
                   storage.batch.constraints.clear()
@@ -3001,7 +2998,7 @@ def quick(context, object, panel, option):
                 storage.batch.constraints.append([constraint.name, [1, constraint]])
 
             # process
-            process(context, storage.batch.constraints)
+            process(self, context, storage.batch.constraints)
 
             # clear storage
             storage.batch.constraints.clear()
@@ -3033,7 +3030,7 @@ def quick(context, object, panel, option):
             populate(context, group)
 
         # process
-        process(context, storage.batch.vertexGroups)
+        process(self, context, storage.batch.vertexGroups)
 
         # clear storage
         storage.batch.vertexGroups.clear()
@@ -3054,7 +3051,7 @@ def quick(context, object, panel, option):
               populate(context, key)
 
           # process
-          process(context, storage.batch.shapekeys)
+          process(self, context, storage.batch.shapekeys)
 
           # clear storage
           storage.batch.shapekeys.clear()
@@ -3074,7 +3071,7 @@ def quick(context, object, panel, option):
             populate(context, uv)
 
         # process
-        process(context, storage.batch.uvs)
+        process(self, context, storage.batch.uvs)
 
         # clear storage
         storage.batch.uvs.clear()
@@ -3094,7 +3091,7 @@ def quick(context, object, panel, option):
             populate(context, vertexColor)
 
         # process
-        process(context, storage.batch.vertexColors)
+        process(self, context, storage.batch.vertexColors)
 
         # clear storage
         storage.batch.vertexColors.clear()
@@ -3186,7 +3183,7 @@ def quick(context, object, panel, option):
             populate(context, modifier.particle_system)
 
       # process
-      process(context, storage.batch.particleSystems)
+      process(self, context, storage.batch.particleSystems)
 
       # clear storage
       storage.batch.particleSystems.clear()
@@ -3403,7 +3400,7 @@ def populate(context, datablock, source=None):
           storage.batch.nodes.append([datablock.name, [1, datablock]])
 
           if tag:
-            datablock.label = name(context, datablock.label)
+            datablock.label = name(self, context, datablock.label)
 
   # node groups
   if hasattr(datablock.rna_type.base, 'identifier'):
@@ -3415,13 +3412,13 @@ def populate(context, datablock, source=None):
     storage.batch.nodes.append([datablock.name, [1, datablock]])
 
     if tag:
-      datablock.label = name(context, datablock.label)
+      datablock.label = name(self, context, datablock.label)
 
   # texts
   if datablock.rna_type.identifier == 'Text':
     storage.batch.texts.append([datablock.name, [1, datablock]])
 
-def process(context, collection):
+def process(self, context, collection):
   '''
     Process collection, send names to name.
   '''
@@ -3429,18 +3426,9 @@ def process(context, collection):
   # option
   option = context.scene.BatchName
 
-  # counter
-  counter = [
-    # 'datablock.name', ...
-  ]
-
   # clean duplicates
   list = []
-  for item in collection[:]:
-    if item[1][1] not in list[:]:
-      list.append(item[1][1])
-    else:
-      collection.remove(item)
+  list = [item[1][1] if item[1][1] not in list[:] else collection.remove(item) for item in collection[:]]
 
   # sort
   try: collection.sort()
@@ -3453,16 +3441,16 @@ def process(context, collection):
     if option.sort:
 
       # name
-      item[0] = name(context, (re.split(r'\W[0-9]*$|_[0-9]*$', item[0]))[0])
+      item[0] = name(self, context, (re.split(r'\W[0-9]*$|_[0-9]*$', item[0]))[0])
 
     # sort
     else:
 
       # name
-      item[0] = name(context, item[0])
+      item[0] = name(self, context, item[0])
 
-    # count
-    counter.append(item[0])
+  # list
+  list = [item[0] for item in collection[:]]
 
   # start
   i = 0
@@ -3471,13 +3459,10 @@ def process(context, collection):
   for item in collection[:]:
 
     # count
-    item[1][0] = counter.count(counter[i])
+    item[1][0] = list.count(list[i])
 
     # add
     i += 1
-
-  # clear counter
-  counter.clear()
 
   # collection
   for item in collection[:]:
@@ -3652,16 +3637,15 @@ def process(context, collection):
 
     try:
 
+      # list
       list = []
-
       for item in collection[:]:
-
         if item[0] not in list:
 
+          # source
           source = item[1]
 
-          # source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
-
+          # append
           list.append(item[0])
 
         if item[1][1] != source[1]:
@@ -3669,62 +3653,75 @@ def process(context, collection):
           # actions
           if item[1][1].rna_type.identifier == 'Action':
             item[1][2].action = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # grease pencils
           if item[1][1].rna_type.identifier == 'GreasePencil':
             item[1][2].grease_pencil = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # cameras
           if item[1][1].rna_type.identifier == 'Camera':
             item[1][2].data = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # meshes
           if item[1][1].rna_type.identifier == 'Mesh':
             item[1][2].data = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # curves
           if item[1][1].rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
             item[1][2].data = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # lamps
           if hasattr(item[1][1].rna_type.base, 'identifier'):
             if item[1][1].rna_type.base.identifier == 'Lamp':
               item[1][2].data = source[1]
+              source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # lattices
           if item[1][1].rna_type.identifier == 'Lattice':
             item[1][2].data = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # metaballs
           if item[1][1].rna_type.identifier == 'MetaBall':
             item[1][2].data = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # speakers
           if item[1][1].rna_type.identifier == 'Speaker':
             item[1][2].data = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # armatures
           if item[1][1].rna_type.identifier == 'Armature':
             item[1][2].data = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # materials
           if item[1][1].rna_type.identifier == 'Material':
             item[1][2].material = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # textures
           if hasattr(item[1][1].rna_type.base, 'identifier'):
             if item[1][1].rna_type.base.identifier == 'Texture':
               item[1][2].texture = source[1]
+              source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # particle settings
           if item[1][1].rna_type.identifier == 'ParticleSettings':
             item[1][2].settings = source[1]
+            source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
     except:
       pass
 
 # name
-def name(context, oldName):
+def name(self, context, oldName):
   '''
     Name datablocks received from process.
   '''
@@ -3754,7 +3751,8 @@ def name(context, oldName):
 
   # find & replace
   if option.regex:
-    newName = re.sub(option.find, option.replace, newName)
+    try: newName = re.sub(option.find, option.replace, newName)
+    except Exception as e: self.report({'WARNING'}, 'Invalid Expression: ' + str(e) + ', while working on: ' + oldName)
   else:
     newName = re.sub(re.escape(option.find), option.replace, newName)
 

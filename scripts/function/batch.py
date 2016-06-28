@@ -3428,7 +3428,13 @@ def process(self, context, collection):
 
   # clean duplicates
   list = []
-  list = [item[1][1] if item[1][1] not in list[:] else collection.remove(item) for item in collection[:]]
+  for item in collection[:]:
+    if item[1][1] not in list[:]:
+      list.append(item[1][1])
+    else:
+      collection.remove(item)
+
+  print(list)
 
   # sort
   try: collection.sort()
@@ -3752,7 +3758,7 @@ def name(self, context, oldName):
   # find & replace
   if option.regex:
     try: newName = re.sub(option.find, option.replace, newName)
-    except Exception as e: self.report({'WARNING'}, 'Invalid Expression: ' + str(e) + ', while working on: ' + oldName)
+    except Exception as e: self.report({'WARNING'}, 'Invalid Expression: ' + str(e) + ' while working on: ' + oldName)
   else:
     newName = re.sub(re.escape(option.find), option.replace, newName)
 

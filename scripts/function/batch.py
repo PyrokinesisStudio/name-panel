@@ -3453,139 +3453,140 @@ def process(self, context, collection):
 
   # sort, ignore position
   if option.sort and option.ignorePosition:
+    try:
 
-    # collection
-    for item in collection[:]:
-
-      # positional
-      if [re.search(r'\W' + position + r'$', item[0], re.I) if re.search(r'\W[A-z]*$', item[0]) else re.search(r'_' + position + r'$', item[0], re.I) for position in storage.batch.positional[:]]:
+      # collection
+      for item in collection[:]:
 
         # positional
-        item[1][2] = re.split(r'\W([A-z]*)$|_([A-z]*)$', re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0], re.I)[1]
+        if [re.search(r'\W' + position + r'$', item[0], re.I) if re.search(r'\W[A-z]*$', item[0]) else re.search(r'_' + position + r'$', item[0], re.I) for position in storage.batch.positional[:]]:
 
-        # name
-        item[0] = re.split(r'\W[A-z]*$|_[A-z]*$', re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0], re.I)[0]
-
-        # append
-        positional.setdefault(item[1][2], []).append(item)
-
-    # positional
-    for position in positional:
-
-      # start
-      i = 0
-
-      # list
-      list = [re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0] for item in positional[position]]
-
-      # position
-      for item in positional[position]:
-
-        # count
-        item[1][0] = list.count(list[i])
-
-        # add
-        i += 1
-
-    # positional
-    for position in positional:
-
-      # position
-      for item in positional[position]:
-
-        # name
-        if hasattr(item[1][1], 'name'):
-
-          # randomize name
-          item[1][1].name = str(random())
-
-        # info
-        elif hasattr(item[1][1], 'info'):
-
-          # randomize name
-          item[1][1].info = str(random())
-
-        # bl_label
-        elif hasattr(item[1][1], 'bl_label'):
-          item[1][1].bl_label = str(random())
-
-    # positional
-    for position in positional:
-
-      # start
-      i = 0
-
-      # list
-      list = []
-
-      # position
-      for item in positional[position]:
-
-        item[0] = re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0]
-
-        # duplicates
-        if item[0] not in list:
-
-          # suffix last
-          if option.suffixLast:
-
-            # rename
-            rename = item[0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(item[1][0]))) + option.separator + item[1][2] + option.suffix
-
-          # suffix last
-          else:
-
-            # rename
-            rename = item[0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(item[1][0]))) + option.separator + item[1][2]
+          # positional
+          item[1][2] = re.split(r'\W([A-z]*)$|_([A-z]*)$', re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0], re.I)[1]
 
           # name
-          if hasattr(item[1][1], 'name'):
+          item[0] = re.split(r'\W[A-z]*$|_[A-z]*$', re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0], re.I)[0]
 
-            # rename
-            item[1][1].name = rename
+          # append
+          positional.setdefault(item[1][2], []).append(item)
 
-          # info
-          elif hasattr(item[1][1], 'info'):
+      # positional
+      for position in positional:
 
-            # rename
-            item[1][1].info = rename
+        # start
+        i = 0
 
-          # bl_label
-          elif hasattr(item[1][1], 'bl_label'):
+        # list
+        list = [re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0] for item in positional[position]]
 
-            # rename
-            item[1][1].bl_label = rename
+        # position
+        for item in positional[position]:
+
+          # count
+          item[1][0] = list.count(list[i])
 
           # add
           i += 1
-
-        # count
-        if i == item[1][0]:
-
-          # reset
-          i = 0
-
-          # duplicates
-          list.append(item[0])
-
-
-    # perform full name operation for dict list items
-
-
-    # collection
-    for item in collection[:]:
 
       # positional
       for position in positional:
 
         # position
-        for post in positional[position]:
+        for item in positional[position]:
 
-          # post
-          if post[1][1] == item[1][1]:
+          # name
+          if hasattr(item[1][1], 'name'):
 
-            # item
-            collection.remove(item)
+            # randomize name
+            item[1][1].name = str(random())
+
+          # info
+          elif hasattr(item[1][1], 'info'):
+
+            # randomize name
+            item[1][1].info = str(random())
+
+          # bl_label
+          elif hasattr(item[1][1], 'bl_label'):
+
+            # randomize name
+            item[1][1].bl_label = str(random())
+
+      # positional
+      for position in positional:
+
+        # start
+        i = 0
+
+        # list
+        list = []
+
+        # position
+        for item in positional[position]:
+
+          item[0] = re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0]
+
+          # duplicates
+          if item[0] not in list:
+
+            # suffix last
+            if option.suffixLast:
+
+              # rename
+              rename = item[0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(item[1][0]))) + option.separator + item[1][2] + option.suffix
+
+            # suffix last
+            else:
+
+              # rename
+              rename = item[0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(item[1][0]))) + option.separator + item[1][2]
+
+            # name
+            if hasattr(item[1][1], 'name'):
+
+              # rename
+              item[1][1].name = rename
+
+            # info
+            elif hasattr(item[1][1], 'info'):
+
+              # rename
+              item[1][1].info = rename
+
+            # bl_label
+            elif hasattr(item[1][1], 'bl_label'):
+
+              # rename
+              item[1][1].bl_label = rename
+
+            # add
+            i += 1
+
+          # count
+          if i == item[1][0]:
+
+            # reset
+            i = 0
+
+            # duplicates
+            list.append(item[0])
+
+      # collection
+      for item in collection[:]:
+
+        # positional
+        for position in positional:
+
+          # position
+          for post in positional[position]:
+
+            # post
+            if post[1][1] == item[1][1]:
+
+              # item
+              collection.remove(item)
+
+    except: pass
 
   # collection
   for item in collection[:]:
@@ -3875,6 +3876,9 @@ def process(self, context, collection):
 
     except:
       pass
+
+    # purge
+    re.purge()
 
 # name
 def name(self, context, oldName):

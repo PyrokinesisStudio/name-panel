@@ -225,6 +225,27 @@ class batch:
       ('TIP_REMOVER', 'Tip Remover', '', 'MODIFIER', 23)
     ]
 
+  # positional
+  positional = [
+    'l',
+    'left',
+    'r',
+    'right',
+    'f',
+    'fr',
+    'front',
+    'bck',
+    'back',
+    'u',
+    'up',
+    't',
+    'top',
+    'd',
+    'down',
+    'b',
+    'bottom'
+  ]
+
   # defaults (never used directly)
   defaults = {
     'name panel': {
@@ -463,6 +484,7 @@ class batch:
       'separator': '.',
       'sort only': False,
       'link': False,
+      'ignore position': False
     },
 
     'copy name': {

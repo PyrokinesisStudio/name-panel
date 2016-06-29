@@ -294,7 +294,9 @@ class name(Operator):
 
     # row
     row = column.row(align=True)
-    row.prop(option, 'sort', text='Sort Duplicates', toggle=True)
+    sub = row.row(align=True)
+    sub.scale_x = 0.5
+    sub.prop(option, 'sort', text='Sort', toggle=True)
     row.prop(option, 'padding', text='Padding')
     row.prop(option, 'start', text='Start at')
 
@@ -304,6 +306,8 @@ class name(Operator):
     sub.prop(option, 'separator', text='')
     row.prop(option, 'sortOnly', text='', icon='LOCKED')
     row.prop(option, 'link', text='', icon='LINKED')
+    row.prop(option, 'ignorePosition', text='', icon='VIEW3D')
+
 
   # execute
   def execute(self, context):
@@ -324,9 +328,19 @@ class name(Operator):
       Invoke the operator panel/menu, control its width.
     '''
 
+    # alt
+    if event.alt:
+      self.quickBatch = False
+
     # size
     try: size = 320 if addon.preferences['largePopups'] == 0 else 450
     except: size = 320
 
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}
+
+def register():
+    bpy.utils.unregister_class(name)
+
+def unregister():
+    bpy.utils.unregister_class(name)

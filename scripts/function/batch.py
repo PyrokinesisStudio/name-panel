@@ -3216,188 +3216,188 @@ def populate(context, datablock, source=None):
 
   # objects
   if datablock.rna_type.identifier == 'Object':
-    storage.batch.objects.append([datablock.name, [1, datablock]])
+    storage.batch.objects.append([datablock.name, [1, datablock, '']])
 
   # groups
   if datablock.rna_type.identifier == 'Group':
-    storage.batch.groups.append([datablock.name, [1, datablock]])
+    storage.batch.groups.append([datablock.name, [1, datablock, '']])
 
   # actions
   if datablock.rna_type.identifier == 'Action':
-    storage.batch.actions.append([datablock.name, [1, datablock, source]])
+    storage.batch.actions.append([datablock.name, [1, datablock, '', source]])
 
   # grease pencils
   if datablock.rna_type.identifier == 'GreasePencil':
-    storage.batch.greasePencils.append([datablock.name, [1, datablock, source]])
+    storage.batch.greasePencils.append([datablock.name, [1, datablock, '', source]])
 
   # pencil layers
   if datablock.rna_type.identifier == 'GPencilLayer':
-    storage.batch.pencilLayers.append([datablock.info, [1, datablock]])
+    storage.batch.pencilLayers.append([datablock.info, [1, datablock, '']])
 
   # constraints
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Constraint':
-      storage.batch.constraints.append([datablock.name, [1, datablock]])
+      storage.batch.constraints.append([datablock.name, [1, datablock, '']])
 
   # modifiers
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier in 'Modifier':
-      storage.batch.modifiers.append([datablock.name, [1, datablock]])
+      storage.batch.modifiers.append([datablock.name, [1, datablock, '']])
 
   # cameras
   if datablock.rna_type.identifier == 'Camera':
-    storage.batch.cameras.append([datablock.name, [1, datablock, source]])
+    storage.batch.cameras.append([datablock.name, [1, datablock, '', source]])
 
   # meshes
   if datablock.rna_type.identifier == 'Mesh':
-    storage.batch.meshes.append([datablock.name, [1, datablock, source]])
+    storage.batch.meshes.append([datablock.name, [1, datablock, '', source]])
 
   # curves
   if datablock.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-    storage.batch.curves.append([datablock.name, [1, datablock, source]])
+    storage.batch.curves.append([datablock.name, [1, datablock, '', source]])
 
   # lamps
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Lamp':
-      storage.batch.lamps.append([datablock.name, [1, datablock, source]])
+      storage.batch.lamps.append([datablock.name, [1, datablock, '', source]])
 
   # lattices
   if datablock.rna_type.identifier == 'Lattice':
-    storage.batch.lattices.append([datablock.name, [1, datablock, source]])
+    storage.batch.lattices.append([datablock.name, [1, datablock, '', source]])
 
   # metaballs
   if datablock.rna_type.identifier == 'MetaBall':
-    storage.batch.metaballs.append([datablock.name, [1, datablock, source]])
+    storage.batch.metaballs.append([datablock.name, [1, datablock, '', source]])
 
   # speakers
   if datablock.rna_type.identifier == 'Speaker':
-    storage.batch.speakers.append([datablock.name, [1, datablock, source]])
+    storage.batch.speakers.append([datablock.name, [1, datablock, '', source]])
 
   # armatures
   if datablock.rna_type.identifier == 'Armature':
-    storage.batch.armatures.append([datablock.name, [1, datablock, source]])
+    storage.batch.armatures.append([datablock.name, [1, datablock, '', source]])
 
   # bones
   if datablock.rna_type.identifier in {'PoseBone', 'EditBone', 'Bone'}:
-    storage.batch.bones.append([datablock.name, [1, datablock]])
+    storage.batch.bones.append([datablock.name, [1, datablock, '']])
 
   # vertex groups
   if datablock.rna_type.identifier == 'VertexGroup':
-    storage.batch.vertexGroups.append([datablock.name, [1, datablock]])
+    storage.batch.vertexGroups.append([datablock.name, [1, datablock, '']])
 
   # shapekeys
   if datablock.rna_type.identifier == 'ShapeKey':
-    storage.batch.shapekeys.append([datablock.name, [1, datablock]])
+    storage.batch.shapekeys.append([datablock.name, [1, datablock, '']])
 
   # uvs
   if datablock.rna_type.identifier == 'MeshTexturePolyLayer':
-    storage.batch.uvs.append([datablock.name, [1, datablock]])
+    storage.batch.uvs.append([datablock.name, [1, datablock, '']])
 
   # vertex colors
   if datablock.rna_type.identifier == 'MeshLoopColorLayer':
-    storage.batch.vertexColors.append([datablock.name, [1, datablock]])
+    storage.batch.vertexColors.append([datablock.name, [1, datablock, '']])
 
   # materials
   if datablock.rna_type.identifier == 'Material':
-    storage.batch.materials.append([datablock.name, [1, datablock, source]])
+    storage.batch.materials.append([datablock.name, [1, datablock, '', source]])
 
   # textures
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Texture':
-      storage.batch.textures.append([datablock.name, [1, datablock, source]])
+      storage.batch.textures.append([datablock.name, [1, datablock, '', source]])
 
   # particle systems
   if datablock.rna_type.identifier == 'ParticleSystem':
-    storage.batch.particleSystems.append([datablock.name, [1, datablock]])
+    storage.batch.particleSystems.append([datablock.name, [1, datablock, '']])
 
   # particle settings
   if datablock.rna_type.identifier == 'ParticleSettings':
-    storage.batch.particleSettings.append([datablock.name, [1, datablock, source]])
+    storage.batch.particleSettings.append([datablock.name, [1, datablock, '', source]])
 
   # line style
   if datablock.rna_type.identifier == 'FreestyleLineStyle':
-    storage.batch.linestyles.append([datablock.name, [1, datablock]])
+    storage.batch.linestyles.append([datablock.name, [1, datablock, '']])
 
   # line style modifiers
   if hasattr(datablock.rna_type.base, 'identifier'):
     if hasattr(datablock.rna_type.base.base, 'identifier'):
       if datablock.rna_type.base.base.identifier == 'LineStyleModifier':
-        storage.batch.modifiers.append([datablock.name, [1, datablock]])
+        storage.batch.modifiers.append([datablock.name, [1, datablock, '']])
 
   # sensors
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Sensor':
-      storage.batch.sensors.append([datablock.name, [1, datablock]])
+      storage.batch.sensors.append([datablock.name, [1, datablock, '']])
 
   # controllers
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Controller':
-      storage.batch.controllers.append([datablock.name, [1, datablock]])
+      storage.batch.controllers.append([datablock.name, [1, datablock, '']])
 
   # actuators
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Actuator':
-      storage.batch.actuators.append([datablock.name, [1, datablock]])
+      storage.batch.actuators.append([datablock.name, [1, datablock, '']])
 
   # scenes
   if datablock.rna_type.identifier == 'Scene':
-    storage.batch.scenes.append([datablock.name, [1, datablock]])
+    storage.batch.scenes.append([datablock.name, [1, datablock, '']])
 
   # render layers
   if datablock.rna_type.identifier == 'SceneRenderLayer':
-    storage.batch.renderLayers.append([datablock.name, [1, datablock]])
+    storage.batch.renderLayers.append([datablock.name, [1, datablock, '']])
 
   # worlds
   if datablock.rna_type.identifier == 'World':
-    storage.batch.worlds.append([datablock.name, [1, datablock]])
+    storage.batch.worlds.append([datablock.name, [1, datablock, '']])
 
   # libraries
   if datablock.rna_type.identifier == 'Library':
-    storage.batch.libraries.append([datablock.name, [1, datablock]])
+    storage.batch.libraries.append([datablock.name, [1, datablock, '']])
 
   # images
   if datablock.rna_type.identifier == 'Image':
-    storage.batch.images.append([datablock.name, [1, datablock]])
+    storage.batch.images.append([datablock.name, [1, datablock, '']])
 
   # masks
   if datablock.rna_type.identifier == 'Mask':
-    storage.batch.masks.append([datablock.name, [1, datablock]])
+    storage.batch.masks.append([datablock.name, [1, datablock, '']])
 
   # sequences
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Sequence':
-      storage.batch.sequences.append([datablock.name, [1, datablock]])
+      storage.batch.sequences.append([datablock.name, [1, datablock, '']])
 
   # movie clips
   if datablock.rna_type.identifier == 'MovieClip':
-    storage.batch.movieClips.append([datablock.name, [1, datablock]])
+    storage.batch.movieClips.append([datablock.name, [1, datablock, '']])
 
   # sounds
   if datablock.rna_type.identifier == 'Sound':
-    storage.batch.sounds.append([datablock.name, [1, datablock]])
+    storage.batch.sounds.append([datablock.name, [1, datablock, '']])
 
   # screens
   if datablock.rna_type.identifier == 'Screen':
-    storage.batch.screens.append([datablock.name, [1, datablock]])
+    storage.batch.screens.append([datablock.name, [1, datablock, '']])
 
   # keying sets
   if datablock.rna_type.identifier == 'KeyingSet':
-    storage.batch.keyingSets.append([datablock.bl_label, [1, datablock]])
+    storage.batch.keyingSets.append([datablock.bl_label, [1, datablock, '']])
 
   # palettes
   if datablock.rna_type.identifier == 'Palette':
-    storage.batch.palettes.append([datablock.name, [1, datablock]])
+    storage.batch.palettes.append([datablock.name, [1, datablock, '']])
 
   # brushes
   if datablock.rna_type.identifier == 'Brush':
-    storage.batch.brushes.append([datablock.name, [1, datablock]])
+    storage.batch.brushes.append([datablock.name, [1, datablock, '']])
 
   # nodes
   if hasattr(datablock.rna_type.base, 'base'):
     if hasattr(datablock.rna_type.base.base, 'base'):
       if hasattr(datablock.rna_type.base.base.base, 'identifier'):
         if datablock.rna_type.base.base.base.identifier == 'Node':
-          storage.batch.nodes.append([datablock.name, [1, datablock]])
+          storage.batch.nodes.append([datablock.name, [1, datablock, '']])
 
           if tag:
             datablock.label = name(self, context, datablock.label)
@@ -3405,18 +3405,18 @@ def populate(context, datablock, source=None):
   # node groups
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'NodeTree':
-      storage.batch.nodeGroups.append([datablock.name, [1, datablock]])
+      storage.batch.nodeGroups.append([datablock.name, [1, datablock, '']])
 
   # frame nodes
   if datablock.rna_type.identifier == 'NodeFrame':
-    storage.batch.nodes.append([datablock.name, [1, datablock]])
+    storage.batch.nodes.append([datablock.name, [1, datablock, '']])
 
     if tag:
       datablock.label = name(self, context, datablock.label)
 
   # texts
   if datablock.rna_type.identifier == 'Text':
-    storage.batch.texts.append([datablock.name, [1, datablock]])
+    storage.batch.texts.append([datablock.name, [1, datablock, '']])
 
 def process(self, context, collection):
   '''
@@ -3426,17 +3426,166 @@ def process(self, context, collection):
   # option
   option = context.scene.BatchName
 
+  # positional
+  positional = {}
+
   # clean duplicates
   list = []
+
+  # collection
   for item in collection[:]:
+
+    # list
     if item[1][1] not in list[:]:
+
+      # append
       list.append(item[1][1])
+
+    # list
     else:
+
+      # remove
       collection.remove(item)
 
   # sort
   try: collection.sort()
   except: pass
+
+  # sort, ignore position
+  if option.sort and option.ignorePosition:
+
+    # collection
+    for item in collection[:]:
+
+      # positional
+      if [re.search(r'\W' + position + r'$', item[0], re.I) if re.search(r'\W[A-z]*$', item[0]) else re.search(r'_' + position + r'$', item[0], re.I) for position in storage.batch.positional[:]]:
+
+        # positional
+        item[1][2] = re.split(r'\W([A-z]*)$|_([A-z]*)$', re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0], re.I)[1]
+
+        # name
+        item[0] = re.split(r'\W[A-z]*$|_[A-z]*$', re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0], re.I)[0]
+
+        # append
+        positional.setdefault(item[1][2], []).append(item)
+
+    # positional
+    for position in positional:
+
+      # start
+      i = 0
+
+      # list
+      list = [re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0] for item in positional[position]]
+
+      # position
+      for item in positional[position]:
+
+        # count
+        item[1][0] = list.count(list[i])
+
+        # add
+        i += 1
+
+    # positional
+    for position in positional:
+
+      # position
+      for item in positional[position]:
+
+        # name
+        if hasattr(item[1][1], 'name'):
+
+          # randomize name
+          item[1][1].name = str(random())
+
+        # info
+        elif hasattr(item[1][1], 'info'):
+
+          # randomize name
+          item[1][1].info = str(random())
+
+        # bl_label
+        elif hasattr(item[1][1], 'bl_label'):
+          item[1][1].bl_label = str(random())
+
+    # positional
+    for position in positional:
+
+      # start
+      i = 0
+
+      # list
+      list = []
+
+      # position
+      for item in positional[position]:
+
+        item[0] = re.split(r'\W[0-9]*$|_[0-9]*$', item[0])[0]
+
+        # duplicates
+        if item[0] not in list:
+
+          # suffix last
+          if option.suffixLast:
+
+            # rename
+            rename = item[0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(item[1][0]))) + option.separator + item[1][2] + option.suffix
+
+          # suffix last
+          else:
+
+            # rename
+            rename = item[0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(item[1][0]))) + option.separator + item[1][2]
+
+          # name
+          if hasattr(item[1][1], 'name'):
+
+            # rename
+            item[1][1].name = rename
+
+          # info
+          elif hasattr(item[1][1], 'info'):
+
+            # rename
+            item[1][1].info = rename
+
+          # bl_label
+          elif hasattr(item[1][1], 'bl_label'):
+
+            # rename
+            item[1][1].bl_label = rename
+
+          # add
+          i += 1
+
+        # count
+        if i == item[1][0]:
+
+          # reset
+          i = 0
+
+          # duplicates
+          list.append(item[0])
+
+
+    # perform full name operation for dict list items
+
+
+    # collection
+    for item in collection[:]:
+
+      # positional
+      for position in positional:
+
+        # position
+        for post in positional[position]:
+
+          # post
+          if post[1][1] == item[1][1]:
+
+            # item
+            collection.remove(item)
 
   # collection
   for item in collection[:]:
@@ -3463,10 +3612,13 @@ def process(self, context, collection):
   for item in collection[:]:
 
     # count
-    item[1][0] = list.count(list[i])
+    if item[1][0] == 1:
 
-    # add
-    i += 1
+      # count
+      item[1][0] = list.count(list[i])
+
+      # add
+      i += 1
 
   # collection
   for item in collection[:]:
@@ -3561,7 +3713,7 @@ def process(self, context, collection):
             # rename
             rename = item[0] + option.separator + '0'*option.padding + str(i + option.start).zfill(len(str(item[1][0]))) + option.suffix
 
-          # suffix lasr
+          # suffix last
           else:
 
             # rename
@@ -3656,69 +3808,69 @@ def process(self, context, collection):
 
           # actions
           if item[1][1].rna_type.identifier == 'Action':
-            item[1][2].action = source[1]
+            item[1][3].action = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # grease pencils
           if item[1][1].rna_type.identifier == 'GreasePencil':
-            item[1][2].grease_pencil = source[1]
+            item[1][3].grease_pencil = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # cameras
           if item[1][1].rna_type.identifier == 'Camera':
-            item[1][2].data = source[1]
+            item[1][3].data = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # meshes
           if item[1][1].rna_type.identifier == 'Mesh':
-            item[1][2].data = source[1]
+            item[1][3].data = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # curves
           if item[1][1].rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-            item[1][2].data = source[1]
+            item[1][3].data = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # lamps
           if hasattr(item[1][1].rna_type.base, 'identifier'):
             if item[1][1].rna_type.base.identifier == 'Lamp':
-              item[1][2].data = source[1]
+              item[1][3].data = source[1]
               source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # lattices
           if item[1][1].rna_type.identifier == 'Lattice':
-            item[1][2].data = source[1]
+            item[1][3].data = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # metaballs
           if item[1][1].rna_type.identifier == 'MetaBall':
-            item[1][2].data = source[1]
+            item[1][3].data = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # speakers
           if item[1][1].rna_type.identifier == 'Speaker':
-            item[1][2].data = source[1]
+            item[1][3].data = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # armatures
           if item[1][1].rna_type.identifier == 'Armature':
-            item[1][2].data = source[1]
+            item[1][3].data = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # materials
           if item[1][1].rna_type.identifier == 'Material':
-            item[1][2].material = source[1]
+            item[1][3].material = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # textures
           if hasattr(item[1][1].rna_type.base, 'identifier'):
             if item[1][1].rna_type.base.identifier == 'Texture':
-              item[1][2].texture = source[1]
+              item[1][3].texture = source[1]
               source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
           # particle settings
           if item[1][1].rna_type.identifier == 'ParticleSettings':
-            item[1][2].settings = source[1]
+            item[1][3].settings = source[1]
             source[1].name = re.split(r'\W[0-9]*$|_[0-9]*$', source[1].name)[0]
 
     except:

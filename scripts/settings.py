@@ -1659,7 +1659,7 @@ class batch:
 
     # sort
     sort = BoolProperty(
-      name = 'Sort Duplicates',
+      name = 'Sort',
       description = 'Recount names that are identical with a trailing number.',
       default = default['sort']
     )
@@ -1697,8 +1697,15 @@ class batch:
     # link
     link = BoolProperty(
       name = 'Link Duplicates',
-      description = 'If possible link the original duplicate name to the other duplicates location.',
+      description = 'When possible link duplicate names to the original datablock.',
       default = default['link']
+    )
+
+    # ignore position
+    ignorePosition = BoolProperty(
+      name = 'Ignore Positional Suffixes',
+      description = 'Count any number that falls before a positional suffix.',
+      default = default['ignore position']
     )
 
   # copy

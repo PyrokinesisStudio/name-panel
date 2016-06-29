@@ -19,7 +19,7 @@
 
 # imports
 import bpy
-from bpy.props import BoolProperty
+from bpy.props import BoolProperty, IntProperty
 from bpy.types import Operator
 from ...function import batch, settings
 
@@ -41,6 +41,19 @@ class name(Operator):
     name = 'Quick Batch',
     description = 'Quickly batch name datablocks visible in the name panel.',
     default = False
+  )
+
+  # tag
+  tag = BoolProperty(
+    name = 'Tag',
+    description = 'Generic tag.',
+    default = False
+  )
+
+  count = IntProperty(
+    name = 'Total named',
+    description = 'Total number of names changed during the batch name process',
+    default = 0
   )
 
   # check
@@ -316,10 +329,20 @@ class name(Operator):
     '''
 
     # main
-    batch.main(self, context, self.quickBatch)
+    batch.main(self, context)
 
     # transfer settings
     settings.transfer(context, False, False, False, True, False)
+
+    # report
+    self.report({'INFO'}, 'Datablocks named: ' + str(self.count))
+
+    # tag
+    self.tag = False
+
+    # count
+    self.count = 0
+
     return {'FINISHED'}
 
   # invoke

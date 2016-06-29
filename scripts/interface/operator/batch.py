@@ -319,7 +319,7 @@ class name(Operator):
     sub.prop(option, 'separator', text='')
     row.prop(option, 'sortOnly', text='', icon='LOCKED')
     row.prop(option, 'link', text='', icon='LINKED')
-    row.prop(option, 'ignorePosition', text='', icon='VIEW3D')
+    #row.prop(option, 'ignorePosition', text='', icon='VIEW3D')
 
 
   # execute

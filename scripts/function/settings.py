@@ -730,6 +730,9 @@ def reset(context, panel, auto, names, name, copy):
     # link
     batchNameOption.link = default['link']
 
+    # ignore position
+    batchNameOption.ignorePosition = default['ignore position']
+
   # copy
   if copy:
 
@@ -1463,6 +1466,9 @@ def transfer(context, panel, auto, names, name, copy):
 
         # link
         scene.BatchName.link = batchNameOption.link
+
+        # ignore position
+        scene.BatchName.ignorePosition = batchNameOption.ignorePosition
 
   # copy
   if copy:

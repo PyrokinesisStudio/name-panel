@@ -1687,13 +1687,6 @@ class batch:
       default = default['separator']
     )
 
-    # sort only
-    sortOnly = BoolProperty(
-     name = 'Only Sort Duplicates',
-     description = 'Only effect names during the naming process that need to be numbered.',
-     default = default['sort only']
-    )
-
     # link
     link = BoolProperty(
       name = 'Link Duplicates',
@@ -1701,11 +1694,11 @@ class batch:
       default = default['link']
     )
 
-    # ignore position
-    ignorePosition = BoolProperty(
+    # position
+    position = BoolProperty(
       name = 'Ignore Positional Suffixes',
       description = 'Count any number that falls before a positional suffix.',
-      default = default['ignore position']
+      default = default['position']
     )
 
   # copy

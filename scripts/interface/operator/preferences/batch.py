@@ -21,7 +21,7 @@
 import bpy
 from bpy.props import BoolProperty
 from bpy.types import Operator
-from ....function import settings
+from ....function import options
 from ....function.preferences import batch
 
 # addon
@@ -297,7 +297,9 @@ class name(Operator):
 
     # row
     row = column.row(align=True)
-    row.prop(option, 'sort', text='Sort Duplicates', toggle=True)
+    sub = row.row(align=True)
+    sub.scale_x = 0.5
+    sub.prop(option, 'sort', text='Sort', toggle=True)
     row.prop(option, 'padding', text='Padding')
     row.prop(option, 'start', text='Start at')
 
@@ -305,8 +307,8 @@ class name(Operator):
     sub = row.row(align=True)
     sub.scale_x = 0.1
     sub.prop(option, 'separator', text='')
-    row.prop(option, 'sortOnly', text='', icon='LOCKED')
-    row.prop(option, 'link', text='', icon='LINKED')
+    # row.prop(option, 'link', text='', icon='LINKED')
+    row.prop(option, 'position', text='', icon='VIEW3D')
 
   # execute
   def execute(self, context):
@@ -317,8 +319,8 @@ class name(Operator):
     # main
     batch.main(context)
 
-    # transfer settings
-    settings.transfer(context, False, False, False, True, False)
+    # transfer options
+    options.transfer(context, False, False, False, True, False)
     return {'FINISHED'}
 
   # invoke

@@ -112,8 +112,8 @@ def main(context):
   default['start'] = option.start
   default['padding'] = option.padding
   default['separator'] = option.separator
-  default['sort only'] = option.sortOnly
   default['link'] = option.link
+  default['position'] = option.position
 
   # filepath
   filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'defaults.py'))

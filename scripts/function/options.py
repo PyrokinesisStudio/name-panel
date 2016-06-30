@@ -34,80 +34,83 @@ def reset(context, panel, auto, names, name, copy):
   # panel
   if panel:
 
+    # defaults
+    default = defaults['name panel']
+
     # name panel option
     namePanelOption = context.scene.NamePanel
 
     # pin active object
-    namePanelOption.pinActiveObject = False
+    namePanelOption.pinActiveObject = default['pin active object']
 
     # hide search
-    namePanelOption.hideSearch = True
+    namePanelOption.hideSearch = default['hide search']
 
     # filters
-    namePanelOption.filters = False
+    namePanelOption.filters = default['filters']
 
     # options
-    namePanelOption.options = False
+    namePanelOption.options = default['options']
 
     # selected
-    namePanelOption.displayNames = False
+    namePanelOption.displayNames = default['selected']
 
     # mode
-    namePanelOption.mode = 'SELECTED'
+    namePanelOption.mode = default['mode']
 
     # search
-    namePanelOption.search = ''
+    namePanelOption.search = default['search']
 
     # regex
-    namePanelOption.regex = False
+    namePanelOption.regex = defatul['regex']
 
     # groups
-    namePanelOption.groups = False
+    namePanelOption.groups = default['groups']
 
     # action
-    namePanelOption.action = False
+    namePanelOption.action = default['action']
 
     # grease pencil
-    namePanelOption.greasePencil = False
+    namePanelOption.greasePencil = default['greasePencil']
 
     # constraints
-    namePanelOption.constraints = False
+    namePanelOption.constraints = default['constraints']
 
     # modifiers
-    namePanelOption.modifiers = False
+    namePanelOption.modifiers = default['modifiers']
 
     # bone groups
-    namePanelOption.boneGroups = False
+    namePanelOption.boneGroups = default['bone groups']
 
     # bone constraints
-    namePanelOption.boneConstraints = False
+    namePanelOption.boneConstraints = default['bone constraints']
 
     # vertex groups
-    namePanelOption.vertexGroups = False
+    namePanelOption.vertexGroups = default['vertex groups']
 
     # shapekeys
-    namePanelOption.shapekeys = False
+    namePanelOption.shapekeys = default['shapekeys']
 
     # uvs
-    namePanelOption.uvs = False
+    namePanelOption.uvs = default['uvs']
 
     # vertex colors
-    namePanelOption.vertexColors = False
+    namePanelOption.vertexColors = default['vertex colors']
 
     # materials
-    namePanelOption.materials = False
+    namePanelOption.materials = default['materials']
 
     # textures
-    namePanelOption.textures = False
+    namePanelOption.textures = default['textures']
 
     # particle systems
-    namePanelOption.particleSystems = False
+    namePanelOption.particleSystems = default['particle systems']
 
     # display bones
-    namePanelOption.displayBones = False
+    namePanelOption.displayBones = default['display bones']
 
     # bone mode
-    namePanelOption.boneMode = 'SELECTED'
+    namePanelOption.boneMode = default['bone mode']
 
   # auto
   if auto:
@@ -724,14 +727,11 @@ def reset(context, panel, auto, names, name, copy):
     # separator
     batchNameOption.separator = default['separator']
 
-    # sort only
-    batchNameOption.sortOnly = default['sort only']
-
     # link
     batchNameOption.link = default['link']
 
     # ignore position
-    batchNameOption.ignorePosition = default['ignore position']
+    batchNameOption.position = default['position']
 
   # copy
   if copy:
@@ -1461,14 +1461,11 @@ def transfer(context, panel, auto, names, name, copy):
         # separator
         scene.BatchName.separator = batchNameOption.separator
 
-        # sort only
-        scene.BatchName.sortOnly = batchNameOption.sortOnly
-
         # link
         scene.BatchName.link = batchNameOption.link
 
         # ignore position
-        scene.BatchName.ignorePosition = batchNameOption.ignorePosition
+        scene.BatchName.position = batchNameOption.position
 
   # copy
   if copy:

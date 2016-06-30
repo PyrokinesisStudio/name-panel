@@ -21,7 +21,7 @@
 import bpy
 from bpy.props import BoolProperty, IntProperty
 from bpy.types import Operator
-from ...function import batch, settings
+from ...function import batch, options
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
@@ -317,9 +317,8 @@ class name(Operator):
     sub = row.row(align=True)
     sub.scale_x = 0.1
     sub.prop(option, 'separator', text='')
-    row.prop(option, 'sortOnly', text='', icon='LOCKED')
-    row.prop(option, 'link', text='', icon='LINKED')
-    #row.prop(option, 'ignorePosition', text='', icon='VIEW3D')
+    # row.prop(option, 'link', text='', icon='LINKED')
+    row.prop(option, 'position', text='', icon='VIEW3D')
 
 
   # execute
@@ -331,8 +330,8 @@ class name(Operator):
     # main
     batch.main(self, context)
 
-    # transfer settings
-    settings.transfer(context, False, False, False, True, False)
+    # transfer options
+    options.transfer(context, False, False, False, True, False)
 
     # report
     self.report({'INFO'}, 'Datablocks named: ' + str(self.count))

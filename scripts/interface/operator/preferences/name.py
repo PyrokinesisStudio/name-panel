@@ -21,7 +21,7 @@
 import bpy
 from bpy.props import BoolProperty
 from bpy.types import Operator
-from ....function import settings
+from ....function import options
 from ....function.preferences import name as nameD
 
 # addon
@@ -207,8 +207,8 @@ class name(Operator):
     # main
     nameD.main(context)
 
-    # transfer settings
-    settings.transfer(context, True, False, False, False, False)
+    # transfer options
+    options.transfer(context, True, False, False, False, False)
     return {'FINISHED'}
 
   # invoke

@@ -20,7 +20,7 @@
 # imports
 import bpy
 from bpy.types import Operator
-from ....function import settings
+from ....function import options
 from ....function.preferences import copy
 
 # addon
@@ -99,8 +99,8 @@ class name(Operator):
     # copy
     copy.main(context)
 
-    # transfer settings
-    settings.transfer(context, False, False, False, False, True)
+    # transfer options
+    options.transfer(context, False, False, False, False, True)
     return {'FINISHED'}
 
   # invoke

@@ -235,7 +235,7 @@ defaults = {
     'separator': '.',
     'sort only': False,
     'link': False,
-    'ignore position': False
+    'position': False
   },
 
   'copy name': {

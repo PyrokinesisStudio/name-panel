@@ -20,7 +20,7 @@
 # imports
 import bpy
 from bpy.types import Operator
-from ...function import auto, settings
+from ...function import auto, options
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
@@ -111,8 +111,8 @@ class name(Operator):
     # main
     auto.main(context)
 
-    # transfer settings
-    settings.transfer(context, False, True, True, False, False)
+    # transfer options
+    options.transfer(context, False, True, True, False, False)
     return {'FINISHED'}
 
   # invoke

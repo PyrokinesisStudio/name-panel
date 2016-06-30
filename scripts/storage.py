@@ -484,7 +484,7 @@ class batch:
       'separator': '.',
       'sort only': False,
       'link': False,
-      'ignore position': False
+      'position': False
     },
 
     'copy name': {
@@ -504,7 +504,7 @@ class batch:
 
   # structure
   # list = [
-  #  [datablock.name, [count, datablock]
+  #  [datablock.name, datablock.name [count, datablock, [], source]
   # ]
 
   # actions

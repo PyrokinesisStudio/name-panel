@@ -21,7 +21,7 @@
 import bpy
 from bpy.types import Operator
 from bpy.props import BoolProperty
-from ...function import settings
+from ...function import options
 
 # reset
 class reset(Operator):
@@ -94,7 +94,7 @@ class reset(Operator):
     '''
 
     # reset
-    settings.reset(context, self.panel, self.auto, self.names, self.name, self.copy)
+    options.reset(context, self.panel, self.auto, self.names, self.name, self.copy)
     return {'FINISHED'}
 
 # transfer
@@ -168,5 +168,5 @@ class transfer(Operator):
     '''
 
     # reset
-    settings.transfer(context, self.panel, self.auto, self.names, self.name, self.copy)
+    options.transfer(context, self.panel, self.auto, self.names, self.name, self.copy)
     return {'FINISHED'}

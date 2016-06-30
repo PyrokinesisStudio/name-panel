@@ -3431,7 +3431,7 @@ def process(self, context, collection):
   # clean
   clean = []
 
-  # collection
+  # process collection
   for name in collection[:]:
 
     # clean
@@ -3445,6 +3445,13 @@ def process(self, context, collection):
 
       # remove
       collection.remove(name)
+
+  # process collection
+  for name in collection[:]:
+
+    # rename
+    name[0] = rename(self, context, name[1])
+    name[1] = name[0]
 
   # randomize names (prevents conflicts)
   for name in collection[:]:
@@ -3580,12 +3587,6 @@ def process(self, context, collection):
     for sub in names[key]:
       if len(names[key][sub]) > 1:
         names[key][sub].sort()
-
-  # process names
-  for key in names:
-    for sub in names[key]:
-      for name in names[key][sub][:]:
-        name[1] = rename(self, context, name[1])
 
   # is option sort
   if option.sort:

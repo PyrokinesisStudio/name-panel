@@ -3719,7 +3719,10 @@ def process(self, context, collection):
   #         except:
   #           pass
 
-  # purge
+  # clear names
+  names.clear()
+
+  # purge re cache
   re.purge()
 
 # name

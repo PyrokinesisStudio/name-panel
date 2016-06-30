@@ -233,7 +233,6 @@ defaults = {
     'start': 1,
     'padding': 0,
     'separator': '.',
-    'sort only': False,
     'link': False,
     'position': False
   },

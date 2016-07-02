@@ -270,6 +270,64 @@ class batch:
       name (PropertyGroup)
       copy (PropertyGroup)
   '''
+  # shared
+  class shared(PropertyGroup):
+
+    # default
+    default = defaults['shared']
+
+    # sort
+    sort = BoolProperty(
+      name = 'Sort',
+      description = 'Recount names that are identical with a trailing number.',
+      default = default['sort']
+    )
+
+    # pad
+    pad = IntProperty(
+      name = 'Pad',
+      description = 'Number of zeroes to place before the final incrementing number.',
+      min = 0,
+      default = default['pad']
+    )
+
+    # start
+    start = IntProperty(
+      name = 'Start',
+      description = 'Number to start with.',
+      min = 0,
+      default = default['start']
+    )
+
+    # step
+    step = IntProperty(
+      name = 'Step',
+      description = 'Step factor when counting.',
+      min = 1,
+      default = default['step']
+    )
+
+    # separator
+    separator = StringProperty(
+      name = 'Separator',
+      description = 'The separator to use between the name and number.',
+      default = default['separator']
+    )
+
+    # link
+    link = BoolProperty(
+      name = 'Link Duplicates',
+      description = 'When possible link duplicate names to the original datablock.',
+      default = default['link']
+    )
+
+    # ignore
+    ignore = BoolProperty(
+      name = 'Ignore Suffixes',
+      description = 'Count any number that falls before a suffix.',
+      default = default['ignore']
+    )
+
   # auto
   class auto:
     '''
@@ -1655,50 +1713,6 @@ class batch:
       min = 0,
       max = 63,
       default = default['trim end']
-    )
-
-    # sort
-    sort = BoolProperty(
-      name = 'Sort',
-      description = 'Recount names that are identical with a trailing number.',
-      default = default['sort']
-    )
-
-    # start
-    start = IntProperty(
-      name = 'Start',
-      description = 'Number to start with.',
-      min = 0,
-      default = default['start']
-    )
-
-    # padding
-    padding = IntProperty(
-      name = 'Padding',
-      description = 'Number of zeroes to place before the final incrementing number.',
-      min = 0,
-      default = default['padding']
-    )
-
-    # separator
-    separator = StringProperty(
-      name = 'Separator',
-      description = 'The separator to use between the name and number.',
-      default = default['separator']
-    )
-
-    # link
-    link = BoolProperty(
-      name = 'Link Duplicates',
-      description = 'When possible link duplicate names to the original datablock.',
-      default = default['link']
-    )
-
-    # position
-    position = BoolProperty(
-      name = 'Ignore Positional Suffixes',
-      description = 'Count any number that falls before a positional suffix.',
-      default = default['position']
     )
 
   # copy

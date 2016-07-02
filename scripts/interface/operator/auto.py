@@ -20,6 +20,7 @@
 # imports
 import bpy
 from bpy.types import Operator
+from . import shared
 from ...function import auto, options
 
 # addon
@@ -102,6 +103,9 @@ class name(Operator):
     split.operator('view3d.batch_auto_name_modifier_names', text='Modifiers')
     split.operator('view3d.batch_auto_name_object_data_names', text='Object Data')
 
+    # sort
+    # shared.sort(column, context.scene.BatchShared)
+
   # execute
   def execute(self, context):
     '''
@@ -122,8 +126,8 @@ class name(Operator):
     '''
 
     # size
-    try: size = 320 if addon.preferences['largePopups'] == 0 else 450
-    except: size = 320
+    try: size = 330 if addon.preferences['largePopups'] == 0 else 460
+    except: size = 330
 
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

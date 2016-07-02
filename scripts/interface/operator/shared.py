@@ -17,29 +17,47 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-# imports
-from . import generate
-from ...defaults import defaults
+# sort
+def sort(layout, option):
 
-# main
-def main(context):
+  # separator
+  layout.separator()
 
-  # option
-  option = context.scene.BatchCopyName
+  # row
+  row = layout.row(align=True)
 
-  # default
-  default = defaults['copy name']
+  # sub
+  sub = row.row(align=True)
 
-  # options
-  default['mode'] = option.mode
-  default['source'] = option.source
-  default['objects'] = option.objects
-  default['object data'] = option.objectData
-  default['materials'] = option.materials
-  default['textures'] = option.textures
-  default['particle systems'] = option.particleSystems
-  default['particle settings'] = option.particleSettings
-  default['use active object'] = option.useActiveObject
+  # scale
+  sub.scale_x = 0.5
 
-  # generate
-  generate.main(defaults)
+  # sort
+  sub.prop(option, 'sort', text='Sort', toggle=True)
+
+  # pad
+  row.prop(option, 'pad', text='Pad')
+
+  # start
+  row.prop(option, 'start', text='Start')
+
+  # step
+  row.prop(option, 'step', text='Step')
+
+  # sub
+  sub = row.row(align=True)
+
+  # scale
+  sub.scale_x = 0.1
+
+  # separator
+  sub.prop(option, 'separator', text='')
+
+  # icon
+  icon = 'LINKED' if option.link else 'UNLINKED'
+
+  # link
+  row.prop(option, 'link', text='', icon=icon)
+
+  # ignore
+  row.prop(option, 'ignore', text='', icon='ZOOM_PREVIOUS')

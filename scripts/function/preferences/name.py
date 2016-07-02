@@ -18,8 +18,7 @@
 # ##### END GPL LICENSE BLOCK #####
 
 # imports
-import os
-import sys
+from . import generate
 from ...defaults import defaults
 
 # main
@@ -57,8 +56,5 @@ def main(context):
   default['bone mode'] = option.boneMode
   default['display bones'] = option.displayBones
 
-  # filepath
-  filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'defaults.py'))
-  with open(filepath, 'r+') as default:
-    default.truncate()
-    default.write('defaults = ' + str(defaults))
+  # generate
+  generate.main(defaults)

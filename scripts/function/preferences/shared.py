@@ -18,28 +18,17 @@
 # ##### END GPL LICENSE BLOCK #####
 
 # imports
-from . import generate
 from ...defaults import defaults
 
 # main
-def main(context):
+def main(context, option, default):
 
-  # option
-  option = context.scene.BatchCopyName
+  default['sort'] = option.sort
+  default['pad'] = option.pad
+  default['start'] = option.start
+  default['step'] = option.step
+  default['separator'] = option.separator
+  default['link'] = option.link
+  default['ignore'] = option.ignore
 
-  # default
-  default = defaults['copy name']
-
-  # options
-  default['mode'] = option.mode
-  default['source'] = option.source
-  default['objects'] = option.objects
-  default['object data'] = option.objectData
-  default['materials'] = option.materials
-  default['textures'] = option.textures
-  default['particle systems'] = option.particleSystems
-  default['particle settings'] = option.particleSettings
-  default['use active object'] = option.useActiveObject
-
-  # generate
-  generate.main(defaults)
+  return defaults

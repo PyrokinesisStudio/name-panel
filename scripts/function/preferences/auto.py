@@ -18,8 +18,8 @@
 # ##### END GPL LICENSE BLOCK #####
 
 # imports
-import os
-import sys
+from . import generate
+from . import shared
 from ...defaults import defaults
 
 # main
@@ -40,11 +40,8 @@ def main(context):
   # object data
   objectData(context)
 
-  # filepath
-  filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'defaults.py'))
-  with open(filepath, 'r+') as default:
-    default.truncate()
-    default.write('defaults = ' + str(defaults))
+  # generate
+  generate.main(defaults)
 
 # name
 def name(context):
@@ -65,6 +62,7 @@ def name(context):
   default['object type'] = option.objectType
   default['constraint type'] = option.constraintType
   default['modifier type'] = option.modifierType
+  shared.main(context, context.scene.BatchShared, defaults['shared'])
 
 # objects
 def objects(context):

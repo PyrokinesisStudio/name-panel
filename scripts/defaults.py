@@ -1,3 +1,4 @@
+# This script is modified by scripts.function.preferences.generate.main
 defaults = {
   'name panel': {
     'pin active object': True,
@@ -24,6 +25,16 @@ defaults = {
     'particle systems': False,
     'bone mode': 'SELECTED',
     'display bones': False,
+  },
+
+  'shared': {
+    'sort': False,
+    'pad': 0,
+    'start': 1,
+    'step': 1,
+    'separator': '.',
+    'link': False,
+    'ignore': False,
   },
 
   'auto name': {
@@ -229,12 +240,6 @@ defaults = {
     'suffix last': False,
     'trim start': 0,
     'trim end': 0,
-    'sort': False,
-    'start': 1,
-    'padding': 0,
-    'separator': '.',
-    'link': False,
-    'position': False
   },
 
   'copy name': {

@@ -44,9 +44,9 @@ from bpy.types import AddonPreferences
 from bpy.props import *
 from .scripts import options as PropertyGroup
 from .scripts.interface import button, icon, menu, name, properties
-from .scripts.interface.operator import auto, batch, copy, icon, options, text
+from .scripts.interface.operator import auto, batch, copy, icon, options, shared, text
 from .scripts.interface.operator.preferences import auto, batch, copy
-from .scripts.interface.operator.preferences import name as nameD
+from .scripts.interface.operator.preferences import name as nameDefaults
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__)
@@ -153,6 +153,13 @@ def register():
 
   # register module
   bpy.utils.register_module(__name__)
+
+  # batch shared setting
+  bpy.types.Scene.BatchShared = PointerProperty(
+    type = PropertyGroup.batch.shared,
+    name = 'Batch Shared Settings',
+    description = 'Storage location for shared settings between batch operators.'
+  )
 
   # batch auto name settings
   bpy.types.Scene.BatchAutoName = PointerProperty(

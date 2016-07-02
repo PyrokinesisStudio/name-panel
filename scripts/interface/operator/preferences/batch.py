@@ -21,6 +21,7 @@
 import bpy
 from bpy.props import BoolProperty
 from bpy.types import Operator
+from .. import shared
 from ....function import options
 from ....function.preferences import batch
 
@@ -292,23 +293,8 @@ class name(Operator):
     row.prop(option, 'trimEnd', text='')
     column.separator()
 
-    # sort duplicates
-    column.separator()
-
-    # row
-    row = column.row(align=True)
-    sub = row.row(align=True)
-    sub.scale_x = 0.5
-    sub.prop(option, 'sort', text='Sort', toggle=True)
-    row.prop(option, 'padding', text='Padding')
-    row.prop(option, 'start', text='Start at')
-
-    # sub
-    sub = row.row(align=True)
-    sub.scale_x = 0.1
-    sub.prop(option, 'separator', text='')
-    # row.prop(option, 'link', text='', icon='LINKED')
-    row.prop(option, 'position', text='', icon='VIEW3D')
+    # sort
+    shared.sort(column, context.scene.BatchShared)
 
   # execute
   def execute(self, context):
@@ -330,8 +316,8 @@ class name(Operator):
     '''
 
     # size
-    try: size = 320 if addon.preferences['largePopups'] == 0 else 450
-    except: size = 320
+    try: size = 330 if addon.preferences['largePopups'] == 0 else 460
+    except: size = 330
 
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

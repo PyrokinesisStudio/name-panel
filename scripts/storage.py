@@ -22,36 +22,40 @@ class batch:
   '''
     Contains Classes;
       menu
-      curves
 
     Contains Lists;
+      actions
+      action groups
+      grease pencils
+      pencil layers
       objects
       groups
-      actions
-      greasePencils
-      pencilLayers
       constraints
       modifiers
       cameras
       meshes
+      curves
       lamps
       lattices
       metaballs
       speakers
       armatures
-      boneGroups
+      bone groups
       bones
-      boneConstraints
-      vertexGroups
+      vertex groups
       shapekeys
       uvs
-      vertexColors
+      vertex colors
       materials
       textures
-      particleSystems
-      particleSettings
+      particle systems
+      particle settings
+      linestyles
+      sensors
+      controllers
+      actuators
       scenes
-      renderLayers
+      render layers
       worlds
       libraries
       images
@@ -63,7 +67,6 @@ class batch:
       keying sets
       palettes
       brushes
-      linestyles
       nodes
       node labels
       node groups
@@ -79,6 +82,7 @@ class batch:
         objects
         modifiers
         constraints
+        linestyle modifiers
     '''
     # object
     objects = [
@@ -225,27 +229,6 @@ class batch:
       ('TIP_REMOVER', 'Tip Remover', '', 'MODIFIER', 23)
     ]
 
-  # positional
-  positional = [
-    'l',
-    'left',
-    'r',
-    'right',
-    'f',
-    'fr',
-    'front',
-    'bck',
-    'back',
-    'u',
-    'up',
-    't',
-    'top',
-    'd',
-    'down',
-    'b',
-    'bottom'
-  ]
-
   # defaults (never used directly)
   defaults = {
     'name panel': {
@@ -273,6 +256,16 @@ class batch:
       'particle systems': False,
       'bone mode': 'SELECTED',
       'display bones': False,
+    },
+
+    'shared': {
+      'sort': False,
+      'pad': 0,
+      'start': 1,
+      'step': 1,
+      'separator': '.',
+      'link': False,
+      'ignore': False
     },
 
     'auto name': {
@@ -478,12 +471,6 @@ class batch:
       'suffix last': False,
       'trim start': 0,
       'trim end': 0,
-      'sort': False,
-      'start': 1,
-      'padding': 0,
-      'separator': '.',
-      'link': False,
-      'position': False
     },
 
     'copy name': {
@@ -503,7 +490,7 @@ class batch:
 
   # structure
   # list = [
-  #  [datablock.name, datablock.name [count, datablock, [], source]
+  #  [sort name, modified name, original name, [count, datablock, [], source datablock]
   # ]
 
   # actions

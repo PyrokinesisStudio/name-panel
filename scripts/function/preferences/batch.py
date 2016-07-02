@@ -18,8 +18,8 @@
 # ##### END GPL LICENSE BLOCK #####
 
 # imports
-import os
-import sys
+from . import generate
+from . import shared
 from ...defaults import defaults
 
 # main
@@ -108,15 +108,7 @@ def main(context):
   default['suffix last'] = option.suffixLast
   default['trim start'] = option.trimStart
   default['trim end'] = option.trimEnd
-  default['sort'] = option.sort
-  default['start'] = option.start
-  default['padding'] = option.padding
-  default['separator'] = option.separator
-  default['link'] = option.link
-  default['position'] = option.position
+  shared.main(context, context.scene.BatchShared, defaults['shared'])
 
-  # filepath
-  filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'defaults.py'))
-  with open(filepath, 'r+') as default:
-    default.truncate()
-    default.write('defaults = ' + str(defaults))
+  # generate
+  generate.main(defaults)

@@ -122,9 +122,6 @@ def main(self, context):
         # process
         process(self, context, collection, option)
 
-        # clear storage
-        collection.clear()
-
   # quick batch
   else: # not quickBatch
 
@@ -3431,18 +3428,18 @@ def process(self, context, collection, option):
       compare.append(name[3][0])
       clean.append(name)
 
-  # collection
-  collection = clean
+  # done with collection
+  collection.clear()
 
   # process collection
-  for name in collection:
+  for name in clean:
 
     # rename
     name[0] = rename(self, context, name[1], option)
     name[1] = name[0]
 
   # randomize names (prevents conflicts)
-  for name in collection:
+  for name in clean:
 
     # datablock
     datablock = name[3][0]
@@ -3466,22 +3463,22 @@ def process(self, context, collection, option):
       name[3][0].bl_label = str(random())
 
   # is shared sort
-  if shared.sort:
+  if context.scene.BatchShared.sort:
 
     # sort
-    shared.sort(self, context, collection, context.scene.BatchShared)
+    shared.sort(self, context, clean, context.scene.BatchShared)
 
   # isnt shared sort
   else:
 
     # apply names
-    for name in collection:
+    for name in clean:
 
       # update
       name[3][0].name = name[1] + option.suffix if option.suffixLast else name[1]
 
-  # purge re cache
-  re.purge()
+      # done with clean
+      clean.clear()
 
 # name
 def rename(self, context, oldName, option):
@@ -3518,6 +3515,9 @@ def rename(self, context, oldName, option):
 
   # prefix & suffix
   newName = option.prefix + newName + option.suffix if not option.suffixLast else option.prefix + newName
+
+  # purge re
+  re.purge()
 
   # new name
   return newName

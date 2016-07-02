@@ -273,5 +273,8 @@ def sort(self, context, collection, option):
           # name
           name[3][0].bl_label = name[1]
 
+  # purge re
+  re.purge()
+
   # done with names
   names.clear()

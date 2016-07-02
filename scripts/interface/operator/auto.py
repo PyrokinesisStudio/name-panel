@@ -19,6 +19,7 @@
 
 # imports
 import bpy
+from bpy.props import IntProperty
 from bpy.types import Operator
 from . import shared
 from ...function import auto, options
@@ -35,6 +36,13 @@ class name(Operator):
   bl_label = 'Auto Name'
   bl_description = 'Automatically name datablocks based on type.'
   bl_options = {'UNDO'}
+
+  # count
+  count = IntProperty(
+    name = 'Total named',
+    description = 'Total number of names changed during the batch auto name process',
+    default = 0
+  )
 
   # poll
   @classmethod
@@ -113,10 +121,17 @@ class name(Operator):
     '''
 
     # main
-    auto.main(context)
+    auto.main(self, context)
 
     # transfer options
     options.transfer(context, False, True, True, False, False)
+
+    # report
+    self.report({'INFO'}, 'Datablocks named: ' + str(self.count))
+
+    # count
+    self.count = 0
+
     return {'FINISHED'}
 
   # invoke

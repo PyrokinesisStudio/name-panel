@@ -24,7 +24,7 @@ def sort(self, context, collection, option):
   '''
     Makes dict of names catagorizing them based on suffix, apply names to the datablocks, link.
   '''
-
+  
   # names
   names = {}
 
@@ -94,6 +94,15 @@ def sort(self, context, collection, option):
         # set default name and add collection name item
         names['main'].setdefault(name[1], []).append(name)
 
+  # test
+  for key in names:
+    print(key)
+    for sub in names[key]:
+      print('  ' + sub)
+      for i, name in enumerate(names[key][sub]):
+        print('    ' + str(name[1]))
+
+
   # isnt option ignore
   else:
     for name in collection:
@@ -121,8 +130,8 @@ def sort(self, context, collection, option):
   # sort name lists
   for key in names:
     for sub in names[key]:
-      if len(names[key][sub]) > 1:
-        names[key][sub].sort()
+      try: names[key][sub].sort()
+      except: pass
 
   # link
   if option.link:
@@ -236,13 +245,6 @@ def sort(self, context, collection, option):
           # update
           name[1] = name[1] + option.separator + name[3][1]
 
-  # # test
-  # for key in names:
-  #   print(key)
-  #   for sub in names[key]:
-  #     print('  ' + sub)
-  #     for i, name in enumerate(names[key][sub]):
-  #       print('    ' + str(name[1]))
 
   # apply names
   for key in names:

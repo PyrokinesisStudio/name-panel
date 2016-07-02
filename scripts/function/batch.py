@@ -3415,23 +3415,24 @@ def process(self, context, collection, option):
     Process collection, send names to rename and shared sort.
   '''
 
+  # compare
+  compare = []
+
   # clean
   clean = []
 
-  # process collection
+  # make clean collection
   for name in collection:
 
-    # clean
-    if name[3][0] not in clean:
+    # remove duplicates
+    if name[3][0] not in compare:
 
       # append
-      clean.append(name[3][0])
+      compare.append(name[3][0])
+      clean.append(name)
 
-    # clean
-    else:
-
-      # remove
-      collection.remove(name)
+  # collection
+  collection = clean
 
   # process collection
   for name in collection:

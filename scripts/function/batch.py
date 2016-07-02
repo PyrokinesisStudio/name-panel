@@ -3421,7 +3421,7 @@ def process(self, context, collection, option):
   # clean
   clean = []
 
-  # make clean collection
+  # clean duplicates
   for name in collection:
 
     # remove duplicates

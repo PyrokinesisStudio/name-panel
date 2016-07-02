@@ -30,34 +30,40 @@ def sort(layout, option):
   sub = row.row(align=True)
 
   # scale
-  sub.scale_x = 0.5
+  sub.scale_x = 0.2
 
   # sort
   sub.prop(option, 'sort', text='Sort', toggle=True)
 
-  # pad
-  row.prop(option, 'pad', text='Pad')
-
-  # start
-  row.prop(option, 'start', text='Start')
-
-  # step
-  row.prop(option, 'step', text='Step')
-
   # sub
-  sub = row.row(align=True)
+  subsub = sub.row(align=True)
 
-  # scale
-  sub.scale_x = 0.1
-
-  # separator
-  sub.prop(option, 'separator', text='')
+  # active
+  subsub.active = option.sort
 
   # icon
   icon = 'LINKED' if option.link else 'UNLINKED'
 
   # link
-  row.prop(option, 'link', text='', icon=icon)
+  subsub.prop(option, 'link', text='', icon=icon)
+
+  # pad
+  subsub.prop(option, 'pad', text='Pad')
+
+  # start
+  subsub.prop(option, 'start', text='Start')
+
+  # step
+  subsub.prop(option, 'step', text='Step')
+
+  # sub
+  subsubsub = subsub.row(align=True)
+
+  # scale
+  subsubsub.scale_x = 0.1
+
+  # separator
+  subsubsub.prop(option, 'separator', text='')
 
   # ignore
-  row.prop(option, 'ignore', text='', icon='ZOOM_PREVIOUS')
+  subsub.prop(option, 'ignore', text='', icon='ZOOM_PREVIOUS')

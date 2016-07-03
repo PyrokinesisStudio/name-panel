@@ -22,7 +22,7 @@ import re
 
 def sort(self, context, collection, option):
   '''
-    Makes dict of names catagorizing them based on suffix, apply names to the datablocks, link.
+    Makes dict of names catagorizing them based on suffix, link and apply names to the datablocks.
   '''
 
   # names

@@ -136,6 +136,7 @@ def sort(self, context, collection, option):
             # update
             name[0] = name[1] + re.split(suffix, name[0])[1]
 
+        # not suffixed
         else:
 
           # update

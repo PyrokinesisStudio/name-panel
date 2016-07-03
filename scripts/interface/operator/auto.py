@@ -112,7 +112,7 @@ class name(Operator):
     split.operator('view3d.batch_auto_name_object_data_names', text='Object Data')
 
     # sort
-    # shared.sort(column, context.scene.BatchShared)
+    shared.sort(column, context.scene.BatchShared)
 
   # execute
   def execute(self, context):

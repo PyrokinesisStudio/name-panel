@@ -259,7 +259,7 @@ class batch:
     },
 
     'shared': {
-      'sort': False,
+      'sort': True,
       'pad': 0,
       'start': 1,
       'step': 1,

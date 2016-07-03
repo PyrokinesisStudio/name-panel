@@ -29,11 +29,11 @@ defaults = {
 
   'shared': {
     'sort': True,
+    'link': False,
     'pad': 0,
     'start': 1,
     'step': 1,
     'separator': '.',
-    'link': False,
     'ignore': False
   },
 

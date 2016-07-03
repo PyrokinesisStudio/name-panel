@@ -202,14 +202,13 @@ def sort(self, context, collection, option):
               # link
               name[3][2].settings = source
 
-  # # test
+  # test
   # for key in names:
   #   print(key)
   #   for sub in names[key]:
   #     print('  ' + sub)
   #     for i, name in enumerate(names[key][sub]):
-  #       print('    ' + str(name[1]))
-
+  #       print('    ' + str(name[0]))
 
   # count name
   for key in names:

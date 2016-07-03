@@ -110,44 +110,6 @@ def sort(self, context, collection, option):
   # done with collection
   collection.clear()
 
-  # prepare name for sorting
-  for key in names:
-    for sub in names[key]:
-      for i, name in enumerate(names[key][sub]):
-
-        # search numeral
-        if re.search(numeral, name[0]):
-
-          # search suffix
-          if re.search(suffix, re.split(numeral, name[0])[0]):
-
-            # search numeral
-            if re.search(numeral, re.split(suffix, re.split(numeral, name[0])[0])[0]):
-
-              # update
-              name[0] = name[1] + re.split(suffix, re.split(numeral, name[0])[0])[1] + re.split(numeral, name[0])[1]
-
-        # search suffix
-        elif re.search(suffix, name[0]):
-
-          # search numeral
-          if re.search(numeral, re.split(suffix, name[0])[0]):
-
-            # update
-            name[0] = name[1] + re.split(suffix, name[0])[1]
-
-        # not suffixed
-        else:
-
-          # update
-          name[0] =  name[1] + str(i)
-
-  # sort name lists
-  for key in names:
-    for sub in names[key]:
-      try: names[key][sub].sort()
-      except: pass
-
   # link
   if option.link:
     for key in names:

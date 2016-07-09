@@ -3432,7 +3432,8 @@ def process(self, context, collection, option):
   collection.clear()
 
   # sort clean
-  clean.sort()
+  try: clean.sort()
+  except: pass
 
   # process collection
   for name in clean:

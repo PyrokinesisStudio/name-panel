@@ -424,14 +424,16 @@ def process(self, context, collection):
   collection.clear()
 
   # sort clean
-  clean.sort()
+  try: clean.sort()
+  except: pass
 
   # name
   for i, name in enumerate(clean):
     rename(self, context, name, i)
 
   # sort clean
-  clean.sort()
+  try: clean.sort()
+  except: pass
 
   # randomize names (prevents conflicts)
   for name in clean:

@@ -125,6 +125,10 @@ class preferences(AddonPreferences):
     split = layout.split(align=True)
     split.scale_y = 2
 
+    # donate
+    prop = split.operator('wm.url_open', text='Donate')
+    prop.url = 'https://paypal.me/proxe'
+
     # blender market
     prop = split.operator('wm.url_open', text='Blender Market')
     prop.url = 'https://cgcookiemarkets.com/all-products/name-panel/'
@@ -140,10 +144,6 @@ class preferences(AddonPreferences):
     # github
     prop = split.operator('wm.url_open', text='Github')
     prop.url = 'https://github.com/trentinfrederick/name-panel'
-
-    # donate
-    prop = split.operator('wm.url_open', text='Donate')
-    prop.url = 'https://paypal.me/proxe'
 
 # register
 def register():

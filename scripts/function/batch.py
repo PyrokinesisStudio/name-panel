@@ -3431,16 +3431,15 @@ def process(self, context, collection, option):
   # done with collection
   collection.clear()
 
-  # sort collection
-  try: clean.sort()
-  except: pass
+  # sort clean
+  clean.sort()
 
   # process collection
   for name in clean:
 
     # rename
-    name[0] = rename(self, context, name[1], option)
-    name[1] = name[0]
+    name[1] = rename(self, context, name[1], option)
+    name[0] = name[1]
 
   # randomize names (prevents conflicts)
   for name in clean:
@@ -3466,23 +3465,38 @@ def process(self, context, collection, option):
       # randomize bl_label
       name[3][0].bl_label = str(random())
 
+  # apply names
+  for name in clean:
+
+    # datablock
+    datablock = name[3][0]
+
+    # has name
+    if hasattr(name[3][0], 'name'):
+
+      # name
+      name[3][0].name = name[1] + option.suffix if option.suffixLast else name[1]
+
+    # has info
+    if hasattr(name[3][0], 'info'):
+
+      # info
+      name[3][0].info = name[1] + option.suffix if option.suffixLast else name[1]
+
+    # has bl_label
+    if hasattr(name[3][0], 'bl_label'):
+
+      # bl_label
+      name[3][0].bl_label = name[1] + option.suffix if option.suffixLast else name[1]
+
   # is shared sort
   if context.scene.BatchShared.sort:
 
     # sort
     shared.sort(self, context, clean, context.scene.BatchShared)
 
-  # isnt shared sort
-  else:
-
-    # apply names
-    for name in clean:
-
-      # update
-      name[3][0].name = name[1] + option.suffix if option.suffixLast else name[1]
-
-      # done with clean
-      clean.clear()
+  # done with clean
+  clean.clear()
 
 # name
 def rename(self, context, oldName, option):
@@ -3492,6 +3506,9 @@ def rename(self, context, oldName, option):
 
   # option
   option = context.scene.BatchName
+
+  # numeral
+  numeral = r'\W[0-9]*$|_[0-9]*$'
 
   # custom name
   if option.customName != '':
@@ -3516,6 +3533,9 @@ def rename(self, context, oldName, option):
     except Exception as e: self.report({'WARNING'}, 'Invalid Expression: ' + str(e) + ' while working on: ' + oldName)
   else:
     newName = re.sub(re.escape(option.find), option.replace, newName)
+
+  # strip numeral
+  newName = re.split(numeral, newName)[0] if not option.suffixLast else newName
 
   # prefix & suffix
   newName = option.prefix + newName + option.suffix if not option.suffixLast else option.prefix + newName

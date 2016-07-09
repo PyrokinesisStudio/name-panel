@@ -19,10 +19,11 @@
 
 # imports
 import re
+from .. import storage
 
 def sort(self, context, collection, option):
   '''
-    Makes dict of names catagorizing them based on suffix, link and apply names to the datablocks.
+    Makes dict of names catagorizing them based on suffix, counts, applies and links names to the datablocks.
   '''
 
   # names
@@ -40,59 +41,53 @@ def sort(self, context, collection, option):
     # process collection
     for name in collection:
 
-      # search suffix
-      if re.search(suffix, name[1]):
+      # check
+      check = re.split(numeral, name[1])[0]
 
-        # suffix catagory
-        name[3][1] = re.split(suffix, name[1])[1]
+      # update
+      name[1] = re.split(numeral, name[1])[0]
 
-        # update
-        name[1] = re.split(suffix, name[1])[0]
+      # search suffix; sub.key
+      if re.search(suffix, check):
 
-        # search numeral
-        if re.search(numeral, name[1]):
+        # check
+        check = re.split(suffix, check)[0]
 
-          # update
-          name[1] = re.split(numeral, name[1])[0]
+        # search numeral before suffix; sub.01.key
+        if re.search(numeral, check):
 
-      # search numeral
-      elif re.search(numeral, name[1]):
-
-        # update
-        name[1] = re.split(numeral, name[1])[0]
-
-        # search suffix
-        if re.search(suffix, name[1]):
-
-          # suffix catagory
-          name[3][1] = re.split(suffix, name[1])[1]
+          # set key, sub
+          try: names.setdefault(re.split(suffix, name[1])[1], {}).setdefault(re.split(numeral, check)[0], []).append(name)
+          except: names.setdefault('main', {}).setdefault(re.split(numeral, check)[0], []).append(name)
 
           # update
-          name[1] = re.split(suffix, name[1])[0]
+          try: name[3][1] = re.split(suffix, name[1])[1]
+          except: pass
+          name[1] = re.split(numeral, check)[0]
 
-          # search numeral
-          if re.search(numeral, name[1]):
+        # isnt numeral before suffix; sub.key
+        else:
+
+          # if in positional
+          if re.split(suffix, re.split(numeral, name[1])[0])[1].upper() in (position for position in storage.batch.positional):
+
+            # key
+            try: names.setdefault(re.split(suffix, name[1])[1], {}).setdefault(check, []).append(name)
+            except: names.setdefault('main', {}).setdefault(check, []).append(name)
 
             # update
-            name[1] = re.split(numeral, name[1])[0]
+            try: name[3][1] = re.split(suffix, name[1])[1]
+            except: pass
+            name[1] = check
 
-      # is suffixed
-      if name[3][1] != '':
-
-        # set default catagory
-        names.setdefault(name[3][1], {})
-
-        # set default name and add collection name item
-        names[name[3][1]].setdefault(name[1], []).append(name)
-
-      # isnt suffixed
+      # isnt suffix; sub
       else:
 
         # main
-        names.setdefault('main', {})
+        names.setdefault('main', {}).setdefault(check, []).append(name)
 
-        # set default name and add collection name item
-        names['main'].setdefault(name[1], []).append(name)
+        # update
+        name[1] = check
 
   # isnt option ignore
   else:
@@ -109,6 +104,64 @@ def sort(self, context, collection, option):
 
   # done with collection
   collection.clear()
+
+  # # test
+  # for key in names:
+  #   print('\n' + key)
+  #   for sub in names[key]:
+  #     print('\n' + '  ' + sub + '\n')
+  #     for i, name in enumerate(names[key][sub]):
+  #       print('    ' + str(name[0]))
+
+  # count name
+  for key in names:
+    for sub in names[key]:
+      for i, name in enumerate(names[key][sub]):
+
+        # is more then 1
+        if len(names[key][sub]) > 1:
+
+          # count
+          count = str((i + option.start)*option.step).zfill(len(str(len(names[key][sub])*option.step)))
+
+          # update
+          name[1] = name[1] + option.separator + '0'*option.pad + count
+
+        # is suffix
+        if name[3][1] != '':
+
+          # update
+          name[1] = name[1] + option.separator + name[3][1]
+
+  # batch
+  batch = context.scene.BatchName
+
+  # apply names
+  for key in names:
+    for sub in names[key]:
+      for name in names[key][sub]:
+
+        # is name changed
+        if name[2] != name[1]:
+          self.count += 1
+
+        # has name
+        if hasattr(name[3][0], 'name'):
+
+          # name
+          name[3][0].name = name[1] + batch.suffix if batch.suffixLast else name[1]
+
+        # has info
+        elif hasattr(name[3][0], 'info'):
+
+          # name
+          name[3][0].info = name[1] + batch.suffix if batch.suffixLast else name[1]
+
+        # has bl_label
+        elif hasattr(name[3][0], 'bl_label'):
+
+          # name
+          name[3][0].bl_label = name[1] + batch.suffix if batch.suffixLast else name[1]
 
   # link
   if option.link:
@@ -201,62 +254,6 @@ def sort(self, context, collection, option):
 
               # link
               name[3][2].settings = source
-
-  # test
-  # for key in names:
-  #   print(key)
-  #   for sub in names[key]:
-  #     print('  ' + sub)
-  #     for i, name in enumerate(names[key][sub]):
-  #       print('    ' + str(name[0]))
-
-  # count name
-  for key in names:
-    for sub in names[key]:
-      for i, name in enumerate(names[key][sub]):
-
-        # is more then 1
-        if len(names[key][sub]) > 1:
-
-          # count
-          count = str((i + option.start)*option.step).zfill(len(str(len(names[key][sub])*option.step)))
-
-          # update
-          name[1] = name[1] + option.separator + '0'*option.pad + count
-
-        # is suffix
-        if name[3][1] != '':
-
-          # update
-          name[1] = name[1] + option.separator + name[3][1]
-
-
-  # apply names
-  for key in names:
-    for sub in names[key]:
-      for name in names[key][sub]:
-
-        # is name changed
-        if name[2] != name[1]:
-          self.count += 1
-
-        # has name
-        if hasattr(name[3][0], 'name'):
-
-          # name
-          name[3][0].name = name[1]
-
-        # has info
-        elif hasattr(name[3][0], 'info'):
-
-          # name
-          name[3][0].info = name[1]
-
-        # has bl_label
-        elif hasattr(name[3][0], 'bl_label'):
-
-          # name
-          name[3][0].bl_label = name[1]
 
   # purge re
   re.purge()

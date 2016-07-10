@@ -17,7 +17,7 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-# modified properties_data_modifier.py
+# modified properties data modifier.py
 
 # imports
 import bpy
@@ -29,1404 +29,3201 @@ class ModifierButtons:
       The UI settings for modifiers.
   '''
 
-  def main(self, context, layout, md, ob):
+  # main
+  def main(self, context, layout, modifier, object):
 
+    # column
     column = layout.column()
 
-    # if ob == context.active_object:
+    # match enum type to one of the functions below
+    getattr(ModifierButtons, modifier.type)(ModifierButtons, column, object, modifier)
 
-      # row = column.row()
-      # prop = row.operator('object.modifier_apply')
-      # prop.apply_as = 'DATA'
-      # prop.modifier = md.name
+  # armature
+  def ARMATURE(self, layout, object, modifier):
 
-      # prop = row.operator('object.modifier_copy')
-      # prop.modifier = md.name
-
-      # column.separator()
-
-    getattr(ModifierButtons, md.type)(ModifierButtons, column, ob, md)
-
-  def ARMATURE(self, layout, ob, md):
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Object:")
-    col.prop(md, "object", text="")
-    col.prop(md, "use_deform_preserve_volume")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="Bind To:")
-    col.prop(md, "use_vertex_groups", text="Vertex Groups")
-    col.prop(md, "use_bone_envelopes", text="Bone Envelopes")
+    # label
+    column.label(text='Object:')
 
+    # object
+    column.prop(modifier, 'object', text='')
+
+    # use deform preserve volume
+    column.prop(modifier, 'use_deform_preserve_volume')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Bind To:')
+
+    # use vertex groups
+    column.prop(modifier, 'use_vertex_groups', text='Vertex Groups')
+
+    # use bone envelopes
+    column.prop(modifier, 'use_bone_envelopes', text='Bone Envelopes')
+
+    # separator
     layout.separator()
 
+    # split
     split = layout.split()
 
+    # row
     row = split.row(align=True)
-    row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+
+    # vertex group
+    row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # sub
     sub = row.row(align=True)
-    sub.active = bool(md.vertex_group)
-    sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
-    split.prop(md, "use_multi_modifier")
+    # sub active if vertex group
+    sub.active = bool(modifier.vertex_group)
 
-  def ARRAY(self, layout, ob, md):
-    layout.prop(md, "fit_type")
+    # invert vertex group
+    sub.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
 
-    if md.fit_type == 'FIXED_COUNT':
-      layout.prop(md, "count")
-    elif md.fit_type == 'FIT_LENGTH':
-      layout.prop(md, "fit_length")
-    elif md.fit_type == 'FIT_CURVE':
-      layout.prop(md, "curve")
+    # use multi modifier
+    split.prop(modifier, 'use_multi_modifier')
 
+  # array
+  def ARRAY(self, layout, object, modifier):
+
+    # fit type
+    layout.prop(modifier, 'fit_type')
+
+    # is fit type in fixed count
+    if modifier.fit_type == 'FIXED_COUNT':
+
+      # count
+      layout.prop(modifier, 'count')
+
+    # is fit type in fit length
+    elif modifier.fit_type == 'FIT_LENGTH':
+
+      # fit length
+      layout.prop(modifier, 'fit_length')
+
+    # is fit type in fit curve
+    elif modifier.fit_type == 'FIT_CURVE':
+
+      # curve
+      layout.prop(modifier, 'curve')
+
+    # separator
     layout.separator()
 
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "use_constant_offset")
-    sub = col.column()
-    sub.active = md.use_constant_offset
-    sub.prop(md, "constant_offset_displace", text="")
+    # column
+    column = split.column()
 
-    col.separator()
+    # use constant offset
+    column.prop(modifier, 'use_constant_offset')
 
-    col.prop(md, "use_merge_vertices", text="Merge")
-    sub = col.column()
-    sub.active = md.use_merge_vertices
-    sub.prop(md, "use_merge_vertices_cap", text="First Last")
-    sub.prop(md, "merge_threshold", text="Distance")
+    # sub
+    sub = column.column()
 
-    col = split.column()
-    col.prop(md, "use_relative_offset")
-    sub = col.column()
-    sub.active = md.use_relative_offset
-    sub.prop(md, "relative_offset_displace", text="")
+    # sub active if use constant offset
+    sub.active = modifier.use_constant_offset
 
-    col.separator()
+    # constant offset displace
+    sub.prop(modifier, 'constant_offset_displace', text='')
 
-    col.prop(md, "use_object_offset")
-    sub = col.column()
-    sub.active = md.use_object_offset
-    sub.prop(md, "offset_object", text="")
+    # separator
+    column.separator()
 
+    # use merge vertices
+    column.prop(modifier, 'use_merge_vertices', text='Merge')
+
+    # sub
+    sub = column.column()
+
+    # sub active if use merge vertices
+    sub.active = modifier.use_merge_vertices
+
+    # use merge vertices cap
+    sub.prop(modifier, 'use_merge_vertices_cap', text='First Last')
+
+    # merge threshold
+    sub.prop(modifier, 'merge_threshold', text='Distance')
+
+    # column
+    column = split.column()
+
+    # use relative offset
+    column.prop(modifier, 'use_relative_offset')
+
+    # sub
+    sub = column.column()
+
+    # sub active if use relative offset
+    sub.active = modifier.use_relative_offset
+
+    # relative offset displace
+    sub.prop(modifier, 'relative_offset_displace', text='')
+
+    # separator
+    column.separator()
+
+    # use object offset
+    column.prop(modifier, 'use_object_offset')
+
+    # sub
+    sub = column.column()
+
+    # sub active if use object offset
+    sub.active = modifier.use_object_offset
+
+    # offset object
+    sub.prop(modifier, 'offset_object', text='')
+
+    # separator
     layout.separator()
 
-    layout.prop(md, "start_cap")
-    layout.prop(md, "end_cap")
+    # start cap
+    layout.prop(modifier, 'start_cap')
 
-  def BEVEL(self, layout, ob, md):
+    # start cap
+    layout.prop(modifier, 'end_cap')
+
+  # bevel
+  def BEVEL(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "width")
-    col.prop(md, "segments")
-    col.prop(md, "profile")
-    col.prop(md, "material")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.prop(md, "use_only_vertices")
-    col.prop(md, "use_clamp_overlap")
-    col.prop(md, "loop_slide")
+    # width
+    column.prop(modifier, 'width')
 
-    layout.label(text="Limit Method:")
-    layout.row().prop(md, "limit_method", expand=True)
-    if md.limit_method == 'ANGLE':
-      layout.prop(md, "angle_limit")
-    elif md.limit_method == 'VGROUP':
-      layout.label(text="Vertex Group:")
-      layout.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # segments
+    column.prop(modifier, 'segments')
 
-    layout.label(text="Width Method:")
-    layout.row().prop(md, "offset_type", expand=True)
+    # profile
+    column.prop(modifier, 'profile')
 
-  def BOOLEAN(self, layout, ob, md):
+    # material
+    column.prop(modifier, 'material')
+
+    # column
+    column = split.column()
+
+    # use only vertices
+    column.prop(modifier, 'use_only_vertices')
+
+    # use clamp overlap
+    column.prop(modifier, 'use_clamp_overlap')
+
+    # loop slide
+    column.prop(modifier, 'loop_slide')
+
+    # label
+    layout.label(text='Limit Method:')
+
+    # limit method
+    layout.row().prop(modifier, 'limit_method', expand=True)
+
+    # is limit method in angle
+    if modifier.limit_method == 'ANGLE':
+
+      # angle limit
+      layout.prop(modifier, 'angle_limit')
+
+    # is limit method in vgroup
+    elif modifier.limit_method == 'VGROUP':
+
+      # label
+      layout.label(text='Vertex Group:')
+
+      # vertex group
+      layout.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # label
+    layout.label(text='Width Method:')
+
+    # offset type
+    layout.row().prop(modifier, 'offset_type', expand=True)
+
+  # boolean
+  def BOOLEAN(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Operation:")
-    col.prop(md, "operation", text="")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="Object:")
-    col.prop(md, "object", text="")
+    # label
+    column.label(text='Operation:')
 
-  def BUILD(self, layout, ob, md):
+    # operation
+    column.prop(modifier, 'operation', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Object:')
+
+    # object
+    column.prop(modifier, 'object', text='')
+
+  # build
+  def BUILD(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "frame_start")
-    col.prop(md, "frame_duration")
-    col.prop(md, "use_reverse")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.prop(md, "use_random_order")
-    sub = col.column()
-    sub.active = md.use_random_order
-    sub.prop(md, "seed")
+    # frame start
+    column.prop(modifier, 'frame_start')
 
-  def MESH_CACHE(self, layout, ob, md):
-    layout.prop(md, "cache_format")
-    layout.prop(md, "filepath")
+    # frame duration
+    column.prop(modifier, 'frame_duration')
 
-    layout.label(text="Evaluation:")
-    layout.prop(md, "factor", slider=True)
-    layout.prop(md, "deform_mode")
-    layout.prop(md, "interpolation")
+    # use reverse
+    column.prop(modifier, 'use_reverse')
 
-    layout.label(text="Time Mapping:")
+    # column
+    column = split.column()
 
+    # use random order
+    column.prop(modifier, 'use_random_order')
+
+    # sub
+    sub = column.column()
+
+    # sub active if use random order
+    sub.active = modifier.use_random_order
+
+    # seed
+    sub.prop(modifier, 'seed')
+
+  # mesh cache
+  def MESH_CACHE(self, layout, object, modifier):
+
+    # cache format
+    layout.prop(modifier, 'cache_format')
+
+    # filepath
+    layout.prop(modifier, 'filepath')
+
+    # label
+    layout.label(text='Evaluation:')
+
+    # factor
+    layout.prop(modifier, 'factor', slider=True)
+
+    # deform mode
+    layout.prop(modifier, 'deform_mode')
+
+    # interpolation
+    layout.prop(modifier, 'interpolation')
+
+    # label
+    layout.label(text='Time Mapping:')
+
+    # row
     row = layout.row()
-    row.prop(md, "time_mode", expand=True)
+
+    # time mode
+    row.prop(modifier, 'time_mode', expand=True)
+
+    # row
     row = layout.row()
-    row.prop(md, "play_mode", expand=True)
-    if md.play_mode == 'SCENE':
-      layout.prop(md, "frame_start")
-      layout.prop(md, "frame_scale")
+
+    # play mode
+    row.prop(modifier, 'play_mode', expand=True)
+
+    # is play mode in scene
+    if modifier.play_mode == 'SCENE':
+
+      # frame start
+      layout.prop(modifier, 'frame_start')
+
+      # frame scale
+      layout.prop(modifier, 'frame_scale')
+
+    # isnt play mode in scene
     else:
-      time_mode = md.time_mode
+
+      # time mode
+      time_mode = modifier.time_mode
+
+      # is time mode in frame
       if time_mode == 'FRAME':
-        layout.prop(md, "eval_frame")
+
+        # eval frame
+        layout.prop(modifier, 'eval_frame')
+
+      # is time mode in time
       elif time_mode == 'TIME':
-        layout.prop(md, "eval_time")
+
+        # eval time
+        layout.prop(modifier, 'eval_time')
+
+      # is time mode in factor
       elif time_mode == 'FACTOR':
-        layout.prop(md, "eval_factor")
 
-    layout.label(text="Axis Mapping:")
+        # eval factor
+        layout.prop(modifier, 'eval_factor')
+
+    # label
+    layout.label(text='Axis Mapping:')
+
+    # split
     split = layout.split(percentage=0.5, align=True)
-    split.alert = (md.forward_axis[-1] == md.up_axis[-1])
-    split.label("Forward/Up Axis:")
-    split.prop(md, "forward_axis", text="")
-    split.prop(md, "up_axis", text="")
+
+    # split alert if forward axis is up axis
+    split.alert = (modifier.forward_axis[-1] == modifier.up_axis[-1])
+
+    # label
+    split.label('Forward/Up Axis:')
+
+    # forward axis
+    split.prop(modifier, 'forward_axis', text='')
+
+    # up axis
+    split.prop(modifier, 'up_axis', text='')
+
+    # split
     split = layout.split(percentage=0.5)
-    split.label(text="Flip Axis:")
+
+    # label
+    split.label(text='Flip Axis:')
+
+    # row
     row = split.row()
-    row.prop(md, "flip_axis")
 
-  def CAST(self, layout, ob, md):
+    # flip axis
+    row.prop(modifier, 'flip_axis')
+
+  # cast
+  def CAST(self, layout, object, modifier):
+
+      # split
       split = layout.split(percentage=0.25)
 
-      split.label(text="Cast Type:")
-      split.prop(md, "cast_type", text="")
+      # label
+      split.label(text='Cast Type:')
 
+      # cast type
+      split.prop(modifier, 'cast_type', text='')
+
+      # split
       split = layout.split(percentage=0.25)
 
-      col = split.column()
-      col.prop(md, "use_x")
-      col.prop(md, "use_y")
-      col.prop(md, "use_z")
+      # column
+      column = split.column()
 
-      col = split.column()
-      col.prop(md, "factor")
-      col.prop(md, "radius")
-      col.prop(md, "size")
-      col.prop(md, "use_radius_as_size")
+      # use x
+      column.prop(modifier, 'use_x')
 
+      # use y
+      column.prop(modifier, 'use_y')
+
+      # use z
+      column.prop(modifier, 'use_z')
+
+      # column
+      column = split.column()
+
+      # factor
+      column.prop(modifier, 'factor')
+
+      # radius
+      column.prop(modifier, 'radius')
+
+      # size
+      column.prop(modifier, 'size')
+
+      # use radius as size
+      column.prop(modifier, 'use_radius_as_size')
+
+      # split
       split = layout.split()
 
-      col = split.column()
-      col.label(text="Vertex Group:")
-      col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
-      col = split.column()
-      col.label(text="Control Object:")
-      col.prop(md, "object", text="")
-      if md.object:
-        col.prop(md, "use_transform")
+      # column
+      column = split.column()
 
-  def CLOTH(self, layout, ob, md):
-    layout.label(text="Settings are inside the Physics tab")
+      # label
+      column.label(text='Vertex Group:')
 
-  def COLLISION(self, layout, ob, md):
-    layout.label(text="Settings are inside the Physics tab")
+      # vertex group
+      column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
 
-  def CURVE(self, layout, ob, md):
+      # column
+      column = split.column()
+
+      # label
+      column.label(text='Control Object:')
+
+      # object
+      column.prop(modifier, 'object', text='')
+
+      # is object
+      if modifier.object:
+
+        # use transform
+        column.prop(modifier, 'use_transform')
+
+  # cloth
+  def CLOTH(self, layout, object, modifier):
+
+    # label
+    layout.label(text='Settings are inside the Physics tab')
+
+  # collision
+  def COLLISION(self, layout, object, modifier):
+
+    # label
+    layout.label(text='Settings are inside the Physics tab')
+
+  # curve
+  def CURVE(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Object:")
-    col.prop(md, "object", text="")
-    col = split.column()
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
-    layout.label(text="Deformation Axis:")
-    layout.row().prop(md, "deform_axis", expand=True)
+    # column
+    column = split.column()
 
-  def DECIMATE(self, layout, ob, md):
-    decimate_type = md.decimate_type
+    # label
+    column.label(text='Object:')
 
+    # object
+    column.prop(modifier, 'object', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Vertex Group:')
+
+    # vertex group
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # label
+    layout.label(text='Deformation Axis:')
+
+    # deform axis
+    layout.row().prop(modifier, 'deform_axis', expand=True)
+
+  # decimate
+  def DECIMATE(self, layout, object, modifier):
+
+    # decimate type
+    decimate_type = modifier.decimate_type
+
+    # row
     row = layout.row()
-    row.prop(md, "decimate_type", expand=True)
 
+    # decimate type
+    row.prop(modifier, 'decimate_type', expand=True)
+
+    # is decimate type in collapse
     if decimate_type == 'COLLAPSE':
-      has_vgroup = bool(md.vertex_group)
-      layout.prop(md, "ratio")
 
+      # has vgroup
+      has_vgroup = bool(modifier.vertex_group)
+
+      ration
+      layout.prop(modifier, 'ratio')
+
+      # split
       split = layout.split()
 
-      col = split.column()
-      row = col.row(align=True)
-      row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
-      row.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
+      # column
+      column = split.column()
 
-      layout_info = col
+      # row
+      row = column.row(align=True)
 
-      col = split.column()
-      row = col.row()
+      # vertex group
+      row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+      # invert vertex group
+      row.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
+
+      # layout info
+      layout_info = column
+
+      # column
+      column = split.column()
+
+      # row
+      row = column.row()
+
+      # has vgroup
       row.active = has_vgroup
-      row.prop(md, "vertex_group_factor")
 
-      col.prop(md, "use_collapse_triangulate")
+      # vertex group factor
+      row.prop(modifier, 'vertex_group_factor')
 
+      # use callapse triangulate
+      column.prop(modifier, 'use_collapse_triangulate')
+
+    # is decimate type in unsubdiv
     elif decimate_type == 'UNSUBDIV':
-      layout.prop(md, "iterations")
+
+      # iterations
+      layout.prop(modifier, 'iterations')
+
+      # layout info
       layout_info = layout
-    else:  # decimate_type == 'DISSOLVE':
-      layout.prop(md, "angle_limit")
-      layout.prop(md, "use_dissolve_boundaries")
-      layout.label("Delimit:")
+
+    # is decimate type in dissolve
+    else:
+
+      # angle limit
+      layout.prop(modifier, 'angle_limit')
+
+      # use dissolve boundaries
+      layout.prop(modifier, 'use_dissolve_boundaries')
+
+      # label
+      layout.label('Delimit:')
+
+      # row
       row = layout.row()
-      row.prop(md, "delimit")
+
+      # delimit
+      row.prop(modifier, 'delimit')
+
+      # layout info
       layout_info = layout
 
-    layout_info.label(text=iface_("Faces: %d") % md.face_count, translate=False)
+    # label
+    layout_info.label(text=iface_('Faces: %d') % modifier.face_count, translate=False)
 
-  def DISPLACE(self, layout, ob, md):
-    has_texture = (md.texture is not None)
+  # displace
+  def DISPLACE(self, layout, object, modifier):
 
-    col = layout.column(align=True)
-    col.label(text="Texture:")
-    col.template_ID(md, "texture", new="texture.new")
+    # has texture
+    has_texture = (modifier.texture is not None)
 
+    # column
+    column = layout.column(align=True)
+
+    # label
+    column.label(text='Texture:')
+
+    # texture
+    column.template_ID(modifier, 'texture', new='texture.new')
+
+    # split
     split = layout.split()
 
-    col = split.column(align=True)
-    col.label(text="Direction:")
-    col.prop(md, "direction", text="")
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # column
+    column = split.column(align=True)
 
-    col = split.column(align=True)
-    col.active = has_texture
-    col.label(text="Texture Coordinates:")
-    col.prop(md, "texture_coords", text="")
-    if md.texture_coords == 'OBJECT':
-      col.label(text="Object:")
-      col.prop(md, "texture_coords_object", text="")
-    elif md.texture_coords == 'UV' and ob.type == 'MESH':
-      col.label(text="UV Map:")
-      col.prop_search(md, "uv_layer", ob.data, "uv_textures", text="")
+    # label
+    column.label(text='Direction:')
 
+    # direction
+    column.prop(modifier, 'direction', text='')
+
+    # label
+    column.label(text='Vertex Group:')
+
+    # vertex group
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # column
+    column = split.column(align=True)
+
+    # column active if has texture
+    column.active = has_texture
+
+    # label
+    column.label(text='Texture Coordinates:')
+
+    # texture coords
+    column.prop(modifier, 'texture_coords', text='')
+
+    # is texture coords in object
+    if modifier.texture_coords == 'OBJECT':
+
+      # label
+      column.label(text='Object:')
+
+      # texture coords object
+      column.prop(modifier, 'texture_coords_object', text='')
+
+    # is texture coords in uv and type in mesh
+    elif modifier.texture_coords == 'UV' and object.type == 'MESH':
+
+      # label
+      column.label(text='UV Map:')
+
+      # uv layer
+      column.prop_search(modifier, 'uv_layer', object.data, 'uv_textures', text='')
+
+    # separator
     layout.separator()
 
+    # row
     row = layout.row()
-    row.prop(md, "mid_level")
-    row.prop(md, "strength")
 
-  def DYNAMIC_PAINT(self, layout, ob, md):
-    layout.label(text="Settings are inside the Physics tab")
+    # mid level
+    row.prop(modifier, 'mid_level')
 
-  def EDGE_SPLIT(self, layout, ob, md):
+    # strength
+    row.prop(modifier, 'strength')
+
+  # dynamix paint
+  def DYNAMIC_PAINT(self, layout, object, modifier):
+
+    # label
+    layout.label(text='Settings are inside the Physics tab')
+
+  # edge split
+  def EDGE_SPLIT(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "use_edge_angle", text="Edge Angle")
-    sub = col.column()
-    sub.active = md.use_edge_angle
-    sub.prop(md, "split_angle")
+    # column
+    column = split.column()
 
-    split.prop(md, "use_edge_sharp", text="Sharp Edges")
+    # use edge angle
+    column.prop(modifier, 'use_edge_angle', text='Edge Angle')
 
-  def EXPLODE(self, layout, ob, md):
+    # sub
+    sub = column.column()
+
+    # sub active if use edge angle
+    sub.active = modifier.use_edge_angle
+
+    # split angle
+    sub.prop(modifier, 'split_angle')
+
+    # use edge sharp
+    split.prop(modifier, 'use_edge_sharp', text='Sharp Edges')
+
+  # explode
+  def EXPLODE(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Vertex group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
-    sub = col.column()
-    sub.active = bool(md.vertex_group)
-    sub.prop(md, "protect")
-    col.label(text="Particle UV")
-    col.prop_search(md, "particle_uv", ob.data, "uv_textures", text="")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.prop(md, "use_edge_cut")
-    col.prop(md, "show_unborn")
-    col.prop(md, "show_alive")
-    col.prop(md, "show_dead")
-    col.prop(md, "use_size")
+    # label
+    column.label(text='Vertex group:')
 
-    layout.operator("object.explode_refresh", text="Refresh")
+    # vertex group
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
 
-  def FLUID_SIMULATION(self, layout, ob, md):
-    layout.label(text="Settings are inside the Physics tab")
+    # sub
+    sub = column.column()
 
-  def HOOK(self, layout, ob, md):
-    use_falloff = (md.falloff_type != 'NONE')
+    # sub active if vertex group
+    sub.active = bool(modifier.vertex_group)
+
+    # protext
+    sub.prop(modifier, 'protect')
+
+    # label
+    column.label(text='Particle UV')
+
+    # particle uv
+    column.prop_search(modifier, 'particle_uv', object.data, 'uv_textures', text='')
+
+    # column
+    column = split.column()
+
+    # use edge cut
+    column.prop(modifier, 'use_edge_cut')
+
+    # show unborn
+    column.prop(modifier, 'show_unborn')
+
+    # show alive
+    column.prop(modifier, 'show_alive')
+
+    # show dead
+    column.prop(modifier, 'show_dead')
+
+    # use size
+    column.prop(modifier, 'use_size')
+
+    # object explde refresh
+    layout.operator('object.explode_refresh', text='Refresh')
+
+  # fluid simulation
+  def FLUID_SIMULATION(self, layout, object, modifier):
+
+    # label
+    layout.label(text='Settings are inside the Physics tab')
+
+  # hook
+  def HOOK(self, layout, object, modifier):
+
+    # use falloff
+    use_falloff = (modifier.falloff_type != 'NONE')
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Object:")
-    col.prop(md, "object", text="")
-    if md.object and md.object.type == 'ARMATURE':
-        col.label(text="Bone:")
-        col.prop_search(md, "subtarget", md.object.data, "bones", text="")
-    col = split.column()
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # column
+    column = split.column()
 
+    # label
+    column.label(text='Object:')
+
+    # object
+    column.prop(modifier, 'object', text='')
+
+    # is object and object type in armature
+    if modifier.object and modifier.object.type == 'ARMATURE':
+
+        # label
+        column.label(text='Bone:')
+
+        # subtarget
+        column.prop_search(modifier, 'subtarget', modifier.object.data, 'bones', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Vertex Group:')
+
+    # vertex group
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # separator
     layout.separator()
 
+    # row
     row = layout.row(align=True)
-    if use_falloff:
-      row.prop(md, "falloff_radius")
-    row.prop(md, "strength", slider=True)
-    layout.prop(md, "falloff_type")
 
-    col = layout.column()
+    # use falloff
     if use_falloff:
-      if md.falloff_type == 'CURVE':
-        col.template_curve_mapping(md, "falloff_curve")
 
+      # falloff radius
+      row.prop(modifier, 'falloff_radius')
+
+    # strength
+    row.prop(modifier, 'strength', slider=True)
+
+    # falloff type
+    layout.prop(modifier, 'falloff_type')
+
+    # column
+    column = layout.column()
+
+    # is use falloff
+    if use_falloff:
+
+      # is folloff type in curve
+      if modifier.falloff_type == 'CURVE':
+
+        # folloff curve
+        column.template_curve_mapping(modifier, 'falloff_curve')
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "use_falloff_uniform")
+    # column
+    column = split.column()
 
-    if ob.mode == 'EDIT':
-      row = col.row(align=True)
-      row.operator("object.hook_reset", text="Reset")
-      row.operator("object.hook_recenter", text="Recenter")
+    # use falloff uniform
+    column.prop(modifier, 'use_falloff_uniform')
 
+    # is mode in edit
+    if object.mode == 'EDIT':
+
+      # row
+      row = column.row(align=True)
+
+      # object hook reset
+      row.operator('object.hook_reset', text='Reset')
+
+      # object hook recenter
+      row.operator('object.hook_recenter', text='Recenter')
+
+      # row
       row = layout.row(align=True)
-      row.operator("object.hook_select", text="Select")
-      row.operator("object.hook_assign", text="Assign")
 
-  def LAPLACIANDEFORM(self, layout, ob, md):
-    is_bind = md.is_bind
+      # object hook select
+      row.operator('object.hook_select', text='Select')
 
-    layout.prop(md, "iterations")
+      # object hook assign
+      row.operator('object.hook_assign', text='Assign')
 
+  # laplacian deform
+  def LAPLACIANDEFORM(self, layout, object, modifier):
+
+    # is bind
+    is_bind = modifier.is_bind
+
+    # iterations
+    layout.prop(modifier, 'iterations')
+
+    # row
     row = layout.row()
+
+    # row active if isnt bind
     row.active = not is_bind
-    row.label(text="Anchors Vertex Group:")
 
+    # label
+    row.label(text='Anchors Vertex Group:')
+
+    # row
     row = layout.row()
+
+    # row enabled if isnt bind
     row.enabled = not is_bind
-    row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
 
+    # vertex group
+    row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # separator
     layout.separator()
 
+    # row
     row = layout.row()
-    row.enabled = bool(md.vertex_group)
-    row.operator("object.laplaciandeform_bind", text="Unbind" if is_bind else "Bind")
 
-  def LAPLACIANSMOOTH(self, layout, ob, md):
-    layout.prop(md, "iterations")
+    # row enabled if vertex group
+    row.enabled = bool(modifier.vertex_group)
 
+    # object laplacian deform bind
+    row.operator('object.laplaciandeform_bind', text='Unbind' if is_bind else 'Bind')
+
+  # laplacian smooth
+  def LAPLACIANSMOOTH(self, layout, object, modifier):
+
+    # iterations
+    layout.prop(modifier, 'iterations')
+
+    # split
     split = layout.split(percentage=0.25)
 
-    col = split.column()
-    col.label(text="Axis:")
-    col.prop(md, "use_x")
-    col.prop(md, "use_y")
-    col.prop(md, "use_z")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="Lambda:")
-    col.prop(md, "lambda_factor", text="Factor")
-    col.prop(md, "lambda_border", text="Border")
+    # label
+    column.label(text='Axis:')
 
-    col.separator()
-    col.prop(md, "use_volume_preserve")
-    col.prop(md, "use_normalized")
+    # use x
+    column.prop(modifier, 'use_x')
 
-    layout.label(text="Vertex Group:")
-    layout.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # use y
+    column.prop(modifier, 'use_y')
 
-  def LATTICE(self, layout, ob, md):
+    # use z
+    column.prop(modifier, 'use_z')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Lambda:')
+
+    # lambda factor
+    column.prop(modifier, 'lambda_factor', text='Factor')
+
+    # lambda border
+    column.prop(modifier, 'lambda_border', text='Border')
+
+    # separator
+    column.separator()
+
+    # use volume preserve
+    column.prop(modifier, 'use_volume_preserve')
+
+    # use normalized
+    column.prop(modifier, 'use_normalized')
+
+    # label
+    layout.label(text='Vertex Group:')
+
+    # vertex group
+    layout.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+  # lattice
+  def LATTICE(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Object:")
-    col.prop(md, "object", text="")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # label
+    column.label(text='Object:')
 
+    # object
+    column.prop(modifier, 'object', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Vertex Group:')
+
+    # vertex group
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # separator
     layout.separator()
-    layout.prop(md, "strength", slider=True)
 
-  def MASK(self, layout, ob, md):
+    # strength
+    layout.prop(modifier, 'strength', slider=True)
+
+  # mask
+  def MASK(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Mode:")
-    col.prop(md, "mode", text="")
+    # column
+    column = split.column()
 
-    col = split.column()
-    if md.mode == 'ARMATURE':
-      col.label(text="Armature:")
-      row = col.row(align=True)
-      row.prop(md, "armature", text="")
-      sub = row.row(align=True)
-      sub.active = (md.armature is not None)
-      sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
-    elif md.mode == 'VERTEX_GROUP':
-      col.label(text="Vertex Group:")
-      row = col.row(align=True)
-      row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
-      sub = row.row(align=True)
-      sub.active = bool(md.vertex_group)
-      sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
+    # label
+    column.label(text='Mode:')
 
-  def MESH_DEFORM(self, layout, ob, md):
+    # mode
+    column.prop(modifier, 'mode', text='')
+
+    # column
+    column = split.column()
+
+    # is mode in armature
+    if modifier.mode == 'ARMATURE':
+
+      # label
+      column.label(text='Armature:')
+
+      # row
+      row = column.row(align=True)
+
+      # armature
+      row.prop(modifier, 'armature', text='')
+
+      # sub
+      sub = row.row(align=True)
+
+      # sub active if armature
+      sub.active = (modifier.armature is not None)
+
+      # invert vertex group
+      sub.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
+
+    # is mode in vertex group
+    elif modifier.mode == 'VERTEX_GROUP':
+
+      # label
+      column.label(text='Vertex Group:')
+
+      # row
+      row = column.row(align=True)
+
+      # vertex group
+      row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+      # sub
+      sub = row.row(align=True)
+
+      # sub active if vertex group
+      sub.active = bool(modifier.vertex_group)
+
+      # invert vertex group
+      sub.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
+
+  # mesh deform
+  def MESH_DEFORM(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.active = not md.is_bound
-    col.label(text="Object:")
-    col.prop(md, "object", text="")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="Vertex Group:")
+    # column active if not is bound
+    column.active = not modifier.is_bound
 
-    row = col.row(align=True)
-    row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # label
+    column.label(text='Object:')
+
+    # object
+    column.prop(modifier, 'object', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Vertex Group:')
+
+    # row
+    row = column.row(align=True)
+
+    # vertex group
+    row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # sub
     sub = row.row(align=True)
-    sub.active = bool(md.vertex_group)
-    sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
+    # sub active if vertex group
+    sub.active = bool(modifier.vertex_group)
+
+    # invert vertex group
+    sub.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
+
+    # separator
     layout.separator()
 
-    if md.is_bound:
-      layout.operator("object.meshdeform_bind", text="Unbind")
+    # is bound
+    if modifier.is_bound:
+
+      # object mesh deform bind
+      layout.operator('object.meshdeform_bind', text='Unbind')
+
+    # isnt bount
     else:
-      layout.operator("object.meshdeform_bind", text="Bind")
 
+      # object mesh deform bind
+      layout.operator('object.meshdeform_bind', text='Bind')
+
+      # row
       row = layout.row()
-      row.prop(md, "precision")
-      row.prop(md, "use_dynamic_bind")
 
-  def MIRROR(self, layout, ob, md):
+      # precision
+      row.prop(modifier, 'precision')
+
+      # use dynamic bind
+      row.prop(modifier, 'use_dynamic_bind')
+
+  # mirror
+  def MIRROR(self, layout, object, modifier):
+
+    # split
     split = layout.split(percentage=0.25)
 
-    col = split.column()
-    col.label(text="Axis:")
-    col.prop(md, "use_x")
-    col.prop(md, "use_y")
-    col.prop(md, "use_z")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="Options:")
-    col.prop(md, "use_mirror_merge", text="Merge")
-    col.prop(md, "use_clip", text="Clipping")
-    col.prop(md, "use_mirror_vertex_groups", text="Vertex Groups")
+    # label
+    column.label(text='Axis:')
 
-    col = split.column()
-    col.label(text="Textures:")
-    col.prop(md, "use_mirror_u", text="U")
-    col.prop(md, "use_mirror_v", text="V")
+    # use x
+    column.prop(modifier, 'use_x')
 
-    col = layout.column()
+    # use y
+    column.prop(modifier, 'use_y')
 
-    if md.use_mirror_merge is True:
-        col.prop(md, "merge_threshold")
-    col.label(text="Mirror Object:")
-    col.prop(md, "mirror_object", text="")
+    # use z
+    column.prop(modifier, 'use_z')
 
-  def MULTIRES(self, layout, ob, md):
-    layout.row().prop(md, "subdivision_type", expand=True)
+    # column
+    column = split.column()
 
+    # label
+    column.label(text='Options:')
+
+    # use mirror merge
+    column.prop(modifier, 'use_mirror_merge', text='Merge')
+
+    # use clip
+    column.prop(modifier, 'use_clip', text='Clipping')
+
+    # use mirror vertex groups
+    column.prop(modifier, 'use_mirror_vertex_groups', text='Vertex Groups')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Textures:')
+
+    # use mirror u
+    column.prop(modifier, 'use_mirror_u', text='U')
+
+    # use mirror v
+    column.prop(modifier, 'use_mirror_v', text='V')
+
+    # column
+    column = layout.column()
+
+    # is use mirror merge
+    if modifier.use_mirror_merge is True:
+
+      # merge threshhold
+      column.prop(modifier, 'merge_threshold')
+
+    # label
+    column.label(text='Mirror Object:')
+
+    # mirror object
+    column.prop(modifier, 'mirror_object', text='')
+
+  # multires
+  def MULTIRES(self, layout, object, modifier):
+    layout.row().prop(modifier, 'subdivision_type', expand=True)
+
+    # split
     split = layout.split()
-    col = split.column()
-    col.prop(md, "levels", text="Preview")
-    col.prop(md, "sculpt_levels", text="Sculpt")
-    col.prop(md, "render_levels", text="Render")
 
-    col = split.column()
+    # column
+    column = split.column()
 
-    sub = col.column()
+    # levels
+    column.prop(modifier, 'levels', text='Preview')
+
+    # sculpt levels
+    column.prop(modifier, 'sculpt_levels', text='Sculpt')
+
+    # render levels
+    column.prop(modifier, 'render_levels', text='Render')
+
+    # column
+    column = split.column()
+
+    # sub
+    sub = column.column()
     sub.enabled = False
-    sub.operator("object.multires_subdivide", text="Subdivide")
-    sub.operator("object.multires_higher_levels_delete", text="Delete Higher")
-    sub.operator("object.multires_reshape", text="Reshape")
-    sub.operator("object.multires_base_apply", text="Apply Base")
 
-    col.enabled = ob.mode != 'EDIT'
-    col.prop(md, "use_subsurf_uv")
-    col.prop(md, "show_only_control_edges")
+    # object multires subdivide
+    sub.operator('object.multires_subdivide', text='Subdivide')
 
+    # object multires higher levels delete
+    sub.operator('object.multires_higher_levels_delete', text='Delete Higher')
+
+    # object multires reshape
+    sub.operator('object.multires_reshape', text='Reshape')
+
+    # object multires base apply
+    sub.operator('object.multires_base_apply', text='Apply Base')
+
+    column.enabled = object.mode != 'EDIT'
+
+    # use subsurf uv
+    column.prop(modifier, 'use_subsurf_uv')
+
+    # show only control edges
+    column.prop(modifier, 'show_only_control_edges')
+
+    # separator
     layout.separator()
 
-    col = layout.column()
-    col.enabled = False
-    row = col.row()
-    if md.is_external:
-      row.operator("object.multires_external_pack", text="Pack External")
-      row.label()
-      row = col.row()
-      row.prop(md, "filepath", text="")
-    else:
-      row.operator("object.multires_external_save", text="Save External...")
+    # column
+    column = layout.column()
+    column.enabled = False
+
+    # row
+    row = column.row()
+
+    # is external
+    if modifier.is_external:
+
+      # object multires external pack
+      row.operator('object.multires_external_pack', text='Pack External')
+
+      # label
       row.label()
 
-  def OCEAN(self, layout, ob, md):
+      # row
+      row = column.row()
+
+      # filepath
+      row.prop(modifier, 'filepath', text='')
+    else:
+
+      # object multires external save
+      row.operator('object.multires_external_save', text='Save External...')
+
+      # label
+      row.label()
+
+  # ocean
+  def OCEAN(self, layout, object, modifier):
+
+    # is mod oceansim
     if not bpy.app.build_options.mod_oceansim:
-      layout.label("Built without OceanSim modifier")
+
+      # label
+      layout.label('Built without OceanSim modifier')
       return
 
-    layout.prop(md, "geometry_mode")
+    # geometry mode
+    layout.prop(modifier, 'geometry_mode')
 
-    if md.geometry_mode == 'GENERATE':
+    if modifier.geometry_mode == 'GENERATE':
+      # row
       row = layout.row()
-      row.prop(md, "repeat_x")
-      row.prop(md, "repeat_y")
 
+      # repeat x
+      row.prop(modifier, 'repeat_x')
+
+      # repeat y
+      row.prop(modifier, 'repeat_y')
+
+    # separator
     layout.separator()
 
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "time")
-    col.prop(md, "depth")
-    col.prop(md, "random_seed")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.prop(md, "resolution")
-    col.prop(md, "size")
-    col.prop(md, "spatial_size")
+    # time
+    column.prop(modifier, 'time')
 
-    layout.label("Waves:")
+    # depth
+    column.prop(modifier, 'depth')
 
+    # random seed
+    column.prop(modifier, 'random_seed')
+
+    # column
+    column = split.column()
+
+    # resolution
+    column.prop(modifier, 'resolution')
+
+    # size
+    column.prop(modifier, 'size')
+
+    # spatial size
+    column.prop(modifier, 'spatial_size')
+
+    # label
+    layout.label('Waves:')
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "choppiness")
-    col.prop(md, "wave_scale", text="Scale")
-    col.prop(md, "wave_scale_min")
-    col.prop(md, "wind_velocity")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.prop(md, "wave_alignment", text="Alignment")
-    sub = col.column()
-    sub.active = (md.wave_alignment > 0.0)
-    sub.prop(md, "wave_direction", text="Direction")
-    sub.prop(md, "damping")
+    # choppiness
+    column.prop(modifier, 'choppiness')
 
+    # wave scale
+    column.prop(modifier, 'wave_scale', text='Scale')
+
+    # wave scale min
+    column.prop(modifier, 'wave_scale_min')
+
+    # wind velocity
+    column.prop(modifier, 'wind_velocity')
+
+    # column
+    column = split.column()
+
+    # wave alignment
+    column.prop(modifier, 'wave_alignment', text='Alignment')
+
+    # sub
+    sub = column.column()
+
+    # sub active if wave alignment more then 0
+    sub.active = (modifier.wave_alignment > 0.0)
+
+    # wave direction
+    sub.prop(modifier, 'wave_direction', text='Direction')
+
+    # damping
+    sub.prop(modifier, 'damping')
+
+    # separator
     layout.separator()
 
-    layout.prop(md, "use_normals")
+    # use normals
+    layout.prop(modifier, 'use_normals')
 
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "use_foam")
-    sub = col.row()
-    sub.active = md.use_foam
-    sub.prop(md, "foam_coverage", text="Coverage")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.active = md.use_foam
-    col.label("Foam Data Layer Name:")
-    col.prop(md, "foam_layer_name", text="")
+    # use foam
+    column.prop(modifier, 'use_foam')
 
+    # sub
+    sub = column.row()
+
+    # sub active if use foam
+    sub.active = modifier.use_foam
+
+    # foam coverage
+    sub.prop(modifier, 'foam_coverage', text='Coverage')
+
+    # column
+    column = split.column()
+
+    # column active if use foam
+    column.active = modifier.use_foam
+
+    # label
+    column.label('Foam Data Layer Name:')
+
+    # foam layer name
+    column.prop(modifier, 'foam_layer_name', text='')
+
+    # separator
     layout.separator()
 
-    if md.is_cached:
-      layout.operator("object.ocean_bake", text="Free Bake").free = True
+    # is cached
+    if modifier.is_cached:
+
+      # object ocean bake
+      layout.operator('object.ocean_bake', text='Free Bake').free = True
+
+    # isnt cached
     else:
-      layout.operator("object.ocean_bake").free = False
 
+      # object ocean bake
+      layout.operator('object.ocean_bake').free = False
+
+    # split
     split = layout.split()
-    split.enabled = not md.is_cached
 
-    col = split.column(align=True)
-    col.prop(md, "frame_start", text="Start")
-    col.prop(md, "frame_end", text="End")
+    # split enabled is not cached
+    split.enabled = not modifier.is_cached
 
-    col = split.column(align=True)
-    col.label(text="Cache path:")
-    col.prop(md, "filepath", text="")
+    # column
+    column = split.column(align=True)
 
+    # frame start
+    column.prop(modifier, 'frame_start', text='Start')
+
+    # frame end
+    column.prop(modifier, 'frame_end', text='End')
+
+    # column
+    column = split.column(align=True)
+
+    # label
+    column.label(text='Cache path:')
+
+    # filepath
+    column.prop(modifier, 'filepath', text='')
+
+    # split
     split = layout.split()
-    split.enabled = not md.is_cached
 
-    col = split.column()
-    col.active = md.use_foam
-    col.prop(md, "bake_foam_fade")
+    # split enabled is not cached
+    split.enabled = not modifier.is_cached
 
-    col = split.column()
+    # column
+    column = split.column()
 
-  def PARTICLE_INSTANCE(self, layout, ob, md):
-    layout.prop(md, "object")
-    layout.prop(md, "particle_system_index", text="Particle System")
+    # column active if use foam
+    column.active = modifier.use_foam
 
+    # bake foam fade
+    column.prop(modifier, 'bake_foam_fade')
+
+    # column
+    column = split.column()
+
+  # particle instance
+  def PARTICLE_INSTANCE(self, layout, object, modifier):
+
+    # object
+    layout.prop(modifier, 'object')
+
+    # particle system index
+    layout.prop(modifier, 'particle_system_index', text='Particle System')
+
+    # split
     split = layout.split()
-    col = split.column()
-    col.label(text="Create From:")
-    col.prop(md, "use_normal")
-    col.prop(md, "use_children")
-    col.prop(md, "use_size")
 
-    col = split.column()
-    col.label(text="Show Particles When:")
-    col.prop(md, "show_alive")
-    col.prop(md, "show_unborn")
-    col.prop(md, "show_dead")
+    # column
+    column = split.column()
 
+    # label
+    column.label(text='Create From:')
+
+    # use normal
+    column.prop(modifier, 'use_normal')
+
+    # use children
+    column.prop(modifier, 'use_children')
+
+    # use size
+    column.prop(modifier, 'use_size')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Show Particles When:')
+
+    # show alive
+    column.prop(modifier, 'show_alive')
+
+    # show unborn
+    column.prop(modifier, 'show_unborn')
+
+    # show dead
+    column.prop(modifier, 'show_dead')
+
+    # separator
     layout.separator()
 
-    layout.prop(md, "use_path", text="Create Along Paths")
+    # use path
+    layout.prop(modifier, 'use_path', text='Create Along Paths')
 
-    split = layout.split()
-    split.active = md.use_path
-    col = split.column()
-    col.row().prop(md, "axis", expand=True)
-    col.prop(md, "use_preserve_shape")
-
-    col = split.column()
-    col.prop(md, "position", slider=True)
-    col.prop(md, "random_position", text="Random", slider=True)
-
-  def PARTICLE_SYSTEM(self, layout, ob, md):
-    layout.label(text="Settings can be found inside the Particle context")
-
-  def SCREW(self, layout, ob, md):
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "axis")
-    col.prop(md, "object", text="AxisOb")
-    col.prop(md, "angle")
-    col.prop(md, "steps")
-    col.prop(md, "render_steps")
-    col.prop(md, "use_smooth_shade")
+    # split active if use path
+    split.active = modifier.use_path
 
-    col = split.column()
-    row = col.row()
-    row.active = (md.object is None or md.use_object_screw_offset is False)
-    row.prop(md, "screw_offset")
-    row = col.row()
-    row.active = (md.object is not None)
-    row.prop(md, "use_object_screw_offset")
-    col.prop(md, "use_normal_calculate")
-    col.prop(md, "use_normal_flip")
-    col.prop(md, "iterations")
-    col.prop(md, "use_stretch_u")
-    col.prop(md, "use_stretch_v")
+    # column
+    column = split.column()
 
-  def SHRINKWRAP(self, layout, ob, md):
+    # axis
+    column.row().prop(modifier, 'axis', expand=True)
+
+    # use preserve shape
+    column.prop(modifier, 'use_preserve_shape')
+
+    # column
+    column = split.column()
+
+    # position
+    column.prop(modifier, 'position', slider=True)
+
+    # Random
+    column.prop(modifier, 'random_position', text='Random', slider=True)
+
+  # particel system
+  def PARTICLE_SYSTEM(self, layout, object, modifier):
+
+    # label
+    layout.label(text='Settings can be found inside the Particle context')
+
+  # screw
+  def SCREW(self, layout, object, modifier):
+
+    # split
     split = layout.split()
-    col = split.column()
-    col.label(text="Target:")
-    col.prop(md, "target", text="")
-    col = split.column()
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
 
+    # column
+    column = split.column()
+
+    # axis
+    column.prop(modifier, 'axis')
+
+    # object
+    column.prop(modifier, 'object', text='AxisOb')
+
+    # angle
+    column.prop(modifier, 'angle')
+
+    # steps
+    column.prop(modifier, 'steps')
+
+    # render steps
+    column.prop(modifier, 'render_steps')
+
+    # use smooth shade
+    column.prop(modifier, 'use_smooth_shade')
+
+    # column
+    column = split.column()
+
+    # row
+    row = column.row()
+
+    # row active if object and not use object screw offset
+    row.active = (modifier.object is None or modifier.use_object_screw_offset is False)
+
+    # screw offset
+    row.prop(modifier, 'screw_offset')
+
+    # row
+    row = column.row()
+
+    # row active if object
+    row.active = (modifier.object is not None)
+
+    # use object screw offset
+    row.prop(modifier, 'use_object_screw_offset')
+
+    # use normal calculate
+    column.prop(modifier, 'use_normal_calculate')
+
+    # use normal flip
+    column.prop(modifier, 'use_normal_flip')
+
+    # iterations
+    column.prop(modifier, 'iterations')
+
+    # use stretch u
+    column.prop(modifier, 'use_stretch_u')
+
+    # use stretch v
+    column.prop(modifier, 'use_stretch_v')
+
+  # shrinkwrap
+  def SHRINKWRAP(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "offset")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="Mode:")
-    col.prop(md, "wrap_method", text="")
+    # label
+    column.label(text='Target:')
 
-    if md.wrap_method == 'PROJECT':
+    # target
+    column.prop(modifier, 'target', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Vertex Group:')
+
+    # vertex groups
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # split
+    split = layout.split()
+
+    # column
+    column = split.column()
+
+    # offset
+    column.prop(modifier, 'offset')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Mode:')
+
+    # wrap method
+    column.prop(modifier, 'wrap_method', text='')
+
+    # is wrap method in project
+    if modifier.wrap_method == 'PROJECT':
+
+      # split
       split = layout.split()
-      col = split.column()
-      col.prop(md, "subsurf_levels")
-      col = split.column()
 
-      col.prop(md, "project_limit", text="Limit")
+      # column
+      column = split.column()
+
+      # subsurf levels
+      column.prop(modifier, 'subsurf_levels')
+
+      # column
+      column = split.column()
+
+      # project limit
+      column.prop(modifier, 'project_limit', text='Limit')
+
+      # split
       split = layout.split(percentage=0.25)
 
-      col = split.column()
-      col.label(text="Axis:")
-      col.prop(md, "use_project_x")
-      col.prop(md, "use_project_y")
-      col.prop(md, "use_project_z")
+      # column
+      column = split.column()
 
-      col = split.column()
-      col.label(text="Direction:")
-      col.prop(md, "use_negative_direction")
-      col.prop(md, "use_positive_direction")
+      # label
+      column.label(text='Axis:')
 
-      col = split.column()
-      col.label(text="Cull Faces:")
-      col.prop(md, "cull_face", expand=True)
+      # use project x
+      column.prop(modifier, 'use_project_x')
 
-      layout.prop(md, "auxiliary_target")
+      # use project y
+      column.prop(modifier, 'use_project_y')
 
-    elif md.wrap_method == 'NEAREST_SURFACEPOINT':
-      layout.prop(md, "use_keep_above_surface")
+      # use project z
+      column.prop(modifier, 'use_project_z')
 
-  def SIMPLE_DEFORM(self, layout, ob, md):
+      # column
+      column = split.column()
 
-    layout.row().prop(md, "deform_method", expand=True)
+      # label
+      column.label(text='Direction:')
 
+      # use negative direction
+      column.prop(modifier, 'use_negative_direction')
+
+      # use positive direction
+      column.prop(modifier, 'use_positive_direction')
+
+      # column
+      column = split.column()
+
+      # label
+      column.label(text='Cull Faces:')
+
+      # cull face
+      column.prop(modifier, 'cull_face', expand=True)
+
+      # auxiliary target
+      layout.prop(modifier, 'auxiliary_target')
+
+    # is wrap method in nearest surface point
+    elif modifier.wrap_method == 'NEAREST_SURFACEPOINT':
+
+      # use keep above surface
+      layout.prop(modifier, 'use_keep_above_surface')
+
+  # simple deform
+  def SIMPLE_DEFORM(self, layout, object, modifier):
+
+    # deform method
+    layout.row().prop(modifier, 'deform_method', expand=True)
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # column
+    column = split.column()
 
+    # label
+    column.label(text='Vertex Group:')
+
+    # vertex groups
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Origin:")
-    col.prop(md, "origin", text="")
+    # column
+    column = split.column()
 
-    if md.deform_method in {'TAPER', 'STRETCH', 'TWIST'}:
-      col.label(text="Lock:")
-      col.prop(md, "lock_x")
-      col.prop(md, "lock_y")
+    # label
+    column.label(text='Origin:')
 
-    col = split.column()
-    col.label(text="Deform:")
-    if md.deform_method in {'TAPER', 'STRETCH'}:
-      col.prop(md, "factor")
+    # origin
+    column.prop(modifier, 'origin', text='')
+
+    # is deform method in taper, stretch, twist
+    if modifier.deform_method in {'TAPER', 'STRETCH', 'TWIST'}:
+
+      # label
+      column.label(text='Lock:')
+
+      # lock x
+      column.prop(modifier, 'lock_x')
+
+      # lock y
+      column.prop(modifier, 'lock_y')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Deform:')
+
+    # is deform method in taper, stretch
+    if modifier.deform_method in {'TAPER', 'STRETCH'}:
+
+      # factor
+      column.prop(modifier, 'factor')
+
+    # is deform method in bend
     else:
-      col.prop(md, "angle")
-    col.prop(md, "limits", slider=True)
 
-  def SMOKE(self, layout, ob, md):
-    layout.label(text="Settings are inside the Physics tab")
+      # angle
+      column.prop(modifier, 'angle')
 
-  def SMOOTH(self, layout, ob, md):
+    # limits
+    column.prop(modifier, 'limits', slider=True)
+
+  # smoke
+  def SMOKE(self, layout, object, modifier):
+
+    # label
+    layout.label(text='Settings are inside the Physics tab')
+
+  # smooth
+  def SMOOTH(self, layout, object, modifier):
+
+    # split
     split = layout.split(percentage=0.25)
 
-    col = split.column()
-    col.label(text="Axis:")
-    col.prop(md, "use_x")
-    col.prop(md, "use_y")
-    col.prop(md, "use_z")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.prop(md, "factor")
-    col.prop(md, "iterations")
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # label
+    column.label(text='Axis:')
 
-  def SOFT_BODY(self, layout, ob, md):
-    layout.label(text="Settings are inside the Physics tab")
+    # use x
+    column.prop(modifier, 'use_x')
 
-  def SOLIDIFY(self, layout, ob, md):
+    # use y
+    column.prop(modifier, 'use_y')
+
+    # use z
+    column.prop(modifier, 'use_z')
+
+    # column
+    column = split.column()
+
+    # factor
+    column.prop(modifier, 'factor')
+
+    # iterations
+    column.prop(modifier, 'iterations')
+
+    # label
+    column.label(text='Vertex Group:')
+
+    # vertex groups
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+  def SOFT_BODY(self, layout, object, modifier):
+
+    # label
+    layout.label(text='Settings are inside the Physics tab')
+
+  def SOLIDIFY(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "thickness")
-    col.prop(md, "thickness_clamp")
+    # column
+    column = split.column()
 
-    col.separator()
+    # thickness
+    column.prop(modifier, 'thickness')
 
-    row = col.row(align=True)
-    row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # thickness clamp
+    column.prop(modifier, 'thickness_clamp')
+
+    column.separator()
+
+    # row
+    row = column.row(align=True)
+
+    # vertex groups
+    row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # sub
     sub = row.row(align=True)
-    sub.active = bool(md.vertex_group)
-    sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
-    sub = col.row()
-    sub.active = bool(md.vertex_group)
-    sub.prop(md, "thickness_vertex_group", text="Factor")
+    # sub active if vertex group
+    sub.active = bool(modifier.vertex_group)
 
-    col.label(text="Crease:")
-    col.prop(md, "edge_crease_inner", text="Inner")
-    col.prop(md, "edge_crease_outer", text="Outer")
-    col.prop(md, "edge_crease_rim", text="Rim")
+    # invert vertex group
+    sub.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
 
-    col = split.column()
+    # sub
+    sub = column.row()
 
-    col.prop(md, "offset")
-    col.prop(md, "use_flip_normals")
+    # sub active if vertex group
+    sub.active = bool(modifier.vertex_group)
 
-    col.prop(md, "use_even_offset")
-    col.prop(md, "use_quality_normals")
-    col.prop(md, "use_rim")
-    col_rim = col.column()
-    col_rim.active = md.use_rim
-    col_rim.prop(md, "use_rim_only")
+    # thickness vertex group
+    sub.prop(modifier, 'thickness_vertex_group', text='Factor')
 
-    col.separator()
+    # label
+    column.label(text='Crease:')
 
-    col.label(text="Material Index Offset:")
+    # edge crease inner
+    column.prop(modifier, 'edge_crease_inner', text='Inner')
 
-    sub = col.column()
+    # edge crease outer
+    column.prop(modifier, 'edge_crease_outer', text='Outer')
+
+    # edge crease rim
+    column.prop(modifier, 'edge_crease_rim', text='Rim')
+
+    # column
+    column = split.column()
+
+    # offset
+    column.prop(modifier, 'offset')
+
+    # use flip normals
+    column.prop(modifier, 'use_flip_normals')
+
+    # use even offset
+    column.prop(modifier, 'use_even_offset')
+
+    # use quality normals
+    column.prop(modifier, 'use_quality_normals')
+
+    # use rim
+    column.prop(modifier, 'use_rim')
+
+    # sub
+    sub = column.column()
+
+    # sub active if use rim
+    sub.active = modifier.use_rim
+
+    # use rim only
+    sub.prop(modifier, 'use_rim_only')
+
+    # separator
+    column.separator()
+
+    # label
+    column.label(text='Material Index Offset:')
+
+    # sub
+    sub = column.column()
+
+    # row
     row = sub.split(align=True, percentage=0.4)
-    row.prop(md, "material_offset", text="")
+
+    # material offset
+    row.prop(modifier, 'material_offset', text='')
+
+    # row
     row = row.row(align=True)
-    row.active = md.use_rim
-    row.prop(md, "material_offset_rim", text="Rim")
 
-  def SUBSURF(self, layout, ob, md):
-    layout.row().prop(md, "subdivision_type", expand=True)
+    # row active if use rim
+    row.active = modifier.use_rim
 
-    split = layout.split()
-    col = split.column()
-    col.label(text="Subdivisions:")
-    col.prop(md, "levels", text="View")
-    col.prop(md, "render_levels", text="Render")
+    # material offset rim
+    row.prop(modifier, 'material_offset_rim', text='Rim')
 
-    col = split.column()
-    col.label(text="Options:")
-    col.prop(md, "use_subsurf_uv")
-    col.prop(md, "show_only_control_edges")
-    if hasattr(md, "use_opensubdiv"):
-      col.prop(md, "use_opensubdiv")
+  # subsurf
+  def SUBSURF(self, layout, object, modifier):
 
-  def SURFACE(self, layout, ob, md):
-    layout.label(text="Settings are inside the Physics tab")
+    # subdivision type
+    layout.row().prop(modifier, 'subdivision_type', expand=True)
 
-  def UV_PROJECT(self, layout, ob, md):
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Image:")
-    col.prop(md, "image", text="")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="UV Map:")
-    col.prop_search(md, "uv_layer", ob.data, "uv_textures", text="")
+    # label
+    column.label(text='Subdivisions:')
 
+    # levels
+    column.prop(modifier, 'levels', text='View')
+
+    # render levels
+    column.prop(modifier, 'render_levels', text='Render')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Options:')
+
+    # use subsurf uv
+    column.prop(modifier, 'use_subsurf_uv')
+
+    # show only control edges
+    column.prop(modifier, 'show_only_control_edges')
+
+    # has use opensubdiv
+    if hasattr(modifier, 'use_opensubdiv'):
+
+      # use opensubdiv
+      column.prop(modifier, 'use_opensubdiv')
+
+  # surface
+  def SURFACE(self, layout, object, modifier):
+
+    # label
+    layout.label(text='Settings are inside the Physics tab')
+
+  # uv project
+  def UV_PROJECT(self, layout, object, modifier):
+
+    # split
     split = layout.split()
-    col = split.column()
-    col.prop(md, "use_image_override")
-    col.prop(md, "projector_count", text="Projectors")
-    for proj in md.projectors:
-      col.prop(proj, "object", text="")
 
-    col = split.column()
-    sub = col.column(align=True)
-    sub.prop(md, "aspect_x", text="Aspect X")
-    sub.prop(md, "aspect_y", text="Aspect Y")
+    # column
+    column = split.column()
 
-    sub = col.column(align=True)
-    sub.prop(md, "scale_x", text="Scale X")
-    sub.prop(md, "scale_y", text="Scale Y")
+    # label
+    column.label(text='Image:')
 
-  def WARP(self, layout, ob, md):
-    use_falloff = (md.falloff_type != 'NONE')
+    # image
+    column.prop(modifier, 'image', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='UV Map:')
+
+    # uv textures
+    column.prop_search(modifier, 'uv_layer', object.data, 'uv_textures', text='')
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="From:")
-    col.prop(md, "object_from", text="")
+    # column
+    column = split.column()
 
-    col.prop(md, "use_volume_preserve")
+    # use image override
+    column.prop(modifier, 'use_image_override')
 
-    col = split.column()
-    col.label(text="To:")
-    col.prop(md, "object_to", text="")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # projector count
+    column.prop(modifier, 'projector_count', text='Projectors')
 
-    col = layout.column()
+    # process projectors
+    for proj in modifier.projectors:
 
-    row = col.row(align=True)
-    row.prop(md, "strength")
+      # object
+      column.prop(proj, 'object', text='')
+
+    # column
+    column = split.column()
+
+    # sub
+    sub = column.column(align=True)
+
+    # aspect x
+    sub.prop(modifier, 'aspect_x', text='Aspect X')
+
+    # aspect y
+    sub.prop(modifier, 'aspect_y', text='Aspect Y')
+
+    # sub
+    sub = column.column(align=True)
+
+    # scale x
+    sub.prop(modifier, 'scale_x', text='Scale X')
+
+    # scale y
+    sub.prop(modifier, 'scale_y', text='Scale Y')
+
+  # warp
+  def WARP(self, layout, object, modifier):
+
+    # use falloff
+    use_falloff = (modifier.falloff_type != 'NONE')
+
+    # split
+    split = layout.split()
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='From:')
+
+    # object from
+    column.prop(modifier, 'object_from', text='')
+
+    # use volume preserve
+    column.prop(modifier, 'use_volume_preserve')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='To:')
+
+    # object to
+    column.prop(modifier, 'object_to', text='')
+
+    # vertex groups
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # column
+    column = layout.column()
+
+    # row
+    row = column.row(align=True)
+
+    # strength
+    row.prop(modifier, 'strength')
+
+    # is use falloff
     if use_falloff:
-      row.prop(md, "falloff_radius")
 
-    col.prop(md, "falloff_type")
+      # falloff radius
+      row.prop(modifier, 'falloff_radius')
+
+    # falloff type
+    column.prop(modifier, 'falloff_type')
+
+    # is use faloff
     if use_falloff:
-      if md.falloff_type == 'CURVE':
-        col.template_curve_mapping(md, "falloff_curve")
 
-    # 2 new columns
-    split = layout.split()
-    col = split.column()
-    col.label(text="Texture:")
-    col.template_ID(md, "texture", new="texture.new")
+      # is falloff type in curve
+      if modifier.falloff_type == 'CURVE':
 
-    col = split.column()
-    col.label(text="Texture Coordinates:")
-    col.prop(md, "texture_coords", text="")
+        # falloff curve
+        column.template_curve_mapping(modifier, 'falloff_curve')
 
-    if md.texture_coords == 'OBJECT':
-      layout.prop(md, "texture_coords_object", text="Object")
-    elif md.texture_coords == 'UV' and ob.type == 'MESH':
-      layout.prop_search(md, "uv_layer", ob.data, "uv_textures")
-
-  def WAVE(self, layout, ob, md):
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Motion:")
-    col.prop(md, "use_x")
-    col.prop(md, "use_y")
-    col.prop(md, "use_cyclic")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.prop(md, "use_normal")
-    sub = col.column()
-    sub.active = md.use_normal
-    sub.prop(md, "use_normal_x", text="X")
-    sub.prop(md, "use_normal_y", text="Y")
-    sub.prop(md, "use_normal_z", text="Z")
+    # label
+    column.label(text='Texture:')
 
+    # texture
+    column.template_ID(modifier, 'texture', new='texture.new')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Texture Coordinates:')
+
+    # texture coords
+    column.prop(modifier, 'texture_coords', text='')
+
+    # is texture coords in object
+    if modifier.texture_coords == 'OBJECT':
+
+      # texture coords object
+      layout.prop(modifier, 'texture_coords_object', text='Object')
+
+    # is texture coords in uv and type in mesh
+    elif modifier.texture_coords == 'UV' and object.type == 'MESH':
+
+      # uv layer
+      layout.prop_search(modifier, 'uv_layer', object.data, 'uv_textures')
+
+  # wave
+  def WAVE(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Time:")
-    sub = col.column(align=True)
-    sub.prop(md, "time_offset", text="Offset")
-    sub.prop(md, "lifetime", text="Life")
-    col.prop(md, "damping_time", text="Damping")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="Position:")
-    sub = col.column(align=True)
-    sub.prop(md, "start_position_x", text="X")
-    sub.prop(md, "start_position_y", text="Y")
-    col.prop(md, "falloff_radius", text="Falloff")
+    # label
+    column.label(text='Motion:')
+
+    # use x
+    column.prop(modifier, 'use_x')
+
+    # use y
+    column.prop(modifier, 'use_y')
+
+    # use cyclic
+    column.prop(modifier, 'use_cyclic')
+
+    # column
+    column = split.column()
+
+    # use normal
+    column.prop(modifier, 'use_normal')
+
+    # sub
+    sub = column.column()
+
+    # use normal
+    sub.active = modifier.use_normal
+
+    # use normal x
+    sub.prop(modifier, 'use_normal_x', text='X')
+
+    # use normal y
+    sub.prop(modifier, 'use_normal_y', text='Y')
+
+    # use normal z
+    sub.prop(modifier, 'use_normal_z', text='Z')
+
+    # split
+    split = layout.split()
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Time:')
+
+    # sub
+    sub = column.column(align=True)
+
+    # time offset
+    sub.prop(modifier, 'time_offset', text='Offset')
+
+    # lifetime
+    sub.prop(modifier, 'lifetime', text='Life')
+
+    # damping time
+    column.prop(modifier, 'damping_time', text='Damping')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Position:')
+
+    # sub
+    sub = column.column(align=True)
+
+    # start position x
+    sub.prop(modifier, 'start_position_x', text='X')
+
+    # start position y
+    sub.prop(modifier, 'start_position_y', text='Y')
+
+    # falloff radius
+    column.prop(modifier, 'falloff_radius', text='Falloff')
 
     layout.separator()
 
-    layout.prop(md, "start_position_object")
-    layout.prop_search(md, "vertex_group", ob, "vertex_groups")
+    # start position object
+    layout.prop(modifier, 'start_position_object')
+
+    # vertex group
+    layout.prop_search(modifier, 'vertex_group', object, 'vertex_groups')
+
+    # split
     split = layout.split(percentage=0.33)
-    col = split.column()
-    col.label(text="Texture")
-    col = split.column()
-    col.template_ID(md, "texture", new="texture.new")
-    layout.prop(md, "texture_coords")
-    if md.texture_coords == 'UV' and ob.type == 'MESH':
-      layout.prop_search(md, "uv_layer", ob.data, "uv_textures")
-    elif md.texture_coords == 'OBJECT':
-      layout.prop(md, "texture_coords_object")
 
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Texture')
+
+    # column
+    column = split.column()
+
+    # texture
+    column.template_ID(modifier, 'texture', new='texture.new')
+
+    # texture coords
+    layout.prop(modifier, 'texture_coords')
+
+    # is texture coords in uv and type in mesh
+    if modifier.texture_coords == 'UV' and object.type == 'MESH':
+
+      # uv layer
+      layout.prop_search(modifier, 'uv_layer', object.data, 'uv_textures')
+
+    # is texture coords in object
+    elif modifier.texture_coords == 'OBJECT':
+
+      # texture coords object
+      layout.prop(modifier, 'texture_coords_object')
+
+    # separator
     layout.separator()
 
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "speed", slider=True)
-    col.prop(md, "height", slider=True)
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.prop(md, "width", slider=True)
-    col.prop(md, "narrowness", slider=True)
+    # speed
+    column.prop(modifier, 'speed', slider=True)
 
-  def REMESH(self, layout, ob, md):
-    layout.prop(md, "mode")
+    # height
+    column.prop(modifier, 'height', slider=True)
 
+    # column
+    column = split.column()
+
+    # width
+    column.prop(modifier, 'width', slider=True)
+
+    # narrowness
+    column.prop(modifier, 'narrowness', slider=True)
+
+  # remesh
+  def REMESH(self, layout, object, modifier):
+
+    # mode
+    layout.prop(modifier, 'mode')
+
+    # row
     row = layout.row()
-    row.prop(md, "octree_depth")
-    row.prop(md, "scale")
 
-    if md.mode == 'SHARP':
-      layout.prop(md, "sharpness")
+    # octree depth
+    row.prop(modifier, 'octree_depth')
 
-    layout.prop(md, "use_smooth_shade")
-    layout.prop(md, "use_remove_disconnected")
+    # scale
+    row.prop(modifier, 'scale')
+
+    # sharp
+    if modifier.mode == 'SHARP':
+
+      # sharpness
+      layout.prop(modifier, 'sharpness')
+
+    # use smooth shade
+    layout.prop(modifier, 'use_smooth_shade')
+
+    # use remove disconnected
+    layout.prop(modifier, 'use_remove_disconnected')
+
+    # row
     row = layout.row()
-    row.active = md.use_remove_disconnected
-    row.prop(md, "threshold")
 
+    # row active if use remove disconnected
+    row.active = modifier.use_remove_disconnected
+
+    # threshold
+    row.prop(modifier, 'threshold')
+
+  # vertex weight mask
   @staticmethod
-  def vertex_weight_mask(layout, ob, md):
-    layout.label(text="Influence/Mask Options:")
+  def vertex_weight_mask(layout, object, modifier):
 
+    # label
+    layout.label(text='Influence/Mask Options:')
+
+    # split
     split = layout.split(percentage=0.4)
-    split.label(text="Global Influence:")
-    split.prop(md, "mask_constant", text="")
 
-    if not md.mask_texture:
-      split = layout.split(percentage=0.4)
-      split.label(text="Vertex Group Mask:")
-      split.prop_search(md, "mask_vertex_group", ob, "vertex_groups", text="")
+    # label
+    split.label(text='Global Influence:')
 
-    if not md.mask_vertex_group:
+    # mask constant
+    split.prop(modifier, 'mask_constant', text='')
+
+    # is not mask texture
+    if not modifier.mask_texture:
+
+      # split
       split = layout.split(percentage=0.4)
-      split.label(text="Texture Mask:")
-      split.template_ID(md, "mask_texture", new="texture.new")
-      if md.mask_texture:
+
+      # label
+      split.label(text='Vertex Group Mask:')
+
+      # vertex groups
+      split.prop_search(modifier, 'mask_vertex_group', object, 'vertex_groups', text='')
+
+    # is not mask vertex groups
+    if not modifier.mask_vertex_group:
+
+      # split
+      split = layout.split(percentage=0.4)
+
+      # label
+      split.label(text='Texture Mask:')
+
+      # mask texture
+      split.template_ID(modifier, 'mask_texture', new='texture.new')
+
+      # is mask texture
+      if modifier.mask_texture:
+
+        # split
         split = layout.split()
 
-        col = split.column()
-        col.label(text="Texture Coordinates:")
-        col.prop(md, "mask_tex_mapping", text="")
+        # column
+        column = split.column()
 
-        col = split.column()
-        col.label(text="Use Channel:")
-        col.prop(md, "mask_tex_use_channel", text="")
+        # label
+        column.label(text='Texture Coordinates:')
 
-        if md.mask_tex_mapping == 'OBJECT':
-          layout.prop(md, "mask_tex_map_object", text="Object")
-        elif md.mask_tex_mapping == 'UV' and ob.type == 'MESH':
-          layout.prop_search(md, "mask_tex_uv_layer", ob.data, "uv_textures")
+        # mask tex mapping
+        column.prop(modifier, 'mask_tex_mapping', text='')
 
-  def VERTEX_WEIGHT_EDIT(self, layout, ob, md):
+        # column
+        column = split.column()
+
+        # label
+        column.label(text='Use Channel:')
+
+        # mask tex use channel
+        column.prop(modifier, 'mask_tex_use_channel', text='')
+
+        # is mask tex mapping in object
+        if modifier.mask_tex_mapping == 'OBJECT':
+
+          # mask tex map object
+          layout.prop(modifier, 'mask_tex_map_object', text='Object')
+
+        # is mask tex mapping in uv and type in mesh
+        elif modifier.mask_tex_mapping == 'UV' and object.type == 'MESH':
+
+          # mask tex uv layer
+          layout.prop_search(modifier, 'mask_tex_uv_layer', object.data, 'uv_textures')
+
+  # vertex weight edit
+  def VERTEX_WEIGHT_EDIT(self, layout, object, modifier):
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # column
+    column = split.column()
 
-    col.label(text="Default Weight:")
-    col.prop(md, "default_weight", text="")
+    # label
+    column.label(text='Vertex Group:')
 
-    col = split.column()
-    col.prop(md, "use_add")
-    sub = col.column()
-    sub.active = md.use_add
-    sub.prop(md, "add_threshold")
+    # vertex groups
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
 
-    col = col.column()
-    col.prop(md, "use_remove")
-    sub = col.column()
-    sub.active = md.use_remove
-    sub.prop(md, "remove_threshold")
+    # label
+    column.label(text='Default Weight:')
 
+    # default weight
+    column.prop(modifier, 'default_weight', text='')
+
+    # column
+    column = split.column()
+
+    # use add
+    column.prop(modifier, 'use_add')
+
+    # sub
+    sub = column.column()
+
+    # sub active if use add
+    sub.active = modifier.use_add
+
+    # add threshold
+    sub.prop(modifier, 'add_threshold')
+
+    # column
+    column = column.column()
+
+    # use remove
+    column.prop(modifier, 'use_remove')
+
+    # sub
+    sub = column.column()
+
+    # use remove
+    sub.active = modifier.use_remove
+
+    # remove threshold
+    sub.prop(modifier, 'remove_threshold')
+
+    # separator
     layout.separator()
 
-    layout.prop(md, "falloff_type")
-    if md.falloff_type == 'CURVE':
-        layout.template_curve_mapping(md, "map_curve")
+    # falloff type
+    layout.prop(modifier, 'falloff_type')
+
+    # is falloff type in curve
+    if modifier.falloff_type == 'CURVE':
+
+      # map curve
+      layout.template_curve_mapping(modifier, 'map_curve')
+
+    # separator
+    layout.separator()
+
+    # vertex weight mask
+    self.vertex_weight_mask(layout, object, modifier)
+
+  # vertex weight mix
+  def VERTEX_WEIGHT_MIX(self, layout, object, modifier):
+
+    # split
+    split = layout.split()
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Vertex Group A:')
+
+    # vertex groups
+    column.prop_search(modifier, 'vertex_group_a', object, 'vertex_groups', text='')
+
+    # label
+    column.label(text='Default Weight A:')
+
+    # default weight a
+    column.prop(modifier, 'default_weight_a', text='')
+
+    # label
+    column.label(text='Mix Mode:')
+
+    # mix mode
+    column.prop(modifier, 'mix_mode', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Vertex Group B:')
+
+    # vertex groups
+    column.prop_search(modifier, 'vertex_group_b', object, 'vertex_groups', text='')
+
+    # label
+    column.label(text='Default Weight B:')
+
+    # default weight b
+    column.prop(modifier, 'default_weight_b', text='')
+
+    # label
+    column.label(text='Mix Set:')
+
+    # mix set
+    column.prop(modifier, 'mix_set', text='')
+
+    # separator
+    layout.separator()
+
+    # vertex weight mask
+    self.vertex_weight_mask(layout, object, modifier)
+
+  # vertex weight proximity
+  def VERTEX_WEIGHT_PROXIMITY(self, layout, object, modifier):
+
+    # split
+    split = layout.split()
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Vertex Group:')
+
+    # vertex groups
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Target Object:')
+
+    # target
+    column.prop(modifier, 'target', text='')
+
+    # split
+    split = layout.split()
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Distance:')
+
+    # proximity mode
+    column.prop(modifier, 'proximity_mode', text='')
+
+    # is proximity mode in geometry
+    if modifier.proximity_mode == 'GEOMETRY':
+
+      # proximity geometry
+      column.row().prop(modifier, 'proximity_geometry')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label()
+
+    # min dist
+    column.prop(modifier, 'min_dist')
+
+    # max dist
+    column.prop(modifier, 'max_dist')
+
+    # separator
+    layout.separator()
+
+    # falloff type
+    layout.prop(modifier, 'falloff_type')
 
     # Common mask options
     layout.separator()
-    self.vertex_weight_mask(layout, ob, md)
 
-  def VERTEX_WEIGHT_MIX(self, layout, ob, md):
-    split = layout.split()
+    # vertex weight edit
+    self.vertex_weight_mask(layout, object, modifier)
 
-    col = split.column()
-    col.label(text="Vertex Group A:")
-    col.prop_search(md, "vertex_group_a", ob, "vertex_groups", text="")
-    col.label(text="Default Weight A:")
-    col.prop(md, "default_weight_a", text="")
+  # skin
+  def SKIN(self, layout, object, modifier):
 
-    col.label(text="Mix Mode:")
-    col.prop(md, "mix_mode", text="")
-
-    col = split.column()
-    col.label(text="Vertex Group B:")
-    col.prop_search(md, "vertex_group_b", ob, "vertex_groups", text="")
-    col.label(text="Default Weight B:")
-    col.prop(md, "default_weight_b", text="")
-
-    col.label(text="Mix Set:")
-    col.prop(md, "mix_set", text="")
-
-    # Common mask options
-    layout.separator()
-    self.vertex_weight_mask(layout, ob, md)
-
-  def VERTEX_WEIGHT_PROXIMITY(self, layout, ob, md):
-    split = layout.split()
-
-    col = split.column()
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
-
-    col = split.column()
-    col.label(text="Target Object:")
-    col.prop(md, "target", text="")
-
-    split = layout.split()
-
-    col = split.column()
-    col.label(text="Distance:")
-    col.prop(md, "proximity_mode", text="")
-    if md.proximity_mode == 'GEOMETRY':
-        col.row().prop(md, "proximity_geometry")
-
-    col = split.column()
-    col.label()
-    col.prop(md, "min_dist")
-    col.prop(md, "max_dist")
-
-    layout.separator()
-    layout.prop(md, "falloff_type")
-
-    # Common mask options
-    layout.separator()
-    self.vertex_weight_mask(layout, ob, md)
-
-  def SKIN(self, layout, ob, md):
+    # row
     row = layout.row()
-    row.operator("object.skin_armature_create", text="Create Armature")
-    row.operator("mesh.customdata_skin_add")
 
+    # object skin armature create
+    row.operator('object.skin_armature_create', text='Create Armature')
+
+    # mesh customodifierata skin add
+    row.operator('mesh.customdata_skin_add')
+
+    # separator
     layout.separator()
 
+    # row
     row = layout.row(align=True)
-    row.prop(md, "branch_smoothing")
-    row.prop(md, "use_smooth_shade")
 
+    # branch smoothing
+    row.prop(modifier, 'branch_smoothing')
+
+    # use smooth shade
+    row.prop(modifier, 'use_smooth_shade')
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Selected Vertices:")
-    sub = col.column(align=True)
-    sub.operator("object.skin_loose_mark_clear", text="Mark Loose").action = 'MARK'
-    sub.operator("object.skin_loose_mark_clear", text="Clear Loose").action = 'CLEAR'
+    # column
+    column = split.column()
 
-    sub = col.column()
-    sub.operator("object.skin_root_mark", text="Mark Root")
-    sub.operator("object.skin_radii_equalize", text="Equalize Radii")
+    # label
+    column.label(text='Selected Vertices:')
 
-    col = split.column()
-    col.label(text="Symmetry Axes:")
-    col.prop(md, "use_x_symmetry")
-    col.prop(md, "use_y_symmetry")
-    col.prop(md, "use_z_symmetry")
+    # sub
+    sub = column.column(align=True)
 
-  def TRIANGULATE(self, layout, ob, md):
+    # object skin loose mark clear
+    sub.operator('object.skin_loose_mark_clear', text='Mark Loose').action = 'MARK'
+
+    # object skin loose mark clear
+    sub.operator('object.skin_loose_mark_clear', text='Clear Loose').action = 'CLEAR'
+
+    # sub
+    sub = column.column()
+
+    # object skin root mark
+    sub.operator('object.skin_root_mark', text='Mark Root')
+
+    # object skin radii equalize
+    sub.operator('object.skin_radii_equalize', text='Equalize Radii')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='Symmetry Axes:')
+
+    # use x symmetry
+    column.prop(modifier, 'use_x_symmetry')
+
+    # use y symmetry
+    column.prop(modifier, 'use_y_symmetry')
+
+    # use z symmetry
+    column.prop(modifier, 'use_z_symmetry')
+
+  # triangulate
+  def TRIANGULATE(self, layout, object, modifier):
+
+    # row
     row = layout.row()
 
-    col = row.column()
-    col.label(text="Quad Method:")
-    col.prop(md, "quad_method", text="")
-    col = row.column()
-    col.label(text="Ngon Method:")
-    col.prop(md, "ngon_method", text="")
+    # column
+    column = row.column()
 
-  def UV_WARP(self, layout, ob, md):
+    # label
+    column.label(text='Quad Method:')
+
+    # quad method
+    column.prop(modifier, 'quad_method', text='')
+
+    # column
+    column = row.column()
+
+    # label
+    column.label(text='Ngon Method:')
+
+    # ngon method
+    column.prop(modifier, 'ngon_method', text='')
+
+  # uv warp
+  def UV_WARP(self, layout, object, modifier):
+
+    # split
     split = layout.split()
-    col = split.column()
-    col.prop(md, "center")
 
-    col = split.column()
-    col.label(text="UV Axis:")
-    col.prop(md, "axis_u", text="")
-    col.prop(md, "axis_v", text="")
+    # column
+    column = split.column()
 
+    # center
+    column.prop(modifier, 'center')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='UV Axis:')
+
+    # axis u
+    column.prop(modifier, 'axis_u', text='')
+
+    # axis v
+    column.prop(modifier, 'axis_v', text='')
+
+    # split
     split = layout.split()
-    col = split.column()
-    col.label(text="From:")
-    col.prop(md, "object_from", text="")
 
-    col = split.column()
-    col.label(text="To:")
-    col.prop(md, "object_to", text="")
+    # column
+    column = split.column()
 
+    # label
+    column.label(text='From:')
+
+    # object from
+    column.prop(modifier, 'object_from', text='')
+
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='To:')
+
+    # object to
+    column.prop(modifier, 'object_to', text='')
+
+    # split
     split = layout.split()
-    col = split.column()
-    obj = md.object_from
+
+    # column
+    column = split.column()
+
+    # obj
+    obj = modifier.object_from
+
+    # if type in armature
     if obj and obj.type == 'ARMATURE':
-      col.label(text="Bone:")
-      col.prop_search(md, "bone_from", obj.data, "bones", text="")
 
-    col = split.column()
-    obj = md.object_to
+      # label
+      column.label(text='Bone:')
+
+      # bones
+      column.prop_search(modifier, 'bone_from', obj.data, 'bones', text='')
+
+    # column
+    column = split.column()
+
+    # obj
+    obj = modifier.object_to
+
+    # if type in armature
     if obj and obj.type == 'ARMATURE':
-      col.label(text="Bone:")
-      col.prop_search(md, "bone_to", obj.data, "bones", text="")
 
+      # label
+      column.label(text='Bone:')
+
+      # bones
+      column.prop_search(modifier, 'bone_to', obj.data, 'bones', text='')
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Vertex Group:")
-    col.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.label(text="UV Map:")
-    col.prop_search(md, "uv_layer", ob.data, "uv_textures", text="")
+    # label
+    column.label(text='Vertex Group:')
 
-  def WIREFRAME(self, layout, ob, md):
-    has_vgroup = bool(md.vertex_group)
+    # vertex groups
+    column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
 
+    # column
+    column = split.column()
+
+    # label
+    column.label(text='UV Map:')
+
+    # uv textures
+    column.prop_search(modifier, 'uv_layer', object.data, 'uv_textures', text='')
+
+  # wireframe
+  def WIREFRAME(self, layout, object, modifier):
+
+    # has vgroup
+    has_vgroup = bool(modifier.vertex_group)
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "thickness", text="Thickness")
+    # column
+    column = split.column()
 
-    row = col.row(align=True)
-    row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # thickness
+    column.prop(modifier, 'thickness', text='Thickness')
+
+    # row
+    row = column.row(align=True)
+
+    # vertex groups
+    row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # sub
     sub = row.row(align=True)
+
+    # sub active if has vgroup
     sub.active = has_vgroup
-    sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
-    row = col.row(align=True)
+
+    # invert vertex group
+    sub.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
+
+    # row
+    row = column.row(align=True)
+
+    # row active if has vgroup
     row.active = has_vgroup
-    row.prop(md, "thickness_vertex_group", text="Factor")
 
-    col.prop(md, "use_crease", text="Crease Edges")
-    col.prop(md, "crease_weight", text="Crease Weight")
+    # thickness vertex group
+    row.prop(modifier, 'thickness_vertex_group', text='Factor')
 
-    col = split.column()
+    # use crease
+    column.prop(modifier, 'use_crease', text='Crease Edges')
 
-    col.prop(md, "offset")
-    col.prop(md, "use_even_offset", text="Even Thickness")
-    col.prop(md, "use_relative_offset", text="Relative Thickness")
-    col.prop(md, "use_boundary", text="Boundary")
-    col.prop(md, "use_replace", text="Replace Original")
+    # crease weight
+    column.prop(modifier, 'crease_weight', text='Crease Weight')
 
-    col.prop(md, "material_offset", text="Material Offset")
+    # column
+    column = split.column()
 
-  def DATA_TRANSFER(self, layout, ob, md):
+    # offset
+    column.prop(modifier, 'offset')
+
+    # use even offset
+    column.prop(modifier, 'use_even_offset', text='Even Thickness')
+
+    # use relative offset
+    column.prop(modifier, 'use_relative_offset', text='Relative Thickness')
+
+    # use boundary
+    column.prop(modifier, 'use_boundary', text='Boundary')
+
+    # use replace
+    column.prop(modifier, 'use_replace', text='Replace Original')
+
+    # material offset
+    column.prop(modifier, 'material_offset', text='Material Offset')
+
+  # data transfer
+  def DATA_TRANSFER(self, layout, object, modifier):
+
+    # row
     row = layout.row(align=True)
-    row.prop(md, "object")
-    sub = row.row(align=True)
-    sub.active = bool(md.object)
-    sub.prop(md, "use_object_transform", text="", icon='GROUP')
 
+    # object
+    row.prop(modifier, 'object')
+
+    # sub
+    sub = row.row(align=True)
+
+    # sub active if object
+    sub.active = bool(modifier.object)
+
+    # use object transform
+    sub.prop(modifier, 'use_object_transform', text='', icon='GROUP')
+
+    # separator
     layout.separator()
 
+    # split
     split = layout.split(0.333)
-    split.prop(md, "use_vert_data")
-    use_vert = md.use_vert_data
+
+    # use vert data
+    split.prop(modifier, 'use_vert_data')
+
+    # use verts
+    use_vert = modifier.use_vert_data
+
+    # row
     row = split.row()
+
+    # row active if use vert
     row.active = use_vert
-    row.prop(md, "vert_mapping", text="")
+
+    # vert mapping
+    row.prop(modifier, 'vert_mapping', text='')
+
+    # use vert
     if use_vert:
-      col = layout.column(align=True)
-      split = col.split(0.333, align=True)
+
+      # column
+      column = layout.column(align=True)
+
+      # split
+      split = column.split(0.333, align=True)
+
+      # sub
       sub = split.column(align=True)
-      sub.prop(md, "data_types_verts_vgroup")
+
+      # data types verts vgroup
+      sub.prop(modifier, 'data_types_verts_vgroup')
+
+      # row
       row = split.row(align=True)
-      row.prop(md, "layers_vgroup_select_src", text="")
+
+      # layers vgroup select src
+      row.prop(modifier, 'layers_vgroup_select_src', text='')
+
+      # label
       row.label(icon='RIGHTARROW_THIN')
-      row.prop(md, "layers_vgroup_select_dst", text="")
-      split = col.split(0.333, align=True)
-      sub = split.column(align=True)
-      sub.prop(md, "data_types_verts")
 
+      # layers vgroup select dst
+      row.prop(modifier, 'layers_vgroup_select_dst', text='')
+
+      # split
+      split = column.split(0.333, align=True)
+
+      # sub
+      sub = split.column(align=True)
+
+      # data types verts
+      sub.prop(modifier, 'data_types_verts')
+
+    # separato
     layout.separator()
 
+    # split
     split = layout.split(0.333)
-    split.prop(md, "use_edge_data")
-    use_edge = md.use_edge_data
+
+    # use edge data
+    split.prop(modifier, 'use_edge_data')
+
+    # use edge
+    use_edge = modifier.use_edge_data
+
+    # row
     row = split.row()
+
+    # row active if use dodge
     row.active = use_edge
-    row.prop(md, "edge_mapping", text="")
+
+    # edge mapping
+    row.prop(modifier, 'edge_mapping', text='')
+
+    # use edge
     if use_edge:
-      col = layout.column(align=True)
-      split = col.split(0.333, align=True)
-      sub = split.column(align=True)
-      sub.prop(md, "data_types_edges")
 
+
+      # column
+      column = layout.column(align=True)
+
+      # split
+      split = column.split(0.333, align=True)
+
+      # sub
+      sub = split.column(align=True)
+
+      # data types edges
+      sub.prop(modifier, 'data_types_edges')
+
+    # separator
     layout.separator()
 
+    # split
     split = layout.split(0.333)
-    split.prop(md, "use_loop_data")
-    use_loop = md.use_loop_data
+
+    # use loop data
+    split.prop(modifier, 'use_loop_data')
+
+    # use loop
+    use_loop = modifier.use_loop_data
+
+    # row
     row = split.row()
+
+    # use loop
     row.active = use_loop
-    row.prop(md, "loop_mapping", text="")
+
+    # loop mapping
+    row.prop(modifier, 'loop_mapping', text='')
+
+    # use loop
     if use_loop:
-      col = layout.column(align=True)
-      split = col.split(0.333, align=True)
-      sub = split.column(align=True)
-      sub.prop(md, "data_types_loops")
-      split = col.split(0.333, align=True)
-      sub = split.column(align=True)
-      sub.prop(md, "data_types_loops_vcol")
-      row = split.row(align=True)
-      row.prop(md, "layers_vcol_select_src", text="")
-      row.label(icon='RIGHTARROW')
-      row.prop(md, "layers_vcol_select_dst", text="")
-      split = col.split(0.333, align=True)
-      sub = split.column(align=True)
-      sub.prop(md, "data_types_loops_uv")
-      row = split.row(align=True)
-      row.prop(md, "layers_uv_select_src", text="")
-      row.label(icon='RIGHTARROW')
-      row.prop(md, "layers_uv_select_dst", text="")
-      col.prop(md, "islands_precision")
 
+      # column
+      column = layout.column(align=True)
+
+      # split
+      split = column.split(0.333, align=True)
+
+      # sub
+      sub = split.column(align=True)
+
+      # data types loops
+      sub.prop(modifier, 'data_types_loops')
+
+      # split
+      split = column.split(0.333, align=True)
+
+      # sub
+      sub = split.column(align=True)
+
+      # data types loops vcol
+      sub.prop(modifier, 'data_types_loops_vcol')
+
+      # row
+      row = split.row(align=True)
+
+      # layers vcol select src
+      row.prop(modifier, 'layers_vcol_select_src', text='')
+
+      # label
+      row.label(icon='RIGHTARROW')
+
+      # layers vcol select dst
+      row.prop(modifier, 'layers_vcol_select_dst', text='')
+
+      # split
+      split = column.split(0.333, align=True)
+
+      # sub
+      sub = split.column(align=True)
+
+      # data types loops uv
+      sub.prop(modifier, 'data_types_loops_uv')
+
+      # row
+      row = split.row(align=True)
+
+      # layers uv select src
+      row.prop(modifier, 'layers_uv_select_src', text='')
+
+      # label
+      row.label(icon='RIGHTARROW')
+
+      # layers uv select dst
+      row.prop(modifier, 'layers_uv_select_dst', text='')
+
+      # islands precision
+      column.prop(modifier, 'islands_precision')
+
+    # separator
     layout.separator()
 
+    # split
     split = layout.split(0.333)
-    split.prop(md, "use_poly_data")
-    use_poly = md.use_poly_data
+
+    # use poly data
+    split.prop(modifier, 'use_poly_data')
+
+    # use poly
+    use_poly = modifier.use_poly_data
+
+    # row
     row = split.row()
+
+    # use only
     row.active = use_poly
-    row.prop(md, "poly_mapping", text="")
+
+    # poly mapping
+    row.prop(modifier, 'poly_mapping', text='')
+
+    # use poly
     if use_poly:
-      col = layout.column(align=True)
-      split = col.split(0.333, align=True)
+
+      # column
+      column = layout.column(align=True)
+
+      # split
+      split = column.split(0.333, align=True)
+
+      # sub
       sub = split.column(align=True)
-      sub.prop(md, "data_types_polys")
 
+      # data types polys
+      sub.prop(modifier, 'data_types_polys')
+
+    # separator
     layout.separator()
 
+    # split
     split = layout.split()
-    col = split.column()
-    row = col.row(align=True)
+
+    # column
+    column = split.column()
+
+    # row
+    row = column.row(align=True)
+
+    # sub
     sub = row.row(align=True)
-    sub.active = md.use_max_distance
-    sub.prop(md, "max_distance")
-    row.prop(md, "use_max_distance", text="", icon='STYLUS_PRESSURE')
 
-    col = split.column()
-    col.prop(md, "ray_radius")
+    # sub active if use max distance
+    sub.active = modifier.use_max_distance
 
+    # max distance
+    sub.prop(modifier, 'max_distance')
+
+    # use max distance
+    row.prop(modifier, 'use_max_distance', text='', icon='STYLUS_PRESSURE')
+
+    # column
+    column = split.column()
+
+    # ray radius
+    column.prop(modifier, 'ray_radius')
+
+    # separator
     layout.separator()
 
+    # split
     split = layout.split()
-    col = split.column()
-    col.prop(md, "mix_mode")
-    col.prop(md, "mix_factor")
 
-    col = split.column()
-    row = col.row()
-    row.active = bool(md.object)
-    row.operator("object.datalayout_transfer", text="Generate Data Layers")
-    row = col.row(align=True)
-    row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
+    # column
+    column = split.column()
+
+    # mix mode
+    column.prop(modifier, 'mix_mode')
+
+    # mix factor
+    column.prop(modifier, 'mix_factor')
+
+    # column
+    column = split.column()
+
+    # row
+    row = column.row()
+
+    # row active if object
+    row.active = bool(modifier.object)
+
+    # object datalayout transfer
+    row.operator('object.datalayout_transfer', text='Generate Data Layers')
+
+    # row
+    row = column.row(align=True)
+
+    # vertex groups
+    row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # sub
     sub = row.row(align=True)
-    sub.active = bool(md.vertex_group)
-    sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
 
-  def NORMAL_EDIT(self, layout, ob, md):
-    has_vgroup = bool(md.vertex_group)
-    needs_object_offset = (((md.mode == 'RADIAL') and not md.target) or
-                           ((md.mode == 'DIRECTIONAL') and md.use_direction_parallel))
+    # sub active if vertex group
+    sub.active = bool(modifier.vertex_group)
 
+    # invert vertex group
+    sub.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
+
+  # normal edit
+  def NORMAL_EDIT(self, layout, object, modifier):
+
+    # has vgroup
+    has_vgroup = bool(modifier.vertex_group)
+
+    # needs object offset
+    needs_object_offset = (((modifier.mode == 'RADIAL') and not modifier.target) or
+                           ((modifier.mode == 'DIRECTIONAL') and modifier.use_direction_parallel))
+
+    # row
     row = layout.row()
-    row.prop(md, "mode", expand=True)
 
+    # mode
+    row.prop(modifier, 'mode', expand=True)
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.prop(md, "target", text="")
-    sub = col.column(align=True)
+    # column
+    column = split.column()
+
+    # target
+    column.prop(modifier, 'target', text='')
+
+    # sub
+    sub = column.column(align=True)
+
+    # sub active if needs object offset
     sub.active = needs_object_offset
-    sub.prop(md, "offset")
-    row = col.row(align=True)
 
-    col = split.column()
-    row = col.row()
-    row.active = (md.mode == 'DIRECTIONAL')
-    row.prop(md, "use_direction_parallel")
+    # offset
+    sub.prop(modifier, 'offset')
 
-    subcol = col.column(align=True)
-    subcol.label("Mix Mode:")
-    subcol.prop(md, "mix_mode", text="")
-    subcol.prop(md, "mix_factor")
-    row = subcol.row(align=True)
-    row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
-    sub = row.row(align=True)
-    sub.active = has_vgroup
-    sub.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
+    # row
+    row = column.row(align=True)
 
-  def CORRECTIVE_SMOOTH(self, layout, ob, md):
-    is_bind = md.is_bind
+    # column
+    column = split.column()
 
-    layout.prop(md, "factor", text="Factor")
-    layout.prop(md, "iterations")
+    # row
+    row = column.row()
 
+    # row active if mode in directional
+    row.active = (modifier.mode == 'DIRECTIONAL')
+
+    # use direction parallel
+    row.prop(modifier, 'use_direction_parallel')
+
+    # column
+    sub = column.column(align=True)
+
+    # label
+    sub.label('Mix Mode:')
+
+    # mix mode
+    sub.prop(modifier, 'mix_mode', text='')
+
+    # mix factor
+    sub.prop(modifier, 'mix_factor')
+
+    # row
+    row = sub.row(align=True)
+
+    # vertex groups
+    row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # sub
+    subsub = row.row(align=True)
+
+    # sub active if has vgroup
+    subsub.active = has_vgroup
+
+    # invert vertex group
+    subsub.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
+
+  # corrective smooth
+  def CORRECTIVE_SMOOTH(self, layout, object, modifier):
+
+    # is bind
+    is_bind = modifier.is_bind
+
+    # factor
+    layout.prop(modifier, 'factor', text='Factor')
+
+    # iterations
+    layout.prop(modifier, 'iterations')
+
+    # row
     row = layout.row()
-    row.prop(md, "smooth_type")
 
+    # smooth type
+    row.prop(modifier, 'smooth_type')
+
+    # split
     split = layout.split()
 
-    col = split.column()
-    col.label(text="Vertex Group:")
-    row = col.row(align=True)
-    row.prop_search(md, "vertex_group", ob, "vertex_groups", text="")
-    row.prop(md, "invert_vertex_group", text="", icon='ARROW_LEFTRIGHT')
+    # column
+    column = split.column()
 
-    col = split.column()
-    col.prop(md, "use_only_smooth")
-    col.prop(md, "use_pin_boundary")
+    # label
+    column.label(text='Vertex Group:')
 
-    layout.prop(md, "rest_source")
-    if md.rest_source == 'BIND':
-      layout.operator("object.correctivesmooth_bind", text="Unbind" if is_bind else "Bind")
+    # row
+    row = column.row(align=True)
+
+    # vertex groups
+    row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
+
+    # invert vertex group
+    row.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
+
+    # column
+    column = split.column()
+
+    # use only smooth
+    column.prop(modifier, 'use_only_smooth')
+
+    # use pin boundary
+    column.prop(modifier, 'use_pin_boundary')
+
+    # rest source
+    layout.prop(modifier, 'rest_source')
+
+    # is rest source in bind
+    if modifier.rest_source == 'BIND':
+
+      # object correctivesmooth bind
+      layout.operator('object.correctivesmooth_bind', text='Unbind' if is_bind else 'Bind')

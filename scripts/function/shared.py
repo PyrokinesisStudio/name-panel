@@ -68,7 +68,7 @@ def sort(self, context, collection, option):
         # isnt numeral before suffix; sub.key
         else:
 
-          # if in positional
+          # is in positional
           if re.split(suffix, re.split(numeral, name[1])[0])[1].upper() in (position for position in storage.batch.positional):
 
             # key

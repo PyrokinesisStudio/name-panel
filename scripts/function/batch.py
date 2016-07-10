@@ -3531,7 +3531,7 @@ def rename(self, context, oldName, option):
   # find & replace
   if option.regex:
     try: newName = re.sub(option.find, option.replace, newName)
-    except Exception as e: self.report({'WARNING'}, 'Invalid Expression: ' + str(e) + ' while working on: ' + oldName)
+    except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
   else:
     newName = re.sub(re.escape(option.find), option.replace, newName)
 

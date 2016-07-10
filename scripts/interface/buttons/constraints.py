@@ -31,10 +31,10 @@ class ConstraintButtons:
     # column
     column = layout.column()
 
-    # match enum type to functions below, avoids a lookup table.
+    # match enum type to one of the functions below.
     getattr(ConstraintButtons, constraint.type)(ConstraintButtons, context, column, constraint)
 
-    # if constraint has influence
+    # is constraint has influence
     if constraint.type not in {'RIGID_BODY_JOINT', 'NULL'}:
 
       # separator
@@ -47,7 +47,7 @@ class ConstraintButtons:
   @staticmethod
   def space_template(layout, constraint, target=True, owner=True):
 
-    # if target or owner
+    # is target or owner
     if target or owner:
 
       # split
@@ -59,19 +59,19 @@ class ConstraintButtons:
       # row
       row = split.row()
 
-      # if target
+      # is target
       if target:
 
         # target space
         row.prop(constraint, 'target_space', text='')
 
-      # if target and owner
+      # is target and owner
       if target and owner:
 
         # label
         row.label(icon='ARROW_LEFTRIGHT')
 
-      # if owner
+      # is owner
       if owner:
 
         # owner space
@@ -84,10 +84,10 @@ class ConstraintButtons:
     # target
     layout.prop(constraint, 'target')  # XXX limiting settings for only 'curves' or some type of object
 
-    # if contraint target and sub target
+    # is contraint target and sub target
     if constraint.target and subtargets:
 
-      # if target is armature
+      # is target in armature
       if constraint.target.type == 'ARMATURE':
 
         # subtarget
@@ -105,7 +105,7 @@ class ConstraintButtons:
           # head tail
           row.prop(constraint, 'head_tail', text='')
 
-      # if target is mesh or lattice
+      # is target in mesh or lattice
       elif constraint.target.type in {'MESH', 'LATTICE'}:
 
         # subtarget
@@ -118,13 +118,13 @@ class ConstraintButtons:
     # pole target
     layout.prop(constraint, 'pole_target')
 
-    # if target and it is aramture
+    # is target and it in aramture
     if constraint.pole_target and constraint.pole_target.type == 'ARMATURE':
 
       # pole subtarget
       layout.prop_search(constraint, 'pole_subtarget', constraint.pole_target.data, 'bones', text='Bone')
 
-    # if pole target
+    # is pole target
     if constraint.pole_target:
 
       # row
@@ -247,14 +247,14 @@ class ConstraintButtons:
   # ik
   def IK(self, context, layout, constraint):
 
-    # if ik solver is iTaSC
+    # is ik solver in iTaSC
     if context.object.pose.ik_solver == 'ITASC':
 
       # ik type
       layout.prop(constraint, 'ik_type')
       getattr(self, 'IK_' + constraint.ik_type)(context, layout, constraint)
 
-    # isnt ik solver iTaSC
+    # isnt ik solver in iTaSC
     else:
 
       # target template
@@ -263,13 +263,13 @@ class ConstraintButtons:
       # pole target
       layout.prop(constraint, 'pole_target')
 
-      # if pole target and pole target is armature
+      # is pole target and pole target in armature
       if constraint.pole_target and constraint.pole_target.type == 'ARMATURE':
 
         # pole subtarget
         layout.prop_search(constraint, 'pole_subtarget', constraint.pole_target.data, 'bones', text='Bone')
 
-      # if poe target
+      # is poe target
       if constraint.pole_target:
 
         # row
@@ -488,7 +488,7 @@ class ConstraintButtons:
     # use fixed location
     column.prop(constraint, 'use_fixed_location')
 
-    # if use fixed location
+    # is use fixed location
     if constraint.use_fixed_location:
 
       # offset factor
@@ -1256,7 +1256,7 @@ class ConstraintButtons:
     # axis z
     column.prop(constraint, 'axis_z', text='Z')
 
-    # if pivot type is cone twist
+    # is pivot type in cone twist
     if constraint.pivot_type == 'CONE_TWIST':
 
       # label
@@ -1310,7 +1310,7 @@ class ConstraintButtons:
       # limit angle max z
       sub.prop(constraint, 'limit_angle_max_z', text='')
 
-    # if pivot type in generic 6 dof
+    # is pivot type in generic 6 dof
     elif constraint.pivot_type == 'GENERIC_6_DOF':
 
       # label
@@ -1379,7 +1379,7 @@ class ConstraintButtons:
       # column
       column = split.column(align=True)
 
-      use angular limit x
+      # use angular limit x
       column.prop(constraint, 'use_angular_limit_x', text='Angle X')
 
       # sub
@@ -1430,7 +1430,7 @@ class ConstraintButtons:
       # limit angle max z
       sub.prop(constraint, 'limit_angle_max_z', text='Max')
 
-    # if pivot type is hinge
+    # is pivot type in hinge
     elif constraint.pivot_type == 'HINGE':
 
       # label
@@ -1658,7 +1658,7 @@ class ConstraintButtons:
     # shrinkwrap type
     layout.prop(constraint, 'shrinkwrap_type')
 
-    # if shrinkwarp type is project
+    # is shrinkwarp type in project
     if constraint.shrinkwrap_type == 'PROJECT':
 
       # row
@@ -1733,7 +1733,7 @@ class ConstraintButtons:
     # xz scale mode
     layout.prop(constraint, 'xz_scale_mode')
 
-    # if xz scale mode is volume preserve
+    # is xz scale mode in volume preserve
     if constraint.xz_scale_mode == 'VOLUME_PRESERVE':
 
       # bulge
@@ -1805,7 +1805,7 @@ class ConstraintButtons:
       # use relative location
       column.prop(constraint, 'use_relative_location')
 
-      # if use relative location
+      # is use relative location
       if constraint.use_relative_location:
 
         # offset
@@ -1862,7 +1862,7 @@ class ConstraintButtons:
     # column
     column = layout.column()
 
-    # if use active clip
+    # is use active clip
     if not constraint.use_active_clip:
 
       # clip
@@ -1874,7 +1874,7 @@ class ConstraintButtons:
     # frame method
     row.prop(constraint, 'frame_method', expand=True)
 
-    # if clip
+    # is clip
     if clip:
 
       # tracking
@@ -1910,7 +1910,7 @@ class ConstraintButtons:
     # use active clip
     layout.prop(constraint, 'use_active_clip')
 
-    # if use active clip
+    # is use active clip
     if not constraint.use_active_clip:
 
       # clip
@@ -1928,13 +1928,13 @@ class ConstraintButtons:
     # use active clip
     layout.prop(constraint, 'use_active_clip')
 
-    # if use active clip
+    # is use active clip
     if not constraint.use_active_clip:
 
       # clip
       layout.prop(constraint, 'clip')
 
-    # if clip
+    # is clip
     if clip:
 
       # object

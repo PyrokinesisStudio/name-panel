@@ -33,7 +33,7 @@ def sort(layout, option):
   sub.scale_x = 0.2
 
   # sort
-  sub.prop(option, 'sort', text='Sort', toggle=True)
+  sub.prop(option, 'sort', text='Count', toggle=True)
 
   # sub
   subsub = sub.row(align=True)

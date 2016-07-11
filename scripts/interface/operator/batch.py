@@ -37,6 +37,13 @@ class name(Operator):
   bl_description = 'Batch name datablocks.'
   bl_options = {'UNDO'}
 
+  # simple
+  simple = BoolProperty(
+    name = 'Simple Batch',
+    description = 'Perform find & replace on names visible in the name panel.',
+    default = False
+  )
+
   # quick batch
   quickBatch = BoolProperty(
     name = 'Quick Batch',
@@ -267,11 +274,10 @@ class name(Operator):
     row = column.row(align=True)
     row.prop(option, 'find', icon='VIEWZOOM')
 
-    # cheatsheet
-    row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
-
     # regex
-    row.prop(option, 'regex', text='', icon='SCRIPT')
+    sub = row.split(align=True)
+    sub.scale_x = 0.1
+    sub.prop(option, 'regex', text='.*', toggle=True)
     column.separator()
 
     # replace
@@ -337,18 +343,22 @@ class name(Operator):
     '''
 
     # alt
-    if event.alt:
+    if event.alt and not self.simple:
       self.quickBatch = False
 
-    # size
-    try: size = 330 if addon.preferences['largePopups'] == 0 else 460
-    except: size = 330
+    # simple
+    if not self.simple:
 
-    context.window_manager.invoke_props_dialog(self, width=size)
-    return {'RUNNING_MODAL'}
+      # size
+      try: size = 330 if addon.preferences['largePopups'] == 0 else 460
+      except: size = 330
 
-def register():
-    bpy.utils.unregister_class(name)
+      context.window_manager.invoke_props_dialog(self, width=size)
+      return {'RUNNING_MODAL'}
 
-def unregister():
-    bpy.utils.unregister_class(name)
+    # isnt simple
+    else:
+
+      # execute
+      self.execute(context)
+      return {'FINISHED'}

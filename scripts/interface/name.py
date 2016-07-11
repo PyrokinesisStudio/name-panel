@@ -284,10 +284,10 @@ def filters(self, context, layout, panel):
       row = layout.row(align=True)
 
       # search
-      row.prop(panel, 'search', text='', icon='VIEWZOOM')
-      row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
-      row.prop(panel, 'regex', text='', icon='SCRIPTPLUGINS')
-      row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
+      row.prop(panel, 'search', text='', icon='BORDERMOVE')
+      sub = row.split(align=True)
+      sub.scale_x = 0.1
+      sub.prop(panel, 'regex', text='.*', toggle=True)
 
   # hide search
   if not panel.hideSearch:
@@ -296,10 +296,81 @@ def filters(self, context, layout, panel):
     row = layout.row(align=True)
 
     # search
-    row.prop(panel, 'search', text='', icon='VIEWZOOM')
-    row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
-    row.prop(panel, 'regex', text='', icon='SCRIPTPLUGINS')
-    row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
+    row.prop(panel, 'search', text='', icon='BORDERMOVE')
+    sub = row.split(align=True)
+    sub.scale_x = 0.1
+    sub.prop(panel, 'regex', text='.*', toggle=True)
+
+  # filters
+  if panel.filters:
+
+    # hide find & replace
+    if panel.hideFindReplace:
+
+      # separator
+      layout.separator()
+
+      # row
+      row = layout.row(align=True)
+
+      # find
+      row.prop(context.scene.BatchName, 'find', text='', icon='VIEWZOOM')
+      sub = row.split(align=True)
+      sub.scale_x = 0.1
+      sub.prop(context.scene.BatchName, 'regex', text='.*', toggle=True)
+
+      # row
+      row = layout.row(align=True)
+
+      # replace
+      row.prop(context.scene.BatchName, 'replace', text='', icon='FILE_REFRESH')
+
+      sub = row.split(align=True)
+      sub.scale_x = 0.15
+      op = sub.operator('wm.batch_name', text='OK')
+      op.simple = True
+      op.quickBatch = True
+
+      op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
+      op.simple = False
+      op.quickBatch = True
+
+      # separator
+      # layout.separator()
+
+  # hide find & replace
+  if not panel.hideFindReplace:
+
+    # separator
+    layout.separator()
+
+    # row
+    row = layout.row(align=True)
+
+    # find
+    row.prop(context.scene.BatchName, 'find', text='', icon='VIEWZOOM')
+    sub = row.split(align=True)
+    sub.scale_x = 0.1
+    sub.prop(context.scene.BatchName, 'regex', text='.*', toggle=True)
+
+    # row
+    row = layout.row(align=True)
+
+    # replace
+    row.prop(context.scene.BatchName, 'replace', text='', icon='FILE_REFRESH')
+
+    sub = row.split(align=True)
+    sub.scale_x = 0.15
+    op = sub.operator('wm.batch_name', text='OK')
+    op.simple = True
+    op.quickBatch = True
+
+    op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
+    op.simple = False
+    op.quickBatch = True
+
+    # separator
+    # layout.separator()
 
   # enabled
   if panel.displayNames:

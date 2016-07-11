@@ -84,8 +84,15 @@ class name(PropertyGroup):
   # hide search
   hideSearch = BoolProperty(
     name = 'Hide Search',
-    description = 'Only display the search field in the name panel when the filters option is toggled on.',
+    description = 'Only display the search field in the panel when the filters option is toggled on.',
     default = default['hide search']
+  )
+
+  # hide find & replace
+  hideFindReplace = BoolProperty(
+    name = 'Hide Find & Replace',
+    description = 'Only display the find & replace fields in the panel when the filters option is toggled on.',
+    default = default['hide find & replace']
   )
 
   # filters
@@ -112,7 +119,7 @@ class name(PropertyGroup):
   # search
   search = StringProperty(
     name = 'Search',
-    description = 'Search filter.',
+    description = 'Panel search filter.',
     default = default['search']
   )
 

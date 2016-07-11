@@ -3,6 +3,7 @@ defaults = {
   'name panel': {
     'pin active object': True,
     'hide search': True,
+    'hide find & replace': True,
     'filters': False,
     'options': False,
     'display names': False,

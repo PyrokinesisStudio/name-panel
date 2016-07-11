@@ -141,27 +141,30 @@ def sort(self, context, collection, option):
     for sub in names[key]:
       for name in names[key][sub]:
 
-        # is name changed
-        if name[2] != name[1]:
-          self.count += 1
-
         # has name
         if hasattr(name[3][0], 'name'):
 
           # name
-          name[3][0].name = name[1] + batch.suffix if batch.suffixLast else name[1]
+          name[1] = name[1] + batch.suffix if batch.suffixLast else name[1]
+          name[3][0].name = name[1]
 
         # has info
         elif hasattr(name[3][0], 'info'):
 
           # name
-          name[3][0].info = name[1] + batch.suffix if batch.suffixLast else name[1]
+          name[1] = name[1] + batch.suffix if batch.suffixLast else name[1]
+          name[3][0].info = name[1]
 
         # has bl_label
         elif hasattr(name[3][0], 'bl_label'):
 
           # name
-          name[3][0].bl_label = name[1] + batch.suffix if batch.suffixLast else name[1]
+          name[1] = name[1] + batch.suffix if batch.suffixLast else name[1]
+          name[3][0].bl_label = name[1]
+
+        # count
+        if name[1] != name[2]:
+          self.count += 1
 
   # link
   if option.link:

@@ -141,13 +141,13 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, object.animation_data.action, object.animation_data)
+                  populate(self, context, object.animation_data.action, object.animation_data)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, object.animation_data.action, object.animation_data)
+                  populate(self, context, object.animation_data.action, object.animation_data)
 
             # mode
             else:
@@ -156,13 +156,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, object.animation_data.action, object.animation_data)
+                populate(self, context, object.animation_data.action, object.animation_data)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, object.animation_data.action, object.animation_data)
+                populate(self, context, object.animation_data.action, object.animation_data)
 
         # clear duplicates
         actions = []
@@ -186,13 +186,13 @@ def main(self, context):
                   if option.objectType in 'ALL':
 
                     # populate
-                    populate(context, object.animation_data.action)
+                    populate(self, context, object.animation_data.action)
 
                   # object type
                   elif option.objectType in object.type:
 
                     # populate
-                    populate(context, object.animation_data.action)
+                    populate(self, context, object.animation_data.action)
 
               # mode
               else:
@@ -201,13 +201,13 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, object.animation_data.action)
+                  populate(self, context, object.animation_data.action)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, object.animation_data.action)
+                  populate(self, context, object.animation_data.action)
 
         # clear duplicates
         actions = []
@@ -217,7 +217,18 @@ def main(self, context):
         # name action groups
         for action in actions:
           for group in action[1][1].groups:
-            group.name = rename(self, context, group.name) if not option.suffixLast else rename(self, context, group.name, option) + option.suffix
+
+            # new name
+            newName = rename(self, context, group.name, option) if not option.suffixLast else rename(self, context, group.name, option) + option.suffix
+
+            # update
+            if group.name != newName:
+
+              # name
+              group.name = newName
+
+              # count
+              self.count += 1
 
       # grease pencil
       if option.greasePencil:
@@ -232,13 +243,13 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, object.grease_pencil, object)
+                  populate(self, context, object.grease_pencil, object)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, object.grease_pencil, object)
+                  populate(self, context, object.grease_pencil, object)
 
             # mode
             else:
@@ -247,13 +258,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, object.grease_pencil, object)
+                populate(self, context, object.grease_pencil, object)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, object.grease_pencil, object)
+                populate(self, context, object.grease_pencil, object)
 
         # process
         process(self, context, storage.batch.greasePencils, option)
@@ -277,7 +288,7 @@ def main(self, context):
                   for layer in object.grease_pencil.layers[:]:
 
                     # populate
-                    populate(context, layer)
+                    populate(self, context, layer)
 
                 # object type
                 elif option.objectType in object.type:
@@ -286,7 +297,7 @@ def main(self, context):
                   for layer in object.grease_pencil.layers[:]:
 
                     # populate
-                    populate(context, layer)
+                    populate(self, context, layer)
 
             # mode
             else:
@@ -298,7 +309,7 @@ def main(self, context):
                 for layer in object.grease_pencil.layers[:]:
 
                   # populate
-                  populate(context, layer)
+                  populate(self, context, layer)
 
               # object type
               elif option.objectType in object.type:
@@ -307,7 +318,7 @@ def main(self, context):
                 for layer in object.grease_pencil.layers[:]:
 
                   # populate
-                  populate(context, layer)
+                  populate(self, context, layer)
 
             # process
             process(self, context, storage.batch.pencilLayers, option)
@@ -327,13 +338,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, object)
+                populate(self, context, object)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, object)
+                populate(self, context, object)
 
           # mode
           else:
@@ -342,13 +353,13 @@ def main(self, context):
             if option.objectType in 'ALL':
 
               # populate
-              populate(context, object)
+              populate(self, context, object)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
-              populate(context, object)
+              populate(self, context, object)
 
         # process
         process(self, context, storage.batch.objects, option)
@@ -370,7 +381,7 @@ def main(self, context):
                   if object in group.objects[:]:
 
                     # populate
-                    populate(context, group)
+                    populate(self, context, group)
 
 
               # object type
@@ -379,7 +390,7 @@ def main(self, context):
                   if object in group.objects[:]:
 
                     # populate
-                    populate(context, group)
+                    populate(self, context, group)
 
           # mode
           else:
@@ -390,7 +401,7 @@ def main(self, context):
                 if object in group.objects[:]:
 
                   # populate
-                  populate(context, group)
+                  populate(self, context, group)
 
             # object type
             elif option.objectType in object.type:
@@ -398,7 +409,7 @@ def main(self, context):
                 if object in group.objects[:]:
 
                   # populate
-                  populate(context, group)
+                  populate(self, context, group)
 
         # clear duplicates
         objectGroups = []
@@ -423,13 +434,13 @@ def main(self, context):
                 if option.constraintType in 'ALL':
 
                   # populate
-                  populate(context, constraint)
+                  populate(self, context, constraint)
 
                 # constraint type
                 elif option.constraintType in constraint.type:
 
                   # populate
-                  populate(context, constraint)
+                  populate(self, context, constraint)
 
           # mode
           else:
@@ -439,13 +450,13 @@ def main(self, context):
               if option.constraintType in 'ALL':
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
               # constraint type
               elif option.constraintType in constraint.type:
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
           # process
           process(self, context, storage.batch.constraints, option)
@@ -466,13 +477,13 @@ def main(self, context):
                 if option.modifierType in 'ALL':
 
                   # populate
-                  populate(context, modifier)
+                  populate(self, context, modifier)
 
                 # modifier tye
                 elif option.modifierType in modifier.type:
 
                   # populate
-                  populate(context, modifier)
+                  populate(self, context, modifier)
 
           # mode
           else:
@@ -482,13 +493,13 @@ def main(self, context):
               if option.modifierType in 'ALL':
 
                 # populate
-                populate(context, modifier)
+                populate(self, context, modifier)
 
               # modifier tye
               elif option.modifierType in modifier.type:
 
                 # populate
-                populate(context, modifier)
+                populate(self, context, modifier)
 
           # process
           process(self, context, storage.batch.modifiers, option)
@@ -509,13 +520,13 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, object.data, object)
+                  populate(self, context, object.data, object)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, object.data, object)
+                  populate(self, context, object.data, object)
 
             # mode
             else:
@@ -524,13 +535,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, object.data, object)
+                populate(self, context, object.data, object)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, object.data, object)
+                populate(self, context, object.data, object)
 
         # object data
         objectData = [
@@ -566,7 +577,7 @@ def main(self, context):
                   if object.select:
 
                     # populate
-                    populate(context, group)
+                    populate(self, context, group)
 
           # mode
           else:
@@ -574,7 +585,7 @@ def main(self, context):
               for group in object.pose.bone_groups[:]:
 
                 # populate
-                populate(context, group)
+                populate(self, context, group)
 
           # process
           process(self, context, storage.batch.boneGroups, option)
@@ -597,7 +608,7 @@ def main(self, context):
                     if bone.select:
 
                       # populate
-                      populate(context, bone)
+                      populate(self, context, bone)
 
                 # pose or object mode
                 else:
@@ -605,7 +616,7 @@ def main(self, context):
                     if bone.select:
 
                       # populate
-                      populate(context, bone)
+                      populate(self, context, bone)
 
             # mode
             else:
@@ -615,14 +626,14 @@ def main(self, context):
                 for bone in bpy.data.armatures[object.data.name].edit_bones[:]:
 
                     # populate
-                    populate(context, bone)
+                    populate(self, context, bone)
 
               # pose or object mode
               else:
                 for bone in bpy.data.armatures[object.data.name].bones[:]:
 
                     # populate
-                    populate(context, bone)
+                    populate(self, context, bone)
 
             # process
             process(self, context, storage.batch.bones, option)
@@ -646,13 +657,13 @@ def main(self, context):
                       if option.constraintType in 'ALL':
 
                         # populate
-                        populate(context, constraint)
+                        populate(self, context, constraint)
 
                       # constraint type
                       elif option.constraintType in constraint.type:
 
                         # populate
-                        populate(context, constraint)
+                        populate(self, context, constraint)
 
                     # process
                     process(self, context, storage.batch.constraints, option)
@@ -669,13 +680,13 @@ def main(self, context):
                   if option.constraintType in 'ALL':
 
                     # populate
-                    populate(context, constraint)
+                    populate(self, context, constraint)
 
                   # constraint type
                   elif option.constraintType in constraint.type:
 
                     # populate
-                    populate(context, constraint)
+                    populate(self, context, constraint)
 
                 # process
                 process(self, context, storage.batch.constraints, option)
@@ -697,13 +708,13 @@ def main(self, context):
                   if option.objectType in 'ALL':
 
                     # populate
-                    populate(context, group)
+                    populate(self, context, group)
 
                   # object type
                   elif option.objectType in object.type:
 
                     # populate
-                    populate(context, group)
+                    populate(self, context, group)
 
                 # process
                 process(self, context, storage.batch.vertexGroups, option)
@@ -719,13 +730,13 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, group)
+                  populate(self, context, group)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, group)
+                  populate(self, context, group)
 
               # process
               process(self, context, storage.batch.vertexGroups, option)
@@ -749,13 +760,13 @@ def main(self, context):
                     if option.objectType in 'ALL':
 
                       # populate
-                      populate(context, block)
+                      populate(self, context, block)
 
                     # object type
                     elif option.objectType in object.type:
 
                       # populate
-                      populate(context, block)
+                      populate(self, context, block)
 
               # mode
               else:
@@ -765,13 +776,13 @@ def main(self, context):
                   if option.objectType in 'ALL':
 
                     # populate
-                    populate(context, block)
+                    populate(self, context, block)
 
                   # object type
                   elif option.objectType in object.type:
 
                     # populate
-                    populate(context, block)
+                    populate(self, context, block)
 
               # process
               process(self, context, storage.batch.shapekeys, option)
@@ -790,14 +801,14 @@ def main(self, context):
                 for uv in object.data.uv_textures[:]:
 
                   # populate
-                  populate(context, uv)
+                  populate(self, context, uv)
 
             # mode
             else:
              for uv in object.data.uv_textures[:]:
 
                 # populate
-                populate(context, uv)
+                populate(self, context, uv)
 
             # process
             process(self, context, storage.batch.uvs, option)
@@ -816,14 +827,14 @@ def main(self, context):
                 for color in object.data.vertex_colors[:]:
 
                   # populate
-                  populate(context, color)
+                  populate(self, context, color)
 
             # mode
             else:
               for color in object.data.vertex_colors[:]:
 
                 # populate
-                populate(context, color)
+                populate(self, context, color)
 
             # process
             process(self, context, storage.batch.vertexColors, option)
@@ -845,13 +856,13 @@ def main(self, context):
                   if option.objectType in 'ALL':
 
                     # populate
-                    populate(context, slot.material, slot)
+                    populate(self, context, slot.material, slot)
 
                   # object type
                   elif option.objectType in object.type:
 
                     # populate
-                    populate(context, slot.material, slot)
+                    populate(self, context, slot.material, slot)
 
           # mode
           else:
@@ -862,13 +873,13 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, slot.material, slot)
+                  populate(self, context, slot.material, slot)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, slot.material, slot)
+                  populate(self, context, slot.material, slot)
 
         # process
         process(self, context, storage.batch.materials, option)
@@ -893,13 +904,13 @@ def main(self, context):
                         if option.objectType in 'ALL':
 
                           # populate
-                          populate(context, texslot.texture, texslot)
+                          populate(self, context, texslot.texture, texslot)
 
                         # object type
                         elif option.objectType in object.type:
 
                           # populate
-                          populate(context, texslot.texture, texslot)
+                          populate(self, context, texslot.texture, texslot)
 
             # mode
             else:
@@ -912,13 +923,13 @@ def main(self, context):
                       if option.objectType in 'ALL':
 
                         # populate
-                        populate(context, texslot.texture, texslot)
+                        populate(self, context, texslot.texture, texslot)
 
                       # object type
                       elif option.objectType in object.type:
 
                         # populate
-                        populate(context, texslot.texture, texslot)
+                        populate(self, context, texslot.texture, texslot)
 
         # process
         process(self, context, storage.batch.textures, option)
@@ -940,13 +951,13 @@ def main(self, context):
                   if option.objectType in 'ALL':
 
                     # populate
-                    populate(context, system)
+                    populate(self, context, system)
 
                   # object type
                   elif option.objectType in object.type:
 
                     # populate
-                    populate(context, system)
+                    populate(self, context, system)
 
             # mode
             else:
@@ -956,13 +967,13 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, system)
+                  populate(self, context, system)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, system)
+                  populate(self, context, system)
 
             # process
             process(self, context, storage.batch.particleSystems, option)
@@ -984,13 +995,13 @@ def main(self, context):
                   if option.objectType in 'ALL':
 
                     # populate
-                    populate(context, system.settings, system)
+                    populate(self, context, system.settings, system)
 
                   # object type
                   elif option.objectType in object.type:
 
                     # populate
-                    populate(context, system.settings, system)
+                    populate(self, context, system.settings, system)
 
             # mode
             else:
@@ -1000,13 +1011,13 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, system.settings, system)
+                  populate(self, context, system.settings, system)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, system.settings, system)
+                  populate(self, context, system.settings, system)
 
         # process
         process(self, context, storage.batch.particleSettings, option)
@@ -1027,14 +1038,14 @@ def main(self, context):
 
               # populate
               for sensor in object.game.sensors[:]:
-                populate(context, sensor)
+                populate(self, context, sensor)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
               for sensor in object.game.sensors[:]:
-                populate(context, sensor)
+                populate(self, context, sensor)
 
         # mode
         else:
@@ -1044,14 +1055,14 @@ def main(self, context):
 
             # populate
             for sensor in object.game.sensors[:]:
-              populate(context, sensor)
+              populate(self, context, sensor)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
             for sensor in object.game.sensors[:]:
-              populate(context, sensor)
+              populate(self, context, sensor)
 
         # process
         process(self, context, storage.batch.sensors, option)
@@ -1072,14 +1083,14 @@ def main(self, context):
 
               # populate
               for controller in object.game.controllers[:]:
-                populate(context, controller)
+                populate(self, context, controller)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
               for controller in object.game.controllers[:]:
-                populate(context, controller)
+                populate(self, context, controller)
 
         # mode
         else:
@@ -1089,14 +1100,14 @@ def main(self, context):
 
             # populate
             for controller in object.game.controllers[:]:
-              populate(context, controller)
+              populate(self, context, controller)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
             for controller in object.game.controllers[:]:
-              populate(context, controller)
+              populate(self, context, controller)
 
         # process
         process(self, context, storage.batch.controllers, option)
@@ -1117,14 +1128,14 @@ def main(self, context):
 
               # populate
               for actuator in object.game.actuators[:]:
-                populate(context, actuator)
+                populate(self, context, actuator)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
               for actuator in object.game.actuators[:]:
-                populate(context, actuator)
+                populate(self, context, actuator)
 
         # mode
         else:
@@ -1134,14 +1145,14 @@ def main(self, context):
 
             # populate
             for actuator in object.game.actuators[:]:
-              populate(context, actuator)
+              populate(self, context, actuator)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
             for actuator in object.game.actuators[:]:
-              populate(context, actuator)
+              populate(self, context, actuator)
 
         # process
         process(self, context, storage.batch.actuators, option)
@@ -1162,13 +1173,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, object.animation_data.action, object.animation_data)
+                populate(self, context, object.animation_data.action, object.animation_data)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, object.animation_data.action, object.animation_data)
+                populate(self, context, object.animation_data.action, object.animation_data)
 
         # clear duplicates
         actions = []
@@ -1190,13 +1201,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, object.animation_data.action)
+                populate(self, context, object.animation_data.action)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, object.animation_data.action)
+                populate(self, context, object.animation_data.action)
 
         # clear duplicates
         actions = []
@@ -1206,7 +1217,18 @@ def main(self, context):
         # name action groups
         for action in actions:
           for group in action[1][1].groups:
-            group.name = rename(self, context, group.name) if not option.suffixLast else rename(self, context, group.name, option) + option.suffix
+
+            # new name
+            newName = rename(self, context, group.name, option) if not option.suffixLast else rename(self, context, group.name, option) + option.suffix
+
+            # update
+            if group.name != newName:
+
+              # name
+              group.name = newName
+
+              # count
+              self.count += 1
 
       # grease pencil
       if option.greasePencil:
@@ -1217,13 +1239,13 @@ def main(self, context):
             if option.objectType in 'ALL':
 
               # populate
-              populate(context, object.grease_pencil, object)
+              populate(self, context, object.grease_pencil, object)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
-              populate(context, object.grease_pencil, object)
+              populate(self, context, object.grease_pencil, object)
 
         # process
         process(self, context, storage.batch.greasePencils, option)
@@ -1243,7 +1265,7 @@ def main(self, context):
               for layer in object.grease_pencil.layers[:]:
 
                 # populate
-                populate(context, layer)
+                populate(self, context, layer)
 
             # object type
             elif option.objectType in object.type:
@@ -1252,7 +1274,7 @@ def main(self, context):
               for layer in object.grease_pencil.layers[:]:
 
                 # populate
-                populate(context, layer)
+                populate(self, context, layer)
 
             # process
             process(self, context, storage.batch.pencilLayers, option)
@@ -1268,13 +1290,13 @@ def main(self, context):
           if option.objectType in 'ALL':
 
             # populate
-            populate(context, object)
+            populate(self, context, object)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            populate(context, object)
+            populate(self, context, object)
 
         # process
         process(self, context, storage.batch.objects, option)
@@ -1292,7 +1314,7 @@ def main(self, context):
               if object in group.objects[:]:
 
                 # populate
-                populate(context, group)
+                populate(self, context, group)
 
           # object type
           elif option.objectType in object.type:
@@ -1300,7 +1322,7 @@ def main(self, context):
               if object in group.objects[:]:
 
                 # populate
-                populate(context, group)
+                populate(self, context, group)
 
         # clear duplicates
         objectGroups = []
@@ -1321,13 +1343,13 @@ def main(self, context):
             if option.constraintType in 'ALL':
 
               # populate
-              populate(context, constraint)
+              populate(self, context, constraint)
 
             # constraint type
             elif option.constraintType in constraint.type:
 
               # populate
-              populate(context, constraint)
+              populate(self, context, constraint)
 
           # process
           process(self, context, storage.batch.constraints, option)
@@ -1344,13 +1366,13 @@ def main(self, context):
             if option.modifierType in 'ALL':
 
               # populate
-              populate(context, modifier)
+              populate(self, context, modifier)
 
             # modifier tye
             elif option.modifierType in modifier.type:
 
               # populate
-              populate(context, modifier)
+              populate(self, context, modifier)
 
           # process
           process(self, context, storage.batch.modifiers, option)
@@ -1367,13 +1389,13 @@ def main(self, context):
             if option.objectType in 'ALL':
 
               # populate
-              populate(context, object.data, object)
+              populate(self, context, object.data, object)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
-              populate(context, object.data, object)
+              populate(self, context, object.data, object)
 
         # object data
         objectData = [
@@ -1402,7 +1424,7 @@ def main(self, context):
             for group in object.pose.bone_groups[:]:
 
               # populate
-              populate(context, group)
+              populate(self, context, group)
 
           # process
           process(self, context, storage.batch.boneGroups, option)
@@ -1420,14 +1442,14 @@ def main(self, context):
               for bone in bpy.data.armatures[object.data.name].edit_bones[:]:
 
                   # populate
-                  populate(context, bone)
+                  populate(self, context, bone)
 
             # pose or object mode
             else:
               for bone in bpy.data.armatures[object.data.name].bones[:]:
 
                   # populate
-                  populate(context, bone)
+                  populate(self, context, bone)
 
             # process
             process(self, context, storage.batch.bones, option)
@@ -1446,13 +1468,13 @@ def main(self, context):
                 if option.constraintType in 'ALL':
 
                   # populate
-                  populate(context, constraint)
+                  populate(self, context, constraint)
 
                 # constraint type
                 elif option.constraintType in constraint.type:
 
                   # populate
-                  populate(context, constraint)
+                  populate(self, context, constraint)
 
               # process
               process(self, context, storage.batch.constraints, option)
@@ -1470,13 +1492,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, group)
+                populate(self, context, group)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, group)
+                populate(self, context, group)
 
             # process
             process(self, context, storage.batch.vertexGroups, option)
@@ -1495,13 +1517,13 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # populate
-                  populate(context, block)
+                  populate(self, context, block)
 
                 # object type
                 elif option.objectType in object.type:
 
                   # populate
-                  populate(context, block)
+                  populate(self, context, block)
 
               # process
               process(self, context, storage.batch.shapekeys, option)
@@ -1516,7 +1538,7 @@ def main(self, context):
             for uv in object.data.uv_textures[:]:
 
               # populate
-              populate(context, uv)
+              populate(self, context, uv)
 
             # process
             process(self, context, storage.batch.uvs, option)
@@ -1531,7 +1553,7 @@ def main(self, context):
             for color in object.data.vertex_colors[:]:
 
               # populate
-              populate(context, color)
+              populate(self, context, color)
 
             # process
             process(self, context, storage.batch.vertexColors, option)
@@ -1549,13 +1571,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, slot.material, slot)
+                populate(self, context, slot.material, slot)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, slot.material, slot)
+                populate(self, context, slot.material, slot)
 
         # process
         process(self, context, storage.batch.materials, option)
@@ -1576,13 +1598,13 @@ def main(self, context):
                     if option.objectType in 'ALL':
 
                       # populate
-                      populate(context, texslot.texture, texslot)
+                      populate(self, context, texslot.texture, texslot)
 
                     # object type
                     elif option.objectType in object.type:
 
                       # populate
-                      populate(context, texslot.texture, texslot)
+                      populate(self, context, texslot.texture, texslot)
 
         # process
         process(self, context, storage.batch.textures, option)
@@ -1600,13 +1622,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, system)
+                populate(self, context, system)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, system)
+                populate(self, context, system)
 
             # process
             process(self, context, storage.batch.particleSystems, option)
@@ -1624,13 +1646,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, system.settings, system)
+                populate(self, context, system.settings, system)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, system.settings, system)
+                populate(self, context, system.settings, system)
 
         # process
         process(self, context, storage.batch.particleSettings, option)
@@ -1647,14 +1669,14 @@ def main(self, context):
 
             # populate
             for sensor in object.game.sensors[:]:
-              populate(context, sensor)
+              populate(self, context, sensor)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
             for sensor in object.game.sensors[:]:
-              populate(context, sensor)
+              populate(self, context, sensor)
 
           # process
           process(self, context, storage.batch.sensors, option)
@@ -1671,14 +1693,14 @@ def main(self, context):
 
             # populate
             for controller in object.game.controllers[:]:
-              populate(context, controller)
+              populate(self, context, controller)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
             for controller in object.game.controllers[:]:
-              populate(context, controller)
+              populate(self, context, controller)
 
           # process
           process(self, context, storage.batch.controllers, option)
@@ -1695,14 +1717,14 @@ def main(self, context):
 
             # populate
             for actuator in object.game.actuators[:]:
-              populate(context, actuator)
+              populate(self, context, actuator)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
             for actuator in object.game.actuators[:]:
-              populate(context, actuator)
+              populate(self, context, actuator)
 
           # process
           process(self, context, storage.batch.actuators, option)
@@ -1718,7 +1740,7 @@ def main(self, context):
         for action in bpy.data.actions[:]:
 
           # populate
-          populate(context, action)
+          populate(self, context, action)
 
         # process
         process(self, context, storage.batch.actions, option)
@@ -1731,12 +1753,23 @@ def main(self, context):
         for action in bpy.data.actions[:]:
 
           # populate
-          populate(context, action)
+          populate(self, context, action)
 
         # process
         for action in storage.batch.actions:
           for group in action[1][1].groups:
-            group.name = rename(self, context, group.name) if not option.suffixLast else rename(self, context, group.name, option) + option.suffix
+
+            # new name
+            newName = rename(self, context, group.name, option) if not option.suffixLast else rename(self, context, group.name, option) + option.suffix
+
+            # update
+            if group.name != newName:
+
+              # name
+              group.name = newName
+
+              # count
+              self.count += 1
 
           # bones
           if option.bones:
@@ -1756,7 +1789,7 @@ def main(self, context):
         for pencil in bpy.data.grease_pencil[:]:
 
           # populate
-          populate(context, pencil)
+          populate(self, context, pencil)
 
         # process
         process(self, context, storage.batch.greasePencils, option)
@@ -1772,7 +1805,7 @@ def main(self, context):
           for layer in pencil.layers[:]:
 
             # populate
-            populate(context, layer)
+            populate(self, context, layer)
 
           # process
           process(self, context, storage.batch.pencilLayers, option)
@@ -1788,13 +1821,13 @@ def main(self, context):
           if option.objectType in 'ALL':
 
             # populate
-            populate(context, object)
+            populate(self, context, object)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            populate(context, object)
+            populate(self, context, object)
 
         # process
         process(self, context, storage.batch.objects, option)
@@ -1807,7 +1840,7 @@ def main(self, context):
         for group in bpy.data.groups[:]:
 
           # populate
-          populate(context, group)
+          populate(self, context, group)
 
         # process
         process(self, context, storage.batch.groups, option)
@@ -1827,13 +1860,13 @@ def main(self, context):
               if option.constraintType in 'ALL':
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
               # constraint type
               elif option.constraintType in constraint.type:
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
             # object type
             elif option.objectType in object.type:
@@ -1842,13 +1875,13 @@ def main(self, context):
               if option.constraintType in 'ALL':
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
                 # constraint type
               elif option.constraintType in constraint.type:
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
           # process
           process(self, context, storage.batch.constraints, option)
@@ -1868,13 +1901,13 @@ def main(self, context):
               if option.modifierType in 'ALL':
 
                 # populate
-                populate(context, modifier)
+                populate(self, context, modifier)
 
               # modifier type
               elif option.modifierType in modifier.type:
 
                 # populate
-                populate(context, modifier)
+                populate(self, context, modifier)
 
             # object type
             elif option.objectType in object.type:
@@ -1883,13 +1916,13 @@ def main(self, context):
               if option.modifierType in 'ALL':
 
                 # populate
-                populate(context, modifier)
+                populate(self, context, modifier)
 
               # modifier type
               elif option.modifierType in modifier.type:
 
                 # populate
-                populate(context, modifier)
+                populate(self, context, modifier)
 
           # process
           process(self, context, storage.batch.modifiers, option)
@@ -1904,7 +1937,7 @@ def main(self, context):
         for camera in bpy.data.cameras[:]:
 
           # populate
-          populate(context, camera)
+          populate(self, context, camera)
 
         # process
         process(self, context, storage.batch.cameras, option)
@@ -1916,7 +1949,7 @@ def main(self, context):
         for mesh in bpy.data.meshes[:]:
 
           # populate
-          populate(context, mesh)
+          populate(self, context, mesh)
 
         # process
         process(self, context, storage.batch.meshes, option)
@@ -1928,7 +1961,7 @@ def main(self, context):
         for curve in bpy.data.curves[:]:
 
           # populate
-          populate(context, curve)
+          populate(self, context, curve)
 
         # process
         process(self, context, storage.batch.curves, option)
@@ -1940,7 +1973,7 @@ def main(self, context):
         for lamp in bpy.data.lamps[:]:
 
           # populate
-          populate(context, lamp)
+          populate(self, context, lamp)
 
         # process
         process(self, context, storage.batch.lamps, option)
@@ -1952,7 +1985,7 @@ def main(self, context):
         for lattice in bpy.data.lattices[:]:
 
           # populate
-          populate(context, lattice)
+          populate(self, context, lattice)
 
         # process
         process(self, context, storage.batch.lattices, option)
@@ -1964,7 +1997,7 @@ def main(self, context):
         for metaball in bpy.data.metaballs[:]:
 
           # populate
-          populate(context, metaball)
+          populate(self, context, metaball)
 
         # process
         process(self, context, storage.batch.metaballs, option)
@@ -1976,7 +2009,7 @@ def main(self, context):
         for speaker in bpy.data.speakers[:]:
 
           # populate
-          populate(context, speaker)
+          populate(self, context, speaker)
 
         # process
         process(self, context, storage.batch.speakers, option)
@@ -1988,7 +2021,7 @@ def main(self, context):
         for armature in bpy.data.armatures[:]:
 
           # populate
-          populate(context, armature)
+          populate(self, context, armature)
 
         # process
         process(self, context, storage.batch.armatures, option)
@@ -2003,7 +2036,7 @@ def main(self, context):
             for group in object.pose.bone_groups[:]:
 
               # populate
-              populate(context, group)
+              populate(self, context, group)
 
             # process
             process(self, context, storage.batch.boneGroups, option)
@@ -2017,7 +2050,7 @@ def main(self, context):
           for bone in armature.bones[:]:
 
             # populate
-            populate(context, bone)
+            populate(self, context, bone)
 
           # process
           process(self, context, storage.batch.bones, option)
@@ -2033,7 +2066,7 @@ def main(self, context):
               for constraint in bone.constraints[:]:
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
               # process
               process(self, context, storage.batch.constraints, option)
@@ -2048,7 +2081,7 @@ def main(self, context):
             for group in object.vertex_groups[:]:
 
               # populate
-              populate(context, group)
+              populate(self, context, group)
 
             # process
             process(self, context, storage.batch.vertexGroups, option)
@@ -2061,11 +2094,11 @@ def main(self, context):
         for shapekey in bpy.data.shape_keys[:]:
 
             # populate
-            populate(context, shapekey)
+            populate(self, context, shapekey)
             for block in shapekey.key_blocks[:]:
 
               # populate
-              populate(context, block)
+              populate(self, context, block)
 
             # process
             process(self, context, storage.batch.shapekeys, option)
@@ -2080,7 +2113,7 @@ def main(self, context):
             for uv in object.data.uv_textures[:]:
 
               # populate
-              populate(context, uv)
+              populate(self, context, uv)
 
             # process
             process(self, context, storage.batch.uvs, option)
@@ -2095,7 +2128,7 @@ def main(self, context):
             for color in object.data.vertex_colors[:]:
 
               # populate
-              populate(context, color)
+              populate(self, context, color)
 
             # process
             process(self, context, storage.batch.vertexColors, option)
@@ -2108,7 +2141,7 @@ def main(self, context):
         for material in bpy.data.materials[:]:
 
           # populate
-          populate(context, material)
+          populate(self, context, material)
 
         # process
         process(self, context, storage.batch.materials, option)
@@ -2121,7 +2154,7 @@ def main(self, context):
         for texture in bpy.data.textures[:]:
 
           # populate
-          populate(context, texture)
+          populate(self, context, texture)
 
         # process
         process(self, context, storage.batch.textures, option)
@@ -2136,7 +2169,7 @@ def main(self, context):
             for system in object.particle_systems[:]:
 
               # populate
-              populate(context, system)
+              populate(self, context, system)
 
             # process
             process(self, context, storage.batch.particleSystems, option)
@@ -2149,7 +2182,7 @@ def main(self, context):
         for settings in bpy.data.particles[:]:
 
           # populate
-          populate(context, settings)
+          populate(self, context, settings)
 
         # process
         process(self, context, storage.batch.particleSettings, option)
@@ -2166,14 +2199,14 @@ def main(self, context):
 
             # populate
             for sensor in object.game.sensors[:]:
-              populate(context, sensor)
+              populate(self, context, sensor)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
             for sensor in object.game.sensors[:]:
-              populate(context, sensor)
+              populate(self, context, sensor)
 
           # process
           process(self, context, storage.batch.sensors, option)
@@ -2190,14 +2223,14 @@ def main(self, context):
 
             # populate
             for controller in object.game.controllers[:]:
-              populate(context, controller)
+              populate(self, context, controller)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
             for controller in object.game.controllers[:]:
-              populate(context, controller)
+              populate(self, context, controller)
 
           # process
           process(self, context, storage.batch.controllers, option)
@@ -2214,14 +2247,14 @@ def main(self, context):
 
             # populate
             for actuator in object.game.actuators[:]:
-              populate(context, actuator)
+              populate(self, context, actuator)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
             for actuator in object.game.actuators[:]:
-              populate(context, actuator)
+              populate(self, context, actuator)
 
           # process
           process(self, context, storage.batch.actuators, option)
@@ -2235,14 +2268,25 @@ def main(self, context):
         for layer in scene.render.layers[:]:
           for lineset in layer.freestyle_settings.linesets[:]:
             if hasattr(lineset, 'name'):
-              lineset.name = rename(self, context, lineset.name) if not option.suffixLast else rename(self, context, lineset.name, option) + option.suffix
+
+              # new name
+              newName = rename(self, context, lineset.name) if not option.suffixLast else rename(self, context, lineset.name, option) + option.suffix
+
+              # update
+              if lineset.name != newName:
+
+                # name
+                lineset.name = newName
+
+                # count
+                self.count += 1
 
     # linestyles
     if option.linestyles:
       for style in bpy.data.linestyles[:]:
 
         # populate
-        populate(context, style)
+        populate(self, context, style)
 
       # process
       process(self, context, storage.batch.linestyles, option)
@@ -2262,13 +2306,13 @@ def main(self, context):
           if option.linestyleModifierType in 'ALL':
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
           # linestyle modifier type
           elif option.linestyleModifierType in modifier.type:
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
         # process
         process(self, context, storage.batch.modifiers, option)
@@ -2284,13 +2328,13 @@ def main(self, context):
           if option.linestyleModifierType in 'ALL':
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
           # linestyle modifier type
           elif option.linestyleModifierType in modifier.type:
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
         # process
         process(self, context, storage.batch.modifiers, option)
@@ -2306,13 +2350,13 @@ def main(self, context):
           if option.linestyleModifierType in 'ALL':
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
           # linestyle modifier type
           elif option.linestyleModifierType in modifier.type:
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
         # process
         process(self, context, storage.batch.modifiers, option)
@@ -2328,13 +2372,13 @@ def main(self, context):
           if option.linestyleModifierType in 'ALL':
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
           # linestyle modifier type
           elif option.linestyleModifierType in modifier.type:
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
         # process
         process(self, context, storage.batch.modifiers, option)
@@ -2347,7 +2391,7 @@ def main(self, context):
       for scene in bpy.data.scenes[:]:
 
         # populate
-        populate(context, scene)
+        populate(self, context, scene)
 
       # process
       process(self, context, storage.batch.scenes, option)
@@ -2361,7 +2405,7 @@ def main(self, context):
         for layer in scene.render.layers[:]:
 
           # populate
-          populate(context, layer)
+          populate(self, context, layer)
 
         # process
         process(self, context, storage.batch.renderLayers, option)
@@ -2374,7 +2418,7 @@ def main(self, context):
       for world in bpy.data.worlds[:]:
 
         # populate
-        populate(context, world)
+        populate(self, context, world)
 
       # process
       process(self, context, storage.batch.worlds, option)
@@ -2387,7 +2431,7 @@ def main(self, context):
       for library in bpy.data.libraries[:]:
 
         # populate
-        populate(context, library)
+        populate(self, context, library)
 
       # process
       process(self, context, storage.batch.libraries, option)
@@ -2400,7 +2444,7 @@ def main(self, context):
       for image in bpy.data.images[:]:
 
         # populate
-        populate(context, image)
+        populate(self, context, image)
 
       # process
       process(self, context, storage.batch.images, option)
@@ -2413,7 +2457,7 @@ def main(self, context):
       for mask in bpy.data.masks[:]:
 
         # populate
-        populate(context, mask)
+        populate(self, context, mask)
 
       # process
       process(self, context, storage.batch.masks, option)
@@ -2428,7 +2472,7 @@ def main(self, context):
           for sequence in scene.sequence_editor.sequences_all[:]:
 
             # populate
-            populate(context, sequence)
+            populate(self, context, sequence)
 
           # process
           process(self, context, storage.batch.sequences, option)
@@ -2441,7 +2485,7 @@ def main(self, context):
       for clip in bpy.data.movieclips[:]:
 
         # populate
-        populate(context, clip)
+        populate(self, context, clip)
 
       # process
       process(self, context, storage.batch.movieClips, option)
@@ -2454,7 +2498,7 @@ def main(self, context):
       for sound in bpy.data.sounds[:]:
 
         # populate
-        populate(context, sound)
+        populate(self, context, sound)
 
       # process
       process(self, context, storage.batch.sounds, option)
@@ -2467,7 +2511,7 @@ def main(self, context):
       for screen in bpy.data.screens[:]:
 
         # populate
-        populate(context, screen)
+        populate(self, context, screen)
 
       # process
       process(self, context, storage.batch.screens, option)
@@ -2481,7 +2525,7 @@ def main(self, context):
         for keyingSet in scene.keying_sets[:]:
 
           # populate
-          populate(context, keyingSet)
+          populate(self, context, keyingSet)
 
         # process
         process(self, context, storage.batch.keyingSets, option)
@@ -2494,7 +2538,7 @@ def main(self, context):
       for palette in bpy.data.palettes[:]:
 
         # populate
-        populate(context, palette)
+        populate(self, context, palette)
 
       # process
       process(self, context, storage.batch.palettes, option)
@@ -2507,7 +2551,7 @@ def main(self, context):
       for brush in bpy.data.brushes[:]:
 
         # populate
-        populate(context, brush)
+        populate(self, context, brush)
 
       # process
       process(self, context, storage.batch.brushes, option)
@@ -2524,7 +2568,7 @@ def main(self, context):
           for node in material.node_tree.nodes[:]:
 
             # populate
-            populate(context, node)
+            populate(self, context, node)
 
           # process
           process(self, context, storage.batch.nodes, option)
@@ -2538,7 +2582,7 @@ def main(self, context):
           for node in scene.node_tree.nodes[:]:
 
             # populate
-            populate(context, node)
+            populate(self, context, node)
 
           # process
           process(self, context, storage.batch.nodes, option)
@@ -2552,7 +2596,7 @@ def main(self, context):
           for node in texture.node_tree.nodes[:]:
 
             # populate
-            populate(context, node)
+            populate(self, context, node)
 
           # process
           process(self, context, storage.batch.nodes, option)
@@ -2565,7 +2609,7 @@ def main(self, context):
         for node in group.nodes[:]:
 
           # populate
-          populate(context, node)
+          populate(self, context, node)
 
         # process
         process(self, context, storage.batch.nodes, option)
@@ -2585,7 +2629,7 @@ def main(self, context):
           for node in material.node_tree.nodes[:]:
 
             # populate
-            populate(context, node)
+            populate(self, context, node)
 
           # process
           process(self, context, storage.batch.nodeLabels, option)
@@ -2599,7 +2643,7 @@ def main(self, context):
           for node in scene.node_tree.nodes[:]:
 
             # populate
-            populate(context, node)
+            populate(self, context, node)
 
           # process
           process(self, context, storage.batch.nodeLabels, option)
@@ -2613,7 +2657,7 @@ def main(self, context):
           for node in texture.node_tree.nodes[:]:
 
             # populate
-            populate(context, node)
+            populate(self, context, node)
 
           # process
           process(self, context, storage.batch.nodeLabels, option)
@@ -2626,7 +2670,7 @@ def main(self, context):
         for node in group.nodes[:]:
 
           # populate
-          populate(context, node)
+          populate(self, context, node)
 
         # process
         process(self, context, storage.batch.nodeLabels, option)
@@ -2642,7 +2686,7 @@ def main(self, context):
       for group in bpy.data.node_groups[:]:
 
         # populate
-        populate(context, group)
+        populate(self, context, group)
 
       # process
       process(self, context, storage.batch.nodeGroups, option)
@@ -2655,7 +2699,7 @@ def main(self, context):
       for text in bpy.data.texts[:]:
 
         # populate
-        populate(context, text)
+        populate(self, context, text)
 
       # process
       process(self, context, storage.batch.texts, option)
@@ -2672,7 +2716,7 @@ def main(self, context):
           for node in material.node_tree.nodes[:]:
 
             # populate
-            populate(context, node)
+            populate(self, context, node)
 
           # process
           process(self, context, storage.batch.nodes, option)
@@ -2686,7 +2730,7 @@ def main(self, context):
           for node in scene.node_tree.nodes[:]:
 
             # populate
-            populate(context, node)
+            populate(self, context, node)
 
           # process
           process(self, context, storage.batch.nodes, option)
@@ -2700,7 +2744,7 @@ def main(self, context):
           for node in texture.node_tree.nodes[:]:
 
             # populate
-            populate(context, node)
+            populate(self, context, node)
 
           # process
           process(self, context, storage.batch.nodes, option)
@@ -2713,7 +2757,7 @@ def main(self, context):
         for node in group.nodes[:]:
 
           # populate
-          populate(context, node)
+          populate(self, context, node)
 
         # process
         process(self, context, storage.batch.nodes, option)
@@ -2734,16 +2778,16 @@ def quick(self, context, object, panel, option):
   if search == '' or re.search(search, object.name, re.I):
 
     # ignore Object
-    if not option.ignoreObject:
+    if not option.ignoreObject or self.simple:
 
       # populate
-      populate(context, object)
+      populate(self, context, object)
 
   # action
   if panel.action:
 
     # ignore action
-    if not option.ignoreAction:
+    if not option.ignoreAction or self.simple:
       if hasattr(object.animation_data, 'action'):
         if hasattr(object.animation_data.action, 'name'):
 
@@ -2751,20 +2795,20 @@ def quick(self, context, object, panel, option):
           if search == '' or re.search(search, object.animation_data.action.name, re.I):
 
             # populate
-            populate(context, object.animation_data.action, object.animation_data)
+            populate(self, context, object.animation_data.action, object.animation_data)
 
   # grease pencils
   if panel.greasePencil:
 
     # ignore grease pencil
-    if not option.ignoreGreasePencil:
+    if not option.ignoreGreasePencil or self.simple:
       if hasattr(object.grease_pencil, 'name'):
 
         # search
         if search == '' or re.search(search, object.grease_pencil.name, re.I):
 
           # populate
-          populate(context, object.grease_pencil, object)
+          populate(self, context, object.grease_pencil, object)
 
         # layers
         for layer in object.grease_pencil.layers[:]:
@@ -2773,7 +2817,7 @@ def quick(self, context, object, panel, option):
           if search == '' or re.search(search, layer.info, re.I):
 
             # populate
-            populate(context, layer)
+            populate(self, context, layer)
 
         # process
         process(self, context, storage.batch.pencilLayers, option)
@@ -2785,7 +2829,7 @@ def quick(self, context, object, panel, option):
   if panel.groups:
 
     # ignore group
-    if not option.ignoreGroup:
+    if not option.ignoreGroup or self.simple:
       for group in bpy.data.groups[:]:
         for groupObject in group.objects[:]:
           if groupObject == object:
@@ -2794,20 +2838,20 @@ def quick(self, context, object, panel, option):
             if search == '' or re.search(search, group.name, re.I):
 
               # populate
-              populate(context, group)
+              populate(self, context, group)
 
   # constraints
   if panel.constraints:
 
     # ignore constraint
-    if not option.ignoreConstraint:
+    if not option.ignoreConstraint or self.simple:
       for constraint in object.constraints[:]:
 
         # search
         if search == '' or re.search(search, constraint.name, re.I):
 
           # populate
-          populate(context, constraint)
+          populate(self, context, constraint)
 
       # process
       process(self, context, storage.batch.constraints, option)
@@ -2819,14 +2863,14 @@ def quick(self, context, object, panel, option):
   if panel.modifiers:
 
     # ignore modifier
-    if not option.ignoreModifier:
+    if not option.ignoreModifier or self.simple:
       for modifier in object.modifiers[:]:
 
         # search
         if search == '' or re.search(search, modifier.name, re.I):
 
           # populate
-          populate(context, modifier)
+          populate(self, context, modifier)
 
       # process
       process(self, context, storage.batch.modifiers, option)
@@ -2838,7 +2882,7 @@ def quick(self, context, object, panel, option):
   if panel.boneGroups:
 
     # ignore bone group
-    if not option.ignoreBoneGroup:
+    if not option.ignoreBoneGroup or self.simple:
       if object.type in 'ARMATURE':
         for group in object.pose.bone_groups[:]:
 
@@ -2846,7 +2890,7 @@ def quick(self, context, object, panel, option):
           if search == '' or re.search(search, group.name, re.I):
 
             # populate
-            populate(context, group)
+            populate(self, context, group)
 
         # process
         process(self, context, storage.batch.boneGroups, option)
@@ -2858,7 +2902,7 @@ def quick(self, context, object, panel, option):
   if object == context.active_object:
 
     # ignore bone
-    if not option.ignoreBone:
+    if not option.ignoreBone or self.simple:
       if object.type == 'ARMATURE':
         if object.mode in {'POSE', 'EDIT'}:
 
@@ -2887,7 +2931,7 @@ def quick(self, context, object, panel, option):
                 if search == '' or re.search(search, bone.name, re.I):
 
                   # populate
-                  populate(context, bone)
+                  populate(self, context, bone)
 
             # bone mode
             else:
@@ -2911,7 +2955,7 @@ def quick(self, context, object, panel, option):
                 if search == '' or re.search(search, bone.name, re.I):
 
                   # populate
-                  populate(context, bone)
+                  populate(self, context, bone)
 
           # display bones
           else:
@@ -2922,8 +2966,17 @@ def quick(self, context, object, panel, option):
               # search
               if search == '' or re.search(search, context.active_bone, re.I):
 
-                # name
-                context.active_bone.name = rename(self, context, context.active_bone.name) if option.suffixLast else rename(self, context, context.active_bone.name, option) + option.suffix
+                # new name
+                newName = rename(self, context, context.active_bone.name, option) if not option.suffixLast else rename(self, context, context.active_bone.name, option) + option.suffix
+
+                # update
+                if context.active_bone.name != newName:
+
+                  # name
+                  context.active_bone.name = newName
+
+                  # count
+                  self.count += 1
 
             # mode
             elif object.mode == 'POSE':
@@ -2931,14 +2984,23 @@ def quick(self, context, object, panel, option):
               # search
               if search == '' or re.search(search, context.active_pose_bone, re.I):
 
-                # name
-                context.active_pose_bone.name = rename(self, context, context.active_pose_bone.name) if option.suffixLast else rename(self, context, context.active_pose_bone.name, option) + option.suffix
+                # new name
+                newName = rename(self, context, context.active_pose_bone.name, option) if not option.suffixLast else rename(self, context, context.active_pose_bone.name, option) + option.suffix
+
+                # update
+                if context.active_pose_bone.name != newName:
+
+                  # name
+                  context.active_pose_bone.name = newName
+
+                  # count
+                  self.count += 1
 
     # bone constraints
     if panel.boneConstraints:
 
       # ignore bone constraint
-      if not option.ignoreBoneConstraint:
+      if not option.ignoreBoneConstraint or self.simple:
         if object.mode == 'POSE':
 
           # display bones
@@ -2999,19 +3061,19 @@ def quick(self, context, object, panel, option):
   if object.type != 'EMPTY':
 
     # ignore object data
-    if not option.ignoreObjectData:
+    if not option.ignoreObjectData or self.simple:
 
       # search
       if search == '' or re.search(search, object.data.name, re.I):
 
         # populate
-        populate(context, object.data, object)
+        populate(self, context, object.data, object)
 
   # vertex groups
   if panel.vertexGroups:
 
     # ignore vertex group
-    if not option.ignoreVertexGroup:
+    if not option.ignoreVertexGroup or self.simple:
       if hasattr(object, 'vertex_groups'):
         for group in object.vertex_groups[:]:
 
@@ -3019,7 +3081,7 @@ def quick(self, context, object, panel, option):
           if search == '' or re.search(search, group.name, re.I):
 
             # populate
-            populate(context, group)
+            populate(self, context, group)
 
         # process
         process(self, context, storage.batch.vertexGroups, option)
@@ -3031,7 +3093,7 @@ def quick(self, context, object, panel, option):
   if panel.shapekeys:
 
     # ignore shapekey
-    if not option.ignoreShapekey:
+    if not option.ignoreShapekey or self.simple:
       if hasattr(object.data, 'shape_keys'):
         if hasattr(object.data.shape_keys, 'key_blocks'):
           for key in object.data.shape_keys.key_blocks[:]:
@@ -3040,7 +3102,7 @@ def quick(self, context, object, panel, option):
             if search == '' or re.search(search, key.name, re.I):
 
               # populate
-              populate(context, key)
+              populate(self, context, key)
 
           # process
           process(self, context, storage.batch.shapekeys, option)
@@ -3052,7 +3114,7 @@ def quick(self, context, object, panel, option):
   if panel.uvs:
 
     # ignore uv
-    if not option.ignoreUV:
+    if not option.ignoreUV or self.simple:
       if object.type in 'MESH':
         for uv in object.data.uv_textures[:]:
 
@@ -3060,7 +3122,7 @@ def quick(self, context, object, panel, option):
           if search == '' or re.search(search, uv.name, re.I):
 
             # populate
-            populate(context, uv)
+            populate(self, context, uv)
 
         # process
         process(self, context, storage.batch.uvs, option)
@@ -3072,7 +3134,7 @@ def quick(self, context, object, panel, option):
   if panel.vertexColors:
 
     # ignore vertex color
-    if not option.ignoreVertexColor:
+    if not option.ignoreVertexColor or self.simple:
       if object.type in 'MESH':
         for vertexColor in object.data.vertex_colors[:]:
 
@@ -3080,7 +3142,7 @@ def quick(self, context, object, panel, option):
           if search == '' or re.search(search, vertexColor.name, re.I):
 
             # populate
-            populate(context, vertexColor)
+            populate(self, context, vertexColor)
 
         # process
         process(self, context, storage.batch.vertexColors, option)
@@ -3092,7 +3154,7 @@ def quick(self, context, object, panel, option):
   if panel.materials:
 
     # ignore material
-    if not option.ignoreMaterial:
+    if not option.ignoreMaterial or self.simple:
       for slot in object.material_slots:
         if slot.material != None:
 
@@ -3100,13 +3162,13 @@ def quick(self, context, object, panel, option):
           if search == '' or re.search(search, slot.material.name, re.I):
 
             # populate
-            populate(context, slot.material, slot)
+            populate(self, context, slot.material, slot)
 
   # textures
   if panel.textures:
 
     # ignore texture
-    if not option.ignoreTexture:
+    if not option.ignoreTexture or self.simple:
 
       # material textures
       for slot in object.material_slots:
@@ -3120,7 +3182,7 @@ def quick(self, context, object, panel, option):
                   if search == '' or re.search(search, tslot.texture.name, re.I):
 
                     # populate
-                    populate(context, tslot.texture, tslot)
+                    populate(self, context, tslot.texture, tslot)
 
       # particle system textures
       if panel.particleSystems:
@@ -3134,7 +3196,7 @@ def quick(self, context, object, panel, option):
                   if search == '' or re.search(search, slot.texture.name, re.I):
 
                     # populate
-                    populate(context, slot.texture, slot)
+                    populate(self, context, slot.texture, slot)
 
       # modifier textures
       if panel.modifiers:
@@ -3148,7 +3210,7 @@ def quick(self, context, object, panel, option):
               if search == '' or re.search(search, modifier.texture.name, re.I):
 
                 # populate
-                populate(context, modifier.texture, modifier)
+                populate(self, context, modifier.texture, modifier)
 
           # mask texture
           elif modifier.type in {'VERTEX_WEIGHT_MIX', 'VERTEX_WEIGHT_EDIT', 'VERTEX_WEIGHT_PROXIMITY'}:
@@ -3158,13 +3220,13 @@ def quick(self, context, object, panel, option):
               if search == '' or re.search(search, modifier.mask_texture.name, re.I):
 
                 # populate
-                populate(context, modifier.mask_texture)
+                populate(self, context, modifier.mask_texture)
 
   # particle systems
   if panel.particleSystems:
 
     # ignore particle system
-    if not option.ignoreParticleSystem:
+    if not option.ignoreParticleSystem or self.simple:
       for modifier in object.modifiers[:]:
         if modifier.type in 'PARTICLE_SYSTEM':
 
@@ -3172,7 +3234,7 @@ def quick(self, context, object, panel, option):
           if search == '' or re.search(search, modifier.particle_system.name, re.I):
 
             # populate
-            populate(context, modifier.particle_system)
+            populate(self, context, modifier.particle_system)
 
       # process
       process(self, context, storage.batch.particleSystems, option)
@@ -3184,7 +3246,7 @@ def quick(self, context, object, panel, option):
   if panel.particleSystems:
 
     # ignore particle setting
-    if not option.ignoreParticleSetting:
+    if not option.ignoreParticleSetting or self.simple:
       for modifier in object.modifiers[:]:
         if modifier.type in 'PARTICLE_SYSTEM':
 
@@ -3192,10 +3254,10 @@ def quick(self, context, object, panel, option):
           if search == '' or re.search(search, modifier.particle_system.settings.name, re.I):
 
             # populate
-            populate(context, modifier.particle_system.settings, modifier.particle_system)
+            populate(self, context, modifier.particle_system.settings, modifier.particle_system)
 
 # populate
-def populate(context, datablock, source=None):
+def populate(self, context, datablock, source=None):
   '''
     Sort datablocks into proper storage list.
   '''
@@ -3389,7 +3451,18 @@ def populate(context, datablock, source=None):
           storage.batch.nodes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
           if self.tag:
-            datablock.label = rename(self, context, datablock.label, option)
+
+            # new name
+            newName = rename(self, context, datablock.label, option) if not option.suffixLast else rename(self, context, datablock.label, option) + option.suffix
+
+            # update
+            if datablock.label != newName:
+
+              # name
+              datablock.label = newName
+
+              # count
+              self.count += 1
 
   # node groups
   if hasattr(datablock.rna_type.base, 'identifier'):
@@ -3401,7 +3474,18 @@ def populate(context, datablock, source=None):
     storage.batch.nodes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
     if self.tag:
-      datablock.label = rename(self, context, datablock.label, option)
+
+      # new name
+      newName = rename(self, context, datablock.label, option) if not option.suffixLast else rename(self, context, datablock.label, option) + option.suffix
+
+      # update
+      if datablock.label != newName:
+
+        # name
+        datablock.label = newName
+
+        # count
+        self.count += 1
 
   # texts
   if datablock.rna_type.identifier == 'Text':
@@ -3440,7 +3524,7 @@ def process(self, context, collection, option):
 
     # rename
     name[1] = rename(self, context, name[1], option)
-    name[0] = name[1]
+    # name[0] = name[1]
 
   # randomize names (prevents conflicts)
   for name in clean:
@@ -3466,38 +3550,66 @@ def process(self, context, collection, option):
       # randomize bl_label
       name[3][0].bl_label = str(random())
 
-  # apply names
-  for name in clean:
+  # simple
+  if self.simple:
 
-    # datablock
-    datablock = name[3][0]
+    # update
+    for name in clean:
 
-    # has name
-    if hasattr(name[3][0], 'name'):
+      # has name
+      if hasattr(name[3][0], 'name'):
+        name[3][0].name = name[1]
 
-      # name
-      name[3][0].name = name[1] + option.suffix if option.suffixLast else name[1]
+        # has info
+      if hasattr(name[3][0], 'info'):
+        name[3][0].info = name[1]
 
-    # has info
-    if hasattr(name[3][0], 'info'):
+      # count
+      if name[1] != name[2]:
+        self.count += 1
 
-      # info
-      name[3][0].info = name[1] + option.suffix if option.suffixLast else name[1]
+  # isnt simple
+  else:
 
-    # has bl_label
-    if hasattr(name[3][0], 'bl_label'):
+    # is shared sort
+    if context.scene.BatchShared.sort:
 
-      # bl_label
-      name[3][0].bl_label = name[1] + option.suffix if option.suffixLast else name[1]
+      # sort
+      shared.sort(self, context, clean, context.scene.BatchShared)
 
-  # is shared sort
-  if context.scene.BatchShared.sort:
+    # isnt shared sort
+    else:
 
-    # sort
-    shared.sort(self, context, clean, context.scene.BatchShared)
+      # apply names
+      for name in clean:
 
-  # done with clean
-  clean.clear()
+        # has name
+        if hasattr(name[3][0], 'name'):
+
+          # name
+          name[1] = name[1] + option.suffix if option.suffixLast else name[1]
+          name[3][0].name = name[1]
+
+        # has info
+        if hasattr(name[3][0], 'info'):
+
+          # info
+          name[1] = name[1] + option.suffix if option.suffixLast else name[1]
+          name[3][0].info = name[1]
+
+        # has bl_label
+        if hasattr(name[3][0], 'bl_label'):
+
+          # bl_label
+          name[1] = name[1] + option.suffix if option.suffixLast else name[1]
+          name[3][0].bl_label = name[1]
+
+        # count
+        if name[1] != name[2]:
+          self.count += 1
+
+  # purge re
+  re.purge()
 
 # name
 def rename(self, context, oldName, option):
@@ -3508,25 +3620,34 @@ def rename(self, context, oldName, option):
   # option
   option = context.scene.BatchName
 
-  # numeral
-  numeral = r'\W[0-9]*$|_[0-9]*$'
+  # simple
+  if not self.simple:
 
-  # custom name
-  if option.customName != '':
+    # numeral
+    numeral = r'\W[0-9]*$|_[0-9]*$'
 
-    # new name
-    newName = option.customName
+    # custom name
+    if option.customName != '':
+
+      # new name
+      newName = option.customName
+    else:
+
+      # new name
+      newName = oldName
+
+    # trim start
+    newName = newName[option.trimStart:]
+
+    # trim end
+    if option.trimEnd > 0:
+      newName = newName[:-option.trimEnd]
+
+  # isnt simple
   else:
 
     # new name
     newName = oldName
-
-  # trim start
-  newName = newName[option.trimStart:]
-
-  # trim end
-  if option.trimEnd > 0:
-    newName = newName[:-option.trimEnd]
 
   # find & replace
   if option.regex:
@@ -3535,14 +3656,14 @@ def rename(self, context, oldName, option):
   else:
     newName = re.sub(re.escape(option.find), option.replace, newName)
 
-  # strip numeral
-  newName = re.split(numeral, newName)[0] if not option.suffixLast else newName
+  # simple
+  if not self.simple:
 
-  # prefix & suffix
-  newName = option.prefix + newName + option.suffix if not option.suffixLast else option.prefix + newName
+    # strip numeral
+    newName = re.split(numeral, newName)[0] if not option.suffixLast else newName
 
-  # purge re
-  re.purge()
+    # prefix & suffix
+    newName = option.prefix + newName + option.suffix if not option.suffixLast else option.prefix + newName
 
   # new name
   return newName

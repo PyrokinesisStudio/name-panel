@@ -44,7 +44,9 @@ class specials(Menu):
     layout.operator('view3d.batch_auto_name', icon='AUTO')
 
     # bath name
-    layout.operator('wm.batch_name', icon='SORTALPHA').quickBatch = False
+    op = layout.operator('wm.batch_name', icon='SORTALPHA')
+    op.simple = False
+    op.quickBatch = False
 
     # batch copy
     layout.operator('view3d.batch_copy_name', icon='COPYDOWN')
@@ -57,3 +59,11 @@ class specials(Menu):
 
     # hide search
     layout.prop(option, 'hideSearch')
+
+    # hide search
+    layout.prop(option, 'hideFindReplace')
+
+    # separator
+    layout.separator()
+
+    layout.operator('wm.regular_expression_cheatsheet', icon='NEW')

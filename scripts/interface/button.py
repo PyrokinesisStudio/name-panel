@@ -25,4 +25,6 @@ def batchName(self, context):
 
   # row
   row = self.layout
-  row.operator('wm.batch_name', icon='SORTALPHA').quickBatch = False
+  op = row.operator('wm.batch_name', icon='SORTALPHA')
+  op.simple = False
+  op.quickBatch = False

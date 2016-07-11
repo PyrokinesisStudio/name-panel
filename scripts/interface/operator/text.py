@@ -28,8 +28,8 @@ class generate(Operator):
     Generate regular expression cheatsheet.
   '''
   bl_idname = 'wm.regular_expression_cheatsheet'
-  bl_label = 'Generate Cheatsheet'
-  bl_description = 'Generate a text reference for regular expressions.'
+  bl_label = 'Create Cheatsheet'
+  bl_description = 'Create a text reference for regular expressions.'
   bl_options = {'UNDO'}
 
   # execute

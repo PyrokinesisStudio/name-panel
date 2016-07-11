@@ -458,9 +458,6 @@ def process(self, context, collection):
       if name[1] != name[2]:
         self.count += 1
 
-    # done with clean
-    clean.clear()
-
 # object
 def rename(self, context, name, i):
   '''

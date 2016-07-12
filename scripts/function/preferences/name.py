@@ -33,6 +33,7 @@ def main(context):
   # options
   default['pin active object'] = option.pinActiveObject
   default['hide search'] = option.hideSearch
+  default['hide find & replace'] = option.hideFindReplace
   default['filters'] = option.filters
   default['options'] = option.options
   default['display names'] = option.displayNames

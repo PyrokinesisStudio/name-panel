@@ -43,6 +43,9 @@ def reset(context, panel, auto, names, name, copy):
     # hide search
     option.hideSearch = default['hide search']
 
+    # hide find & replace
+    option.hideFindReplace = default['hide find & replace']
+
     # filters
     option.filters = default['filters']
 
@@ -821,6 +824,9 @@ def transfer(context, panel, auto, names, name, copy):
 
         # hide search
         scene.NamePanel.hideSearch = option.hideSearch
+
+        # hide search
+        scene.NamePanel.hideFindReplace = option.hideFindReplace
 
         # filters
         scene.NamePanel.filters = option.filters

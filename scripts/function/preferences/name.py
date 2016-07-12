@@ -50,7 +50,7 @@ def main(context):
   default['vertex groups'] = option.vertexGroups
   default['shapekeys'] = option.shapekeys
   default['uvs'] = option.uvs
-  default['vertex color'] = option.vertexColors
+  default['vertex colors'] = option.vertexColors
   default['materials'] = option.materials
   default['textures'] = option.textures
   default['particle systems'] = option.particleSystems

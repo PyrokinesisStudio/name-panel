@@ -164,7 +164,7 @@ def reset(context, panel, auto, names, name, copy):
     option.start = default['start']
 
     # step
-    option.start = default['step']
+    option.step = default['step']
 
     # separator
     option.separator = default['separator']

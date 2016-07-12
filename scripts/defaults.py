@@ -20,7 +20,7 @@ defaults = {
     'vertex groups': False,
     'shapekeys': False,
     'uvs': False,
-    'vertex color': False,
+    'vertex colors': False,
     'materials': False,
     'textures': False,
     'particle systems': False,

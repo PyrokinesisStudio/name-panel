@@ -52,8 +52,8 @@ def reset(context, panel, auto, names, name, copy):
     # options
     option.options = default['options']
 
-    # selected
-    option.displayNames = default['selected']
+    # display names
+    option.displayNames = default['display names']
 
     # mode
     option.mode = default['mode']
@@ -62,7 +62,7 @@ def reset(context, panel, auto, names, name, copy):
     option.search = default['search']
 
     # regex
-    option.regex = defatul['regex']
+    option.regex = default['regex']
 
     # groups
     option.groups = default['groups']
@@ -71,7 +71,7 @@ def reset(context, panel, auto, names, name, copy):
     option.action = default['action']
 
     # grease pencil
-    option.greasePencil = default['greasePencil']
+    option.greasePencil = default['grease pencil']
 
     # constraints
     option.constraints = default['constraints']

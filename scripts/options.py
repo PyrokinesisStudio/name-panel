@@ -211,11 +211,11 @@ class name(PropertyGroup):
     default = default['uvs']
   )
 
-  # vertex color
+  # vertex colors
   vertexColors = BoolProperty(
     name = 'Vertex Colors',
     description = 'Display vertex color names.',
-    default = default['vertex color']
+    default = default['vertex colors']
   )
 
   # materials

@@ -447,6 +447,9 @@ def process(self, context, collection):
     # sort
     shared.sort(self, context, clean, context.scene.BatchShared)
 
+    # purge re
+    re.purge()
+
   # isnt shared sort
   else:
 

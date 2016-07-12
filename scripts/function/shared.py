@@ -263,9 +263,3 @@ def sort(self, context, collection, option):
 
               # link
               name[3][2].linestyle = source
-
-  # purge re
-  re.purge()
-
-  # done with names
-  names.clear()

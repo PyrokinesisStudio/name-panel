@@ -2270,7 +2270,7 @@ def main(self, context):
             if hasattr(lineset, 'name'):
 
               # new name
-              newName = rename(self, context, lineset.name) if not option.suffixLast else rename(self, context, lineset.name, option) + option.suffix
+              newName = rename(self, context, lineset.name, option) if not option.suffixLast else rename(self, context, lineset.name, option) + option.suffix
 
               # update
               if lineset.name != newName:

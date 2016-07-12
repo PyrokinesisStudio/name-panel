@@ -88,12 +88,15 @@ class name(Operator):
 
     # settings
     column = layout.column()
-    column.label(text='Name Setting Defaults:')
+    column.label(text='Name Settings:')
     split = column.split(align=True)
-    split.operator('wm.batch_auto_name_object_name_defaults', text='Objects')
-    split.operator('wm.batch_auto_name_constraint_name_defaults', text='Constraints')
-    split.operator('wm.batch_auto_name_modifier_name_defaults', text='Modifiers')
-    split.operator('wm.batch_auto_name_object_data_name_defaults', text='Object Data')
+    split.operator('view3d.batch_auto_name_object_names', text='Objects')
+    split.operator('view3d.batch_auto_name_constraint_names', text='Constraints')
+    split.operator('view3d.batch_auto_name_modifier_names', text='Modifiers')
+    split.operator('view3d.batch_auto_name_object_data_names', text='Object Data')
+
+    # sort
+    shared.sort(column, context.scene.BatchShared)
 
   # execute
   def execute(self, context):

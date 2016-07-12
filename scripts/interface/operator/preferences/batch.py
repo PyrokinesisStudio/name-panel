@@ -239,8 +239,6 @@ class name(Operator):
       # input fields
       column.separator()
       column.separator()
-      column.separator()
-      column.separator()
 
     # column
     column = layout.column(align=True)
@@ -256,11 +254,10 @@ class name(Operator):
     row = column.row(align=True)
     row.prop(option, 'find', icon='VIEWZOOM')
 
-    # cheatsheet
-    row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
-
     # regex
-    row.prop(option, 'regex', text='', icon='SCRIPT')
+    sub = row.split(align=True)
+    sub.scale_x = 0.1
+    sub.prop(option, 'regex', text='.*', toggle=True)
     column.separator()
 
     # replace

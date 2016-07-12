@@ -74,7 +74,7 @@ class name(Operator):
     # options
     row.prop(panel, 'options', text='', icon='SETTINGS')
 
-    # operator menu
+    # # operator menu
     row.menu('VIEW3D_MT_name_panel_specials', text='', icon='COLLAPSEMENU')
 
     # filters
@@ -147,10 +147,16 @@ class name(Operator):
         row = column.row(align=True)
 
         # search
-        row.prop(panel, 'search', text='', icon='VIEWZOOM')
-        row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
-        row.prop(panel, 'regex', text='', icon='SCRIPTPLUGINS')
-        row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
+        row.prop(panel, 'search', text='', icon='BORDERMOVE')
+
+        # sub
+        sub = row.split(align=True)
+
+        # scale x
+        sub.scale_x = 0.1
+
+        # regex
+        sub.prop(panel, 'regex', text='.*', toggle=True)
 
     # hide search
     if not panel.hideSearch:
@@ -159,10 +165,105 @@ class name(Operator):
       row = column.row(align=True)
 
       # search
-      row.prop(panel, 'search', text='', icon='VIEWZOOM')
-      row.operator('wm.regular_expression_cheatsheet', text='', icon='FILE_TEXT')
-      row.prop(panel, 'regex', text='', icon='SCRIPTPLUGINS')
-      row.operator('wm.batch_name', text='', icon='SORTALPHA').quickBatch = True
+      row.prop(panel, 'search', text='', icon='BORDERMOVE')
+
+      # sub
+      sub = row.split(align=True)
+
+      # scale x
+      sub.scale_x = 0.1
+
+      # regex
+      sub.prop(panel, 'regex', text='.*', toggle=True)
+
+    # filters
+    if panel.filters:
+
+      # hide find & replace
+      if panel.hideFindReplace:
+
+        # separator
+        column.separator()
+
+        # row
+        row = column.row(align=True)
+
+        # find
+        row.prop(context.scene.BatchName, 'find', text='', icon='VIEWZOOM')
+
+        # sub
+        sub = row.split(align=True)
+
+        # scale x
+        sub.scale_x = 0.1
+
+        # regex
+        sub.prop(context.scene.BatchName, 'regex', text='.*', toggle=True)
+
+        # row
+        row = column.row(align=True)
+
+        # replace
+        row.prop(context.scene.BatchName, 'replace', text='', icon='FILE_REFRESH')
+
+        # sub
+        sub = row.split(align=True)
+
+        # scale x
+        sub.scale_x = 0.15
+
+        # batch name
+        op = sub.operator('wm.batch_name', text='OK')
+        op.simple = True
+        op.quickBatch = True
+
+        # batch name
+        op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
+        op.simple = False
+        op.quickBatch = True
+
+    # hide find & replace
+    if not panel.hideFindReplace:
+
+      # separator
+      column.separator()
+
+      # row
+      row = column.row(align=True)
+
+      # find
+      row.prop(context.scene.BatchName, 'find', text='', icon='VIEWZOOM')
+
+      # sub
+      sub = row.split(align=True)
+
+      # scale x
+      sub.scale_x = 0.1
+
+      # regex
+      sub.prop(context.scene.BatchName, 'regex', text='.*', toggle=True)
+
+      # row
+      row = column.row(align=True)
+
+      # replace
+      row.prop(context.scene.BatchName, 'replace', text='', icon='FILE_REFRESH')
+
+      # sub
+      sub = row.split(align=True)
+
+      # scale x
+      sub.scale_x = 0.15
+
+      # batch name
+      op = sub.operator('wm.batch_name', text='OK')
+      op.simple = True
+      op.quickBatch = True
+
+      # batch name
+      op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
+      op.simple = False
+      op.quickBatch = True
 
     # enabled
     if panel.displayNames:
@@ -177,7 +278,6 @@ class name(Operator):
       row.prop(panel, 'mode', expand=True)
 
     # separator
-    column.separator()
     column.separator()
 
     # row

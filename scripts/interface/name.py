@@ -285,8 +285,14 @@ def filters(self, context, layout, panel):
 
       # search
       row.prop(panel, 'search', text='', icon='BORDERMOVE')
+
+      # sub
       sub = row.split(align=True)
+
+      # scale x
       sub.scale_x = 0.1
+
+      # regex
       sub.prop(panel, 'regex', text='.*', toggle=True)
 
   # hide search
@@ -297,8 +303,14 @@ def filters(self, context, layout, panel):
 
     # search
     row.prop(panel, 'search', text='', icon='BORDERMOVE')
+
+    # sub
     sub = row.split(align=True)
+
+    # scale x
     sub.scale_x = 0.1
+
+    # regex
     sub.prop(panel, 'regex', text='.*', toggle=True)
 
   # filters
@@ -315,8 +327,14 @@ def filters(self, context, layout, panel):
 
       # find
       row.prop(context.scene.BatchName, 'find', text='', icon='VIEWZOOM')
+
+      # sub
       sub = row.split(align=True)
+
+      # scale x
       sub.scale_x = 0.1
+
+      # regex
       sub.prop(context.scene.BatchName, 'regex', text='.*', toggle=True)
 
       # row
@@ -325,18 +343,21 @@ def filters(self, context, layout, panel):
       # replace
       row.prop(context.scene.BatchName, 'replace', text='', icon='FILE_REFRESH')
 
+      # sub
       sub = row.split(align=True)
+
+      # scale x
       sub.scale_x = 0.15
+
+      # batch name
       op = sub.operator('wm.batch_name', text='OK')
       op.simple = True
       op.quickBatch = True
 
+      # batch name
       op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
       op.simple = False
       op.quickBatch = True
-
-      # separator
-      # layout.separator()
 
   # hide find & replace
   if not panel.hideFindReplace:
@@ -349,8 +370,14 @@ def filters(self, context, layout, panel):
 
     # find
     row.prop(context.scene.BatchName, 'find', text='', icon='VIEWZOOM')
+
+    # sub
     sub = row.split(align=True)
+
+    # scale x
     sub.scale_x = 0.1
+
+    # regex
     sub.prop(context.scene.BatchName, 'regex', text='.*', toggle=True)
 
     # row
@@ -359,18 +386,21 @@ def filters(self, context, layout, panel):
     # replace
     row.prop(context.scene.BatchName, 'replace', text='', icon='FILE_REFRESH')
 
+    # sub
     sub = row.split(align=True)
+
+    # scale x
     sub.scale_x = 0.15
+
+    # batch name
     op = sub.operator('wm.batch_name', text='OK')
     op.simple = True
     op.quickBatch = True
 
+    # batch name
     op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
     op.simple = False
     op.quickBatch = True
-
-    # separator
-    # layout.separator()
 
   # enabled
   if panel.displayNames:

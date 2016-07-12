@@ -20,6 +20,7 @@
 # imports
 import bpy
 from bpy.types import Operator
+from .. import shared
 from ....function import options
 from ....function.preferences import auto
 

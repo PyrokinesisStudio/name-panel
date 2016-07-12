@@ -36,7 +36,7 @@ def main(self, context):
   # mode
   if option.mode in {'SELECTED', 'OBJECTS'}:
 
-    for object in bpy.data.objects[:]:
+    for object in bpy.data.objects:
 
       # objects
       if option.objects:
@@ -78,7 +78,7 @@ def main(self, context):
         # mode
         if option.mode in 'SELECTED':
           if object.select:
-            for constraint in object.constraints[:]:
+            for constraint in object.constraints:
 
               # constraint type
               if option.constraintType in 'ALL':
@@ -94,7 +94,7 @@ def main(self, context):
 
         # mode
         else:
-          for constraint in object.constraints[:]:
+          for constraint in object.constraints:
 
             # constraint type
             if option.constraintType in 'ALL':
@@ -114,7 +114,7 @@ def main(self, context):
         # mode
         if option.mode in 'SELECTED':
           if object.select:
-            for modifier in object.modifiers[:]:
+            for modifier in object.modifiers:
 
               # modifier type
               if option.modifierType in 'ALL':
@@ -128,7 +128,7 @@ def main(self, context):
                 # populate
                 populate(context, modifier)
         else:
-          for modifier in object.modifiers[:]:
+          for modifier in object.modifiers:
 
             # modifier type
             if option.modifierType in 'ALL':
@@ -184,9 +184,9 @@ def main(self, context):
         if option.mode in 'SELECTED':
           if object.select:
             if object.type in 'ARMATURE':
-              for bone in object.pose.bones[:]:
+              for bone in object.pose.bones:
                 if bone.bone.select:
-                  for constraint in bone.constraints[:]:
+                  for constraint in bone.constraints:
 
                     # constraint type
                     if option.constraintType in 'ALL':
@@ -201,8 +201,8 @@ def main(self, context):
                       populate(context, constraint)
         else:
           if object.type in 'ARMATURE':
-            for bone in object.pose.bones[:]:
-              for constraint in bone.constraints[:]:
+            for bone in object.pose.bones:
+              for constraint in bone.constraints:
 
                 # constraint type
                 if option.constraintType in 'ALL':
@@ -218,7 +218,7 @@ def main(self, context):
 
   # mode
   else:
-    for object in context.scene.objects[:]:
+    for object in context.scene.objects:
 
       # objects
       if option.objects:
@@ -237,7 +237,7 @@ def main(self, context):
 
       # constraints
       if option.constraints:
-        for constraint in object.constraints[:]:
+        for constraint in object.constraints:
 
           # constraint type
           if option.constraintType in 'ALL':
@@ -253,7 +253,7 @@ def main(self, context):
 
       # modifiers
       if option.modifiers:
-        for modifier in object.modifiers[:]:
+        for modifier in object.modifiers:
 
           # modifier type
           if option.modifierType in 'ALL':
@@ -286,8 +286,8 @@ def main(self, context):
       # bone constraints
       if option.boneConstraints:
         if object.type in 'ARMATURE':
-          for bone in object.pose.bones[:]:
-            for constraint in bone.constraints[:]:
+          for bone in object.pose.bones:
+            for constraint in bone.constraints:
 
               # constraint type
               if option.constraintType in 'ALL':

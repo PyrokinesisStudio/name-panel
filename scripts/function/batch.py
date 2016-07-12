@@ -45,14 +45,14 @@ def main(self, context):
       # mode
       if panel.mode == 'SELECTED':
 
-        for object in context.selected_objects[:]:
+        for object in context.selected_objects:
 
           # quick
           quick(self, context, object, panel, option)
 
       # mode
       else: # panel.mode == 'LAYERS'
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]:
 
             # quick
@@ -130,7 +130,7 @@ def main(self, context):
 
       # actions
       if option.actions:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if hasattr(object.animation_data, 'action'):
 
             # mode
@@ -174,7 +174,7 @@ def main(self, context):
 
       # action groups
       if option.actionGroups:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if hasattr(object.animation_data, 'action'):
             if hasattr(object.animation_data.action, 'name'):
 
@@ -232,7 +232,7 @@ def main(self, context):
 
       # grease pencil
       if option.greasePencil:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if hasattr(object.grease_pencil, 'name'):
 
             # mode
@@ -274,7 +274,7 @@ def main(self, context):
 
       # pencil layers
       if option.pencilLayers:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if hasattr(object.grease_pencil, 'name'):
 
             # mode
@@ -285,7 +285,7 @@ def main(self, context):
                 if option.objectType in 'ALL':
 
                   # layers
-                  for layer in object.grease_pencil.layers[:]:
+                  for layer in object.grease_pencil.layers:
 
                     # populate
                     populate(self, context, layer)
@@ -294,7 +294,7 @@ def main(self, context):
                 elif option.objectType in object.type:
 
                   # layers
-                  for layer in object.grease_pencil.layers[:]:
+                  for layer in object.grease_pencil.layers:
 
                     # populate
                     populate(self, context, layer)
@@ -306,7 +306,7 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # layers
-                for layer in object.grease_pencil.layers[:]:
+                for layer in object.grease_pencil.layers:
 
                   # populate
                   populate(self, context, layer)
@@ -315,7 +315,7 @@ def main(self, context):
               elif option.objectType in object.type:
 
                 # layers
-                for layer in object.grease_pencil.layers[:]:
+                for layer in object.grease_pencil.layers:
 
                   # populate
                   populate(self, context, layer)
@@ -328,7 +328,7 @@ def main(self, context):
 
       # objects
       if option.objects:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # mode
           if option.mode in 'SELECTED':
@@ -369,7 +369,7 @@ def main(self, context):
 
       # groups
       if option.groups:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # mode
           if option.mode in 'SELECTED':
@@ -377,8 +377,8 @@ def main(self, context):
 
               # object type
               if option.objectType in 'ALL':
-                for group in bpy.data.groups[:]:
-                  if object in group.objects[:]:
+                for group in bpy.data.groups:
+                  if object in group.objects:
 
                     # populate
                     populate(self, context, group)
@@ -386,8 +386,8 @@ def main(self, context):
 
               # object type
               elif option.objectType in object.type:
-                for group in bpy.data.groups[:]:
-                  if object in group.objects[:]:
+                for group in bpy.data.groups:
+                  if object in group.objects:
 
                     # populate
                     populate(self, context, group)
@@ -397,16 +397,16 @@ def main(self, context):
 
             # object type
             if option.objectType in 'ALL':
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
+              for group in bpy.data.groups:
+                if object in group.objects:
 
                   # populate
                   populate(self, context, group)
 
             # object type
             elif option.objectType in object.type:
-              for group in bpy.data.groups[:]:
-                if object in group.objects[:]:
+              for group in bpy.data.groups:
+                if object in group.objects:
 
                   # populate
                   populate(self, context, group)
@@ -423,12 +423,12 @@ def main(self, context):
 
       # constraints
       if option.constraints:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # mode
           if option.mode in 'SELECTED':
             if object.select:
-              for constraint in object.constraints[:]:
+              for constraint in object.constraints:
 
                 # constraint type
                 if option.constraintType in 'ALL':
@@ -444,7 +444,7 @@ def main(self, context):
 
           # mode
           else:
-            for constraint in object.constraints[:]:
+            for constraint in object.constraints:
 
               # constraint type
               if option.constraintType in 'ALL':
@@ -466,12 +466,12 @@ def main(self, context):
 
       # modifiers
       if option.modifiers:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # mode
           if option.mode in 'SELECTED':
             if object.select:
-              for modifier in object.modifiers[:]:
+              for modifier in object.modifiers:
 
                 # modifier type
                 if option.modifierType in 'ALL':
@@ -487,7 +487,7 @@ def main(self, context):
 
           # mode
           else:
-            for modifier in object.modifiers[:]:
+            for modifier in object.modifiers:
 
               # modifier type
               if option.modifierType in 'ALL':
@@ -509,7 +509,7 @@ def main(self, context):
 
       # object data
       if option.objectData:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type not in 'EMPTY':
 
             # mode
@@ -567,13 +567,13 @@ def main(self, context):
 
       # bone groups
       if option.boneGroups:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # mode
           if option.mode in 'SELECTED':
             if object.select:
               if object.type in 'ARMATURE':
-                for group in object.pose.bone_groups[:]:
+                for group in object.pose.bone_groups:
                   if object.select:
 
                     # populate
@@ -582,7 +582,7 @@ def main(self, context):
           # mode
           else:
             if object.type in 'ARMATURE':
-              for group in object.pose.bone_groups[:]:
+              for group in object.pose.bone_groups:
 
                 # populate
                 populate(self, context, group)
@@ -595,7 +595,7 @@ def main(self, context):
 
       # bones
       if option.bones:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'ARMATURE':
 
             # mode
@@ -604,7 +604,7 @@ def main(self, context):
 
                 # edit mode
                 if object.mode in 'EDIT':
-                  for bone in bpy.data.armatures[object.data.name].edit_bones[:]:
+                  for bone in bpy.data.armatures[object.data.name].edit_bones:
                     if bone.select:
 
                       # populate
@@ -612,7 +612,7 @@ def main(self, context):
 
                 # pose or object mode
                 else:
-                  for bone in bpy.data.armatures[object.data.name].bones[:]:
+                  for bone in bpy.data.armatures[object.data.name].bones:
                     if bone.select:
 
                       # populate
@@ -623,14 +623,14 @@ def main(self, context):
 
               # edit mode
               if object.mode in 'EDIT':
-                for bone in bpy.data.armatures[object.data.name].edit_bones[:]:
+                for bone in bpy.data.armatures[object.data.name].edit_bones:
 
                     # populate
                     populate(self, context, bone)
 
               # pose or object mode
               else:
-                for bone in bpy.data.armatures[object.data.name].bones[:]:
+                for bone in bpy.data.armatures[object.data.name].bones:
 
                     # populate
                     populate(self, context, bone)
@@ -643,15 +643,15 @@ def main(self, context):
 
       # bone constraints
       if option.boneConstraints:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'ARMATURE':
 
             # mode
             if option.mode in 'SELECTED':
               if object.select:
-                for bone in object.pose.bones[:]:
+                for bone in object.pose.bones:
                   if bone.bone.select:
-                    for constraint in bone.constraints[:]:
+                    for constraint in bone.constraints:
 
                       # constraint type
                       if option.constraintType in 'ALL':
@@ -673,8 +673,8 @@ def main(self, context):
 
             # mode
             else:
-              for bone in object.pose.bones[:]:
-                for constraint in bone.constraints[:]:
+              for bone in object.pose.bones:
+                for constraint in bone.constraints:
 
                   # constraint type
                   if option.constraintType in 'ALL':
@@ -696,13 +696,13 @@ def main(self, context):
 
       # vertex groups
       if option.vertexGroups:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if hasattr(object, 'vertex_groups'):
 
             # mode
             if option.mode in 'SELECTED':
               if object.select:
-                for group in object.vertex_groups[:]:
+                for group in object.vertex_groups:
 
                   # object type
                   if option.objectType in 'ALL':
@@ -724,7 +724,7 @@ def main(self, context):
 
             # mode
             else:
-              for group in object.vertex_groups[:]:
+              for group in object.vertex_groups:
 
                 # object type
                 if option.objectType in 'ALL':
@@ -747,14 +747,14 @@ def main(self, context):
 
       # shapekeys
       if option.shapekeys:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if hasattr(object.data, 'shape_keys'):
             if hasattr(object.data.shape_keys, 'key_blocks'):
 
               # mode
               if option.mode in 'SELECTED':
                 if object.select:
-                  for block in object.data.shape_keys.key_blocks[:]:
+                  for block in object.data.shape_keys.key_blocks:
 
                     # object type
                     if option.objectType in 'ALL':
@@ -770,7 +770,7 @@ def main(self, context):
 
               # mode
               else:
-                for block in object.data.shape_keys.key_blocks[:]:
+                for block in object.data.shape_keys.key_blocks:
 
                   # object type
                   if option.objectType in 'ALL':
@@ -792,20 +792,20 @@ def main(self, context):
 
       # uvs
       if option.uvs:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'MESH':
 
             # mode
             if option.mode in 'SELECTED':
               if object.select:
-                for uv in object.data.uv_textures[:]:
+                for uv in object.data.uv_textures:
 
                   # populate
                   populate(self, context, uv)
 
             # mode
             else:
-             for uv in object.data.uv_textures[:]:
+             for uv in object.data.uv_textures:
 
                 # populate
                 populate(self, context, uv)
@@ -818,20 +818,20 @@ def main(self, context):
 
       # vertex colors
       if option.vertexColors:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'MESH':
 
             # mode
             if option.mode in 'SELECTED':
               if object.select:
-                for color in object.data.vertex_colors[:]:
+                for color in object.data.vertex_colors:
 
                   # populate
                   populate(self, context, color)
 
             # mode
             else:
-              for color in object.data.vertex_colors[:]:
+              for color in object.data.vertex_colors:
 
                 # populate
                 populate(self, context, color)
@@ -844,12 +844,12 @@ def main(self, context):
 
       # materials
       if option.materials:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # mode
           if option.mode in 'SELECTED':
             if object.select:
-              for slot in object.material_slots[:]:
+              for slot in object.material_slots:
                 if slot.material != None:
 
                   # object type
@@ -866,7 +866,7 @@ def main(self, context):
 
           # mode
           else:
-            for slot in object.material_slots[:]:
+            for slot in object.material_slots:
               if slot.material != None:
 
                 # object type
@@ -889,15 +889,15 @@ def main(self, context):
 
       # textures
       if option.textures:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if context.scene.render.engine not in 'CYCLES':
 
             # mode
             if option.mode in 'SELECTED':
               if object.select:
-                for slot in object.material_slots[:]:
+                for slot in object.material_slots:
                   if slot.material != None:
-                    for texslot in slot.material.texture_slots[:]:
+                    for texslot in slot.material.texture_slots:
                       if texslot != None:
 
                         # object type
@@ -914,9 +914,9 @@ def main(self, context):
 
             # mode
             else:
-              for slot in object.material_slots[:]:
+              for slot in object.material_slots:
                 if slot.material != None:
-                  for texslot in slot.material.texture_slots[:]:
+                  for texslot in slot.material.texture_slots:
                     if texslot != None:
 
                       # object type
@@ -939,13 +939,13 @@ def main(self, context):
 
       # particle systems
       if option.particleSystems:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'MESH':
 
             # mode
             if option.mode in 'SELECTED':
               if object.select:
-                for system in object.particle_systems[:]:
+                for system in object.particle_systems:
 
                   # object type
                   if option.objectType in 'ALL':
@@ -961,7 +961,7 @@ def main(self, context):
 
             # mode
             else:
-              for system in object.particle_systems[:]:
+              for system in object.particle_systems:
 
                 # object type
                 if option.objectType in 'ALL':
@@ -983,13 +983,13 @@ def main(self, context):
 
       # particle settings
       if option.particleSettings:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'MESH':
 
             # mode
             if option.mode in 'SELECTED':
               if object.select:
-                for system in object.particle_systems[:]:
+                for system in object.particle_systems:
 
                   # object type
                   if option.objectType in 'ALL':
@@ -1005,7 +1005,7 @@ def main(self, context):
 
             # mode
             else:
-              for system in object.particle_systems[:]:
+              for system in object.particle_systems:
 
                 # object type
                 if option.objectType in 'ALL':
@@ -1027,7 +1027,7 @@ def main(self, context):
 
     # sensors
     if option.sensors:
-      for object in bpy.data.objects[:]:
+      for object in bpy.data.objects:
 
         # mode
         if option.mode in 'SELECTED':
@@ -1037,14 +1037,14 @@ def main(self, context):
             if option.objectType in 'ALL':
 
               # populate
-              for sensor in object.game.sensors[:]:
+              for sensor in object.game.sensors:
                 populate(self, context, sensor)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
-              for sensor in object.game.sensors[:]:
+              for sensor in object.game.sensors:
                 populate(self, context, sensor)
 
         # mode
@@ -1054,14 +1054,14 @@ def main(self, context):
           if option.objectType in 'ALL':
 
             # populate
-            for sensor in object.game.sensors[:]:
+            for sensor in object.game.sensors:
               populate(self, context, sensor)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            for sensor in object.game.sensors[:]:
+            for sensor in object.game.sensors:
               populate(self, context, sensor)
 
         # process
@@ -1072,7 +1072,7 @@ def main(self, context):
 
     # controllers
     if option.controllers:
-      for object in bpy.data.objects[:]:
+      for object in bpy.data.objects:
 
         # mode
         if option.mode in 'SELECTED':
@@ -1082,14 +1082,14 @@ def main(self, context):
             if option.objectType in 'ALL':
 
               # populate
-              for controller in object.game.controllers[:]:
+              for controller in object.game.controllers:
                 populate(self, context, controller)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
-              for controller in object.game.controllers[:]:
+              for controller in object.game.controllers:
                 populate(self, context, controller)
 
         # mode
@@ -1099,14 +1099,14 @@ def main(self, context):
           if option.objectType in 'ALL':
 
             # populate
-            for controller in object.game.controllers[:]:
+            for controller in object.game.controllers:
               populate(self, context, controller)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            for controller in object.game.controllers[:]:
+            for controller in object.game.controllers:
               populate(self, context, controller)
 
         # process
@@ -1117,7 +1117,7 @@ def main(self, context):
 
     # actuators
     if option.actuators:
-      for object in bpy.data.objects[:]:
+      for object in bpy.data.objects:
 
         # mode
         if option.mode in 'SELECTED':
@@ -1127,14 +1127,14 @@ def main(self, context):
             if option.objectType in 'ALL':
 
               # populate
-              for actuator in object.game.actuators[:]:
+              for actuator in object.game.actuators:
                 populate(self, context, actuator)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
-              for actuator in object.game.actuators[:]:
+              for actuator in object.game.actuators:
                 populate(self, context, actuator)
 
         # mode
@@ -1144,14 +1144,14 @@ def main(self, context):
           if option.objectType in 'ALL':
 
             # populate
-            for actuator in object.game.actuators[:]:
+            for actuator in object.game.actuators:
               populate(self, context, actuator)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            for actuator in object.game.actuators[:]:
+            for actuator in object.game.actuators:
               populate(self, context, actuator)
 
         # process
@@ -1165,7 +1165,7 @@ def main(self, context):
 
       # actions
       if option.actions:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if hasattr(object.animation_data, 'action'):
             if hasattr(object.animation_data.action, 'name'):
 
@@ -1193,7 +1193,7 @@ def main(self, context):
 
       # action groups
       if option.actionGroups:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if hasattr(object.animation_data, 'action'):
             if hasattr(object.animation_data.action, 'name'):
 
@@ -1232,7 +1232,7 @@ def main(self, context):
 
       # grease pencil
       if option.greasePencil:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if hasattr(object.grease_pencil, 'name'):
 
             # object type
@@ -1255,14 +1255,14 @@ def main(self, context):
 
       # pencil layers
       if option.pencilLayers:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if hasattr(object.grease_pencil, 'name'):
 
             # object type
             if option.objectType in 'ALL':
 
               # layers
-              for layer in object.grease_pencil.layers[:]:
+              for layer in object.grease_pencil.layers:
 
                 # populate
                 populate(self, context, layer)
@@ -1271,7 +1271,7 @@ def main(self, context):
             elif option.objectType in object.type:
 
               # layers
-              for layer in object.grease_pencil.layers[:]:
+              for layer in object.grease_pencil.layers:
 
                 # populate
                 populate(self, context, layer)
@@ -1284,7 +1284,7 @@ def main(self, context):
 
       # objects
       if option.objects:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
 
           # object type
           if option.objectType in 'ALL':
@@ -1306,20 +1306,20 @@ def main(self, context):
 
       # groups
       if option.groups:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
 
           # object type
           if option.objectType in 'ALL':
-            for group in bpy.data.groups[:]:
-              if object in group.objects[:]:
+            for group in bpy.data.groups:
+              if object in group.objects:
 
                 # populate
                 populate(self, context, group)
 
           # object type
           elif option.objectType in object.type:
-            for group in bpy.data.groups[:]:
-              if object in group.objects[:]:
+            for group in bpy.data.groups:
+              if object in group.objects:
 
                 # populate
                 populate(self, context, group)
@@ -1336,8 +1336,8 @@ def main(self, context):
 
       # constraints
       if option.constraints:
-        for object in context.scene.objects[:]:
-          for constraint in object.constraints[:]:
+        for object in context.scene.objects:
+          for constraint in object.constraints:
 
             # constraint type
             if option.constraintType in 'ALL':
@@ -1359,8 +1359,8 @@ def main(self, context):
 
       # modifiers
       if option.modifiers:
-        for object in context.scene.objects[:]:
-          for modifier in object.modifiers[:]:
+        for object in context.scene.objects:
+          for modifier in object.modifiers:
 
             # modifier type
             if option.modifierType in 'ALL':
@@ -1382,7 +1382,7 @@ def main(self, context):
 
       # object data
       if option.objectData:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if object.type not in 'EMPTY':
 
             # object type
@@ -1419,9 +1419,9 @@ def main(self, context):
 
       # bone groups
       if option.boneGroups:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if object.type in 'ARMATURE':
-            for group in object.pose.bone_groups[:]:
+            for group in object.pose.bone_groups:
 
               # populate
               populate(self, context, group)
@@ -1434,19 +1434,19 @@ def main(self, context):
 
       # bones
       if option.bones:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if object.type in 'ARMATURE':
 
             # edit mode
             if object.mode in 'EDIT':
-              for bone in bpy.data.armatures[object.data.name].edit_bones[:]:
+              for bone in bpy.data.armatures[object.data.name].edit_bones:
 
                   # populate
                   populate(self, context, bone)
 
             # pose or object mode
             else:
-              for bone in bpy.data.armatures[object.data.name].bones[:]:
+              for bone in bpy.data.armatures[object.data.name].bones:
 
                   # populate
                   populate(self, context, bone)
@@ -1459,10 +1459,10 @@ def main(self, context):
 
       # bone constraints
       if option.boneConstraints:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if object.type in 'ARMATURE':
-            for bone in object.pose.bones[:]:
-              for constraint in bone.constraints[:]:
+            for bone in object.pose.bones:
+              for constraint in bone.constraints:
 
                 # constraint type
                 if option.constraintType in 'ALL':
@@ -1484,9 +1484,9 @@ def main(self, context):
 
       # vertex groups
       if option.vertexGroups:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if hasattr(object, 'vertex_groups'):
-            for group in object.vertex_groups[:]:
+            for group in object.vertex_groups:
 
               # object type
               if option.objectType in 'ALL':
@@ -1508,10 +1508,10 @@ def main(self, context):
 
       # shapekeys
       if option.shapekeys:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if hasattr(object.data, 'shape_keys'):
             if hasattr(object.data.shape_keys, 'key_blocks'):
-              for block in object.data.shape_keys.key_blocks[:]:
+              for block in object.data.shape_keys.key_blocks:
 
                 # object type
                 if option.objectType in 'ALL':
@@ -1533,9 +1533,9 @@ def main(self, context):
 
       # uvs
       if option.uvs:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if object.type in 'MESH':
-            for uv in object.data.uv_textures[:]:
+            for uv in object.data.uv_textures:
 
               # populate
               populate(self, context, uv)
@@ -1548,9 +1548,9 @@ def main(self, context):
 
       # vertex colors
       if option.vertexColors:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if object.type in 'MESH':
-            for color in object.data.vertex_colors[:]:
+            for color in object.data.vertex_colors:
 
               # populate
               populate(self, context, color)
@@ -1563,8 +1563,8 @@ def main(self, context):
 
       # materials
       if option.materials:
-        for object in context.scene.objects[:]:
-          for slot in object.material_slots[:]:
+        for object in context.scene.objects:
+          for slot in object.material_slots:
             if slot.material != None:
 
               # object type
@@ -1587,11 +1587,11 @@ def main(self, context):
 
       # textures
       if option.textures:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if context.scene.render.engine not in 'CYCLES':
-            for slot in object.material_slots[:]:
+            for slot in object.material_slots:
               if slot.material != None:
-                for texslot in slot.material.texture_slots[:]:
+                for texslot in slot.material.texture_slots:
                   if texslot != None:
 
                     # object type
@@ -1614,9 +1614,9 @@ def main(self, context):
 
       # particle systems
       if option.particleSystems:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if object.type in 'MESH':
-            for system in object.particle_systems[:]:
+            for system in object.particle_systems:
 
               # object type
               if option.objectType in 'ALL':
@@ -1638,9 +1638,9 @@ def main(self, context):
 
       # particle settings
       if option.particleSettings:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           if object.type in 'MESH':
-            for system in object.particle_systems[:]:
+            for system in object.particle_systems:
 
               # object type
               if option.objectType in 'ALL':
@@ -1662,20 +1662,20 @@ def main(self, context):
 
       # sensors
       if option.sensors:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
 
           # object type
           if option.objectType in 'ALL':
 
             # populate
-            for sensor in object.game.sensors[:]:
+            for sensor in object.game.sensors:
               populate(self, context, sensor)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            for sensor in object.game.sensors[:]:
+            for sensor in object.game.sensors:
               populate(self, context, sensor)
 
           # process
@@ -1686,20 +1686,20 @@ def main(self, context):
 
       # controllers
       if option.controllers:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
 
           # object type
           if option.objectType in 'ALL':
 
             # populate
-            for controller in object.game.controllers[:]:
+            for controller in object.game.controllers:
               populate(self, context, controller)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            for controller in object.game.controllers[:]:
+            for controller in object.game.controllers:
               populate(self, context, controller)
 
           # process
@@ -1710,20 +1710,20 @@ def main(self, context):
 
       # actuators
       if option.actuators:
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
 
           # object type
           if option.objectType in 'ALL':
 
             # populate
-            for actuator in object.game.actuators[:]:
+            for actuator in object.game.actuators:
               populate(self, context, actuator)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            for actuator in object.game.actuators[:]:
+            for actuator in object.game.actuators:
               populate(self, context, actuator)
 
           # process
@@ -1737,7 +1737,7 @@ def main(self, context):
 
       # actions
       if option.actions:
-        for action in bpy.data.actions[:]:
+        for action in bpy.data.actions:
 
           # populate
           populate(self, context, action)
@@ -1750,7 +1750,7 @@ def main(self, context):
 
       # action groups
       if option.actionGroups:
-        for action in bpy.data.actions[:]:
+        for action in bpy.data.actions:
 
           # populate
           populate(self, context, action)
@@ -1775,7 +1775,7 @@ def main(self, context):
           if option.bones:
 
             # fix paths
-            for curve in action[1][1].fcurves[:]:
+            for curve in action[1][1].fcurves:
               if 'pose' in curve.data_path:
                 if not re.search(re.escape(']['), curve.data_path) and not re.search('constraints', curve.data_path):
                   try: curve.data_path = 'pose.bones["' + curve.group.name + '"].' + (curve.data_path.rsplit('.', 1)[1]).rsplit('[', 1)[0]
@@ -1786,7 +1786,7 @@ def main(self, context):
 
       # grease pencil
       if option.greasePencil:
-        for pencil in bpy.data.grease_pencil[:]:
+        for pencil in bpy.data.grease_pencil:
 
           # populate
           populate(self, context, pencil)
@@ -1799,10 +1799,10 @@ def main(self, context):
 
       # pencil layers
       if option.pencilLayers:
-        for pencil in bpy.data.grease_pencil[:]:
+        for pencil in bpy.data.grease_pencil:
 
           # layers
-          for layer in pencil.layers[:]:
+          for layer in pencil.layers:
 
             # populate
             populate(self, context, layer)
@@ -1815,7 +1815,7 @@ def main(self, context):
 
       # objects
       if option.objects:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # object type
           if option.objectType in 'ALL':
@@ -1837,7 +1837,7 @@ def main(self, context):
 
       # groups
       if option.groups:
-        for group in bpy.data.groups[:]:
+        for group in bpy.data.groups:
 
           # populate
           populate(self, context, group)
@@ -1850,8 +1850,8 @@ def main(self, context):
 
       # constraints
       if option.constraints:
-        for object in bpy.data.objects[:]:
-          for constraint in object.constraints[:]:
+        for object in bpy.data.objects:
+          for constraint in object.constraints:
 
             # object type
             if option.objectType in 'ALL':
@@ -1891,8 +1891,8 @@ def main(self, context):
 
       # modifiers
       if option.modifiers:
-        for object in bpy.data.objects[:]:
-          for modifier in object.modifiers[:]:
+        for object in bpy.data.objects:
+          for modifier in object.modifiers:
 
             # object type
             if option.objectType in 'ALL':
@@ -1934,7 +1934,7 @@ def main(self, context):
       if option.objectData:
 
         # cameras
-        for camera in bpy.data.cameras[:]:
+        for camera in bpy.data.cameras:
 
           # populate
           populate(self, context, camera)
@@ -1946,7 +1946,7 @@ def main(self, context):
         storage.batch.cameras.clear()
 
         # meshes
-        for mesh in bpy.data.meshes[:]:
+        for mesh in bpy.data.meshes:
 
           # populate
           populate(self, context, mesh)
@@ -1958,7 +1958,7 @@ def main(self, context):
         storage.batch.meshes.clear()
 
         # curves
-        for curve in bpy.data.curves[:]:
+        for curve in bpy.data.curves:
 
           # populate
           populate(self, context, curve)
@@ -1970,7 +1970,7 @@ def main(self, context):
         storage.batch.curves.clear()
 
         # lamps
-        for lamp in bpy.data.lamps[:]:
+        for lamp in bpy.data.lamps:
 
           # populate
           populate(self, context, lamp)
@@ -1982,7 +1982,7 @@ def main(self, context):
         storage.batch.lamps.clear()
 
         # lattices
-        for lattice in bpy.data.lattices[:]:
+        for lattice in bpy.data.lattices:
 
           # populate
           populate(self, context, lattice)
@@ -1994,7 +1994,7 @@ def main(self, context):
         storage.batch.lattices.clear()
 
         # metaballs
-        for metaball in bpy.data.metaballs[:]:
+        for metaball in bpy.data.metaballs:
 
           # populate
           populate(self, context, metaball)
@@ -2006,7 +2006,7 @@ def main(self, context):
         storage.batch.metaballs.clear()
 
         # speakers
-        for speaker in bpy.data.speakers[:]:
+        for speaker in bpy.data.speakers:
 
           # populate
           populate(self, context, speaker)
@@ -2018,7 +2018,7 @@ def main(self, context):
         storage.batch.speakers.clear()
 
         # armatures
-        for armature in bpy.data.armatures[:]:
+        for armature in bpy.data.armatures:
 
           # populate
           populate(self, context, armature)
@@ -2031,9 +2031,9 @@ def main(self, context):
 
       # bone groups
       if option.boneGroups:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'ARMATURE':
-            for group in object.pose.bone_groups[:]:
+            for group in object.pose.bone_groups:
 
               # populate
               populate(self, context, group)
@@ -2046,8 +2046,8 @@ def main(self, context):
 
       # bones
       if option.bones:
-        for armature in bpy.data.armatures[:]:
-          for bone in armature.bones[:]:
+        for armature in bpy.data.armatures:
+          for bone in armature.bones:
 
             # populate
             populate(self, context, bone)
@@ -2060,10 +2060,10 @@ def main(self, context):
 
       # bone constraints
       if option.boneConstraints:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'ARMATURE':
-            for bone in object.pose.bones[:]:
-              for constraint in bone.constraints[:]:
+            for bone in object.pose.bones:
+              for constraint in bone.constraints:
 
                 # populate
                 populate(self, context, constraint)
@@ -2076,9 +2076,9 @@ def main(self, context):
 
       # vertex groups
       if option.vertexGroups:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in {'MESH', 'LATTICE'}:
-            for group in object.vertex_groups[:]:
+            for group in object.vertex_groups:
 
               # populate
               populate(self, context, group)
@@ -2091,11 +2091,11 @@ def main(self, context):
 
       # shape keys
       if option.shapekeys:
-        for shapekey in bpy.data.shape_keys[:]:
+        for shapekey in bpy.data.shape_keys:
 
             # populate
             populate(self, context, shapekey)
-            for block in shapekey.key_blocks[:]:
+            for block in shapekey.key_blocks:
 
               # populate
               populate(self, context, block)
@@ -2108,9 +2108,9 @@ def main(self, context):
 
       # uvs
       if option.uvs:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'MESH':
-            for uv in object.data.uv_textures[:]:
+            for uv in object.data.uv_textures:
 
               # populate
               populate(self, context, uv)
@@ -2123,9 +2123,9 @@ def main(self, context):
 
       # vertex colors
       if option.vertexColors:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'MESH':
-            for color in object.data.vertex_colors[:]:
+            for color in object.data.vertex_colors:
 
               # populate
               populate(self, context, color)
@@ -2138,7 +2138,7 @@ def main(self, context):
 
       # materials
       if option.materials:
-        for material in bpy.data.materials[:]:
+        for material in bpy.data.materials:
 
           # populate
           populate(self, context, material)
@@ -2151,7 +2151,7 @@ def main(self, context):
 
       # textures
       if option.textures:
-        for texture in bpy.data.textures[:]:
+        for texture in bpy.data.textures:
 
           # populate
           populate(self, context, texture)
@@ -2164,9 +2164,9 @@ def main(self, context):
 
       # particles systems
       if option.particleSystems:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
           if object.type in 'MESH':
-            for system in object.particle_systems[:]:
+            for system in object.particle_systems:
 
               # populate
               populate(self, context, system)
@@ -2179,7 +2179,7 @@ def main(self, context):
 
       # particles settings
       if option.particleSettings:
-        for settings in bpy.data.particles[:]:
+        for settings in bpy.data.particles:
 
           # populate
           populate(self, context, settings)
@@ -2192,20 +2192,20 @@ def main(self, context):
 
       # sensors
       if option.sensors:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # object type
           if option.objectType in 'ALL':
 
             # populate
-            for sensor in object.game.sensors[:]:
+            for sensor in object.game.sensors:
               populate(self, context, sensor)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            for sensor in object.game.sensors[:]:
+            for sensor in object.game.sensors:
               populate(self, context, sensor)
 
           # process
@@ -2216,20 +2216,20 @@ def main(self, context):
 
       # controllers
       if option.controllers:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # object type
           if option.objectType in 'ALL':
 
             # populate
-            for controller in object.game.controllers[:]:
+            for controller in object.game.controllers:
               populate(self, context, controller)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            for controller in object.game.controllers[:]:
+            for controller in object.game.controllers:
               populate(self, context, controller)
 
           # process
@@ -2240,20 +2240,20 @@ def main(self, context):
 
       # actuators
       if option.actuators:
-        for object in bpy.data.objects[:]:
+        for object in bpy.data.objects:
 
           # object type
           if option.objectType in 'ALL':
 
             # populate
-            for actuator in object.game.actuators[:]:
+            for actuator in object.game.actuators:
               populate(self, context, actuator)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            for actuator in object.game.actuators[:]:
+            for actuator in object.game.actuators:
               populate(self, context, actuator)
 
           # process
@@ -2264,9 +2264,9 @@ def main(self, context):
 
     # line sets
     if option.lineSets:
-      for scene in bpy.data.scenes[:]:
-        for layer in scene.render.layers[:]:
-          for lineset in layer.freestyle_settings.linesets[:]:
+      for scene in bpy.data.scenes:
+        for layer in scene.render.layers:
+          for lineset in layer.freestyle_settings.linesets:
             if hasattr(lineset, 'name'):
 
               # new name
@@ -2283,9 +2283,9 @@ def main(self, context):
 
     # linestyles
     if option.linestyles:
-      for scene in bpy.data.scenes[:]:
-        for layer in scene.render.layers[:]:
-          for lineset in layer.freestyle_settings.linesets[:]:
+      for scene in bpy.data.scenes:
+        for layer in scene.render.layers:
+          for lineset in layer.freestyle_settings.linesets:
             if hasattr(lineset, 'name'):
 
               # populate
@@ -2299,11 +2299,11 @@ def main(self, context):
 
     # linestyle modifiers
     if option.linestyleModifiers:
-      for style in bpy.data.linestyles[:]:
+      for style in bpy.data.linestyles:
 
 
         # color
-        for modifier in style.color_modifiers[:]:
+        for modifier in style.color_modifiers:
 
           # linestyle modifier type
           if option.linestyleModifierType in 'ALL':
@@ -2325,7 +2325,7 @@ def main(self, context):
 
 
         # alpha
-        for modifier in style.alpha_modifiers[:]:
+        for modifier in style.alpha_modifiers:
 
           # linestyle modifier type
           if option.linestyleModifierType in 'ALL':
@@ -2347,7 +2347,7 @@ def main(self, context):
 
 
         # thickness
-        for modifier in style.thickness_modifiers[:]:
+        for modifier in style.thickness_modifiers:
 
           # linestyle modifier type
           if option.linestyleModifierType in 'ALL':
@@ -2369,7 +2369,7 @@ def main(self, context):
 
 
         # geometry
-        for modifier in style.geometry_modifiers[:]:
+        for modifier in style.geometry_modifiers:
 
           # linestyle modifier type
           if option.linestyleModifierType in 'ALL':
@@ -2391,7 +2391,7 @@ def main(self, context):
 
     # scenes
     if option.scenes:
-      for scene in bpy.data.scenes[:]:
+      for scene in bpy.data.scenes:
 
         # populate
         populate(self, context, scene)
@@ -2404,8 +2404,8 @@ def main(self, context):
 
     # render layers
     if option.renderLayers:
-      for scene in bpy.data.scenes[:]:
-        for layer in scene.render.layers[:]:
+      for scene in bpy.data.scenes:
+        for layer in scene.render.layers:
 
           # populate
           populate(self, context, layer)
@@ -2418,7 +2418,7 @@ def main(self, context):
 
     # worlds
     if option.worlds:
-      for world in bpy.data.worlds[:]:
+      for world in bpy.data.worlds:
 
         # populate
         populate(self, context, world)
@@ -2431,7 +2431,7 @@ def main(self, context):
 
     # libraries
     if option.libraries:
-      for library in bpy.data.libraries[:]:
+      for library in bpy.data.libraries:
 
         # populate
         populate(self, context, library)
@@ -2444,7 +2444,7 @@ def main(self, context):
 
     # images
     if option.images:
-      for image in bpy.data.images[:]:
+      for image in bpy.data.images:
 
         # populate
         populate(self, context, image)
@@ -2457,7 +2457,7 @@ def main(self, context):
 
     # masks
     if option.masks:
-      for mask in bpy.data.masks[:]:
+      for mask in bpy.data.masks:
 
         # populate
         populate(self, context, mask)
@@ -2470,9 +2470,9 @@ def main(self, context):
 
     # sequences
     if option.sequences:
-      for scene in bpy.data.scenes[:]:
+      for scene in bpy.data.scenes:
         if hasattr(scene.sequence_editor, 'sequence_all'):
-          for sequence in scene.sequence_editor.sequences_all[:]:
+          for sequence in scene.sequence_editor.sequences_all:
 
             # populate
             populate(self, context, sequence)
@@ -2485,7 +2485,7 @@ def main(self, context):
 
     # movie clips
     if option.movieClips:
-      for clip in bpy.data.movieclips[:]:
+      for clip in bpy.data.movieclips:
 
         # populate
         populate(self, context, clip)
@@ -2498,7 +2498,7 @@ def main(self, context):
 
     # sounds
     if option.sounds:
-      for sound in bpy.data.sounds[:]:
+      for sound in bpy.data.sounds:
 
         # populate
         populate(self, context, sound)
@@ -2511,7 +2511,7 @@ def main(self, context):
 
     # screens
     if option.screens:
-      for screen in bpy.data.screens[:]:
+      for screen in bpy.data.screens:
 
         # populate
         populate(self, context, screen)
@@ -2524,8 +2524,8 @@ def main(self, context):
 
     # keying sets
     if option.keyingSets:
-      for scene in bpy.data.scenes[:]:
-        for keyingSet in scene.keying_sets[:]:
+      for scene in bpy.data.scenes:
+        for keyingSet in scene.keying_sets:
 
           # populate
           populate(self, context, keyingSet)
@@ -2538,7 +2538,7 @@ def main(self, context):
 
     # palettes
     if option.palettes:
-      for palette in bpy.data.palettes[:]:
+      for palette in bpy.data.palettes:
 
         # populate
         populate(self, context, palette)
@@ -2551,7 +2551,7 @@ def main(self, context):
 
     # brushes
     if option.brushes:
-      for brush in bpy.data.brushes[:]:
+      for brush in bpy.data.brushes:
 
         # populate
         populate(self, context, brush)
@@ -2566,9 +2566,9 @@ def main(self, context):
     if option.nodes:
 
       # shader
-      for material in bpy.data.materials[:]:
+      for material in bpy.data.materials:
         if hasattr(material.node_tree, 'nodes'):
-          for node in material.node_tree.nodes[:]:
+          for node in material.node_tree.nodes:
 
             # populate
             populate(self, context, node)
@@ -2580,9 +2580,9 @@ def main(self, context):
           storage.batch.nodes.clear()
 
       # compositing
-      for scene in bpy.data.scenes[:]:
+      for scene in bpy.data.scenes:
         if hasattr(scene.node_tree, 'nodes'):
-          for node in scene.node_tree.nodes[:]:
+          for node in scene.node_tree.nodes:
 
             # populate
             populate(self, context, node)
@@ -2594,9 +2594,9 @@ def main(self, context):
           storage.batch.nodes.clear()
 
       # texture
-      for texture in bpy.data.textures[:]:
+      for texture in bpy.data.textures:
         if hasattr(texture.node_tree, 'nodes'):
-          for node in texture.node_tree.nodes[:]:
+          for node in texture.node_tree.nodes:
 
             # populate
             populate(self, context, node)
@@ -2608,8 +2608,8 @@ def main(self, context):
           storage.batch.nodes.clear()
 
       # groups
-      for group in bpy.data.node_groups[:]:
-        for node in group.nodes[:]:
+      for group in bpy.data.node_groups:
+        for node in group.nodes:
 
           # populate
           populate(self, context, node)
@@ -2627,9 +2627,9 @@ def main(self, context):
       self.tag = True
 
       # shader
-      for material in bpy.data.materials[:]:
+      for material in bpy.data.materials:
         if hasattr(material.node_tree, 'nodes'):
-          for node in material.node_tree.nodes[:]:
+          for node in material.node_tree.nodes:
 
             # populate
             populate(self, context, node)
@@ -2641,9 +2641,9 @@ def main(self, context):
           storage.batch.nodeLabels.clear()
 
       # compositing
-      for scene in bpy.data.scenes[:]:
+      for scene in bpy.data.scenes:
         if hasattr(scene.node_tree, 'nodes'):
-          for node in scene.node_tree.nodes[:]:
+          for node in scene.node_tree.nodes:
 
             # populate
             populate(self, context, node)
@@ -2655,9 +2655,9 @@ def main(self, context):
           storage.batch.nodeLabels.clear()
 
       # texture
-      for texture in bpy.data.textures[:]:
+      for texture in bpy.data.textures:
         if hasattr(texture.node_tree, 'nodes'):
-          for node in texture.node_tree.nodes[:]:
+          for node in texture.node_tree.nodes:
 
             # populate
             populate(self, context, node)
@@ -2669,8 +2669,8 @@ def main(self, context):
           storage.batch.nodeLabels.clear()
 
       # groups
-      for group in bpy.data.node_groups[:]:
-        for node in group.nodes[:]:
+      for group in bpy.data.node_groups:
+        for node in group.nodes:
 
           # populate
           populate(self, context, node)
@@ -2686,7 +2686,7 @@ def main(self, context):
 
     # node groups
     if option.nodeGroups:
-      for group in bpy.data.node_groups[:]:
+      for group in bpy.data.node_groups:
 
         # populate
         populate(self, context, group)
@@ -2699,7 +2699,7 @@ def main(self, context):
 
     # texts
     if option.texts:
-      for text in bpy.data.texts[:]:
+      for text in bpy.data.texts:
 
         # populate
         populate(self, context, text)
@@ -2714,9 +2714,9 @@ def main(self, context):
     if option.frameNodes:
 
       # shader
-      for material in bpy.data.materials[:]:
+      for material in bpy.data.materials:
         if hasattr(material.node_tree, 'nodes'):
-          for node in material.node_tree.nodes[:]:
+          for node in material.node_tree.nodes:
 
             # populate
             populate(self, context, node)
@@ -2728,9 +2728,9 @@ def main(self, context):
           storage.batch.nodes.clear()
 
       # compositing
-      for scene in bpy.data.scenes[:]:
+      for scene in bpy.data.scenes:
         if hasattr(scene.node_tree, 'nodes'):
-          for node in scene.node_tree.nodes[:]:
+          for node in scene.node_tree.nodes:
 
             # populate
             populate(self, context, node)
@@ -2742,9 +2742,9 @@ def main(self, context):
           storage.batch.nodes.clear()
 
       # texture
-      for texture in bpy.data.textures[:]:
+      for texture in bpy.data.textures:
         if hasattr(texture.node_tree, 'nodes'):
-          for node in texture.node_tree.nodes[:]:
+          for node in texture.node_tree.nodes:
 
             # populate
             populate(self, context, node)
@@ -2756,8 +2756,8 @@ def main(self, context):
           storage.batch.nodes.clear()
 
       # groups
-      for group in bpy.data.node_groups[:]:
-        for node in group.nodes[:]:
+      for group in bpy.data.node_groups:
+        for node in group.nodes:
 
           # populate
           populate(self, context, node)
@@ -2814,7 +2814,7 @@ def quick(self, context, object, panel, option):
           populate(self, context, object.grease_pencil, object)
 
         # layers
-        for layer in object.grease_pencil.layers[:]:
+        for layer in object.grease_pencil.layers:
 
           # search
           if search == '' or re.search(search, layer.info, re.I):
@@ -2833,8 +2833,8 @@ def quick(self, context, object, panel, option):
 
     # ignore group
     if not option.ignoreGroup or self.simple:
-      for group in bpy.data.groups[:]:
-        for groupObject in group.objects[:]:
+      for group in bpy.data.groups:
+        for groupObject in group.objects:
           if groupObject == object:
 
             # search
@@ -2848,7 +2848,7 @@ def quick(self, context, object, panel, option):
 
     # ignore constraint
     if not option.ignoreConstraint or self.simple:
-      for constraint in object.constraints[:]:
+      for constraint in object.constraints:
 
         # search
         if search == '' or re.search(search, constraint.name, re.I):
@@ -2867,7 +2867,7 @@ def quick(self, context, object, panel, option):
 
     # ignore modifier
     if not option.ignoreModifier or self.simple:
-      for modifier in object.modifiers[:]:
+      for modifier in object.modifiers:
 
         # search
         if search == '' or re.search(search, modifier.name, re.I):
@@ -2887,7 +2887,7 @@ def quick(self, context, object, panel, option):
     # ignore bone group
     if not option.ignoreBoneGroup or self.simple:
       if object.type in 'ARMATURE':
-        for group in object.pose.bone_groups[:]:
+        for group in object.pose.bone_groups:
 
           # search
           if search == '' or re.search(search, group.name, re.I):
@@ -2919,13 +2919,13 @@ def quick(self, context, object, panel, option):
               if object.mode == 'POSE':
 
                 # bones
-                bones = context.selected_pose_bones[:]
+                bones = context.selected_pose_bones
 
               # edit
               elif object.mode == 'EDIT':
 
                 # bones
-                bones = context.selected_bones[:]
+                bones = context.selected_bones
 
               # bone
               for bone in bones:
@@ -3011,8 +3011,8 @@ def quick(self, context, object, panel, option):
 
             # bone mode
             if panel.boneMode == 'SELECTED':
-              for bone in context.selected_pose_bones[:]:
-                for constraint in bone.constraints[:]:
+              for bone in context.selected_pose_bones:
+                for constraint in bone.constraints:
 
                   # search
                   if search == '' or re.search(search, constraint.name, re.I):
@@ -3028,9 +3028,9 @@ def quick(self, context, object, panel, option):
 
             # bone mode
             else:
-              for bone in object.pose.bones[:]:
+              for bone in object.pose.bones:
                 if True in [x&y for (x, y) in zip(bone.bone.layers, object.data.layers)]:
-                  for constraint in bone.constraints[:]:
+                  for constraint in bone.constraints:
 
                     # search
                     if search == '' or re.search(search, constraint.name, re.I):
@@ -3046,7 +3046,7 @@ def quick(self, context, object, panel, option):
 
           # display bones
           else:
-            for constraint in context.active_pose_bone.constraints[:]:
+            for constraint in context.active_pose_bone.constraints:
 
               # search
               if search == '' or re.search(search, constraint.name, re.I):
@@ -3078,7 +3078,7 @@ def quick(self, context, object, panel, option):
     # ignore vertex group
     if not option.ignoreVertexGroup or self.simple:
       if hasattr(object, 'vertex_groups'):
-        for group in object.vertex_groups[:]:
+        for group in object.vertex_groups:
 
           # search
           if search == '' or re.search(search, group.name, re.I):
@@ -3099,7 +3099,7 @@ def quick(self, context, object, panel, option):
     if not option.ignoreShapekey or self.simple:
       if hasattr(object.data, 'shape_keys'):
         if hasattr(object.data.shape_keys, 'key_blocks'):
-          for key in object.data.shape_keys.key_blocks[:]:
+          for key in object.data.shape_keys.key_blocks:
 
             # search
             if search == '' or re.search(search, key.name, re.I):
@@ -3119,7 +3119,7 @@ def quick(self, context, object, panel, option):
     # ignore uv
     if not option.ignoreUV or self.simple:
       if object.type in 'MESH':
-        for uv in object.data.uv_textures[:]:
+        for uv in object.data.uv_textures:
 
           # search
           if search == '' or re.search(search, uv.name, re.I):
@@ -3139,7 +3139,7 @@ def quick(self, context, object, panel, option):
     # ignore vertex color
     if not option.ignoreVertexColor or self.simple:
       if object.type in 'MESH':
-        for vertexColor in object.data.vertex_colors[:]:
+        for vertexColor in object.data.vertex_colors:
 
           # search
           if search == '' or re.search(search, vertexColor.name, re.I):
@@ -3177,7 +3177,7 @@ def quick(self, context, object, panel, option):
       for slot in object.material_slots:
         if slot.material != None:
           if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-            for tslot in slot.material.texture_slots[:]:
+            for tslot in slot.material.texture_slots:
               if hasattr(tslot, 'texture'):
                 if tslot.texture != None:
 
@@ -3189,9 +3189,9 @@ def quick(self, context, object, panel, option):
 
       # particle system textures
       if panel.particleSystems:
-        for modifier in object.modifiers[:]:
+        for modifier in object.modifiers:
           if modifier.type == 'PARTICLE_SYSTEM':
-            for slot in modifier.particle_system.settings.texture_slots[:]:
+            for slot in modifier.particle_system.settings.texture_slots:
               if hasattr(slot, 'texture'):
                 if slot.texture != None:
 
@@ -3203,7 +3203,7 @@ def quick(self, context, object, panel, option):
 
       # modifier textures
       if panel.modifiers:
-        for modifier in object.modifiers[:]:
+        for modifier in object.modifiers:
 
           # texture
           if modifier.type in {'DISPLACE', 'WARP'}:
@@ -3230,7 +3230,7 @@ def quick(self, context, object, panel, option):
 
     # ignore particle system
     if not option.ignoreParticleSystem or self.simple:
-      for modifier in object.modifiers[:]:
+      for modifier in object.modifiers:
         if modifier.type in 'PARTICLE_SYSTEM':
 
           # search
@@ -3250,7 +3250,7 @@ def quick(self, context, object, panel, option):
 
     # ignore particle setting
     if not option.ignoreParticleSetting or self.simple:
-      for modifier in object.modifiers[:]:
+      for modifier in object.modifiers:
         if modifier.type in 'PARTICLE_SYSTEM':
 
           # search

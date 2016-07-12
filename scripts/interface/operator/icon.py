@@ -193,7 +193,7 @@ class operator(Operator):
       else:
 
         # deselect all
-        for object in context.scene.objects[:]:
+        for object in context.scene.objects:
           object.select = False
 
         # active object
@@ -241,7 +241,7 @@ class operator(Operator):
 
       else:
 
-        for bone in context.selected_pose_bones[:]:
+        for bone in context.selected_pose_bones:
           bone.bone.select = False
 
         # target
@@ -308,7 +308,7 @@ class operator(Operator):
 
         # extend
         else:
-          for bone in context.selected_editable_bones[:]:
+          for bone in context.selected_editable_bones:
 
             # deselect
             bone.select = False
@@ -361,7 +361,7 @@ class operator(Operator):
         # extend
         else:
 
-          for bone in context.selected_pose_bones[:]:
+          for bone in context.selected_pose_bones:
             bone.bone.select = False
 
           # target
@@ -396,7 +396,7 @@ class operator(Operator):
     #     else:
     #
     #       # object
-    #       for object in context.scene.objects[:]:
+    #       for object in context.scene.objects:
     #
     #         # deselect
     #         object.select = False

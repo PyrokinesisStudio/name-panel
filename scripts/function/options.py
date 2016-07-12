@@ -813,7 +813,7 @@ def transfer(context, panel, auto, names, name, copy):
 
   # panel settings
   if panel:
-    for scene in bpy.data.scenes[:]:
+    for scene in bpy.data.scenes:
       if scene != context.scene:
 
         # name panel option
@@ -896,7 +896,7 @@ def transfer(context, panel, auto, names, name, copy):
 
   # auto
   if auto:
-    for scene in bpy.data.scenes[:]:
+    for scene in bpy.data.scenes:
       if scene != context.scene:
 
         # auto name option
@@ -955,7 +955,7 @@ def transfer(context, panel, auto, names, name, copy):
 
   # names
   if names:
-    for scene in bpy.data.scenes[:]:
+    for scene in bpy.data.scenes:
       if scene != context.scene:
 
         # object name
@@ -1538,7 +1538,7 @@ def transfer(context, panel, auto, names, name, copy):
 
   # copy
   if copy:
-    for scene in bpy.data.scenes[:]:
+    for scene in bpy.data.scenes:
       if scene != context.scene:
 
         # copy option

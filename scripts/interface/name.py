@@ -452,8 +452,8 @@ def sort(context, member, object):
 
   # group
   if panel.groups:
-    for group in bpy.data.groups[:]:
-      for groupobject in group.objects[:]:
+    for group in bpy.data.groups:
+      for groupobject in group.objects:
         if groupobject == object:
 
           # search
@@ -497,7 +497,7 @@ def sort(context, member, object):
 
   # constraints
   if panel.constraints:
-    for constraint in object.constraints[:]:
+    for constraint in object.constraints:
 
       # search
       if search == '' or re.search(search, constraint.name, re.I):
@@ -507,14 +507,14 @@ def sort(context, member, object):
 
   # modifiers
   if panel.modifiers:
-    for modifier in object.modifiers[:]:
+    for modifier in object.modifiers:
 
       if modifier.type == 'PARTICLE_SYSTEM':
         # particle
         particle = [modifier.particle_system.name, modifier.particle_system.settings.name]
 
         # texture
-        texture = [slot.texture.name for slot in modifier.particle_system.settings.texture_slots[:] if slot != None]
+        texture = [slot.texture.name for slot in modifier.particle_system.settings.texture_slots if slot != None]
 
       elif modifier.type in {'DISPLACE', 'WARP'}:
         if modifier.texture:
@@ -557,7 +557,7 @@ def sort(context, member, object):
                 # member
                 member[object.name].append(modifier.particle_system.settings.name)
 
-                for slot in modifier.particle_system.settings.texture_slots[:]:
+                for slot in modifier.particle_system.settings.texture_slots:
                   if slot != None:
 
                     # search
@@ -572,7 +572,7 @@ def sort(context, member, object):
       if slot.material != None:
 
         # textures
-        textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
+        textures = [tslot.texture.name for tslot in slot.material.texture_slots if hasattr(tslot, 'texture')]
 
         # search
         if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
@@ -583,7 +583,7 @@ def sort(context, member, object):
           # textures
           if panel.textures:
             if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-              for tslot in slot.material.texture_slots[:]:
+              for tslot in slot.material.texture_slots:
                 if hasattr(tslot, 'texture'):
                   if tslot.texture != None:
 
@@ -605,7 +605,7 @@ def sort(context, member, object):
   # vertex groups
   if panel.vertexGroups:
     if hasattr(object, 'vertex_groups'):
-      for group in object.vertex_groups[:]:
+      for group in object.vertex_groups:
 
         # search
         if search == '' or re.search(search, group.name, re.I):
@@ -617,7 +617,7 @@ def sort(context, member, object):
   if panel.shapekeys:
     if hasattr(object.data, 'shape_keys'):
       if hasattr(object.data.shape_keys, 'key_blocks'):
-        for key in object.data.shape_keys.key_blocks[:]:
+        for key in object.data.shape_keys.key_blocks:
 
           # search
           if search == '' or re.search(search, key.name, re.I):
@@ -628,7 +628,7 @@ def sort(context, member, object):
   # uvs
   if panel.uvs:
     if object.type in 'MESH':
-      for uv in object.data.uv_textures[:]:
+      for uv in object.data.uv_textures:
 
         # search
         if search == '' or re.search(search, uv.name, re.I):
@@ -639,7 +639,7 @@ def sort(context, member, object):
   # vertex colors
   if panel.vertexColors:
     if object.type in 'MESH':
-      for vertexColor in object.data.vertex_colors[:]:
+      for vertexColor in object.data.vertex_colors:
 
         # search
         if search == '' or re.search(search, vertexColor.name, re.I):
@@ -650,7 +650,7 @@ def sort(context, member, object):
   # bone groups
   if panel.boneGroups:
     if object.type in 'ARMATURE':
-      for group in object.pose.bone_groups[:]:
+      for group in object.pose.bone_groups:
 
         # search
         if search == '' or re.search(search, group.name, re.I):
@@ -664,7 +664,7 @@ def sort(context, member, object):
       if object.mode in {'POSE', 'EDIT'}:
 
         # constraints
-        try: constraints = [item.name for item in context.active_pose_bone.constraints[:]]
+        try: constraints = [item.name for item in context.active_pose_bone.constraints]
         except: constraints = []
 
         # search
@@ -676,7 +676,7 @@ def sort(context, member, object):
         # bone constraints
         if panel.boneConstraints:
           if object.mode in 'POSE':
-            for constraint in context.active_pose_bone.constraints[:]:
+            for constraint in context.active_pose_bone.constraints:
 
               # search
               if search == '' or re.search(search, constraint.name, re.I):
@@ -689,15 +689,15 @@ def sort(context, member, object):
 
           # pose mode
           if object.mode in 'POSE':
-            bones = object.pose.bones[:]
+            bones = object.pose.bones
 
           # edit mode
           elif object.mode == 'EDIT':
-            bones = object.data.edit_bones[:]
+            bones = object.data.edit_bones
 
           # other modes
           else:
-            bones = object.data.bones[:]
+            bones = object.data.bones
 
           # sort and display
           for bone in bones:
@@ -705,7 +705,7 @@ def sort(context, member, object):
 
               # constraints
               try:
-                constraints = [constraint.name for constraint in object.pose.bones[bone.name].constraints[:]]
+                constraints = [constraint.name for constraint in object.pose.bones[bone.name].constraints]
               except:
                 constraints = []
 
@@ -718,7 +718,7 @@ def sort(context, member, object):
               # bone constraints
               if panel.boneConstraints:
                 if object.mode in 'POSE':
-                  for constraint in bone.constraints[:]:
+                  for constraint in bone.constraints:
 
                     # search
                     if search == '' or re.search(search, constraint.name, re.I):
@@ -829,8 +829,8 @@ class block:
 
       # groups
       if panel.groups:
-        for group in bpy.data.groups[:]:
-          for groupObject in group.objects[:]:
+        for group in bpy.data.groups:
+          for groupObject in group.objects:
             if groupObject == object:
 
               # search
@@ -873,7 +873,7 @@ class block:
         if hasattr(object.grease_pencil, 'name'):
 
           # layers
-          layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers[:]]
+          layers = [layer.info for layer in bpy.data.objects[object.name].grease_pencil.layers]
 
           # search
           if search == '' or re.search(search, object.grease_pencil.name, re.I) or [re.search(search, item, re.I) for item in layers if re.search(search, item, re.I) != None]:
@@ -882,7 +882,7 @@ class block:
             GreasePencil(self, context, layout, object.grease_pencil, object, panel)
 
             # pencil layers
-            for layer in bpy.data.objects[object.name].grease_pencil.layers[:]:
+            for layer in bpy.data.objects[object.name].grease_pencil.layers:
 
               # search
               if search == '' or re.search(search, layer.info, re.I):
@@ -901,7 +901,7 @@ class block:
 
       # constraints
       if panel.constraints:
-        for constraint in object.constraints[:]:
+        for constraint in object.constraints:
 
           # search
           if search == '' or re.search(search, constraint.name, re.I):
@@ -920,7 +920,7 @@ class block:
 
       # modifiers
       if panel.modifiers:
-        for modifier in object.modifiers[:]:
+        for modifier in object.modifiers:
 
           # particle
           particle = []
@@ -933,7 +933,7 @@ class block:
             particle = [modifier.particle_system.name, modifier.particle_system.settings.name]
 
             # texture
-            texture = [slot.texture.name for slot in modifier.particle_system.settings.texture_slots[:] if slot != None]
+            texture = [slot.texture.name for slot in modifier.particle_system.settings.texture_slots if slot != None]
 
           if modifier.type in {'DISPLACE', 'WARP'}:
             if modifier.texture:
@@ -990,7 +990,7 @@ class block:
                   # texture
                   if panel.textures:
                     # if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-                    for slot in modifier.particle_system.settings.texture_slots[:]:
+                    for slot in modifier.particle_system.settings.texture_slots:
                       if hasattr(slot, 'texture'):
                         if slot.texture:
 
@@ -1019,7 +1019,7 @@ class block:
             if slot.material != None:
 
               # textures
-              textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
+              textures = [tslot.texture.name for tslot in slot.material.texture_slots if hasattr(tslot, 'texture')]
 
               # search
               if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
@@ -1030,7 +1030,7 @@ class block:
                 # textures
                 if panel.textures:
                   if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-                    for tslot in slot.material.texture_slots[:]:
+                    for tslot in slot.material.texture_slots:
                       if hasattr(tslot, 'texture'):
                         if tslot.texture != None:
 
@@ -1064,7 +1064,7 @@ class block:
       # vertex groups
       if panel.vertexGroups:
         if hasattr(object, 'vertex_groups'):
-          for group in object.vertex_groups[:]:
+          for group in object.vertex_groups:
 
             # search
             if search == '' or re.search(search, group.name, re.I):
@@ -1085,7 +1085,7 @@ class block:
       if panel.shapekeys:
         if hasattr(object.data, 'shape_keys'):
           if hasattr(object.data.shape_keys, 'key_blocks'):
-            for key in object.data.shape_keys.key_blocks[:]:
+            for key in object.data.shape_keys.key_blocks:
 
               # search
               if search == '' or re.search(search, key.name, re.I):
@@ -1105,7 +1105,7 @@ class block:
       # uvs
       if panel.uvs:
         if object.type in 'MESH':
-          for uv in object.data.uv_textures[:]:
+          for uv in object.data.uv_textures:
 
             # search
             if search == '' or re.search(search, uv.name, re.I):
@@ -1125,7 +1125,7 @@ class block:
       # vertex colors
       if panel.vertexColors:
         if object.type in 'MESH':
-          for vertexColor in object.data.vertex_colors[:]:
+          for vertexColor in object.data.vertex_colors:
 
             # search
             if search == '' or re.search(search, vertexColor.name, re.I):
@@ -1149,7 +1149,7 @@ class block:
             if slot.material != None:
 
               # textures
-              textures = [tslot.texture.name for tslot in slot.material.texture_slots[:] if hasattr(tslot, 'texture')]
+              textures = [tslot.texture.name for tslot in slot.material.texture_slots if hasattr(tslot, 'texture')]
 
               # search
               if search == '' or re.search(search, slot.material.name, re.I) or [re.search(search, item, re.I) for item in textures if re.search(search, item, re.I) != None]:
@@ -1160,7 +1160,7 @@ class block:
                 # textures
                 if panel.textures:
                   if context.scene.render.engine in {'BLENDER_RENDER', 'BLENDER_GAME'}:
-                    for tslot in slot.material.texture_slots[:]:
+                    for tslot in slot.material.texture_slots:
                       if hasattr(tslot, 'texture'):
                         if tslot.texture != None:
 
@@ -1182,7 +1182,7 @@ class block:
       # bone groups
       if panel.boneGroups:
         if object.type in 'ARMATURE':
-          for group in object.pose.bone_groups[:]:
+          for group in object.pose.bone_groups:
 
             # search
             if search == '' or re.search(search, group.name, re.I):
@@ -1205,7 +1205,7 @@ class block:
         if object.mode in {'POSE', 'EDIT'}:
 
           # constraints
-          try: constraints = [item.name for item in context.active_pose_bone.constraints[:]]
+          try: constraints = [item.name for item in context.active_pose_bone.constraints]
           except: constraints = []
 
           # display bones
@@ -1228,7 +1228,7 @@ class block:
               if object.mode in 'POSE':
                 bone = context.active_pose_bone
                 if bone:
-                  for constraint in bone.constraints[:]:
+                  for constraint in bone.constraints:
 
                     # search
                     if search == '' or re.search(search, constraint.name, re.I):
@@ -1252,13 +1252,13 @@ class block:
             if object.mode in 'POSE':
 
               # bones
-              bones = object.data.bones[:]
+              bones = object.data.bones
 
             # edit mode
             else:
 
               # bones
-              bones = object.data.edit_bones[:]
+              bones = object.data.edit_bones
 
             # selected
             if panel.boneMode == 'SELECTED':
@@ -1277,7 +1277,7 @@ class block:
               if bone[1] != context.active_bone:
 
                 # constraints
-                try: constraints = [item.name for item in object.pose.bones[bone[1].name].constraints[:]]
+                try: constraints = [item.name for item in object.pose.bones[bone[1].name].constraints]
                 except: constraints = []
 
                 # search
@@ -1289,7 +1289,7 @@ class block:
                   # bone constraints
                   if panel.boneConstraints:
                     if object.mode in 'POSE':
-                      for constraint in object.pose.bones[bone[1].name].constraints[:]:
+                      for constraint in object.pose.bones[bone[1].name].constraints:
 
                         # search
                         if search == '' or re.search(search, constraint.name, re.I):
@@ -2019,7 +2019,7 @@ def Bone(self, context, layout, datablock, object, panel):
     row.separator()
 
   elif object.mode in 'POSE':
-    if not panel.boneConstraints or bpy.data.objects[object.name].pose.bones[datablock.name].constraints[:] == []:
+    if not panel.boneConstraints or bpy.data.objects[object.name].pose.bones[datablock.name].constraints == []:
 
       # row
       row = layout.row()

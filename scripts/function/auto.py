@@ -19,6 +19,7 @@
 
 # imports
 import bpy
+import re
 from random import random
 from . import shared
 from .. import storage

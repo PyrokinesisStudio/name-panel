@@ -965,8 +965,7 @@ def rename(self, context, name, i):
       name[0] = name[1] + str(i)
 
     # empty
-    if name[3][2].type == 'EMPTY':
-      pass
+    # if name[3][2].type == 'EMPTY':
       # name[1] = objectDataName.empty + name[1] if objectDataName.prefix else objectDataName.empty
       # name[0] = name[1] + str(i)
 

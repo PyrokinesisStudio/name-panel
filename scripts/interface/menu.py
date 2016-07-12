@@ -66,4 +66,15 @@ class specials(Menu):
     # separator
     layout.separator()
 
+    # reset panel
+    op = layout.operator('wm.reset_name_panel_settings', text='Reset Panel', icon='LOAD_FACTORY')
+    op.panel = True
+    op.auto = False
+    op.names = False
+    op.name = False
+    op.copy = False
+
+    # separator
+    layout.separator()
+
     layout.operator('wm.regular_expression_cheatsheet', icon='NEW')

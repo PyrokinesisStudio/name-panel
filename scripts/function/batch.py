@@ -2283,10 +2283,13 @@ def main(self, context):
 
     # linestyles
     if option.linestyles:
-      for style in bpy.data.linestyles[:]:
+      for scene in bpy.data.scenes[:]:
+        for layer in scene.render.layers[:]:
+          for lineset in layer.freestyle_settings.linesets[:]:
+            if hasattr(lineset, 'name'):
 
-        # populate
-        populate(self, context, style)
+              # populate
+              populate(self, context, lineset.linestyle, lineset)
 
       # process
       process(self, context, storage.batch.linestyles, option)
@@ -3367,7 +3370,7 @@ def populate(self, context, datablock, source=None):
 
   # line style
   if datablock.rna_type.identifier == 'FreestyleLineStyle':
-    storage.batch.linestyles.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    storage.batch.linestyles.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # line style modifiers
   if hasattr(datablock.rna_type.base, 'identifier'):

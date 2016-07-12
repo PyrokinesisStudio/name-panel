@@ -258,6 +258,12 @@ def sort(self, context, collection, option):
               # link
               name[3][2].settings = source
 
+              # line style
+            if name[3][0].rna_type.identifier == 'FreestyleLineStyle':
+
+              # link
+              name[3][2].linestyle = source
+
   # purge re
   re.purge()
 

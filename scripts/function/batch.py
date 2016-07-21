@@ -67,52 +67,52 @@ def main(self, context):
     # all
     all = [
       # groups
-      storage.batch.groups,
+      self.groups,
 
       # actions
-      storage.batch.actions,
+      self.actions,
 
       # grease pencil
-      storage.batch.greasePencils,
+      self.greasePencils,
 
       # object
-      storage.batch.objects,
+      self.objects,
 
       # cameras
-      storage.batch.cameras,
+      self.cameras,
 
       # meshes
-      storage.batch.meshes,
+      self.meshes,
 
       # curves
-      storage.batch.curves,
+      self.curves,
 
       # lamps
-      storage.batch.lamps,
+      self.lamps,
 
       # lattices
-      storage.batch.lattices,
+      self.lattices,
 
       # metaballs
-      storage.batch.metaballs,
+      self.metaballs,
 
       # speakers
-      storage.batch.speakers,
+      self.speakers,
 
       # armatures
-      storage.batch.armatures,
+      self.armatures,
 
       # bones
-      storage.batch.bones,
+      self.bones,
 
       # materials
-      storage.batch.materials,
+      self.materials,
 
       # textures
-      storage.batch.textures,
+      self.textures,
 
       # particle settings
-      storage.batch.particleSettings
+      self.particleSettings
     ]
 
     # process
@@ -166,8 +166,8 @@ def main(self, context):
 
         # clear duplicates
         actions = []
-        [actions.append(item) for item in storage.batch.actions if item not in actions]
-        storage.batch.actions.clear()
+        [actions.append(item) for item in self.actions if item not in actions]
+        self.actions.clear()
 
         # process
         process(self, context, actions, option)
@@ -211,8 +211,8 @@ def main(self, context):
 
         # clear duplicates
         actions = []
-        [actions.append(item) for item in storage.batch.actions if item not in actions]
-        storage.batch.actions.clear()
+        [actions.append(item) for item in self.actions if item not in actions]
+        self.actions.clear()
 
         # name action groups
         for action in actions:
@@ -267,10 +267,10 @@ def main(self, context):
                 populate(self, context, object.grease_pencil, object)
 
         # process
-        process(self, context, storage.batch.greasePencils, option)
+        process(self, context, self.greasePencils, option)
 
         # clear storage
-        storage.batch.greasePencils.clear()
+        self.greasePencils.clear()
 
       # pencil layers
       if option.pencilLayers:
@@ -321,10 +321,10 @@ def main(self, context):
                   populate(self, context, layer)
 
             # process
-            process(self, context, storage.batch.pencilLayers, option)
+            process(self, context, self.pencilLayers, option)
 
             # clear storage
-            storage.batch.pencilLayers.clear()
+            self.pencilLayers.clear()
 
       # objects
       if option.objects:
@@ -362,10 +362,10 @@ def main(self, context):
               populate(self, context, object)
 
         # process
-        process(self, context, storage.batch.objects, option)
+        process(self, context, self.objects, option)
 
         # clear storage
-        storage.batch.objects.clear()
+        self.objects.clear()
 
       # groups
       if option.groups:
@@ -413,10 +413,10 @@ def main(self, context):
 
         # clear duplicates
         objectGroups = []
-        [objectGroups.append(item) for item in storage.batch.groups if item not in objectGroups]
+        [objectGroups.append(item) for item in self.groups if item not in objectGroups]
 
         # clear storage
-        storage.batch.groups.clear()
+        self.groups.clear()
 
         # process
         process(self, context, objectGroups, option)
@@ -459,10 +459,10 @@ def main(self, context):
                 populate(self, context, constraint)
 
           # process
-          process(self, context, storage.batch.constraints, option)
+          process(self, context, self.constraints, option)
 
           # clear storage
-          storage.batch.constraints.clear()
+          self.constraints.clear()
 
       # modifiers
       if option.modifiers:
@@ -502,10 +502,10 @@ def main(self, context):
                 populate(self, context, modifier)
 
           # process
-          process(self, context, storage.batch.modifiers, option)
+          process(self, context, self.modifiers, option)
 
           # clear storage
-          storage.batch.modifiers.clear()
+          self.modifiers.clear()
 
       # object data
       if option.objectData:
@@ -545,14 +545,14 @@ def main(self, context):
 
         # object data
         objectData = [
-          storage.batch.curves,
-          storage.batch.cameras,
-          storage.batch.meshes,
-          storage.batch.lamps,
-          storage.batch.lattices,
-          storage.batch.metaballs,
-          storage.batch.speakers,
-          storage.batch.armatures
+          self.curves,
+          self.cameras,
+          self.meshes,
+          self.lamps,
+          self.lattices,
+          self.metaballs,
+          self.speakers,
+          self.armatures
         ]
 
         # process collection
@@ -588,10 +588,10 @@ def main(self, context):
                 populate(self, context, group)
 
           # process
-          process(self, context, storage.batch.boneGroups, option)
+          process(self, context, self.boneGroups, option)
 
           # clear storage
-          storage.batch.boneGroups.clear()
+          self.boneGroups.clear()
 
       # bones
       if option.bones:
@@ -636,10 +636,10 @@ def main(self, context):
                     populate(self, context, bone)
 
             # process
-            process(self, context, storage.batch.bones, option)
+            process(self, context, self.bones, option)
 
             # clear storage
-            storage.batch.bones.clear()
+            self.bones.clear()
 
       # bone constraints
       if option.boneConstraints:
@@ -666,10 +666,10 @@ def main(self, context):
                         populate(self, context, constraint)
 
                     # process
-                    process(self, context, storage.batch.constraints, option)
+                    process(self, context, self.constraints, option)
 
                     # clear storage
-                    storage.batch.constraints.clear()
+                    self.constraints.clear()
 
             # mode
             else:
@@ -689,10 +689,10 @@ def main(self, context):
                     populate(self, context, constraint)
 
                 # process
-                process(self, context, storage.batch.constraints, option)
+                process(self, context, self.constraints, option)
 
                 # clear storage
-                storage.batch.constraints.clear()
+                self.constraints.clear()
 
       # vertex groups
       if option.vertexGroups:
@@ -717,10 +717,10 @@ def main(self, context):
                     populate(self, context, group)
 
                 # process
-                process(self, context, storage.batch.vertexGroups, option)
+                process(self, context, self.vertexGroups, option)
 
                 # clear storage
-                storage.batch.vertexGroups.clear()
+                self.vertexGroups.clear()
 
             # mode
             else:
@@ -739,10 +739,10 @@ def main(self, context):
                   populate(self, context, group)
 
               # process
-              process(self, context, storage.batch.vertexGroups, option)
+              process(self, context, self.vertexGroups, option)
 
               # clear storage
-              storage.batch.vertexGroups.clear()
+              self.vertexGroups.clear()
 
 
       # shapekeys
@@ -785,10 +785,10 @@ def main(self, context):
                     populate(self, context, block)
 
               # process
-              process(self, context, storage.batch.shapekeys, option)
+              process(self, context, self.shapekeys, option)
 
               # clear storage
-              storage.batch.shapekeys.clear()
+              self.shapekeys.clear()
 
       # uvs
       if option.uvs:
@@ -811,10 +811,10 @@ def main(self, context):
                 populate(self, context, uv)
 
             # process
-            process(self, context, storage.batch.uvs, option)
+            process(self, context, self.uvs, option)
 
             # clear storage
-            storage.batch.uvs.clear()
+            self.uvs.clear()
 
       # vertex colors
       if option.vertexColors:
@@ -837,10 +837,10 @@ def main(self, context):
                 populate(self, context, color)
 
             # process
-            process(self, context, storage.batch.vertexColors, option)
+            process(self, context, self.vertexColors, option)
 
             # clear storage
-            storage.batch.vertexColors.clear()
+            self.vertexColors.clear()
 
       # materials
       if option.materials:
@@ -882,10 +882,10 @@ def main(self, context):
                   populate(self, context, slot.material, slot)
 
         # process
-        process(self, context, storage.batch.materials, option)
+        process(self, context, self.materials, option)
 
         # clear storage
-        storage.batch.materials.clear()
+        self.materials.clear()
 
       # textures
       if option.textures:
@@ -932,10 +932,10 @@ def main(self, context):
                         populate(self, context, texslot.texture, texslot)
 
         # process
-        process(self, context, storage.batch.textures, option)
+        process(self, context, self.textures, option)
 
         # clear storage
-        storage.batch.textures.clear()
+        self.textures.clear()
 
       # particle systems
       if option.particleSystems:
@@ -976,10 +976,10 @@ def main(self, context):
                   populate(self, context, system)
 
             # process
-            process(self, context, storage.batch.particleSystems, option)
+            process(self, context, self.particleSystems, option)
 
             # clear storage
-            storage.batch.particleSystems.clear()
+            self.particleSystems.clear()
 
       # particle settings
       if option.particleSettings:
@@ -1020,10 +1020,10 @@ def main(self, context):
                   populate(self, context, system.settings, system)
 
         # process
-        process(self, context, storage.batch.particleSettings, option)
+        process(self, context, self.particleSettings, option)
 
         # clear storage
-        storage.batch.particleSettings.clear()
+        self.particleSettings.clear()
 
     # sensors
     if option.sensors:
@@ -1065,10 +1065,10 @@ def main(self, context):
               populate(self, context, sensor)
 
         # process
-        process(self, context, storage.batch.sensors, option)
+        process(self, context, self.sensors, option)
 
         # clear storage
-        storage.batch.sensors.clear()
+        self.sensors.clear()
 
     # controllers
     if option.controllers:
@@ -1110,10 +1110,10 @@ def main(self, context):
               populate(self, context, controller)
 
         # process
-        process(self, context, storage.batch.controllers, option)
+        process(self, context, self.controllers, option)
 
         # clear storage
-        storage.batch.controllers.clear()
+        self.controllers.clear()
 
     # actuators
     if option.actuators:
@@ -1155,10 +1155,10 @@ def main(self, context):
               populate(self, context, actuator)
 
         # process
-        process(self, context, storage.batch.actuators, option)
+        process(self, context, self.actuators, option)
 
         # clear storage
-        storage.batch.actuators.clear()
+        self.actuators.clear()
 
     # mode
     if option.mode in 'SCENE':
@@ -1183,10 +1183,10 @@ def main(self, context):
 
         # clear duplicates
         actions = []
-        [actions.append(item) for item in storage.batch.actions if item not in actions]
+        [actions.append(item) for item in self.actions if item not in actions]
 
         # clear storage
-        storage.batch.actions.clear()
+        self.actions.clear()
 
         # process
         process(self, context, actions, option)
@@ -1211,8 +1211,8 @@ def main(self, context):
 
         # clear duplicates
         actions = []
-        [actions.append(item) for item in storage.batch.actions if item not in actions]
-        storage.batch.actions.clear()
+        [actions.append(item) for item in self.actions if item not in actions]
+        self.actions.clear()
 
         # name action groups
         for action in actions:
@@ -1248,10 +1248,10 @@ def main(self, context):
               populate(self, context, object.grease_pencil, object)
 
         # process
-        process(self, context, storage.batch.greasePencils, option)
+        process(self, context, self.greasePencils, option)
 
         # clear storage
-        storage.batch.greasePencils.clear()
+        self.greasePencils.clear()
 
       # pencil layers
       if option.pencilLayers:
@@ -1277,10 +1277,10 @@ def main(self, context):
                 populate(self, context, layer)
 
             # process
-            process(self, context, storage.batch.pencilLayers, option)
+            process(self, context, self.pencilLayers, option)
 
             # clear storage
-            storage.batch.pencilLayers.clear()
+            self.pencilLayers.clear()
 
       # objects
       if option.objects:
@@ -1299,10 +1299,10 @@ def main(self, context):
             populate(self, context, object)
 
         # process
-        process(self, context, storage.batch.objects, option)
+        process(self, context, self.objects, option)
 
         # clear storage
-        storage.batch.objects.clear()
+        self.objects.clear()
 
       # groups
       if option.groups:
@@ -1326,10 +1326,10 @@ def main(self, context):
 
         # clear duplicates
         objectGroups = []
-        [objectGroups.append(item) for item in storage.batch.groups if item not in objectGroups]
+        [objectGroups.append(item) for item in self.groups if item not in objectGroups]
 
         # clear storage
-        storage.batch.groups.clear()
+        self.groups.clear()
 
         # process
         process(self, context, objectGroups, option)
@@ -1352,10 +1352,10 @@ def main(self, context):
               populate(self, context, constraint)
 
           # process
-          process(self, context, storage.batch.constraints, option)
+          process(self, context, self.constraints, option)
 
           # clear storage
-          storage.batch.constraints.clear()
+          self.constraints.clear()
 
       # modifiers
       if option.modifiers:
@@ -1375,10 +1375,10 @@ def main(self, context):
               populate(self, context, modifier)
 
           # process
-          process(self, context, storage.batch.modifiers, option)
+          process(self, context, self.modifiers, option)
 
           # clear storage
-          storage.batch.modifiers.clear()
+          self.modifiers.clear()
 
       # object data
       if option.objectData:
@@ -1399,14 +1399,14 @@ def main(self, context):
 
         # object data
         objectData = [
-          storage.batch.curves,
-          storage.batch.cameras,
-          storage.batch.meshes,
-          storage.batch.lamps,
-          storage.batch.lattices,
-          storage.batch.metaballs,
-          storage.batch.speakers,
-          storage.batch.armatures
+          self.curves,
+          self.cameras,
+          self.meshes,
+          self.lamps,
+          self.lattices,
+          self.metaballs,
+          self.speakers,
+          self.armatures
         ]
         for collection in objectData:
           if collection != []:
@@ -1427,10 +1427,10 @@ def main(self, context):
               populate(self, context, group)
 
           # process
-          process(self, context, storage.batch.boneGroups, option)
+          process(self, context, self.boneGroups, option)
 
           # clear storage
-          storage.batch.boneGroups.clear()
+          self.boneGroups.clear()
 
       # bones
       if option.bones:
@@ -1452,10 +1452,10 @@ def main(self, context):
                   populate(self, context, bone)
 
             # process
-            process(self, context, storage.batch.bones, option)
+            process(self, context, self.bones, option)
 
             # clear storage
-            storage.batch.bones.clear()
+            self.bones.clear()
 
       # bone constraints
       if option.boneConstraints:
@@ -1477,10 +1477,10 @@ def main(self, context):
                   populate(self, context, constraint)
 
               # process
-              process(self, context, storage.batch.constraints, option)
+              process(self, context, self.constraints, option)
 
               # clear storage
-              storage.batch.constraints.clear()
+              self.constraints.clear()
 
       # vertex groups
       if option.vertexGroups:
@@ -1501,10 +1501,10 @@ def main(self, context):
                 populate(self, context, group)
 
             # process
-            process(self, context, storage.batch.vertexGroups, option)
+            process(self, context, self.vertexGroups, option)
 
             # clear storage
-            storage.batch.vertexGroups.clear()
+            self.vertexGroups.clear()
 
       # shapekeys
       if option.shapekeys:
@@ -1526,10 +1526,10 @@ def main(self, context):
                   populate(self, context, block)
 
               # process
-              process(self, context, storage.batch.shapekeys, option)
+              process(self, context, self.shapekeys, option)
 
               # clear storage
-              storage.batch.shapekeys.clear()
+              self.shapekeys.clear()
 
       # uvs
       if option.uvs:
@@ -1541,10 +1541,10 @@ def main(self, context):
               populate(self, context, uv)
 
             # process
-            process(self, context, storage.batch.uvs, option)
+            process(self, context, self.uvs, option)
 
             # clear storage
-            storage.batch.uvs.clear()
+            self.uvs.clear()
 
       # vertex colors
       if option.vertexColors:
@@ -1556,10 +1556,10 @@ def main(self, context):
               populate(self, context, color)
 
             # process
-            process(self, context, storage.batch.vertexColors, option)
+            process(self, context, self.vertexColors, option)
 
             # clear storage
-            storage.batch.vertexColors.clear()
+            self.vertexColors.clear()
 
       # materials
       if option.materials:
@@ -1580,10 +1580,10 @@ def main(self, context):
                 populate(self, context, slot.material, slot)
 
         # process
-        process(self, context, storage.batch.materials, option)
+        process(self, context, self.materials, option)
 
         # clear storage
-        storage.batch.materials.clear()
+        self.materials.clear()
 
       # textures
       if option.textures:
@@ -1607,10 +1607,10 @@ def main(self, context):
                       populate(self, context, texslot.texture, texslot)
 
         # process
-        process(self, context, storage.batch.textures, option)
+        process(self, context, self.textures, option)
 
         # clear storage
-        storage.batch.textures.clear()
+        self.textures.clear()
 
       # particle systems
       if option.particleSystems:
@@ -1631,10 +1631,10 @@ def main(self, context):
                 populate(self, context, system)
 
             # process
-            process(self, context, storage.batch.particleSystems, option)
+            process(self, context, self.particleSystems, option)
 
             # clear storage
-            storage.batch.particleSystems.clear()
+            self.particleSystems.clear()
 
       # particle settings
       if option.particleSettings:
@@ -1655,10 +1655,10 @@ def main(self, context):
                 populate(self, context, system.settings, system)
 
         # process
-        process(self, context, storage.batch.particleSettings, option)
+        process(self, context, self.particleSettings, option)
 
         # clear storage
-        storage.batch.particleSettings.clear()
+        self.particleSettings.clear()
 
       # sensors
       if option.sensors:
@@ -1679,10 +1679,10 @@ def main(self, context):
               populate(self, context, sensor)
 
           # process
-          process(self, context, storage.batch.sensors, option)
+          process(self, context, self.sensors, option)
 
           # clear storage
-          storage.batch.sensors.clear()
+          self.sensors.clear()
 
       # controllers
       if option.controllers:
@@ -1703,10 +1703,10 @@ def main(self, context):
               populate(self, context, controller)
 
           # process
-          process(self, context, storage.batch.controllers, option)
+          process(self, context, self.controllers, option)
 
           # clear storage
-          storage.batch.controllers.clear()
+          self.controllers.clear()
 
       # actuators
       if option.actuators:
@@ -1727,10 +1727,10 @@ def main(self, context):
               populate(self, context, actuator)
 
           # process
-          process(self, context, storage.batch.actuators, option)
+          process(self, context, self.actuators, option)
 
           # clear storage
-          storage.batch.actuators.clear()
+          self.actuators.clear()
 
     # mode
     elif option.mode in 'GLOBAL':
@@ -1743,10 +1743,10 @@ def main(self, context):
           populate(self, context, action)
 
         # process
-        process(self, context, storage.batch.actions, option)
+        process(self, context, self.actions, option)
 
         # clear storage
-        storage.batch.actions.clear()
+        self.actions.clear()
 
       # action groups
       if option.actionGroups:
@@ -1756,7 +1756,7 @@ def main(self, context):
           populate(self, context, action)
 
         # process
-        for action in storage.batch.actions:
+        for action in self.actions:
           for group in action[1][1].groups:
 
             # new name
@@ -1782,7 +1782,7 @@ def main(self, context):
                   except: pass
 
         # clear storage
-        storage.batch.actions.clear()
+        self.actions.clear()
 
       # grease pencil
       if option.greasePencil:
@@ -1792,10 +1792,10 @@ def main(self, context):
           populate(self, context, pencil)
 
         # process
-        process(self, context, storage.batch.greasePencils, option)
+        process(self, context, self.greasePencils, option)
 
         # clear storage
-        storage.batch.greasePencils.clear()
+        self.greasePencils.clear()
 
       # pencil layers
       if option.pencilLayers:
@@ -1808,10 +1808,10 @@ def main(self, context):
             populate(self, context, layer)
 
           # process
-          process(self, context, storage.batch.pencilLayers, option)
+          process(self, context, self.pencilLayers, option)
 
           # clear storage
-          storage.batch.pencilLayers.clear()
+          self.pencilLayers.clear()
 
       # objects
       if option.objects:
@@ -1830,10 +1830,10 @@ def main(self, context):
             populate(self, context, object)
 
         # process
-        process(self, context, storage.batch.objects, option)
+        process(self, context, self.objects, option)
 
         # clear storage
-        storage.batch.objects.clear()
+        self.objects.clear()
 
       # groups
       if option.groups:
@@ -1843,10 +1843,10 @@ def main(self, context):
           populate(self, context, group)
 
         # process
-        process(self, context, storage.batch.groups, option)
+        process(self, context, self.groups, option)
 
         # clear storage
-        storage.batch.groups.clear()
+        self.groups.clear()
 
       # constraints
       if option.constraints:
@@ -1884,10 +1884,10 @@ def main(self, context):
                 populate(self, context, constraint)
 
           # process
-          process(self, context, storage.batch.constraints, option)
+          process(self, context, self.constraints, option)
 
           # clear storage
-          storage.batch.constraints.clear()
+          self.constraints.clear()
 
       # modifiers
       if option.modifiers:
@@ -1925,10 +1925,10 @@ def main(self, context):
                 populate(self, context, modifier)
 
           # process
-          process(self, context, storage.batch.modifiers, option)
+          process(self, context, self.modifiers, option)
 
           # clear storage
-          storage.batch.modifiers.clear()
+          self.modifiers.clear()
 
       # object data
       if option.objectData:
@@ -1940,10 +1940,10 @@ def main(self, context):
           populate(self, context, camera)
 
         # process
-        process(self, context, storage.batch.cameras, option)
+        process(self, context, self.cameras, option)
 
         # clear storage
-        storage.batch.cameras.clear()
+        self.cameras.clear()
 
         # meshes
         for mesh in bpy.data.meshes:
@@ -1952,10 +1952,10 @@ def main(self, context):
           populate(self, context, mesh)
 
         # process
-        process(self, context, storage.batch.meshes, option)
+        process(self, context, self.meshes, option)
 
         # clear storage
-        storage.batch.meshes.clear()
+        self.meshes.clear()
 
         # curves
         for curve in bpy.data.curves:
@@ -1964,10 +1964,10 @@ def main(self, context):
           populate(self, context, curve)
 
         # process
-        process(self, context, storage.batch.curves, option)
+        process(self, context, self.curves, option)
 
         # clear storage
-        storage.batch.curves.clear()
+        self.curves.clear()
 
         # lamps
         for lamp in bpy.data.lamps:
@@ -1976,10 +1976,10 @@ def main(self, context):
           populate(self, context, lamp)
 
         # process
-        process(self, context, storage.batch.lamps, option)
+        process(self, context, self.lamps, option)
 
         # clear storage
-        storage.batch.lamps.clear()
+        self.lamps.clear()
 
         # lattices
         for lattice in bpy.data.lattices:
@@ -1988,10 +1988,10 @@ def main(self, context):
           populate(self, context, lattice)
 
         # process
-        process(self, context, storage.batch.lattices, option)
+        process(self, context, self.lattices, option)
 
         # clear storage
-        storage.batch.lattices.clear()
+        self.lattices.clear()
 
         # metaballs
         for metaball in bpy.data.metaballs:
@@ -2000,10 +2000,10 @@ def main(self, context):
           populate(self, context, metaball)
 
         # process
-        process(self, context, storage.batch.metaballs, option)
+        process(self, context, self.metaballs, option)
 
         # clear storage
-        storage.batch.metaballs.clear()
+        self.metaballs.clear()
 
         # speakers
         for speaker in bpy.data.speakers:
@@ -2012,10 +2012,10 @@ def main(self, context):
           populate(self, context, speaker)
 
         # process
-        process(self, context, storage.batch.speakers, option)
+        process(self, context, self.speakers, option)
 
         # clear storage
-        storage.batch.speakers.clear()
+        self.speakers.clear()
 
         # armatures
         for armature in bpy.data.armatures:
@@ -2024,10 +2024,10 @@ def main(self, context):
           populate(self, context, armature)
 
         # process
-        process(self, context, storage.batch.armatures, option)
+        process(self, context, self.armatures, option)
 
         # clear storage
-        storage.batch.armatures.clear()
+        self.armatures.clear()
 
       # bone groups
       if option.boneGroups:
@@ -2039,10 +2039,10 @@ def main(self, context):
               populate(self, context, group)
 
             # process
-            process(self, context, storage.batch.boneGroups, option)
+            process(self, context, self.boneGroups, option)
 
             # clear storage
-            storage.batch.boneGroups.clear()
+            self.boneGroups.clear()
 
       # bones
       if option.bones:
@@ -2053,10 +2053,10 @@ def main(self, context):
             populate(self, context, bone)
 
           # process
-          process(self, context, storage.batch.bones, option)
+          process(self, context, self.bones, option)
 
           # clear storage
-          storage.batch.bones.clear()
+          self.bones.clear()
 
       # bone constraints
       if option.boneConstraints:
@@ -2069,10 +2069,10 @@ def main(self, context):
                 populate(self, context, constraint)
 
               # process
-              process(self, context, storage.batch.constraints, option)
+              process(self, context, self.constraints, option)
 
               # clear storage
-              storage.batch.constraints.clear()
+              self.constraints.clear()
 
       # vertex groups
       if option.vertexGroups:
@@ -2084,10 +2084,10 @@ def main(self, context):
               populate(self, context, group)
 
             # process
-            process(self, context, storage.batch.vertexGroups, option)
+            process(self, context, self.vertexGroups, option)
 
             # clear storage
-            storage.batch.vertexGroups.clear()
+            self.vertexGroups.clear()
 
       # shape keys
       if option.shapekeys:
@@ -2101,10 +2101,10 @@ def main(self, context):
               populate(self, context, block)
 
             # process
-            process(self, context, storage.batch.shapekeys, option)
+            process(self, context, self.shapekeys, option)
 
             # clear storage
-            storage.batch.shapekeys.clear()
+            self.shapekeys.clear()
 
       # uvs
       if option.uvs:
@@ -2116,10 +2116,10 @@ def main(self, context):
               populate(self, context, uv)
 
             # process
-            process(self, context, storage.batch.uvs, option)
+            process(self, context, self.uvs, option)
 
             # clear storage
-            storage.batch.uvs.clear()
+            self.uvs.clear()
 
       # vertex colors
       if option.vertexColors:
@@ -2131,10 +2131,10 @@ def main(self, context):
               populate(self, context, color)
 
             # process
-            process(self, context, storage.batch.vertexColors, option)
+            process(self, context, self.vertexColors, option)
 
             # clear storage
-            storage.batch.vertexColors.clear()
+            self.vertexColors.clear()
 
       # materials
       if option.materials:
@@ -2144,10 +2144,10 @@ def main(self, context):
           populate(self, context, material)
 
         # process
-        process(self, context, storage.batch.materials, option)
+        process(self, context, self.materials, option)
 
         # clear storage
-        storage.batch.materials.clear()
+        self.materials.clear()
 
       # textures
       if option.textures:
@@ -2157,10 +2157,10 @@ def main(self, context):
           populate(self, context, texture)
 
         # process
-        process(self, context, storage.batch.textures, option)
+        process(self, context, self.textures, option)
 
         # clear storage
-        storage.batch.textures.clear()
+        self.textures.clear()
 
       # particles systems
       if option.particleSystems:
@@ -2172,10 +2172,10 @@ def main(self, context):
               populate(self, context, system)
 
             # process
-            process(self, context, storage.batch.particleSystems, option)
+            process(self, context, self.particleSystems, option)
 
             # clear storage
-            storage.batch.particleSystems.clear()
+            self.particleSystems.clear()
 
       # particles settings
       if option.particleSettings:
@@ -2185,10 +2185,10 @@ def main(self, context):
           populate(self, context, settings)
 
         # process
-        process(self, context, storage.batch.particleSettings, option)
+        process(self, context, self.particleSettings, option)
 
         # clear storage
-        storage.batch.particleSettings.clear()
+        self.particleSettings.clear()
 
       # sensors
       if option.sensors:
@@ -2209,10 +2209,10 @@ def main(self, context):
               populate(self, context, sensor)
 
           # process
-          process(self, context, storage.batch.sensors, option)
+          process(self, context, self.sensors, option)
 
           # clear storage
-          storage.batch.sensors.clear()
+          self.sensors.clear()
 
       # controllers
       if option.controllers:
@@ -2233,10 +2233,10 @@ def main(self, context):
               populate(self, context, controller)
 
           # process
-          process(self, context, storage.batch.controllers, option)
+          process(self, context, self.controllers, option)
 
           # clear storage
-          storage.batch.controllers.clear()
+          self.controllers.clear()
 
       # actuators
       if option.actuators:
@@ -2257,10 +2257,10 @@ def main(self, context):
               populate(self, context, actuator)
 
           # process
-          process(self, context, storage.batch.actuators, option)
+          process(self, context, self.actuators, option)
 
           # clear storage
-          storage.batch.actuators.clear()
+          self.actuators.clear()
 
     # line sets
     if option.lineSets:
@@ -2292,10 +2292,10 @@ def main(self, context):
               populate(self, context, lineset.linestyle, lineset)
 
       # process
-      process(self, context, storage.batch.linestyles, option)
+      process(self, context, self.linestyles, option)
 
       # clear storage
-      storage.batch.linestyles.clear()
+      self.linestyles.clear()
 
     # linestyle modifiers
     if option.linestyleModifiers:
@@ -2318,10 +2318,10 @@ def main(self, context):
             populate(self, context, modifier)
 
         # process
-        process(self, context, storage.batch.modifiers, option)
+        process(self, context, self.modifiers, option)
 
         # clear storage
-        storage.batch.modifiers.clear()
+        self.modifiers.clear()
 
 
         # alpha
@@ -2340,10 +2340,10 @@ def main(self, context):
             populate(self, context, modifier)
 
         # process
-        process(self, context, storage.batch.modifiers, option)
+        process(self, context, self.modifiers, option)
 
         # clear storage
-        storage.batch.modifiers.clear()
+        self.modifiers.clear()
 
 
         # thickness
@@ -2362,10 +2362,10 @@ def main(self, context):
             populate(self, context, modifier)
 
         # process
-        process(self, context, storage.batch.modifiers, option)
+        process(self, context, self.modifiers, option)
 
         # clear storage
-        storage.batch.modifiers.clear()
+        self.modifiers.clear()
 
 
         # geometry
@@ -2384,10 +2384,10 @@ def main(self, context):
             populate(self, context, modifier)
 
         # process
-        process(self, context, storage.batch.modifiers, option)
+        process(self, context, self.modifiers, option)
 
         # clear storage
-        storage.batch.modifiers.clear()
+        self.modifiers.clear()
 
     # scenes
     if option.scenes:
@@ -2397,10 +2397,10 @@ def main(self, context):
         populate(self, context, scene)
 
       # process
-      process(self, context, storage.batch.scenes, option)
+      process(self, context, self.scenes, option)
 
       # clear storage
-      storage.batch.scenes.clear()
+      self.scenes.clear()
 
     # render layers
     if option.renderLayers:
@@ -2411,10 +2411,10 @@ def main(self, context):
           populate(self, context, layer)
 
         # process
-        process(self, context, storage.batch.renderLayers, option)
+        process(self, context, self.renderLayers, option)
 
         # clear storage
-        storage.batch.renderLayers.clear()
+        self.renderLayers.clear()
 
     # worlds
     if option.worlds:
@@ -2424,10 +2424,10 @@ def main(self, context):
         populate(self, context, world)
 
       # process
-      process(self, context, storage.batch.worlds, option)
+      process(self, context, self.worlds, option)
 
       # clear storage
-      storage.batch.worlds.clear()
+      self.worlds.clear()
 
     # libraries
     if option.libraries:
@@ -2437,10 +2437,10 @@ def main(self, context):
         populate(self, context, library)
 
       # process
-      process(self, context, storage.batch.libraries, option)
+      process(self, context, self.libraries, option)
 
       # clear storage
-      storage.batch.libraries.clear()
+      self.libraries.clear()
 
     # images
     if option.images:
@@ -2450,10 +2450,10 @@ def main(self, context):
         populate(self, context, image)
 
       # process
-      process(self, context, storage.batch.images, option)
+      process(self, context, self.images, option)
 
       # clear storage
-      storage.batch.images.clear()
+      self.images.clear()
 
     # masks
     if option.masks:
@@ -2463,10 +2463,10 @@ def main(self, context):
         populate(self, context, mask)
 
       # process
-      process(self, context, storage.batch.masks, option)
+      process(self, context, self.masks, option)
 
       # clear storage
-      storage.batch.masks.clear()
+      self.masks.clear()
 
     # sequences
     if option.sequences:
@@ -2478,10 +2478,10 @@ def main(self, context):
             populate(self, context, sequence)
 
           # process
-          process(self, context, storage.batch.sequences, option)
+          process(self, context, self.sequences, option)
 
           # clear storage
-          storage.batch.sequences.clear()
+          self.sequences.clear()
 
     # movie clips
     if option.movieClips:
@@ -2491,10 +2491,10 @@ def main(self, context):
         populate(self, context, clip)
 
       # process
-      process(self, context, storage.batch.movieClips, option)
+      process(self, context, self.movieClips, option)
 
       # clear storage
-      storage.batch.movieClips.clear()
+      self.movieClips.clear()
 
     # sounds
     if option.sounds:
@@ -2504,10 +2504,10 @@ def main(self, context):
         populate(self, context, sound)
 
       # process
-      process(self, context, storage.batch.sounds, option)
+      process(self, context, self.sounds, option)
 
       # clear storage
-      storage.batch.sounds.clear()
+      self.sounds.clear()
 
     # screens
     if option.screens:
@@ -2517,10 +2517,10 @@ def main(self, context):
         populate(self, context, screen)
 
       # process
-      process(self, context, storage.batch.screens, option)
+      process(self, context, self.screens, option)
 
       # clear storage
-      storage.batch.screens.clear()
+      self.screens.clear()
 
     # keying sets
     if option.keyingSets:
@@ -2531,10 +2531,10 @@ def main(self, context):
           populate(self, context, keyingSet)
 
         # process
-        process(self, context, storage.batch.keyingSets, option)
+        process(self, context, self.keyingSets, option)
 
         # clear storage
-        storage.batch.keyingSets.clear()
+        self.keyingSets.clear()
 
     # palettes
     if option.palettes:
@@ -2544,10 +2544,10 @@ def main(self, context):
         populate(self, context, palette)
 
       # process
-      process(self, context, storage.batch.palettes, option)
+      process(self, context, self.palettes, option)
 
       # clear storage
-      storage.batch.palettes.clear()
+      self.palettes.clear()
 
     # brushes
     if option.brushes:
@@ -2557,10 +2557,10 @@ def main(self, context):
         populate(self, context, brush)
 
       # process
-      process(self, context, storage.batch.brushes, option)
+      process(self, context, self.brushes, option)
 
       # clear storage
-      storage.batch.brushes.clear()
+      self.brushes.clear()
 
     # nodes
     if option.nodes:
@@ -2574,10 +2574,10 @@ def main(self, context):
             populate(self, context, node)
 
           # process
-          process(self, context, storage.batch.nodes, option)
+          process(self, context, self.nodes, option)
 
           # clear storage
-          storage.batch.nodes.clear()
+          self.nodes.clear()
 
       # compositing
       for scene in bpy.data.scenes:
@@ -2588,10 +2588,10 @@ def main(self, context):
             populate(self, context, node)
 
           # process
-          process(self, context, storage.batch.nodes, option)
+          process(self, context, self.nodes, option)
 
           # clear storage
-          storage.batch.nodes.clear()
+          self.nodes.clear()
 
       # texture
       for texture in bpy.data.textures:
@@ -2602,10 +2602,10 @@ def main(self, context):
             populate(self, context, node)
 
           # process
-          process(self, context, storage.batch.nodes, option)
+          process(self, context, self.nodes, option)
 
           # clear storage
-          storage.batch.nodes.clear()
+          self.nodes.clear()
 
       # groups
       for group in bpy.data.node_groups:
@@ -2615,10 +2615,10 @@ def main(self, context):
           populate(self, context, node)
 
         # process
-        process(self, context, storage.batch.nodes, option)
+        process(self, context, self.nodes, option)
 
         # clear storage
-        storage.batch.nodes.clear()
+        self.nodes.clear()
 
     # node labels
     if option.nodeLabels:
@@ -2635,10 +2635,10 @@ def main(self, context):
             populate(self, context, node)
 
           # process
-          process(self, context, storage.batch.nodeLabels, option)
+          process(self, context, self.nodeLabels, option)
 
           # clear storage
-          storage.batch.nodeLabels.clear()
+          self.nodeLabels.clear()
 
       # compositing
       for scene in bpy.data.scenes:
@@ -2649,10 +2649,10 @@ def main(self, context):
             populate(self, context, node)
 
           # process
-          process(self, context, storage.batch.nodeLabels, option)
+          process(self, context, self.nodeLabels, option)
 
           # clear storage
-          storage.batch.nodeLabels.clear()
+          self.nodeLabels.clear()
 
       # texture
       for texture in bpy.data.textures:
@@ -2663,10 +2663,10 @@ def main(self, context):
             populate(self, context, node)
 
           # process
-          process(self, context, storage.batch.nodeLabels, option)
+          process(self, context, self.nodeLabels, option)
 
           # clear storage
-          storage.batch.nodeLabels.clear()
+          self.nodeLabels.clear()
 
       # groups
       for group in bpy.data.node_groups:
@@ -2676,10 +2676,10 @@ def main(self, context):
           populate(self, context, node)
 
         # process
-        process(self, context, storage.batch.nodeLabels, option)
+        process(self, context, self.nodeLabels, option)
 
         # clear storage
-        storage.batch.nodeLabels.clear()
+        self.nodeLabels.clear()
 
       # tag
       self.tag = False
@@ -2692,10 +2692,10 @@ def main(self, context):
         populate(self, context, group)
 
       # process
-      process(self, context, storage.batch.nodeGroups, option)
+      process(self, context, self.nodeGroups, option)
 
       # clear storage
-      storage.batch.nodeGroups.clear()
+      self.nodeGroups.clear()
 
     # texts
     if option.texts:
@@ -2705,10 +2705,10 @@ def main(self, context):
         populate(self, context, text)
 
       # process
-      process(self, context, storage.batch.texts, option)
+      process(self, context, self.texts, option)
 
       # clear storage
-      storage.batch.texts.clear()
+      self.texts.clear()
 
     # frame nodes
     if option.frameNodes:
@@ -2722,10 +2722,10 @@ def main(self, context):
             populate(self, context, node)
 
           # process
-          process(self, context, storage.batch.nodes, option)
+          process(self, context, self.nodes, option)
 
           # clear storage
-          storage.batch.nodes.clear()
+          self.nodes.clear()
 
       # compositing
       for scene in bpy.data.scenes:
@@ -2736,10 +2736,10 @@ def main(self, context):
             populate(self, context, node)
 
           # process
-          process(self, context, storage.batch.nodes, option)
+          process(self, context, self.nodes, option)
 
           # clear storage
-          storage.batch.nodes.clear()
+          self.nodes.clear()
 
       # texture
       for texture in bpy.data.textures:
@@ -2750,10 +2750,10 @@ def main(self, context):
             populate(self, context, node)
 
           # process
-          process(self, context, storage.batch.nodes, option)
+          process(self, context, self.nodes, option)
 
           # clear storage
-          storage.batch.nodes.clear()
+          self.nodes.clear()
 
       # groups
       for group in bpy.data.node_groups:
@@ -2763,10 +2763,10 @@ def main(self, context):
           populate(self, context, node)
 
         # process
-        process(self, context, storage.batch.nodes, option)
+        process(self, context, self.nodes, option)
 
         # clear storage
-        storage.batch.nodes.clear()
+        self.nodes.clear()
 
 # quick
 def quick(self, context, object, panel, option):
@@ -2823,10 +2823,10 @@ def quick(self, context, object, panel, option):
             populate(self, context, layer)
 
         # process
-        process(self, context, storage.batch.pencilLayers, option)
+        process(self, context, self.pencilLayers, option)
 
         # clear storage
-        storage.batch.pencilLayers.clear()
+        self.pencilLayers.clear()
 
   # groups
   if panel.groups:
@@ -2857,10 +2857,10 @@ def quick(self, context, object, panel, option):
           populate(self, context, constraint)
 
       # process
-      process(self, context, storage.batch.constraints, option)
+      process(self, context, self.constraints, option)
 
       # clear storage
-      storage.batch.constraints.clear()
+      self.constraints.clear()
 
   # modifiers
   if panel.modifiers:
@@ -2876,10 +2876,10 @@ def quick(self, context, object, panel, option):
           populate(self, context, modifier)
 
       # process
-      process(self, context, storage.batch.modifiers, option)
+      process(self, context, self.modifiers, option)
 
       # clear storage
-      storage.batch.modifiers.clear()
+      self.modifiers.clear()
 
   # bone groups
   if panel.boneGroups:
@@ -2896,10 +2896,10 @@ def quick(self, context, object, panel, option):
             populate(self, context, group)
 
         # process
-        process(self, context, storage.batch.boneGroups, option)
+        process(self, context, self.boneGroups, option)
 
         # clear storage
-        storage.batch.boneGroups.clear()
+        self.boneGroups.clear()
 
   # bones
   if object == context.active_object:
@@ -3018,13 +3018,13 @@ def quick(self, context, object, panel, option):
                   if search == '' or re.search(search, constraint.name, re.I):
 
                     # append
-                    storage.batch.constraints.append([constraint.name, constraint.name, constraint.name, [constraint, '']])
+                    self.constraints.append([constraint.name, constraint.name, constraint.name, [constraint, '']])
 
                 # process
-                process(self, context, storage.batch.constraints, option)
+                process(self, context, self.constraints, option)
 
                 # clear storage
-                storage.batch.constraints.clear()
+                self.constraints.clear()
 
             # bone mode
             else:
@@ -3036,13 +3036,13 @@ def quick(self, context, object, panel, option):
                     if search == '' or re.search(search, constraint.name, re.I):
 
                       # append
-                      storage.batch.constraints.append([constraint.name, constraint.name, constraint.name, [constraint, '']])
+                      self.constraints.append([constraint.name, constraint.name, constraint.name, [constraint, '']])
 
                   # process
-                  process(self, context, storage.batch.constraints, option)
+                  process(self, context, self.constraints, option)
 
                   # clear storage
-                  storage.batch.constraints.clear()
+                  self.constraints.clear()
 
           # display bones
           else:
@@ -3052,13 +3052,13 @@ def quick(self, context, object, panel, option):
               if search == '' or re.search(search, constraint.name, re.I):
 
                 # append
-                storage.batch.constraints.append([constraint.name, constraint.name, constraint.name, [constraint, '']])
+                self.constraints.append([constraint.name, constraint.name, constraint.name, [constraint, '']])
 
             # process
-            process(self, context, storage.batch.constraints, option)
+            process(self, context, self.constraints, option)
 
             # clear storage
-            storage.batch.constraints.clear()
+            self.constraints.clear()
 
   # object data
   if object.type != 'EMPTY':
@@ -3087,10 +3087,10 @@ def quick(self, context, object, panel, option):
             populate(self, context, group)
 
         # process
-        process(self, context, storage.batch.vertexGroups, option)
+        process(self, context, self.vertexGroups, option)
 
         # clear storage
-        storage.batch.vertexGroups.clear()
+        self.vertexGroups.clear()
 
   # shapekeys
   if panel.shapekeys:
@@ -3108,10 +3108,10 @@ def quick(self, context, object, panel, option):
               populate(self, context, key)
 
           # process
-          process(self, context, storage.batch.shapekeys, option)
+          process(self, context, self.shapekeys, option)
 
           # clear storage
-          storage.batch.shapekeys.clear()
+          self.shapekeys.clear()
 
   # uv maps
   if panel.uvs:
@@ -3128,10 +3128,10 @@ def quick(self, context, object, panel, option):
             populate(self, context, uv)
 
         # process
-        process(self, context, storage.batch.uvs, option)
+        process(self, context, self.uvs, option)
 
         # clear storage
-        storage.batch.uvs.clear()
+        self.uvs.clear()
 
   # vertex colors
   if panel.vertexColors:
@@ -3148,10 +3148,10 @@ def quick(self, context, object, panel, option):
             populate(self, context, vertexColor)
 
         # process
-        process(self, context, storage.batch.vertexColors, option)
+        process(self, context, self.vertexColors, option)
 
         # clear storage
-        storage.batch.vertexColors.clear()
+        self.vertexColors.clear()
 
   # materials
   if panel.materials:
@@ -3240,10 +3240,10 @@ def quick(self, context, object, panel, option):
             populate(self, context, modifier.particle_system)
 
       # process
-      process(self, context, storage.batch.particleSystems, option)
+      process(self, context, self.particleSystems, option)
 
       # clear storage
-      storage.batch.particleSystems.clear()
+      self.particleSystems.clear()
 
   # particle settings
   if panel.particleSystems:
@@ -3270,188 +3270,188 @@ def populate(self, context, datablock, source=None):
 
   # objects
   if datablock.rna_type.identifier == 'Object':
-    storage.batch.objects.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.objects.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # groups
   if datablock.rna_type.identifier == 'Group':
-    storage.batch.groups.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.groups.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # actions
   if datablock.rna_type.identifier == 'Action':
-    storage.batch.actions.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.actions.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # grease pencils
   if datablock.rna_type.identifier == 'GreasePencil':
-    storage.batch.greasePencils.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.greasePencils.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # pencil layers
   if datablock.rna_type.identifier == 'GPencilLayer':
-    storage.batch.pencilLayers.append([datablock.info, datablock.info, datablock.info, [datablock, '']])
+    self.pencilLayers.append([datablock.info, datablock.info, datablock.info, [datablock, '']])
 
   # constraints
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Constraint':
-      storage.batch.constraints.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+      self.constraints.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # modifiers
   if hasattr(datablock.rna_type.base, 'identifier'):
-    if datablock.rna_type.base.identifier in 'Modifier':
-      storage.batch.modifiers.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    if datablock.rna_type.base.identifier == 'Modifier':
+      self.modifiers.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # cameras
   if datablock.rna_type.identifier == 'Camera':
-    storage.batch.cameras.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.cameras.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # meshes
   if datablock.rna_type.identifier == 'Mesh':
-    storage.batch.meshes.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.meshes.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # curves
   if datablock.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-    storage.batch.curves.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.curves.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # lamps
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Lamp':
-      storage.batch.lamps.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+      self.lamps.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # lattices
   if datablock.rna_type.identifier == 'Lattice':
-    storage.batch.lattices.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.lattices.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # metaballs
   if datablock.rna_type.identifier == 'MetaBall':
-    storage.batch.metaballs.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.metaballs.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # speakers
   if datablock.rna_type.identifier == 'Speaker':
-    storage.batch.speakers.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.speakers.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # armatures
   if datablock.rna_type.identifier == 'Armature':
-    storage.batch.armatures.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.armatures.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # bones
   if datablock.rna_type.identifier in {'PoseBone', 'EditBone', 'Bone'}:
-    storage.batch.bones.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.bones.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # vertex groups
   if datablock.rna_type.identifier == 'VertexGroup':
-    storage.batch.vertexGroups.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.vertexGroups.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # shapekeys
   if datablock.rna_type.identifier == 'ShapeKey':
-    storage.batch.shapekeys.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.shapekeys.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # uvs
   if datablock.rna_type.identifier == 'MeshTexturePolyLayer':
-    storage.batch.uvs.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.uvs.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # vertex colors
   if datablock.rna_type.identifier == 'MeshLoopColorLayer':
-    storage.batch.vertexColors.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.vertexColors.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # materials
   if datablock.rna_type.identifier == 'Material':
-    storage.batch.materials.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.materials.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # textures
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Texture':
-      storage.batch.textures.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+      self.textures.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # particle systems
   if datablock.rna_type.identifier == 'ParticleSystem':
-    storage.batch.particleSystems.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.particleSystems.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # particle settings
   if datablock.rna_type.identifier == 'ParticleSettings':
-    storage.batch.particleSettings.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.particleSettings.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # line style
   if datablock.rna_type.identifier == 'FreestyleLineStyle':
-    storage.batch.linestyles.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
+    self.linestyles.append([datablock.name, datablock.name, datablock.name, [datablock, '', source]])
 
   # line style modifiers
   if hasattr(datablock.rna_type.base, 'identifier'):
     if hasattr(datablock.rna_type.base.base, 'identifier'):
       if datablock.rna_type.base.base.identifier == 'LineStyleModifier':
-        storage.batch.modifiers.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+        self.modifiers.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # sensors
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Sensor':
-      storage.batch.sensors.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+      self.sensors.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # controllers
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Controller':
-      storage.batch.controllers.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+      self.controllers.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # actuators
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Actuator':
-      storage.batch.actuators.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+      self.actuators.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # scenes
   if datablock.rna_type.identifier == 'Scene':
-    storage.batch.scenes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.scenes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # render layers
   if datablock.rna_type.identifier == 'SceneRenderLayer':
-    storage.batch.renderLayers.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.renderLayers.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # worlds
   if datablock.rna_type.identifier == 'World':
-    storage.batch.worlds.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.worlds.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # libraries
   if datablock.rna_type.identifier == 'Library':
-    storage.batch.libraries.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.libraries.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # images
   if datablock.rna_type.identifier == 'Image':
-    storage.batch.images.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.images.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # masks
   if datablock.rna_type.identifier == 'Mask':
-    storage.batch.masks.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.masks.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # sequences
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Sequence':
-      storage.batch.sequences.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+      self.sequences.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # movie clips
   if datablock.rna_type.identifier == 'MovieClip':
-    storage.batch.movieClips.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.movieClips.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # sounds
   if datablock.rna_type.identifier == 'Sound':
-    storage.batch.sounds.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.sounds.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # screens
   if datablock.rna_type.identifier == 'Screen':
-    storage.batch.screens.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.screens.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # keying sets
   if datablock.rna_type.identifier == 'KeyingSet':
-    storage.batch.keyingSets.append([datablock.bl_label, datablock.bl_label, datablock.bl_label, [datablock, '']])
+    self.keyingSets.append([datablock.bl_label, datablock.bl_label, datablock.bl_label, [datablock, '']])
 
   # palettes
   if datablock.rna_type.identifier == 'Palette':
-    storage.batch.palettes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.palettes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # brushes
   if datablock.rna_type.identifier == 'Brush':
-    storage.batch.brushes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.brushes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # nodes
   if hasattr(datablock.rna_type.base, 'base'):
     if hasattr(datablock.rna_type.base.base, 'base'):
       if hasattr(datablock.rna_type.base.base.base, 'identifier'):
         if datablock.rna_type.base.base.base.identifier == 'Node':
-          storage.batch.nodes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+          self.nodes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
           if self.tag:
 
@@ -3470,11 +3470,11 @@ def populate(self, context, datablock, source=None):
   # node groups
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'NodeTree':
-      storage.batch.nodeGroups.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+      self.nodeGroups.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
   # frame nodes
   if datablock.rna_type.identifier == 'NodeFrame':
-    storage.batch.nodes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.nodes.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
     if self.tag:
 
@@ -3492,7 +3492,7 @@ def populate(self, context, datablock, source=None):
 
   # texts
   if datablock.rna_type.identifier == 'Text':
-    storage.batch.texts.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
+    self.texts.append([datablock.name, datablock.name, datablock.name, [datablock, '']])
 
 def process(self, context, collection, option):
   '''

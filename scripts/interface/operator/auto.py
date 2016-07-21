@@ -44,6 +44,39 @@ class name(Operator):
     default = 0
   )
 
+  # object
+  objects = []
+
+  # constraints
+  constraints = []
+
+  # modifiers
+  modifiers = []
+
+  # cameras
+  cameras = []
+
+  # meshes
+  meshes = []
+
+  # curves
+  curves = []
+
+  # lamps
+  lamps = []
+
+  # lattices
+  lattices = []
+
+  # metaballs
+  metaballs = []
+
+  # speakers
+  speakers = []
+
+  # armatures
+  armatures = []
+
   # poll
   @classmethod
   def poll(cls, context):

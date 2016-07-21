@@ -49,13 +49,13 @@ def main(self, context):
             if option.objectType in 'ALL':
 
               # populate
-              populate(context, object)
+              populate(self, context, object)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
-              populate(context, object)
+              populate(self, context, object)
 
         # mode
         else:
@@ -64,13 +64,13 @@ def main(self, context):
           if option.objectType in 'ALL':
 
             # populate
-            populate(context, object)
+            populate(self, context, object)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            populate(context, object)
+            populate(self, context, object)
 
       # constraints
       if option.constraints:
@@ -84,13 +84,13 @@ def main(self, context):
               if option.constraintType in 'ALL':
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
               # constraint type
               elif option.constraintType in constraint.type:
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
         # mode
         else:
@@ -100,13 +100,16 @@ def main(self, context):
             if option.constraintType in 'ALL':
 
               # populate
-              populate(context, constraint)
+              populate(self, context, constraint)
 
             # constraint type
             elif option.constraintType in constraint.type:
 
               # populate
-              populate(context, constraint)
+              populate(self, context, constraint)
+
+        # process
+        process(self, context, self.constraints)
 
       # modifiers
       if option.modifiers:
@@ -120,13 +123,13 @@ def main(self, context):
               if option.modifierType in 'ALL':
 
                 # populate
-                populate(context, modifier)
+                populate(self, context, modifier)
 
               # modifier type
               elif option.modifierType in modifier.type:
 
                 # populate
-                populate(context, modifier)
+                populate(self, context, modifier)
         else:
           for modifier in object.modifiers:
 
@@ -134,13 +137,16 @@ def main(self, context):
             if option.modifierType in 'ALL':
 
               # populate
-              populate(context, modifier)
+              populate(self, context, modifier)
 
             # modifier type
             elif option.modifierType in modifier.type:
 
               # populate
-              populate(context, modifier)
+              populate(self, context, modifier)
+
+        # process
+        process(self, context, self.modifiers)
 
       # object data
       if option.objectData:
@@ -154,13 +160,13 @@ def main(self, context):
               if option.objectType in 'ALL':
 
                 # populate
-                populate(context, object.data, object)
+                populate(self, context, object.data, object)
 
               # object type
               elif option.objectType in object.type:
 
                 # populate
-                populate(context, object.data, object)
+                populate(self, context, object.data, object)
 
           # mode
           else:
@@ -169,13 +175,13 @@ def main(self, context):
             if option.objectType in 'ALL':
 
               # populate
-              populate(context, object.data, object)
+              populate(self, context, object.data, object)
 
             # object type
             elif option.objectType in object.type:
 
               # populate
-              populate(context, object.data, object)
+              populate(self, context, object.data, object)
 
       # bone constraints
       if option.boneConstraints:
@@ -192,13 +198,13 @@ def main(self, context):
                     if option.constraintType in 'ALL':
 
                       # populate
-                      populate(context, constraint)
+                      populate(self, context, constraint)
 
                     # constraint type
                     elif option.constraintType in constraint.type:
 
                       # populate
-                      populate(context, constraint)
+                      populate(self, context, constraint)
         else:
           if object.type in 'ARMATURE':
             for bone in object.pose.bones:
@@ -208,13 +214,13 @@ def main(self, context):
                 if option.constraintType in 'ALL':
 
                   # populate
-                  populate(context, constraint)
+                  populate(self, context, constraint)
 
                 # constraint type
                 elif option.constraintType in constraint.type:
 
                   # populate
-                  populate(context, constraint)
+                  populate(self, context, constraint)
 
   # mode
   else:
@@ -227,13 +233,13 @@ def main(self, context):
         if option.objectType in 'ALL':
 
           # populate
-          populate(context, object)
+          populate(self, context, object)
 
         # object type
         elif option.objectType in object.type:
 
           # populate
-          populate(context, object)
+          populate(self, context, object)
 
       # constraints
       if option.constraints:
@@ -243,13 +249,13 @@ def main(self, context):
           if option.constraintType in 'ALL':
 
             # populate
-            populate(context, constraint)
+            populate(self, context, constraint)
 
           # constraint type
           elif option.constraintType in constraint.type:
 
             # populate
-            populate(context, constraint)
+            populate(self, context, constraint)
 
       # modifiers
       if option.modifiers:
@@ -259,13 +265,13 @@ def main(self, context):
           if option.modifierType in 'ALL':
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
           # modifier type
           elif option.modifierType in modifier.type:
 
             # populate
-            populate(context, modifier)
+            populate(self, context, modifier)
 
       # object data
       if option.objectData:
@@ -275,13 +281,13 @@ def main(self, context):
           if option.objectType in 'ALL':
 
             # populate
-            populate(context, object.data, object)
+            populate(self, context, object.data, object)
 
           # object type
           elif option.objectType in object.type:
 
             # populate
-            populate(context, object.data, object)
+            populate(self, context, object.data, object)
 
       # bone constraints
       if option.boneConstraints:
@@ -293,48 +299,48 @@ def main(self, context):
               if option.constraintType in 'ALL':
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
               # constraint type
               elif option.constraintType in constraint.type:
 
                 # populate
-                populate(context, constraint)
+                populate(self, context, constraint)
 
   # all
   all = [
     # object
-    storage.batch.objects,
+    self.objects,
 
     # constraints
-    storage.batch.constraints,
+    # self.constraints,
 
     # modifiers
-    storage.batch.modifiers,
+    # self.modifiers,
 
     # cameras
-    storage.batch.cameras,
+    self.cameras,
 
     # meshes
-    storage.batch.meshes,
+    self.meshes,
 
     # curves
-    storage.batch.curves,
+    self.curves,
 
     # lamps
-    storage.batch.lamps,
+    self.lamps,
 
     # lattices
-    storage.batch.lattices,
+    self.lattices,
 
     # metaballs
-    storage.batch.metaballs,
+    self.metaballs,
 
     # speakers
-    storage.batch.speakers,
+    self.speakers,
 
     # armatures
-    storage.batch.armatures,
+    self.armatures,
   ]
 
   # process
@@ -345,7 +351,7 @@ def main(self, context):
       process(self, context, collection)
 
 # populate
-def populate(context, datablock, source=None):
+def populate(self, context, datablock, source=None):
   '''
     Sort datablocks into proper storage list.
   '''
@@ -355,50 +361,50 @@ def populate(context, datablock, source=None):
 
   # objects
   if datablock.rna_type.identifier == 'Object':
-    storage.batch.objects.append([datablock.name, datablock.name, datablock.name, [datablock, ''], 'OBJECT'])
+    self.objects.append([datablock.name, datablock.name, datablock.name, [datablock, ''], 'OBJECT'])
 
   # constraints
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Constraint':
-      storage.batch.constraints.append([datablock.name, datablock.name, datablock.name, [datablock, ''], 'CONSTRAINT'])
+      self.constraints.append([datablock.name, datablock.name, datablock.name, [datablock, ''], 'CONSTRAINT'])
 
   # modifiers
   if hasattr(datablock.rna_type.base, 'identifier'):
-    if datablock.rna_type.base.identifier in 'Modifier':
-      storage.batch.modifiers.append([datablock.name, datablock.name, datablock.name, [datablock, ''], 'MODIFIER'])
+    if datablock.rna_type.base.identifier == 'Modifier':
+      self.modifiers.append([datablock.name, datablock.name, datablock.name, [datablock, ''], 'MODIFIER'])
 
   # cameras
   if datablock.rna_type.identifier == 'Camera':
-    storage.batch.cameras.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
+    self.cameras.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
 
   # meshes
   if datablock.rna_type.identifier == 'Mesh':
-    storage.batch.meshes.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
+    self.meshes.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
 
   # curves
   if datablock.rna_type.identifier in {'SurfaceCurve', 'TextCurve', 'Curve'}:
-    storage.batch.curves.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
+    self.curves.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
 
   # lamps
   if hasattr(datablock.rna_type.base, 'identifier'):
     if datablock.rna_type.base.identifier == 'Lamp':
-      storage.batch.lamps.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
+      self.lamps.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
 
   # lattices
   if datablock.rna_type.identifier == 'Lattice':
-    storage.batch.lattices.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
+    self.lattices.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
 
   # metaballs
   if datablock.rna_type.identifier == 'MetaBall':
-    storage.batch.metaballs.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
+    self.metaballs.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
 
   # speakers
   if datablock.rna_type.identifier == 'Speaker':
-    storage.batch.speakers.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
+    self.speakers.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
 
   # armatures
   if datablock.rna_type.identifier == 'Armature':
-    storage.batch.armatures.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
+    self.armatures.append([datablock.name, datablock.name, datablock.name, [datablock, '', source], 'DATA'])
 
 def process(self, context, collection):
   '''
@@ -421,7 +427,7 @@ def process(self, context, collection):
       compare.append(name[3][0])
       clean.append(name)
 
-  # don with collection
+  # done with collection
   collection.clear()
 
   # sort clean
@@ -431,10 +437,6 @@ def process(self, context, collection):
   # name
   for i, name in enumerate(clean):
     rename(self, context, name, i)
-
-  # sort clean
-  try: clean.sort()
-  except: pass
 
   # randomize names (prevents conflicts)
   for name in clean:

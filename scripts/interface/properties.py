@@ -53,23 +53,36 @@ class toolsProperties(Panel):
       Properties panel body.
     '''
 
+    # panel
+    panel = context.scene.NamePanel
+
+    # display active
+    displayActive = context.scene.PropertiesPanel.displayActive
+
+    # layout
     layout = self.layout
 
-    try:
+    # is owner
+    if panel.owner:
 
       # main
       main(self, context)
 
-    except:
+    # is display active and context in object, object data, bone
+    elif displayActive and panel.context in {'OBJECT', 'OBJECT_DATA', 'BONE'}:
 
-      # label
+      # main
+      main(self, context)
+
+    # nothing to show
+    else:
       layout.label(text='Nothing to show')
 
 
 # UI properties
 class UIProperties(Panel):
   '''
-    Name Panel context sensitive properties panel for the 3D View property shelf.
+    Name panel context sensitive properties panel for the 3D View property shelf.
   '''
   bl_idname = 'VIEW3D_PT_UI_properties'
   bl_space_type = 'VIEW_3D'
@@ -95,15 +108,29 @@ class UIProperties(Panel):
     '''
       Properties panel body.
     '''
+    # panel
+    panel = context.scene.NamePanel
 
-    try:
+    # display active
+    displayActive = context.scene.PropertiesPanel.displayActive
+
+    # layout
+    layout = self.layout
+
+    # is owner
+    if panel.owner:
 
       # main
       main(self, context)
 
-    except:
+    # is display active and context in object, object data, bone
+    elif displayActive and panel.context in {'OBJECT', 'OBJECT_DATA', 'BONE'}:
 
-      # label
+      # main
+      main(self, context)
+
+    # nothing to show
+    else:
       layout.label(text='Nothing to show')
 
 # main
@@ -121,8 +148,29 @@ def main(self, context):
   # layout
   layout = self.layout
 
+  # row
+  row = layout.row(align=True)
+
+  # back
+  row.operator('view3d.name_panel_previous', text='', icon='BACK')
+
   # context
-  layout.prop(panel, 'context', text='')
+  row.prop(panel, 'context', text='')
+
+  # to object
+  row.operator('view3d.name_panel_to_object', text='', icon='OBJECT_DATA')
+
+  # to data
+  row.operator('view3d.name_panel_to_data', text='', icon='MESH_DATA')
+
+  # object
+  object = context.object if displayActive else bpy.data.objects[panel.target]
+
+  # is armature
+  if object.type == 'ARMATURE':
+
+    # to bone
+    row.operator('view3d.name_panel_to_bone', text='', icon='BONE_DATA')
 
   # object
   if panel.context == 'OBJECT':

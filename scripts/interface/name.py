@@ -2011,6 +2011,7 @@ def Bone(self, context, layout, datablock, object, panel):
       # lock
       row.prop(datablock, 'lock', text='', icon=iconLock)
 
+  # is edit mode
   if object.mode in 'EDIT':
     # row
     row = layout.row()
@@ -2018,11 +2019,18 @@ def Bone(self, context, layout, datablock, object, panel):
     # separator
     row.separator()
 
+  # is pose mode
   elif object.mode in 'POSE':
-    if not panel.boneConstraints or bpy.data.objects[object.name].pose.bones[datablock.name].constraints == []:
+
+    # constraints
+    constraints = [constraint.name for constraint in context.active_object.pose.bones[datablock.name].constraints]
+
+    # isn't bone constraints
+    if not panel.boneConstraints or constraints == []:
 
       # row
       row = layout.row()
 
       # separator
       row.separator()
+

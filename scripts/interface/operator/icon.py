@@ -36,7 +36,7 @@ class operator(Operator):
   bl_idname = 'view3d.name_panel_icon'
   bl_label = 'Name Panel Icon'
   bl_description = 'Changes active object.'
-  bl_options = {'UNDO'}
+  bl_options = {'UNDO', 'INTERNAL'}
 
   # active
   active = BoolProperty(
@@ -134,6 +134,9 @@ class operator(Operator):
 
     # panel
     panel = context.scene.NamePanel
+    panel.previousOwner = panel.owner
+    panel.previousTarget = panel.target
+    panel.previousContext = panel.context
     panel.owner = self.owner
     panel.target = self.target
     panel.context = self.context

@@ -44,7 +44,7 @@ from bpy.types import AddonPreferences
 from bpy.props import *
 from .scripts import options as PropertyGroup
 from .scripts.interface import button, icon, menu, name, properties
-from .scripts.interface.operator import auto, batch, copy, icon, options, shared, text
+from .scripts.interface.operator import auto, batch, copy, icon, navigate, options, shared, text
 from .scripts.interface.operator.preferences import auto, batch, copy
 from .scripts.interface.operator.preferences import name as nameDefaults
 

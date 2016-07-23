@@ -279,7 +279,7 @@ def filters(self, context, layout, panel):
   # options
   row.prop(panel, 'options', text='', icon='SETTINGS')
 
-  # # operator menu
+  # operator menu
   row.menu('VIEW3D_MT_name_panel_specials', text='', icon='COLLAPSEMENU')
 
   # filters

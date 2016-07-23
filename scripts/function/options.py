@@ -742,6 +742,12 @@ def reset(context, panel, auto, names, name, copy):
     # trim end
     option.trimEnd = default['trim end']
 
+    # start
+    option.cutStart = default['cut start']
+
+    # end
+    option.cutAmount = default['cut amount']
+
     # default
     default = defaults['shared']
 
@@ -1511,6 +1517,12 @@ def transfer(context, panel, auto, names, name, copy):
 
         # trim end
         scene.BatchName.trimEnd = option.trimEnd
+
+        # start
+        scene.BatchName.cutStart = option.cutStart
+
+        # end
+        scene.BatchName.cutAmount = option.cutAmount
 
         # batch shared option
         option = context.scene.BatchShared

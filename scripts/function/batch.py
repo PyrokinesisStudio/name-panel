@@ -3646,6 +3646,9 @@ def rename(self, context, oldName, option):
     if option.trimEnd > 0:
       newName = newName[:-option.trimEnd]
 
+    # cut
+    newName = newName[:option.cutStart] + newName[option.cutStart+option.cutAmount:]
+
   # isnt simple
   else:
 

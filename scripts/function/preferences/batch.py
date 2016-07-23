@@ -108,6 +108,8 @@ def main(context):
   default['suffix last'] = option.suffixLast
   default['trim start'] = option.trimStart
   default['trim end'] = option.trimEnd
+  default['cut start'] = option.cutStart
+  default['cut amount'] = option.cutAmount
   shared.main(context, context.scene.BatchShared, defaults['shared'])
 
   # generate

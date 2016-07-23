@@ -1751,7 +1751,7 @@ class batch:
       name = 'Trim Start',
       description = 'Remove this many characters from the beginning of the name.',
       min = 0,
-      max = 63,
+      max = 60,
       default = default['trim start']
     )
 
@@ -1760,8 +1760,26 @@ class batch:
       name = 'Trim End',
       description = 'Remove this many characters from the end of the name.',
       min = 0,
-      max = 63,
+      max = 60,
       default = default['trim end']
+    )
+
+    # cut start
+    cutStart = IntProperty(
+      name = 'Start',
+      description = 'Begin the cut at this character.',
+      min = 0,
+      max = 60,
+      default = default['cut start']
+    )
+
+    # cut end
+    cutAmount = IntProperty(
+      name = 'Amount',
+      description = 'Number of characters to remove.',
+      min = 0,
+      max = 60,
+      default = default['cut amount']
     )
 
   # copy

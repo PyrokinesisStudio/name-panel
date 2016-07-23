@@ -241,6 +241,8 @@ defaults = {
     'suffix last': False,
     'trim start': 0,
     'trim end': 0,
+    'cut start': 0,
+    'cut amount': 0,
   },
 
   'copy name': {

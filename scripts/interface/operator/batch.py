@@ -450,6 +450,14 @@ class name(Operator):
     row.label(text='Trim End:')
     row.prop(option, 'trimEnd', text='')
     column.separator()
+    column.separator()
+    row = column.row(align=True)
+
+    # Cut
+    row.label(text='Cut:')
+    row.prop(option, 'cutStart', text='At')
+    row.prop(option, 'cutAmount')
+    column.separator()
 
     # sort
     shared.sort(column, context.scene.BatchShared)

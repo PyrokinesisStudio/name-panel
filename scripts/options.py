@@ -122,13 +122,6 @@ class name(PropertyGroup):
     default = default['pin active object']
   )
 
-  # hide search
-  hideSearch = BoolProperty(
-    name = 'Hide Search',
-    description = 'Only display the search field in the panel when the filters option is toggled on.',
-    default = default['hide search']
-  )
-
   # hide find & replace
   hideFindReplace = BoolProperty(
     name = 'Hide Find & Replace',
@@ -160,7 +153,7 @@ class name(PropertyGroup):
   # search
   search = StringProperty(
     name = 'Search',
-    description = 'Panel search filter.',
+    description = 'Find this text in names.',
     default = default['search']
   )
 

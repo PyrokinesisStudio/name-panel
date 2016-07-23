@@ -3623,7 +3623,7 @@ def rename(self, context, oldName, option):
   # option
   option = context.scene.BatchName
 
-  # simple
+  # not simple
   if not self.simple:
 
     # numeral
@@ -3649,27 +3649,31 @@ def rename(self, context, oldName, option):
     # cut
     newName = newName[:option.cutStart] + newName[option.cutStart+option.cutAmount:]
 
-  # isnt simple
-  else:
-
-    # new name
-    newName = oldName
-
-  # find & replace
-  if option.regex:
-    try: newName = re.sub(option.find, option.replace, newName)
-    except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
-  else:
-    newName = re.sub(re.escape(option.find), option.replace, newName)
-
-  # simple
-  if not self.simple:
+    # find & replace
+    if option.regex:
+      try: newName = re.sub(option.find, option.replace, newName)
+      except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
+    else:
+      newName = re.sub(re.escape(option.find), option.replace, newName)
 
     # strip numeral
     newName = re.split(numeral, newName)[0] if not option.suffixLast else newName
 
     # prefix & suffix
     newName = option.prefix + newName + option.suffix if not option.suffixLast else option.prefix + newName
+
+  # is simple
+  else:
+
+    # new name
+    newName = oldName
+
+    # find & replace
+    if context.scene.NamePanel.regex:
+      try: newName = re.sub(context.scene.NamePanel.search, option.replace, newName, re.I)
+      except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
+    else:
+      newName = re.sub(re.escape(context.scene.NamePanel.search), option.replace, newName, re.I)
 
   # new name
   return newName

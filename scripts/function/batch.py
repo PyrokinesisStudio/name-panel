@@ -3649,12 +3649,15 @@ def rename(self, context, oldName, option):
     # cut
     newName = newName[:option.cutStart] + newName[option.cutStart+option.cutAmount:]
 
-    # find & replace
-    if option.regex:
-      try: newName = re.sub(option.find, option.replace, newName)
-      except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
-    else:
-      newName = re.sub(re.escape(option.find), option.replace, newName)
+    # is find
+    if option.find != '':
+
+      # find & replace
+      if option.regex:
+        try: newName = re.sub(option.find, option.replace, newName)
+        except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
+      else:
+        newName = re.sub(re.escape(option.find), option.replace, newName)
 
     # strip numeral
     newName = re.split(numeral, newName)[0] if not option.suffixLast else newName
@@ -3668,12 +3671,15 @@ def rename(self, context, oldName, option):
     # new name
     newName = oldName
 
-    # find & replace
-    if context.scene.NamePanel.regex:
-      try: newName = re.sub(context.scene.NamePanel.search, option.replace, newName, re.I)
-      except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
-    else:
-      newName = re.sub(re.escape(context.scene.NamePanel.search), option.replace, newName, re.I)
+    # is search
+    if context.scene.NamePanel.search != '':
+
+      # find & replace
+      if context.scene.NamePanel.regex:
+        try: newName = re.sub(context.scene.NamePanel.search, option.replace, newName, re.I)
+        except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
+      else:
+        newName = re.sub(re.escape(context.scene.NamePanel.search), option.replace, newName, re.I)
 
   # new name
   return newName

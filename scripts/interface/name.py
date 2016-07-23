@@ -99,15 +99,18 @@ def main(self, context):
     # member
     member = gather(context, {object.name: [] for object in context.scene.objects if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]}) if panel.search != '' else {}
 
-  # pin active object
+  # is pin active object
   if panel.pinActiveObject:
     if context.active_object:
 
+      # datablock
+      datablock = context.active_object
+
       # search
-      if search == '' or re.search(search, context.active_object.name, re.I) or [re.search(search, item, re.I) for item in member[context.active_object.name] if re.search(search, item, re.I) != None]:
+      if search == '' or re.search(search, datablock.name, re.I) or [re.search(search, item, re.I) for item in member[datablock.name] if re.search(search, item, re.I) != None]:
 
         # populate
-        populate(self, context, layout, context.active_object, panel)
+        populate(self, context, layout, datablock, panel)
 
     # display names
     if panel.displayNames:
@@ -121,6 +124,7 @@ def main(self, context):
         # sorted
         for datablock in sorted(objects):
           if datablock[1] != context.active_object:
+
 
             # search
             if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
@@ -138,16 +142,47 @@ def main(self, context):
         for datablock in sorted(objects):
           if datablock[1] != context.active_object:
 
-            # search
-            if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
+            # local
+            local = False
+            for area in context.screen.areas:
+              if area.type == 'VIEW_3D':
+                if area.spaces.active.local_view:
 
-              # populate
-              populate(self, context, layout, datablock[1], panel)
+                  # local
+                  local = True
 
-  # pin active object
+            # is local
+            if local:
+              if True in datablock[1].layers_local_view[:]:
+
+                # datablock
+                datablock = datablock[1]
+
+              # isnt local
+              else:
+
+                # datablock
+                datablock = None
+
+            # isnt local
+            else:
+
+              # datablock
+              datablock = datablock[1]
+
+            # is datablock
+            if datablock:
+
+              # search
+              if search == '' or re.search(search, datablock.name, re.I) or [re.search(search, item, re.I) for item in member[datablock.name] if re.search(search, item, re.I) != None]:
+
+                # populate
+                populate(self, context, layout, datablock, panel)
+
+  # isnt pin active object
   else:
 
-    # display names
+    # is display names
     if panel.displayNames:
 
       # mode
@@ -174,11 +209,44 @@ def main(self, context):
         # sorted
         for datablock in sorted(objects):
 
-          # search
-          if search == '' or re.search(search, datablock[1].name, re.I) or [re.search(search, item, re.I) for item in member[datablock[1].name] if re.search(search, item, re.I) != None]:
+          # local
+          local = False
+          for area in context.screen.areas:
+            if area.type == 'VIEW_3D':
+              if area.spaces.active.local_view:
 
-            # populate
-            populate(self, context, layout, datablock[1], panel)
+                # local
+                local = True
+
+          # is local
+          if local:
+            if True in datablock[1].layers_local_view[:]:
+
+              # datablock
+              datablock = datablock[1]
+
+            # isnt local
+            else:
+
+              # datablock
+              datablock = None
+
+          # isnt local
+          else:
+
+            # datablock
+            datablock = datablock[1]
+
+          # is datablock
+          if datablock:
+
+            # search
+            if search == '' or re.search(search, datablock.name, re.I) or [re.search(search, item, re.I) for item in member[datablock.name] if re.search(search, item, re.I) != None]:
+
+              # populate
+              populate(self, context, layout, datablock, panel)
+
+    # isnt display names
     else:
 
       # search

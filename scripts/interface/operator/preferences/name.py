@@ -137,48 +137,6 @@ class name(Operator):
       # particles systems
       row.prop(panel, 'particleSystems', text='', icon='PARTICLES')
 
-      # separator
-      column.separator()
-
-      # hide search
-      if panel.hideSearch:
-
-        # row
-        row = column.row(align=True)
-
-        # search
-        row.prop(panel, 'search', text='', icon='BORDERMOVE')
-
-        # sub
-        sub = row.split(align=True)
-
-        # scale x
-        sub.scale_x = 0.1
-
-        # regex
-        sub.prop(panel, 'regex', text='.*', toggle=True)
-
-    # hide search
-    if not panel.hideSearch:
-
-      # row
-      row = column.row(align=True)
-
-      # search
-      row.prop(panel, 'search', text='', icon='BORDERMOVE')
-
-      # sub
-      sub = row.split(align=True)
-
-      # scale x
-      sub.scale_x = 0.1
-
-      # regex
-      sub.prop(panel, 'regex', text='.*', toggle=True)
-
-    # filters
-    if panel.filters:
-
       # hide find & replace
       if panel.hideFindReplace:
 
@@ -189,7 +147,7 @@ class name(Operator):
         row = column.row(align=True)
 
         # find
-        row.prop(context.scene.BatchName, 'find', text='', icon='VIEWZOOM')
+        row.prop(panel, 'search', text='', icon='VIEWZOOM')
 
         # sub
         sub = row.split(align=True)
@@ -198,7 +156,7 @@ class name(Operator):
         sub.scale_x = 0.1
 
         # regex
-        sub.prop(context.scene.BatchName, 'regex', text='.*', toggle=True)
+        sub.prop(panel, 'regex', text='.*', toggle=True)
 
         # row
         row = column.row(align=True)
@@ -232,7 +190,7 @@ class name(Operator):
       row = column.row(align=True)
 
       # find
-      row.prop(context.scene.BatchName, 'find', text='', icon='VIEWZOOM')
+      row.prop(panel, 'search', text='', icon='VIEWZOOM')
 
       # sub
       sub = row.split(align=True)
@@ -241,7 +199,7 @@ class name(Operator):
       sub.scale_x = 0.1
 
       # regex
-      sub.prop(context.scene.BatchName, 'regex', text='.*', toggle=True)
+      sub.prop(panel, 'regex', text='.*', toggle=True)
 
       # row
       row = column.row(align=True)

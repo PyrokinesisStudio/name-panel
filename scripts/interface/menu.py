@@ -54,8 +54,17 @@ class specials(Menu):
     # separator
     layout.separator()
 
-    # pin active object
-    layout.prop(option, 'pinActiveObject')
+    # is display names
+    if option.displayNames:
+
+        # pin active object
+        layout.prop(option, 'pinActiveObject')
+
+    # is display bone names
+    if option.displayBones:
+
+        # pin active bone
+        layout.prop(option, 'pinActiveBone')
 
     # hide search
     layout.prop(option, 'hideFindReplace')
@@ -71,7 +80,10 @@ class specials(Menu):
     op.name = False
     op.copy = False
 
-    # separator
-    layout.separator()
+    # is option.regex
+    if option.regex or context.scene.BatchName.regex:
 
-    layout.operator('wm.regular_expression_cheatsheet', icon='NEW')
+        # separator
+        layout.separator()
+
+        layout.operator('wm.regular_expression_cheatsheet', icon='NEW')

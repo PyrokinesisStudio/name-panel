@@ -40,6 +40,9 @@ def reset(context, panel, auto, names, name, copy):
     # pin active object
     option.pinActiveObject = default['pin active object']
 
+    # pin active bone
+    option.pinActiveBone = default['pin active bone']
+
     # hide search
     option.hideSearch = default['hide search']
 
@@ -827,6 +830,9 @@ def transfer(context, panel, auto, names, name, copy):
 
         # pin active object
         scene.NamePanel.pinActiveObject = option.pinActiveObject
+
+        # pin active bone
+        scene.NamePanel.pinActiveBone = option.pinActiveBone
 
         # hide search
         scene.NamePanel.hideSearch = option.hideSearch

@@ -118,8 +118,16 @@ class name(PropertyGroup):
   # pin active object
   pinActiveObject = BoolProperty(
     name = 'Pin Active Object',
-    description = 'Keeps the active object at the top of the stack.',
+    description = 'Keeps the active object at the top of the name stack.',
     default = default['pin active object']
+  )
+
+
+  # pin active bone
+  pinActiveBone = BoolProperty(
+    name = 'Pin Active Bone',
+    description = 'Keeps the active bone at the top of the name stack.',
+    default = default['pin active bone']
   )
 
   # hide find & replace

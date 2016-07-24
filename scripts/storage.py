@@ -206,6 +206,7 @@ class batch:
   # defaults = {
   #   'name panel': {
   #     'pin active object': True,
+  #     'pin active bone': True,
   #     'hide search': True,
   #     'hide find & replace': True,
   #     'filters': False,
@@ -445,6 +446,8 @@ class batch:
   #     'suffix last': False,
   #     'trim start': 0,
   #     'trim end': 0,
+  #     'cut start': 0,
+  #     'cut amount': 0,
   #   },
 
   #   'copy name': {
@@ -459,3 +462,4 @@ class batch:
   #     'use active object': False,
   #   },
   # }
+

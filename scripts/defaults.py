@@ -2,6 +2,7 @@
 defaults = {
   'name panel': {
     'pin active object': True,
+    'pin active bone': True,
     'hide search': True,
     'hide find & replace': True,
     'filters': False,

@@ -68,7 +68,7 @@ def name(context):
 def objects(context):
 
   # option
-  option = context.scene.BatchAutoName_ObjectNames
+  option = context.scene.ObjectNames
 
   # default
   default = defaults['auto name']['object names']
@@ -91,7 +91,7 @@ def objects(context):
 def constraints(context):
 
   # option
-  option = context.scene.BatchAutoName_ConstraintNames
+  option = context.scene.ConstraintNames
 
   # default
   default = defaults['auto name']['constraint names']
@@ -130,7 +130,7 @@ def constraints(context):
 def modifiers(context):
 
   # option
-  option = context.scene.BatchAutoName_ModifierNames
+  option = context.scene.ModifierNames
 
   # default
   default = defaults['auto name']['modifier names']
@@ -191,7 +191,7 @@ def modifiers(context):
 def objectData(context):
 
   # option
-  option = context.scene.BatchAutoName_ObjectDataNames
+  option = context.scene.ObjectDataNames
 
   # default
   default = defaults['auto name']['object data names']

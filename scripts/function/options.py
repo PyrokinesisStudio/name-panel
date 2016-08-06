@@ -169,7 +169,7 @@ def reset(context, panel, auto, names, name, copy):
     # step
     option.step = default['step']
 
-    # separator
+    # separate
     option.separator = default['separator']
 
     # link
@@ -185,7 +185,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['object names']
 
     # object name
-    option = context.scene.BatchAutoName_ObjectNames
+    option = context.scene.ObjectNames
 
     # prefix
     option.prefix = default['prefix']
@@ -227,7 +227,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['constraint names']
 
     # constraint name
-    option = context.scene.BatchAutoName_ConstraintNames
+    option = context.scene.ConstraintNames
 
     # prefix
     option.prefix = default['prefix']
@@ -317,7 +317,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['modifier names']
 
     # modifier name
-    option = context.scene.BatchAutoName_ModifierNames
+    option = context.scene.ModifierNames
 
     # prefix
     option.prefix = default['prefix']
@@ -473,7 +473,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['object data names']
 
     # object data name
-    option = context.scene.BatchAutoName_ObjectDataNames
+    option = context.scene.ObjectDataNames
 
     # prefix
     option.prefix = default['prefix']
@@ -718,8 +718,14 @@ def reset(context, panel, auto, names, name, copy):
     # ignore particle setting
     option.ignoreParticleSetting = default['ignore particle setting']
 
-    # custom name
-    option.customName = default['custom name']
+    # custom
+    option.custom = default['custom']
+
+    # insert
+    option.insert = default['insert']
+
+    # insert at
+    option.insertAt = default['insert at']
 
     # find
     option.find = default['find']
@@ -760,6 +766,21 @@ def reset(context, panel, auto, names, name, copy):
     # sort
     option.sort = default['sort']
 
+    # type
+    option.type = default['type']
+
+    # axis
+    option.axis = default['axis']
+
+    # invert
+    option.invert = default['invert']
+
+    # count
+    option.count = default['count']
+
+    # link
+    option.link = default['link']
+
     # padding
     option.pad = default['pad']
 
@@ -771,9 +792,6 @@ def reset(context, panel, auto, names, name, copy):
 
     # separator
     option.separator = default['separator']
-
-    # link
-    option.link = default['link']
 
     # ignore
     option.ignore = default['ignore']
@@ -956,7 +974,7 @@ def transfer(context, panel, auto, names, name, copy):
         # step
         scene.BatchShared.step = option.step
 
-        # separator
+        # separate
         scene.BatchShared.separator = option.separator
 
         # link
@@ -971,319 +989,319 @@ def transfer(context, panel, auto, names, name, copy):
       if scene != context.scene:
 
         # object name
-        option = context.scene.BatchAutoName_ObjectNames
+        option = context.scene.ObjectNames
 
         # prefix
-        scene.BatchAutoName_ObjectNames.prefix = option.prefix
+        scene.ObjectNames.prefix = option.prefix
 
         # mesh
-        scene.BatchAutoName_ObjectNames.mesh = option.mesh
+        scene.ObjectNames.mesh = option.mesh
 
         # curve
-        scene.BatchAutoName_ObjectNames.curve = option.curve
+        scene.ObjectNames.curve = option.curve
 
         # surface
-        scene.BatchAutoName_ObjectNames.surface = option.surface
+        scene.ObjectNames.surface = option.surface
 
         # meta
-        scene.BatchAutoName_ObjectNames.meta = option.meta
+        scene.ObjectNames.meta = option.meta
 
         # font
-        scene.BatchAutoName_ObjectNames.font = option.font
+        scene.ObjectNames.font = option.font
 
         # armature
-        scene.BatchAutoName_ObjectNames.armature = option.armature
+        scene.ObjectNames.armature = option.armature
 
         # lattice
-        scene.BatchAutoName_ObjectNames.lattice = option.lattice
+        scene.ObjectNames.lattice = option.lattice
 
         # empty
-        scene.BatchAutoName_ObjectNames.empty = option.empty
+        scene.ObjectNames.empty = option.empty
 
         # speaker
-        scene.BatchAutoName_ObjectNames.speaker = option.speaker
+        scene.ObjectNames.speaker = option.speaker
 
         # camera
-        scene.BatchAutoName_ObjectNames.camera = option.camera
+        scene.ObjectNames.camera = option.camera
 
         # lamp
-        scene.BatchAutoName_ObjectNames.lamp = option.lamp
+        scene.ObjectNames.lamp = option.lamp
 
         # constraint name
-        option = context.scene.BatchAutoName_ConstraintNames
+        option = context.scene.ConstraintNames
 
         # prefix
-        scene.BatchAutoName_ConstraintNames.prefix = option.prefix
+        scene.ConstraintNames.prefix = option.prefix
 
         # camera solver
-        scene.BatchAutoName_ConstraintNames.cameraSolver = option.cameraSolver
+        scene.ConstraintNames.cameraSolver = option.cameraSolver
 
         # follow track
-        scene.BatchAutoName_ConstraintNames.followTrack = option.followTrack
+        scene.ConstraintNames.followTrack = option.followTrack
 
         # object solver
-        scene.BatchAutoName_ConstraintNames.objectSolver = option.objectSolver
+        scene.ConstraintNames.objectSolver = option.objectSolver
 
         # copy location
-        scene.BatchAutoName_ConstraintNames.copyLocation = option.copyLocation
+        scene.ConstraintNames.copyLocation = option.copyLocation
 
         # copy rotation
-        scene.BatchAutoName_ConstraintNames.copyRotation = option.copyRotation
+        scene.ConstraintNames.copyRotation = option.copyRotation
 
         # copy scale
-        scene.BatchAutoName_ConstraintNames.copyScale = option.copyScale
+        scene.ConstraintNames.copyScale = option.copyScale
 
         # copy transforms
-        scene.BatchAutoName_ConstraintNames.copyTransforms = option.copyTransforms
+        scene.ConstraintNames.copyTransforms = option.copyTransforms
 
         # limit distance
-        scene.BatchAutoName_ConstraintNames.limitDistance = option.limitDistance
+        scene.ConstraintNames.limitDistance = option.limitDistance
 
         # limit location
-        scene.BatchAutoName_ConstraintNames.limitLocation = option.limitLocation
+        scene.ConstraintNames.limitLocation = option.limitLocation
 
         # limit rotation
-        scene.BatchAutoName_ConstraintNames.limitRotation = option.limitRotation
+        scene.ConstraintNames.limitRotation = option.limitRotation
 
         # limit scale
-        scene.BatchAutoName_ConstraintNames.limitScale = option.limitScale
+        scene.ConstraintNames.limitScale = option.limitScale
 
         # maintain volume
-        scene.BatchAutoName_ConstraintNames.maintainVolume = option.maintainVolume
+        scene.ConstraintNames.maintainVolume = option.maintainVolume
 
         # transform
-        scene.BatchAutoName_ConstraintNames.transform = option.transform
+        scene.ConstraintNames.transform = option.transform
 
         # clamp to
-        scene.BatchAutoName_ConstraintNames.clampTo = option.clampTo
+        scene.ConstraintNames.clampTo = option.clampTo
 
         # damped track
-        scene.BatchAutoName_ConstraintNames.dampedTrack = option.dampedTrack
+        scene.ConstraintNames.dampedTrack = option.dampedTrack
 
         # inverse kinematics
-        scene.BatchAutoName_ConstraintNames.inverseKinematics = option.inverseKinematics
+        scene.ConstraintNames.inverseKinematics = option.inverseKinematics
 
         # locked track
-        scene.BatchAutoName_ConstraintNames.lockedTrack = option.lockedTrack
+        scene.ConstraintNames.lockedTrack = option.lockedTrack
 
         # spline inverse kinematics
-        scene.BatchAutoName_ConstraintNames.splineInverseKinematics = option.splineInverseKinematics
+        scene.ConstraintNames.splineInverseKinematics = option.splineInverseKinematics
 
         # stretch to
-        scene.BatchAutoName_ConstraintNames.stretchTo = option.stretchTo
+        scene.ConstraintNames.stretchTo = option.stretchTo
 
         # track to
-        scene.BatchAutoName_ConstraintNames.trackTo = option.trackTo
+        scene.ConstraintNames.trackTo = option.trackTo
 
         # action
-        scene.BatchAutoName_ConstraintNames.action = option.action
+        scene.ConstraintNames.action = option.action
 
         # child of
-        scene.BatchAutoName_ConstraintNames.childOf = option.childOf
+        scene.ConstraintNames.childOf = option.childOf
 
         # floor
-        scene.BatchAutoName_ConstraintNames.floor = option.floor
+        scene.ConstraintNames.floor = option.floor
 
         # follow path
-        scene.BatchAutoName_ConstraintNames.followPath = option.followPath
+        scene.ConstraintNames.followPath = option.followPath
 
         # pivot
-        scene.BatchAutoName_ConstraintNames.pivot = option.pivot
+        scene.ConstraintNames.pivot = option.pivot
 
         # rigid body joint
-        scene.BatchAutoName_ConstraintNames.rigidBodyJoint = option.rigidBodyJoint
+        scene.ConstraintNames.rigidBodyJoint = option.rigidBodyJoint
 
         # shrinkwrap
-        scene.BatchAutoName_ConstraintNames.shrinkwrap = option.shrinkwrap
+        scene.ConstraintNames.shrinkwrap = option.shrinkwrap
 
         # modifier name
-        option = context.scene.BatchAutoName_ModifierNames
+        option = context.scene.ModifierNames
 
         # prefix
-        scene.BatchAutoName_ModifierNames.prefix = option.prefix
+        scene.ModifierNames.prefix = option.prefix
 
         # data transfer
-        scene.BatchAutoName_ModifierNames.dataTransfer = option.dataTransfer
+        scene.ModifierNames.dataTransfer = option.dataTransfer
 
         # mesh cache
-        scene.BatchAutoName_ModifierNames.meshCache = option.meshCache
+        scene.ModifierNames.meshCache = option.meshCache
 
         # normal edit
-        scene.BatchAutoName_ModifierNames.normalEdit = option.normalEdit
+        scene.ModifierNames.normalEdit = option.normalEdit
 
         # uv project
-        scene.BatchAutoName_ModifierNames.uvProject = option.uvProject
+        scene.ModifierNames.uvProject = option.uvProject
 
         # uv warp
-        scene.BatchAutoName_ModifierNames.uvWarp = option.uvWarp
+        scene.ModifierNames.uvWarp = option.uvWarp
 
         # vertex weight edit
-        scene.BatchAutoName_ModifierNames.vertexWeightEdit = option.vertexWeightEdit
+        scene.ModifierNames.vertexWeightEdit = option.vertexWeightEdit
 
         # vertex weight mix
-        scene.BatchAutoName_ModifierNames.vertexWeightMix = option.vertexWeightMix
+        scene.ModifierNames.vertexWeightMix = option.vertexWeightMix
 
         # vertex weight proximity
-        scene.BatchAutoName_ModifierNames.vertexWeightProximity = option.vertexWeightProximity
+        scene.ModifierNames.vertexWeightProximity = option.vertexWeightProximity
 
         # array
-        scene.BatchAutoName_ModifierNames.array = option.array
+        scene.ModifierNames.array = option.array
 
         # bevel
-        scene.BatchAutoName_ModifierNames.bevel = option.bevel
+        scene.ModifierNames.bevel = option.bevel
 
         # boolean
-        scene.BatchAutoName_ModifierNames.boolean = option.boolean
+        scene.ModifierNames.boolean = option.boolean
 
         # build
-        scene.BatchAutoName_ModifierNames.build = option.build
+        scene.ModifierNames.build = option.build
 
         # decimate
-        scene.BatchAutoName_ModifierNames.decimate = option.decimate
+        scene.ModifierNames.decimate = option.decimate
 
         # edge split
-        scene.BatchAutoName_ModifierNames.edgeSplit = option.edgeSplit
+        scene.ModifierNames.edgeSplit = option.edgeSplit
 
         # mask
-        scene.BatchAutoName_ModifierNames.mask = option.mask
+        scene.ModifierNames.mask = option.mask
 
         # mirror
-        scene.BatchAutoName_ModifierNames.mirror = option.mirror
+        scene.ModifierNames.mirror = option.mirror
 
         # multiresolution
-        scene.BatchAutoName_ModifierNames.multiresolution = option.multiresolution
+        scene.ModifierNames.multiresolution = option.multiresolution
 
         # remesh
-        scene.BatchAutoName_ModifierNames.remesh = option.remesh
+        scene.ModifierNames.remesh = option.remesh
 
         # screw
-        scene.BatchAutoName_ModifierNames.screw = option.screw
+        scene.ModifierNames.screw = option.screw
 
         # skin
-        scene.BatchAutoName_ModifierNames.skin = option.skin
+        scene.ModifierNames.skin = option.skin
 
         # solidify
-        scene.BatchAutoName_ModifierNames.solidify = option.solidify
+        scene.ModifierNames.solidify = option.solidify
 
         # subdivision surface
-        scene.BatchAutoName_ModifierNames.subdivisionSurface = option.subdivisionSurface
+        scene.ModifierNames.subdivisionSurface = option.subdivisionSurface
 
         # triangulate
-        scene.BatchAutoName_ModifierNames.triangulate = option.triangulate
+        scene.ModifierNames.triangulate = option.triangulate
 
         # wireframe
-        scene.BatchAutoName_ModifierNames.wireframe = option.wireframe
+        scene.ModifierNames.wireframe = option.wireframe
 
         # armature
-        scene.BatchAutoName_ModifierNames.armature = option.armature
+        scene.ModifierNames.armature = option.armature
 
         # cast
-        scene.BatchAutoName_ModifierNames.cast = option.cast
+        scene.ModifierNames.cast = option.cast
 
         # corrective smooth
-        scene.BatchAutoName_ModifierNames.correctiveSmooth = option.correctiveSmooth
+        scene.ModifierNames.correctiveSmooth = option.correctiveSmooth
 
         # curve
-        scene.BatchAutoName_ModifierNames.curve = option.curve
+        scene.ModifierNames.curve = option.curve
 
         # displace
-        scene.BatchAutoName_ModifierNames.displace = option.displace
+        scene.ModifierNames.displace = option.displace
 
         # hook
-        scene.BatchAutoName_ModifierNames.hook = option.hook
+        scene.ModifierNames.hook = option.hook
 
         # laplacian smooth
-        scene.BatchAutoName_ModifierNames.laplacianSmooth = option.laplacianSmooth
+        scene.ModifierNames.laplacianSmooth = option.laplacianSmooth
 
         # laplacian deform
-        scene.BatchAutoName_ModifierNames.laplacianDeform = option.laplacianDeform
+        scene.ModifierNames.laplacianDeform = option.laplacianDeform
 
         # lattice
-        scene.BatchAutoName_ModifierNames.lattice = option.lattice
+        scene.ModifierNames.lattice = option.lattice
 
         # mesh deform
-        scene.BatchAutoName_ModifierNames.meshDeform = option.meshDeform
+        scene.ModifierNames.meshDeform = option.meshDeform
 
         # shrinkwrap
-        scene.BatchAutoName_ModifierNames.shrinkwrap = option.shrinkwrap
+        scene.ModifierNames.shrinkwrap = option.shrinkwrap
 
         # simple deform
-        scene.BatchAutoName_ModifierNames.simpleDeform = option.simpleDeform
+        scene.ModifierNames.simpleDeform = option.simpleDeform
 
         # smooth
-        scene.BatchAutoName_ModifierNames.smooth = option.smooth
+        scene.ModifierNames.smooth = option.smooth
 
         # warp
-        scene.BatchAutoName_ModifierNames.warp = option.warp
+        scene.ModifierNames.warp = option.warp
 
         # wave
-        scene.BatchAutoName_ModifierNames.wave = option.wave
+        scene.ModifierNames.wave = option.wave
 
         # cloth
-        scene.BatchAutoName_ModifierNames.cloth = option.cloth
+        scene.ModifierNames.cloth = option.cloth
 
         # collision
-        scene.BatchAutoName_ModifierNames.collision = option.collision
+        scene.ModifierNames.collision = option.collision
 
         # dynamic paint
-        scene.BatchAutoName_ModifierNames.dynamicPaint = option.dynamicPaint
+        scene.ModifierNames.dynamicPaint = option.dynamicPaint
 
         # explode
-        scene.BatchAutoName_ModifierNames.explode = option.explode
+        scene.ModifierNames.explode = option.explode
 
         # fluid simulation
-        scene.BatchAutoName_ModifierNames.fluidSimulation = option.fluidSimulation
+        scene.ModifierNames.fluidSimulation = option.fluidSimulation
 
         # ocean
-        scene.BatchAutoName_ModifierNames.ocean = option.ocean
+        scene.ModifierNames.ocean = option.ocean
 
         # particle instance
-        scene.BatchAutoName_ModifierNames.particleInstance = option.particleInstance
+        scene.ModifierNames.particleInstance = option.particleInstance
 
         # particle system
-        scene.BatchAutoName_ModifierNames.particleSystem = option.particleSystem
+        scene.ModifierNames.particleSystem = option.particleSystem
 
         # smoke
-        scene.BatchAutoName_ModifierNames.smoke = option.smoke
+        scene.ModifierNames.smoke = option.smoke
 
         # soft body
-        scene.BatchAutoName_ModifierNames.softBody = option.softBody
+        scene.ModifierNames.softBody = option.softBody
 
         # object data name
-        option = context.scene.BatchAutoName_ObjectDataNames
+        option = context.scene.ObjectDataNames
 
         # prefix
-        scene.BatchAutoName_ObjectDataNames.prefix = option.prefix
+        scene.ObjectDataNames.prefix = option.prefix
 
         # mesh
-        scene.BatchAutoName_ObjectDataNames.mesh = option.mesh
+        scene.ObjectDataNames.mesh = option.mesh
 
         # curve
-        scene.BatchAutoName_ObjectDataNames.curve = option.curve
+        scene.ObjectDataNames.curve = option.curve
 
         # surface
-        scene.BatchAutoName_ObjectDataNames.surface = option.surface
+        scene.ObjectDataNames.surface = option.surface
 
         # meta
-        scene.BatchAutoName_ObjectDataNames.meta = option.meta
+        scene.ObjectDataNames.meta = option.meta
 
         # font
-        scene.BatchAutoName_ObjectDataNames.font = option.font
+        scene.ObjectDataNames.font = option.font
 
         # armature
-        scene.BatchAutoName_ObjectDataNames.armature = option.armature
+        scene.ObjectDataNames.armature = option.armature
 
         # lattice
-        scene.BatchAutoName_ObjectDataNames.lattice = option.lattice
+        scene.ObjectDataNames.lattice = option.lattice
 
         # speaker
-        scene.BatchAutoName_ObjectDataNames.speaker = option.speaker
+        scene.ObjectDataNames.speaker = option.speaker
 
         # camera
-        scene.BatchAutoName_ObjectDataNames.camera = option.camera
+        scene.ObjectDataNames.camera = option.camera
 
         # lamp
-        scene.BatchAutoName_ObjectDataNames.lamp = option.lamp
+        scene.ObjectDataNames.lamp = option.lamp
 
   # name
   if name:
@@ -1497,8 +1515,14 @@ def transfer(context, panel, auto, names, name, copy):
         # ignore particle setting
         scene.BatchName.ignoreParticleSetting = option.ignoreParticleSetting
 
-        # custom name
-        scene.BatchName.customName = option.customName
+        # custom
+        scene.BatchName.custom = option.custom
+
+        # insert
+        scene.BatchName.insert = option.insert
+
+        # insert at
+        scene.BatchName.insertAt = option.insertAt
 
         # find
         scene.BatchName.find = option.find
@@ -1536,6 +1560,18 @@ def transfer(context, panel, auto, names, name, copy):
         # sort
         scene.BatchShared.sort = option.sort
 
+        # type
+        scene.BatchShared.type = option.type
+
+        # axis
+        scene.BatchShared.axis = option.axis
+
+        # invert
+        scene.BatchShared.invert = option.invert
+
+        # count
+        scene.BatchShared.count = option.count
+
         # padding
         scene.BatchShared.pad = option.pad
 
@@ -1545,7 +1581,7 @@ def transfer(context, panel, auto, names, name, copy):
         # step
         scene.BatchShared.step = option.step
 
-        # separator
+        # separate
         scene.BatchShared.separator = option.separator
 
         # link

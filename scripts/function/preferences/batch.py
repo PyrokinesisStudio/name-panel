@@ -99,7 +99,7 @@ def main(context):
   default['ignore texture'] = option.ignoreTexture
   default['ignore particle system'] = option.ignoreParticleSystem
   default['ignore particle setting'] = option.ignoreParticleSetting
-  default['custom name'] = option.customName
+  default['custom'] = option.custom
   default['find'] = option.find
   default['regex'] = option.regex
   default['replace'] = option.replace

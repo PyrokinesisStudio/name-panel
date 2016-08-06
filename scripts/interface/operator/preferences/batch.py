@@ -246,7 +246,7 @@ class name(Operator):
     # custom name
     column.prop(option, 'customName')
 
-    # separator
+    # separate
     column.separator()
     column.separator()
 

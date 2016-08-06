@@ -437,7 +437,7 @@ class batch:
   #     'ignore texture': False,
   #     'ignore particle system': False,
   #     'ignore particle setting': False,
-  #     'custom name': '',
+  #     'custom': '',
   #     'find': '',
   #     'regex': False,
   #     'replace': '',

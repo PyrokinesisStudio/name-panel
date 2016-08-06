@@ -145,7 +145,7 @@ class objects(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.BatchAutoName_ObjectNames
+    option = context.scene.ObjectNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -260,7 +260,7 @@ class constraints(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.BatchAutoName_ConstraintNames
+    option = context.scene.ConstraintNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -461,7 +461,7 @@ class modifiers(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.BatchAutoName_ModifierNames
+    option = context.scene.ModifierNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -772,7 +772,7 @@ class objectData(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.BatchAutoName_ObjectDataNames
+    option = context.scene.ObjectDataNames
 
     # prefix
     layout.prop(option, 'prefix')

@@ -51,7 +51,7 @@ class specials(Menu):
     # batch copy
     layout.operator('view3d.batch_copy_name', icon='COPYDOWN')
 
-    # separator
+    # separate
     layout.separator()
 
     # is display names
@@ -69,7 +69,7 @@ class specials(Menu):
     # hide search
     layout.prop(option, 'hideFindReplace')
 
-    # separator
+    # separate
     layout.separator()
 
     # reset panel
@@ -83,7 +83,7 @@ class specials(Menu):
     # is option.regex
     if option.regex or context.scene.BatchName.regex:
 
-        # separator
+        # separate
         layout.separator()
 
         layout.operator('wm.regular_expression_cheatsheet', icon='NEW')

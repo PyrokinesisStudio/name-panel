@@ -20,7 +20,61 @@
 # sort
 def sort(layout, option):
 
-  # separator
+  # separate
+  layout.separator()
+
+  # row
+  row = layout.row(align=True)
+
+  # sub
+  sub = row.row(align=True)
+
+# scale x
+  sub.scale_x = 0.2
+
+  # sort
+  sub.prop(option, 'sort', toggle=True)
+
+  # sub sub
+  subsub = sub.row(align=True)
+
+  # active
+  subsub.active = option.sort
+
+  # scale x
+  subsub.scale_x = 5
+
+  # type
+  subsub.prop(option, 'type', toggle=True, expand=True)
+
+  # sub sub sub
+  subsubsub = subsub.row(align=True)
+
+  # active
+  subsubsub.active = option.type == 'POSITIONAL'
+
+  # scale x
+  subsubsub.scale_x = 0.2
+
+  # axis
+  subsubsub.prop(option, 'axis', expand=True)
+
+  # subsub
+  subsub = sub.row(align=True)
+
+  # active
+  subsub.active = option.sort
+
+  # scale x
+  subsub.scale_x = 2.2
+
+  # dummy 9
+  subsub.prop(option, 'invert', toggle=True)
+
+# count
+def count(layout, option):
+
+  # separate
   layout.separator()
 
   # row
@@ -33,13 +87,13 @@ def sort(layout, option):
   sub.scale_x = 0.2
 
   # sort
-  sub.prop(option, 'sort', text='Count', toggle=True)
+  sub.prop(option, 'count', toggle=True)
 
   # sub
   subsub = sub.row(align=True)
 
   # active
-  subsub.active = option.sort
+  subsub.active = option.count
 
   # icon
   icon = 'LINKED' if option.link else 'UNLINKED'
@@ -62,7 +116,7 @@ def sort(layout, option):
   # scale
   subsubsub.scale_x = 0.1
 
-  # separator
+  # separate
   subsubsub.prop(option, 'separator', text='')
 
   # ignore

@@ -30,7 +30,11 @@ defaults = {
   },
 
   'shared': {
-    'sort': True,
+    'sort': False,
+    'type': 'ALPHABETICAL',
+    'axis': 'X',
+    'invert': False,
+    'count': False,
     'link': False,
     'pad': 0,
     'start': 1,
@@ -233,7 +237,9 @@ defaults = {
     'ignore texture': False,
     'ignore particle system': False,
     'ignore particle setting': False,
-    'custom name': '',
+    'custom': '',
+    'insert': False,
+    'insert at': 0,
     'find': '',
     'regex': False,
     'replace': '',

@@ -27,7 +27,7 @@ from .defaults import defaults
 # name
 class name(PropertyGroup):
   '''
-    Properties that effect how name panel displays the datablocks within the users current selection.
+    Name panel options.
   '''
 
   # default
@@ -302,7 +302,7 @@ class name(PropertyGroup):
 # properties
 class properties(PropertyGroup):
   '''
-    Properties that effect how properties panel displays the options.
+    Properties panel options.
   '''
 
   # display active
@@ -322,6 +322,9 @@ class batch:
   '''
   # shared
   class shared(PropertyGroup):
+    '''
+      Shared batch options.
+    '''
 
     # default
     default = defaults['shared']
@@ -329,8 +332,52 @@ class batch:
     # sort
     sort = BoolProperty(
       name = 'Sort',
-      description = 'Recount names that are identical with a trailing number.',
+      description = 'Sort names before applying any new names.',
       default = default['sort']
+    )
+
+    # type
+    type = EnumProperty(
+      name = 'Type',
+      description = 'Sorting method to use.',
+      items = [
+        ('ALPHABETICAL', 'Alphabetical', 'Sort names alphabetically.'),
+        ('POSITIONAL', 'Positional', 'Sort names using position.')
+      ],
+      default = default['type']
+    )
+
+    # axis
+    axis = EnumProperty(
+      name = 'Axis',
+      description = 'The positional axis to use for sorting.',
+      items = [
+        ('X', 'X', 'Sort from lowest to highest X axis position.'),
+        ('Y', 'Y', 'Sort from lowest to highest y axis position.'),
+        ('Z', 'Z', 'Sort from lowest to highest z axis position.')
+      ],
+      default = default['axis']
+    )
+
+    # invert
+    invert = BoolProperty(
+      name = 'Invert',
+      description = 'Sort in the opposite direction.',
+      default = default['invert']
+    )
+
+    # count
+    count = BoolProperty(
+      name = 'Count',
+      description = 'Recount names that are identical with a trailing number.',
+      default = default['count']
+    )
+
+    # link
+    link = BoolProperty(
+      name = 'Link Duplicates',
+      description = 'When possible link duplicate names to the original datablock.',
+      default = default['link']
     )
 
     # pad
@@ -357,18 +404,11 @@ class batch:
       default = default['step']
     )
 
-    # separator
+    # Separator
     separator = StringProperty(
       name = 'Separator',
       description = 'The separator to use between the name and number.',
       default = default['separator']
-    )
-
-    # link
-    link = BoolProperty(
-      name = 'Link Duplicates',
-      description = 'When possible link duplicate names to the original datablock.',
-      default = default['link']
     )
 
     # ignore
@@ -391,7 +431,7 @@ class batch:
     # options
     class name(PropertyGroup):
       '''
-        Main properties that effect how the batch auto name operator is performed.
+        Auto name options
       '''
 
       # default
@@ -471,7 +511,7 @@ class batch:
     # object
     class objects(PropertyGroup):
       '''
-        Properties that effect the names used when auto naming objects.
+        Object name options
       '''
       # default
       default = defaults['auto name']['object names']
@@ -563,7 +603,7 @@ class batch:
     # constraints
     class constraints(PropertyGroup):
       '''
-        Properties that effect the names used when auto naming constraints.
+        Constraint name options.
       '''
 
       # default
@@ -768,7 +808,7 @@ class batch:
     # modifier
     class modifiers(PropertyGroup):
       '''
-        Properties that effect the names used when auto naming modifiers.
+        Modifier name options.
       '''
 
       # default
@@ -1127,7 +1167,7 @@ class batch:
     # object data
     class objectData(PropertyGroup):
       '''
-        Properties that effect the names used when auto naming objects.
+        Object data name options.
       '''
 
       # default
@@ -1213,7 +1253,7 @@ class batch:
   # name
   class name(PropertyGroup):
     '''
-      Properties that effect how the batch name operation is performed.
+      Batch name options.
     '''
 
     # default
@@ -1698,11 +1738,27 @@ class batch:
       default = default['ignore particle setting']
     )
 
-    # custom name
-    customName = StringProperty(
-      name = 'Custom Name',
+    # custom
+    custom = StringProperty(
+      name = 'Custom',
       description = 'Designate a new name.',
-      default = default['custom name']
+      default = default['custom']
+    )
+
+    # insert
+    insert = BoolProperty(
+      name = 'Insert',
+      description = 'Insert custom text into the name instead of replacing the name.',
+      default = default['insert']
+    )
+
+    # insert at
+    insertAt = IntProperty(
+      name = 'At',
+      description = 'Insert custom text at this character.',
+      min = -60,
+      max = 60,
+      default = default['insert at']
     )
 
     # find
@@ -1786,7 +1842,7 @@ class batch:
   # copy
   class copy(PropertyGroup):
     '''
-      Properties that effect how the batch copy name operation is performed.
+      Batch name copy options.
     '''
 
     # default

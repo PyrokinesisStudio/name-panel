@@ -123,7 +123,7 @@ def Object(self, context, layout, datablock):
     # color
     column.prop(datablock, 'color', text='')
 
-  # separator
+  # separate
   layout.separator()
 
   # label
@@ -138,7 +138,7 @@ def Object(self, context, layout, datablock):
   # layers
   column.prop(datablock, 'layers')
 
-  # separator
+  # separate
   column.separator()
 
   # pass index
@@ -168,7 +168,7 @@ def Object(self, context, layout, datablock):
     # parent bone
     sub.prop_search(datablock, 'parent_bone', datablock.parent.data, 'bones', text='')
 
-  # separator
+  # separate
   layout.separator()
 
   # cycles
@@ -231,7 +231,7 @@ def Group(self, context, layout, datablock):
     The group properties.
   '''
 
-  # separator
+  # separate
   layout.separator()
 
   # column

@@ -285,7 +285,7 @@ def filters(self, context, layout, panel):
   # filters
   if panel.filters:
 
-    # separator
+    # separate
     layout.separator()
 
     # row
@@ -345,7 +345,7 @@ def filters(self, context, layout, panel):
     # hide find & replace
     if panel.hideFindReplace:
 
-      # separator
+      # separate
       layout.separator()
 
       # row
@@ -388,7 +388,7 @@ def filters(self, context, layout, panel):
   # hide find & replace
   if not panel.hideFindReplace:
 
-    # separator
+    # separate
     layout.separator()
 
     # row
@@ -431,7 +431,7 @@ def filters(self, context, layout, panel):
   # enabled
   if panel.displayNames:
 
-    # separator()
+    # separate()
     layout.separator()
 
     # row
@@ -811,7 +811,7 @@ def populate(self, context, layout, object, panel):
   # row
   row = column.row()
 
-  # separator
+  # separate
   row.separator()
 
   # object
@@ -1245,7 +1245,7 @@ class block:
             # bone mode
             row.prop(panel, 'boneMode', expand=True)
 
-            # separator
+            # separate
             layout.separator()
 
       # is pin active bone
@@ -1282,7 +1282,7 @@ class block:
                       # row
                       row = layout.row()
 
-                      # separator
+                      # separate
                       row.separator()
 
             # display bones
@@ -1349,7 +1349,7 @@ class block:
                           # row
                           row = layout.row()
 
-                          # separator
+                          # separate
                           row.separator()
       else:
 
@@ -1416,7 +1416,7 @@ class block:
                     # row
                     row = layout.row()
 
-                    # separator
+                    # separate
                     row.separator()
 
 # object
@@ -2129,7 +2129,7 @@ def Bone(self, context, layout, datablock, object, panel):
     # row
     row = layout.row()
 
-    # separator
+    # separate
     row.separator()
 
   # is pose mode
@@ -2144,6 +2144,6 @@ def Bone(self, context, layout, datablock, object, panel):
       # row
       row = layout.row()
 
-      # separator
+      # separate
       row.separator()
 

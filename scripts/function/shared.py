@@ -21,9 +21,88 @@
 import re
 from .. import storage
 
-def sort(self, context, collection, option):
+# main
+def main(self, context, collection, option):
   '''
-    Makes dict of names catagorizing them based on suffix, counts, applies and links names to the datablocks.
+    Sorts recieved collection if at all based on alphabetical or positional information.
+  '''
+
+  # is sort
+  if option.sort:
+
+    # sort
+    try: collection.sort(reverse=option.invert)
+    except: pass
+
+    # is positional
+    if option.type == 'POSITIONAL':
+
+      # get position
+      for name in collection:
+
+        # has location
+        if hasattr(name[3][0], 'location'):
+
+          # is axis x
+          if option.axis == 'X':
+            name[0] = abs(name[3][0].location[0])
+
+          # is axis y
+          elif option.axis == 'Y':
+            name[0] = abs(name[3][0].location[1])
+
+          # axis z
+          else:
+            name[0] = abs(name[3][0].location[2])
+
+      # sort
+      try: collection.sort(reverse=option.invert)
+      except: pass
+
+  # is count
+  if option.count:
+    count(self, context, collection, option)
+
+  # isnt count
+  else:
+
+    # batch
+    batch = context.scene.BatchName
+
+    # apply names
+    for name in collection:
+
+      suffix = (batch.suffix if batch.suffixLast else '') if self.bl_label == 'Batch Name' else ''
+
+      # has name
+      if hasattr(name[3][0], 'name'):
+
+        # name
+        name[1] = name[1] + suffix
+        name[3][0].name = name[1]
+
+      # has info
+      if hasattr(name[3][0], 'info'):
+
+        # info
+        name[1] = name[1] + suffix
+        name[3][0].info = name[1]
+
+      # has bl_label
+      if hasattr(name[3][0], 'bl_label'):
+
+        # bl_label
+        name[1] = name[1] + suffix
+        name[3][0].bl_label = name[1]
+
+      # count
+      if name[1] != name[2]:
+        self.count += 1
+
+# count
+def count(self, context, collection, option):
+  '''
+    Makes dict of names catagorizing them based on name or suffix, counts, applies and links names to the datablocks.
   '''
 
   # names
@@ -113,7 +192,7 @@ def sort(self, context, collection, option):
   #     for i, name in enumerate(names[key][sub]):
   #       print('    ' + str(name[0]))
 
-  # count name
+  # count names
   for key in names:
     for sub in names[key]:
       for i, name in enumerate(names[key][sub]):

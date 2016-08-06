@@ -68,7 +68,7 @@ class ModifierButtons:
     # use bone envelopes
     column.prop(modifier, 'use_bone_envelopes', text='Bone Envelopes')
 
-    # separator
+    # separate
     layout.separator()
 
     # split
@@ -116,7 +116,7 @@ class ModifierButtons:
       # curve
       layout.prop(modifier, 'curve')
 
-    # separator
+    # separate
     layout.separator()
 
     # split
@@ -137,7 +137,7 @@ class ModifierButtons:
     # constant offset displace
     sub.prop(modifier, 'constant_offset_displace', text='')
 
-    # separator
+    # separate
     column.separator()
 
     # use merge vertices
@@ -170,7 +170,7 @@ class ModifierButtons:
     # relative offset displace
     sub.prop(modifier, 'relative_offset_displace', text='')
 
-    # separator
+    # separate
     column.separator()
 
     # use object offset
@@ -185,7 +185,7 @@ class ModifierButtons:
     # offset object
     sub.prop(modifier, 'offset_object', text='')
 
-    # separator
+    # separate
     layout.separator()
 
     # start cap
@@ -671,7 +671,7 @@ class ModifierButtons:
       # uv layer
       column.prop_search(modifier, 'uv_layer', object.data, 'uv_textures', text='')
 
-    # separator
+    # separate
     layout.separator()
 
     # row
@@ -806,7 +806,7 @@ class ModifierButtons:
     # vertex group
     column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
 
-    # separator
+    # separate
     layout.separator()
 
     # row
@@ -893,7 +893,7 @@ class ModifierButtons:
     # vertex group
     row.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
 
-    # separator
+    # separate
     layout.separator()
 
     # row
@@ -941,7 +941,7 @@ class ModifierButtons:
     # lambda border
     column.prop(modifier, 'lambda_border', text='Border')
 
-    # separator
+    # separate
     column.separator()
 
     # use volume preserve
@@ -980,7 +980,7 @@ class ModifierButtons:
     # vertex group
     column.prop_search(modifier, 'vertex_group', object, 'vertex_groups', text='')
 
-    # separator
+    # separate
     layout.separator()
 
     # strength
@@ -1085,7 +1085,7 @@ class ModifierButtons:
     # invert vertex group
     sub.prop(modifier, 'invert_vertex_group', text='', icon='ARROW_LEFTRIGHT')
 
-    # separator
+    # separate
     layout.separator()
 
     # is bound
@@ -1218,7 +1218,7 @@ class ModifierButtons:
     # show only control edges
     column.prop(modifier, 'show_only_control_edges')
 
-    # separator
+    # separate
     layout.separator()
 
     # column
@@ -1273,7 +1273,7 @@ class ModifierButtons:
       # repeat y
       row.prop(modifier, 'repeat_y')
 
-    # separator
+    # separate
     layout.separator()
 
     # split
@@ -1342,7 +1342,7 @@ class ModifierButtons:
     # damping
     sub.prop(modifier, 'damping')
 
-    # separator
+    # separate
     layout.separator()
 
     # use normals
@@ -1378,7 +1378,7 @@ class ModifierButtons:
     # foam layer name
     column.prop(modifier, 'foam_layer_name', text='')
 
-    # separator
+    # separate
     layout.separator()
 
     # is cached
@@ -1477,7 +1477,7 @@ class ModifierButtons:
     # show dead
     column.prop(modifier, 'show_dead')
 
-    # separator
+    # separate
     layout.separator()
 
     # use path
@@ -1873,7 +1873,7 @@ class ModifierButtons:
     # use rim only
     sub.prop(modifier, 'use_rim_only')
 
-    # separator
+    # separate
     column.separator()
 
     # label
@@ -2217,7 +2217,7 @@ class ModifierButtons:
       # texture coords object
       layout.prop(modifier, 'texture_coords_object')
 
-    # separator
+    # separate
     layout.separator()
 
     # split
@@ -2404,7 +2404,7 @@ class ModifierButtons:
     # remove threshold
     sub.prop(modifier, 'remove_threshold')
 
-    # separator
+    # separate
     layout.separator()
 
     # falloff type
@@ -2416,7 +2416,7 @@ class ModifierButtons:
       # map curve
       layout.template_curve_mapping(modifier, 'map_curve')
 
-    # separator
+    # separate
     layout.separator()
 
     # vertex weight mask
@@ -2470,7 +2470,7 @@ class ModifierButtons:
     # mix set
     column.prop(modifier, 'mix_set', text='')
 
-    # separator
+    # separate
     layout.separator()
 
     # vertex weight mask
@@ -2530,7 +2530,7 @@ class ModifierButtons:
     # max dist
     column.prop(modifier, 'max_dist')
 
-    # separator
+    # separate
     layout.separator()
 
     # falloff type
@@ -2554,7 +2554,7 @@ class ModifierButtons:
     # mesh customodifierata skin add
     row.operator('mesh.customdata_skin_add')
 
-    # separator
+    # separate
     layout.separator()
 
     # row
@@ -2815,7 +2815,7 @@ class ModifierButtons:
     # use object transform
     sub.prop(modifier, 'use_object_transform', text='', icon='GROUP')
 
-    # separator
+    # separate
     layout.separator()
 
     # split
@@ -2909,7 +2909,7 @@ class ModifierButtons:
       # data types edges
       sub.prop(modifier, 'data_types_edges')
 
-    # separator
+    # separate
     layout.separator()
 
     # split
@@ -2990,7 +2990,7 @@ class ModifierButtons:
       # islands precision
       column.prop(modifier, 'islands_precision')
 
-    # separator
+    # separate
     layout.separator()
 
     # split
@@ -3026,7 +3026,7 @@ class ModifierButtons:
       # data types polys
       sub.prop(modifier, 'data_types_polys')
 
-    # separator
+    # separate
     layout.separator()
 
     # split
@@ -3056,7 +3056,7 @@ class ModifierButtons:
     # ray radius
     column.prop(modifier, 'ray_radius')
 
-    # separator
+    # separate
     layout.separator()
 
     # split

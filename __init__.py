@@ -158,7 +158,7 @@ def register():
   bpy.types.Scene.BatchShared = PointerProperty(
     type = PropertyGroup.batch.shared,
     name = 'Batch Shared Settings',
-    description = 'Storage location for shared settings between batch operators.'
+    description = 'Storage location for shared settings of batch name operators.'
   )
 
   # batch auto name settings
@@ -169,30 +169,30 @@ def register():
   )
 
   # batch auto name object names
-  bpy.types.Scene.BatchAutoName_ObjectNames = PointerProperty(
+  bpy.types.Scene.ObjectNames = PointerProperty(
     type = PropertyGroup.batch.auto.objects,
-    name = 'Batch Auto Name Object Names',
+    name = 'Object Name Settings',
     description = 'Storage location for the object names used during the auto name operation.'
   )
 
   # batch auto name constraint names
-  bpy.types.Scene.BatchAutoName_ConstraintNames = PointerProperty(
+  bpy.types.Scene.ConstraintNames = PointerProperty(
     type = PropertyGroup.batch.auto.constraints,
-    name = 'Batch Auto Name Constraint Names',
+    name = 'Constraint Name Settings',
     description = 'Storage location for the constraint names used during the auto name operation.'
   )
 
   # batch auto name modifier names
-  bpy.types.Scene.BatchAutoName_ModifierNames = PointerProperty(
+  bpy.types.Scene.ModifierNames = PointerProperty(
     type = PropertyGroup.batch.auto.modifiers,
-    name = 'Batch Auto Name Modifier Names',
+    name = 'Modifier Name Settings',
     description = 'Storage location for the modifier names used during the auto name operation.'
   )
 
   # batch auto name object data names
-  bpy.types.Scene.BatchAutoName_ObjectDataNames = PointerProperty(
+  bpy.types.Scene.ObjectDataNames = PointerProperty(
     type = PropertyGroup.batch.auto.objectData,
-    name = 'Batch Auto Name Object Data Names',
+    name = 'Object Data Name Settings',
     description = 'Storage location for the object data names used during the auto name operation.'
   )
 
@@ -255,10 +255,10 @@ def unregister():
 
   # delete pointer properties
   del bpy.types.Scene.BatchAutoName
-  del bpy.types.Scene.BatchAutoName_ObjectNames
-  del bpy.types.Scene.BatchAutoName_ConstraintNames
-  del bpy.types.Scene.BatchAutoName_ModifierNames
-  del bpy.types.Scene.BatchAutoName_ObjectDataNames
+  del bpy.types.Scene.ObjectNames
+  del bpy.types.Scene.ConstraintNames
+  del bpy.types.Scene.ModifierNames
+  del bpy.types.Scene.ObjectDataNames
   del bpy.types.Scene.BatchName
   del bpy.types.Scene.BatchCopyName
   del bpy.types.Scene.NamePanel

@@ -430,10 +430,6 @@ def process(self, context, collection):
   # done with collection
   collection.clear()
 
-  # sort clean
-  try: clean.sort()
-  except: pass
-
   # name
   for i, name in enumerate(clean):
     rename(self, context, name, i)
@@ -444,16 +440,13 @@ def process(self, context, collection):
     # randomize name
     name[3][0].name = str(random())
 
-  # is shared sort
-  if context.scene.BatchShared.sort:
+  # is shared sort or shared count
+  if context.scene.BatchShared.sort or context.scene.BatchShared.count:
 
     # sort
-    shared.sort(self, context, clean, context.scene.BatchShared)
+    shared.main(self, context, clean, context.scene.BatchShared)
 
-    # purge re
-    re.purge()
-
-  # isnt shared sort
+  # isnt shared sort or shared count
   else:
 
     # apply names
@@ -463,6 +456,9 @@ def process(self, context, collection):
       # count
       if name[1] != name[2]:
         self.count += 1
+
+  # purge re
+  re.purge()
 
 # object
 def rename(self, context, name, i):
@@ -474,16 +470,16 @@ def rename(self, context, name, i):
   option = context.scene.BatchAutoName
 
   # object name
-  objectName = context.scene.BatchAutoName_ObjectNames
+  objectName = context.scene.ObjectNames
 
   # constraint name
-  constraintName = context.scene.BatchAutoName_ConstraintNames
+  constraintName = context.scene.ConstraintNames
 
   # modifier name
-  modifierName = context.scene.BatchAutoName_ModifierNames
+  modifierName = context.scene.ModifierNames
 
   # object data name
-  objectDataName = context.scene.BatchAutoName_ObjectDataNames
+  objectDataName = context.scene.ObjectDataNames
 
   # object
   if name[4] == 'OBJECT':

@@ -80,7 +80,7 @@ class name(Operator):
     # filters
     if panel.filters:
 
-      # separator
+      # separate
       column.separator()
 
       # row
@@ -140,7 +140,7 @@ class name(Operator):
       # hide find & replace
       if panel.hideFindReplace:
 
-        # separator
+        # separate
         column.separator()
 
         # row
@@ -183,7 +183,7 @@ class name(Operator):
     # hide find & replace
     if not panel.hideFindReplace:
 
-      # separator
+      # separate
       column.separator()
 
       # row
@@ -226,7 +226,7 @@ class name(Operator):
     # enabled
     if panel.displayNames:
 
-      # separator
+      # separate
       column.separator()
 
       # row
@@ -235,7 +235,7 @@ class name(Operator):
       # mode
       row.prop(panel, 'mode', expand=True)
 
-    # separator
+    # separate
     column.separator()
 
     # row
@@ -247,7 +247,7 @@ class name(Operator):
     # display bones
     if panel.displayBones:
 
-      # separator
+      # separate
       column.separator()
 
       # row

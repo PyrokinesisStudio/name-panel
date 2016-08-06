@@ -37,7 +37,7 @@ class ConstraintButtons:
     # is constraint has influence
     if constraint.type not in {'RIGID_BODY_JOINT', 'NULL'}:
 
-      # separator
+      # separate
       layout.separator()
 
       # influence
@@ -515,7 +515,7 @@ class ConstraintButtons:
     # up axis
     row.prop(constraint, 'up_axis', text='Up')
 
-    # separator
+    # separate
     layout.separator()
 
   # limit rotation
@@ -683,7 +683,7 @@ class ConstraintButtons:
     # use transform limit
     row.prop(constraint, 'use_transform_limit')
 
-    # separator
+    # separate
     layout.separator()
 
     # row
@@ -788,7 +788,7 @@ class ConstraintButtons:
     # use transform limit
     row.prop(constraint, 'use_transform_limit')
 
-    # separator
+    # separate
     layout.separator()
 
     # row
@@ -1091,7 +1091,7 @@ class ConstraintButtons:
     # use transform limit
     row.prop(constraint, 'use_transform_limit')
 
-    # separator
+    # separate
     layout.separator()
 
     # space template

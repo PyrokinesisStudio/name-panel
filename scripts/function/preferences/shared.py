@@ -24,6 +24,10 @@ from ...defaults import defaults
 def main(context, option, default):
 
   default['sort'] = option.sort
+  default['type'] = option.type
+  default['axis'] = option.axis
+  default['invert'] = option.invert
+  default['count'] = option.count
   default['pad'] = option.pad
   default['start'] = option.start
   default['step'] = option.step

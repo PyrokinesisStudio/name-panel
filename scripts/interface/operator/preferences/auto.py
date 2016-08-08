@@ -62,7 +62,7 @@ class name(Operator):
     # mode
     row.prop(option, 'mode', expand=True)
 
-    # reset
+    # op: reset name panel settings
     op = row.operator('wm.reset_name_panel_settings', text='', icon='LOAD_FACTORY')
     op.panel = False
     op.auto = True
@@ -73,31 +73,65 @@ class name(Operator):
     # column
     column = layout.column(align=True)
 
-    # type row
+    # split
     split = column.split(align=True)
+
+    # objects
     split.prop(option, 'objects', text='', icon='OBJECT_DATA')
+
+    # constraints
     split.prop(option, 'constraints', text='', icon='CONSTRAINT')
+
+    # modifiers
     split.prop(option, 'modifiers', text='', icon='MODIFIER')
+
+    # object data
     split.prop(option, 'objectData', text='', icon='MESH_DATA')
+
+    # bone constraints
     split.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
 
-    # type filters
+    # column
     column = layout.column()
+
+    # object type
     column.prop(option, 'objectType', text='')
+
+    # constraint type
     column.prop(option, 'constraintType', text='')
+
+    # modifier type
     column.prop(option, 'modifierType', text='')
 
-    # settings
+    # column
     column = layout.column()
+
+    # label
     column.label(text='Name Settings:')
+
+    # split
     split = column.split(align=True)
+
+    # batch auto name object names
     split.operator('view3d.batch_auto_name_object_names', text='Objects')
+
+    # batch auto name constraint names
     split.operator('view3d.batch_auto_name_constraint_names', text='Constraints')
+
+    # batch auto name modifier names
     split.operator('view3d.batch_auto_name_modifier_names', text='Modifiers')
+
+    # batch auto name object data names
     split.operator('view3d.batch_auto_name_object_data_names', text='Object Data')
+
+    # column
+    column = layout.column(align=True)
 
     # sort
     shared.sort(column, context.scene.BatchShared)
+
+    # count
+    shared.count(column, context.scene.BatchShared)
 
   # execute
   def execute(self, context):

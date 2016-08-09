@@ -3668,7 +3668,7 @@ def rename(self, context, oldName, option):
         newName = re.sub(re.escape(option.find), option.replace, newName)
 
     # strip numeral
-    newName = re.split(numeral, newName)[0] if not option.suffixLast else newName
+    # newName = re.split(numeral, newName)[0] if not option.suffixLast else newName
 
     # prefix & suffix
     newName = option.prefix + newName + option.suffix if not option.suffixLast else option.prefix + newName

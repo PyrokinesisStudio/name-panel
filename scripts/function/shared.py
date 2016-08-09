@@ -96,7 +96,7 @@ def main(self, context, collection, option):
         name[3][0].bl_label = name[1]
 
       # count
-      if name[2] != name[3][0].name:
+      if name[1] != name[2]:
         self.count += 1
 
 # count
@@ -242,7 +242,7 @@ def count(self, context, collection, option):
           name[3][0].bl_label = name[1]
 
         # count
-        if name[2] != name[3][0].name:
+        if name[1] != name[2]:
           self.count += 1
 
   # link

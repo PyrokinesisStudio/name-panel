@@ -454,7 +454,7 @@ def process(self, context, collection):
       name[3][0].name = name[1]
 
       # count
-      if name[2] != name[3][0].name:
+      if name[1] != name[2]:
         self.count += 1
 
   # purge re

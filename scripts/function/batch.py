@@ -3667,11 +3667,12 @@ def rename(self, context, oldName, option):
       else:
         newName = re.sub(re.escape(option.find), option.replace, newName)
 
-    # strip numeral
-    # newName = re.split(numeral, newName)[0] if not option.suffixLast else newName
+    # split numeral & suffix
+    try: newName = re.split(numeral, newName)[0] + option.suffix + re.search(numeral, newName).group(0) if not option.suffixLast else newName
+    except: newName = newName + option.suffix if not option.suffixLast else newName
 
-    # prefix & suffix
-    newName = option.prefix + newName + option.suffix if not option.suffixLast else option.prefix + newName
+    # prefix
+    newName = option.prefix + newName
 
   # is simple
   else:

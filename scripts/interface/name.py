@@ -274,7 +274,7 @@ def filters(self, context, layout, panel):
   row.prop(panel, 'filters', text='Filters', icon=iconToggle, toggle=True)
 
   # display names
-  row.prop(panel, 'displayNames', text='', icon='ZOOM_SELECTED')
+  # row.prop(panel, 'displayNames', text='', icon='ZOOM_SELECTED')
 
   # options
   row.prop(panel, 'options', text='', icon='SETTINGS')
@@ -1434,8 +1434,17 @@ def Object(self, context, layout, datablock, panel):
     row = layout.row(align=True)
     row.active = (search == '' or re.search(search, datablock.name, re.I) != None)
 
-    # template
-    row.template_ID(context.scene.objects, 'active')
+    # sub
+    sub = row.row(align=True)
+
+    # scale x
+    sub.scale_x = 1.6
+
+    # display names
+    sub.prop(panel, 'displayNames', text='', icon=icon.object(datablock))
+
+    # name
+    row.prop(datablock, 'name', text='')
 
   # selected object
   else:
@@ -1447,7 +1456,7 @@ def Object(self, context, layout, datablock, panel):
     # sub
     sub = row.row(align=True)
 
-    # scale
+    # scale x
     sub.scale_x = 1.6
 
     # icon
@@ -1686,36 +1695,18 @@ def ObjectData(self, context, layout, datablock, panel):
   if datablock.type != 'EMPTY':
     row.active = (search == '' or re.search(search, datablock.data.name, re.I) != None)
 
-  # empty
-  if datablock.type in 'EMPTY':
+    # sub
+    sub = row.row()
+    sub.scale_x = 1.6
 
-    # empty image draw type
-    if datablock.empty_draw_type in 'IMAGE':
+    # icon
+    op = sub.operator('view3d.name_panel_icon', text='', icon=icon.objectData(datablock), emboss=False)
+    op.owner = datablock.name
+    op.target = datablock.name
+    op.context = 'OBJECT_DATA'
 
-      # image
-      row.template_ID(datablock, 'data', open='image.open', unlink='image.unlink')
-
-  else:
-
-    if datablock == context.active_object:
-
-      # name
-      row.template_ID(datablock, 'data')
-
-    else:
-
-      # sub
-      sub = row.row(align=True)
-      sub.scale_x = 1.6
-
-      # icon
-      op = sub.operator('view3d.name_panel_icon', text='', icon=icon.objectData(datablock))
-      op.owner = datablock.name
-      op.target = datablock.name
-      op.context = 'OBJECT_DATA'
-
-      # name
-      row.prop(datablock.data, 'name', text='')
+    # name
+    row.prop(datablock.data, 'name', text='')
 
 # vertex group
 def VertexGroup(self, context, layout, datablock, object, panel):

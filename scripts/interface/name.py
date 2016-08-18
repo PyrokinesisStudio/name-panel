@@ -1978,7 +1978,7 @@ def ObjectData(self, context, layout, datablock, panel):
       sub = row.row()
 
       # scale x
-      su.scale_x = 1.6
+      sub.scale_x = 1.6
 
       # operator; name panel icon
       # add texture here

@@ -17,26 +17,26 @@
 #
 # ##### END GPL LICENSE BLOCK #####
 
-# modified properties data modifier.py
+# modified properties_data_modifier.py
 
 # imports
 import bpy
 from bpy.app.translations import pgettext_iface as iface_
 
-# modifier buttons
-class ModifierButtons:
+# modifier
+class Modifier:
   '''
       The UI settings for modifiers.
   '''
 
   # main
-  def main(self, context, layout, modifier, object):
+  def main(self, context, layout, object, modifier):
 
     # column
     column = layout.column()
 
     # match enum type to one of the functions below
-    getattr(ModifierButtons, modifier.type)(ModifierButtons, column, object, modifier)
+    getattr(Modifier, modifier.type)(Modifier, column, object, modifier)
 
   # armature
   def ARMATURE(self, layout, object, modifier):
@@ -539,7 +539,7 @@ class ModifierButtons:
       # has vgroup
       has_vgroup = bool(modifier.vertex_group)
 
-      ration
+      # ratio
       layout.prop(modifier, 'ratio')
 
       # split

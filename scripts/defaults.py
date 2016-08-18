@@ -6,7 +6,7 @@ defaults = {
     'hide search': True,
     'hide find & replace': True,
     'filters': False,
-    'options': False,
+    'shortcuts': False,
     'display names': False,
     'search': '',
     'regex': False,

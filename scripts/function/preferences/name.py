@@ -36,7 +36,7 @@ def main(context):
   default['hide search'] = option.hideSearch
   default['hide find & replace'] = option.hideFindReplace
   default['filters'] = option.filters
-  default['options'] = option.options
+  default['shortcuts'] = option.shortcuts
   default['display names'] = option.displayNames
   default['search'] = option.search
   default['regex'] = option.regex

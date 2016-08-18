@@ -52,8 +52,8 @@ def reset(context, panel, auto, names, name, copy):
     # filters
     option.filters = default['filters']
 
-    # options
-    option.options = default['options']
+    # shortcuts
+    option.shortcuts = default['shortcuts']
 
     # display names
     option.displayNames = default['display names']
@@ -861,8 +861,8 @@ def transfer(context, panel, auto, names, name, copy):
         # filters
         scene.NamePanel.filters = option.filters
 
-        # options
-        scene.NamePanel.options = option.options
+        # shortcuts
+        scene.NamePanel.shortcuts = option.shortcuts
 
         # display names
         scene.NamePanel.displayNames = option.displayNames

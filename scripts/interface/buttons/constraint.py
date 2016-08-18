@@ -19,8 +19,8 @@
 
 # modified properties_constraints.py
 
-# constraint buttons
-class ConstraintButtons:
+# constraint
+class Constraint:
   '''
     The UI settings for the constraints.
   '''
@@ -32,13 +32,13 @@ class ConstraintButtons:
     column = layout.column()
 
     # match enum type to one of the functions below.
-    getattr(ConstraintButtons, constraint.type)(ConstraintButtons, context, column, constraint)
+    getattr(Constraint, constraint.type)(Constraint, context, column, constraint)
 
     # is constraint has influence
     if constraint.type not in {'RIGID_BODY_JOINT', 'NULL'}:
 
       # separate
-      layout.separator()
+      column.separator()
 
       # influence
       column.prop(constraint, 'influence')

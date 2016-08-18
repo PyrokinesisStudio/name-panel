@@ -22,8 +22,6 @@ import bpy
 import bmesh
 from bpy.types import Operator
 from bpy.props import BoolProperty, StringProperty, EnumProperty
-from ..buttons.constraints import ConstraintButtons
-from ..buttons.modifiers import ModifierButtons
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])

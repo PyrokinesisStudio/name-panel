@@ -767,23 +767,28 @@ class name(Operator):
       Invoke the operator panel/menu, control its width.
     '''
 
-    # alt
+    # is alt and isnt simple
     if event.alt and not self.simple:
       self.quickBatch = False
 
-    # simple
+    # isnt simple
     if not self.simple:
 
       # size
       try: size = 330 if addon.preferences['largePopups'] == 0 else 460
       except: size = 330
 
+      # props dialog
       context.window_manager.invoke_props_dialog(self, width=size)
+
+      # running modal
       return {'RUNNING_MODAL'}
 
-    # isnt simple
+    # is simple
     else:
 
       # execute
       self.execute(context)
+
+      # finished
       return {'FINISHED'}

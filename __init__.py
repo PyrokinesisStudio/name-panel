@@ -84,23 +84,25 @@ class preferences(AddonPreferences):
 
     # row
     row = layout.row(align=True)
+
+    # scale y
     row.scale_y = 1.5
 
-    # name panel
+    # operator; name panel
     row.operator('wm.name_panel_defaults', text='Panel')
 
-    # auto name
+    # operator; auto name
     row.operator('wm.batch_auto_name_defaults', text='Auto Name')
 
-    # batch name
+    # operator; batch name defaults
     op = row.operator('wm.batch_name_defaults', text='Batch Name')
     op.quickBatch = False
 
-    # batch name
+    # operator; batch name defaults
     op = row.operator('wm.batch_name_defaults', text='Quick Batch')
     op.quickBatch = True
 
-    # batch name copy
+    # operator; batch name copy
     row.operator('wm.batch_copy_name_defaults', text='Batch Name Copy')
 
     # row
@@ -123,24 +125,31 @@ class preferences(AddonPreferences):
 
     # split
     split = layout.split(align=True)
+
+    # scale y
     split.scale_y = 2
 
+    # operator; url open
     # donate
     prop = split.operator('wm.url_open', text='Donate')
     prop.url = 'https://paypal.me/proxe'
 
+    # operator; url open
     # blender market
     prop = split.operator('wm.url_open', text='Blender Market')
     prop.url = 'https://cgcookiemarkets.com/all-products/name-panel/'
 
+    # operator; url open
     # gumroad
     prop = split.operator('wm.url_open', text='Gumroad')
     prop.url = 'https://gumroad.com/l/UyXd'
 
+    # operator; url open
     # blender artists
     prop = split.operator('wm.url_open', text='Blender Artists')
     prop.url = 'http://blenderartists.org/forum/showthread.php?272086'
 
+    # operator; url open
     # github
     prop = split.operator('wm.url_open', text='Github')
     prop.url = 'https://github.com/trentinfrederick/name-panel'
@@ -154,74 +163,67 @@ def register():
   # register module
   bpy.utils.register_module(__name__)
 
-  # batch shared setting
+  # batch shared
   bpy.types.Scene.BatchShared = PointerProperty(
     type = PropertyGroup.batch.shared,
     name = 'Batch Shared Settings',
     description = 'Storage location for shared settings of batch name operators.'
   )
 
-  # batch auto name settings
+  # batch auto name
   bpy.types.Scene.BatchAutoName = PointerProperty(
     type = PropertyGroup.batch.auto.name,
     name = 'Batch Auto Name Settings',
     description = 'Storage location for the batch auto name operator settings.'
   )
 
-  # batch auto name object names
+  # object names
   bpy.types.Scene.ObjectNames = PointerProperty(
     type = PropertyGroup.batch.auto.objects,
     name = 'Object Name Settings',
     description = 'Storage location for the object names used during the auto name operation.'
   )
 
-  # batch auto name constraint names
+  # constraint names
   bpy.types.Scene.ConstraintNames = PointerProperty(
     type = PropertyGroup.batch.auto.constraints,
     name = 'Constraint Name Settings',
     description = 'Storage location for the constraint names used during the auto name operation.'
   )
 
-  # batch auto name modifier names
+  # modifier names
   bpy.types.Scene.ModifierNames = PointerProperty(
     type = PropertyGroup.batch.auto.modifiers,
     name = 'Modifier Name Settings',
     description = 'Storage location for the modifier names used during the auto name operation.'
   )
 
-  # batch auto name object data names
+  # object data names
   bpy.types.Scene.ObjectDataNames = PointerProperty(
     type = PropertyGroup.batch.auto.objectData,
     name = 'Object Data Name Settings',
     description = 'Storage location for the object data names used during the auto name operation.'
   )
 
-  # batch name settings
+  # batch name
   bpy.types.Scene.BatchName = PointerProperty(
     type = PropertyGroup.batch.name,
     name = 'Batch Name Settings',
     description = 'Storage location for the batch name operator settings.'
   )
 
-  # batch copy settings
+  # batch copy name
   bpy.types.Scene.BatchCopyName = PointerProperty(
     type = PropertyGroup.batch.copy,
     name = 'Batch Name Copy Settings',
     description = 'Storage location for the batch copy name operator settings.'
   )
 
-  # name panel settings
+  # name panel
   bpy.types.Scene.NamePanel = PointerProperty(
     type = PropertyGroup.name,
     name = 'Name Panel Settings',
     description = 'Storage location for the name panel settings.'
-  )
-
-  # properties panel settings
-  bpy.types.Scene.PropertiesPanel = PointerProperty(
-    type = PropertyGroup.properties,
-    name = 'Properties Panel Settings',
-    description = 'Storage location for the properties panel settings.'
   )
 
   # append

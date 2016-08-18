@@ -58,10 +58,10 @@ class name(PropertyGroup):
       ('GREASE_PENCIL', 'Grease Pencil', '', 'GREASEPENCIL', 3),
       ('CONSTRAINT', 'Constraint', '', 'CONSTRAINT', 4),
       ('MODIFIER', 'Modifier', '', 'MODIFIER', 5),
-      ('OBJECT_DATA', 'Object Data', '', 'MESH_DATA', 6),
+      ('OBJECT_DATA', 'Data', '', 'MESH_DATA', 6),
       ('BONE_GROUP', 'Bone Group', '', 'GROUP_BONE', 7),
       ('BONE', 'Bone', '', 'BONE_DATA', 8),
-      ('BONE_CONSTRAINT', 'Bone Constraint', '', 'CONSTRAINT_BONE', 9),
+      ('BONE_CONSTRAINT', 'Constraint', '', 'CONSTRAINT_BONE', 9),
       ('VERTEX_GROUP', 'Vertex Group', '', 'GROUP_VERTEX', 10),
       ('SHAPEKEY', 'Shapekey', '', 'SHAPEKEY_DATA', 11),
       ('UV', 'UV Map', '', 'GROUP_UVS', 12),
@@ -144,11 +144,11 @@ class name(PropertyGroup):
     default = default['filters']
   )
 
-  # options
-  options = BoolProperty(
-    name = 'Options',
-    description = 'Show shortcut options next to datablock names.',
-    default = default['options']
+  # shortcuts
+  shortcuts = BoolProperty(
+    name = 'shortcuts',
+    description = 'Show shortcuts to settings next to the datablock names.',
+    default = default['shortcuts']
   )
 
   # display names
@@ -299,19 +299,6 @@ class name(PropertyGroup):
     default = default['display bones']
   )
 
-# properties
-class properties(PropertyGroup):
-  '''
-    Properties panel options.
-  '''
-
-  # display active
-  displayActive = BoolProperty(
-    name = 'Display Active',
-    description = 'Prefer to display the active objects options instead of the last icon clicked when applicable.',
-    default = True
-  )
-
 # batch
 class batch:
   '''
@@ -428,7 +415,7 @@ class batch:
         modifiers (PropertyGroup)
         objectData (PropertyGroup)
     '''
-    # options
+    # name
     class name(PropertyGroup):
       '''
         Auto name options

@@ -21,11 +21,6 @@
 import bpy
 from bpy.props import BoolProperty
 from bpy.types import Operator
-from ....function import options
-from ....function.preferences import name as nameD
-
-# addon
-addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
 
 # name
 class name(Operator):
@@ -68,11 +63,8 @@ class name(Operator):
     # filters
     row.prop(panel, 'filters', text='Filters', icon=iconToggle, toggle=True)
 
-    # display names
-    row.prop(panel, 'displayNames', text='', icon='ZOOM_SELECTED')
-
     # options
-    row.prop(panel, 'options', text='', icon='SETTINGS')
+    row.prop(panel, 'shortcuts', text='', icon='SETTINGS')
 
     # # operator menu
     row.menu('VIEW3D_MT_name_panel_specials', text='', icon='COLLAPSEMENU')
@@ -222,6 +214,15 @@ class name(Operator):
       op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
       op.simple = False
       op.quickBatch = True
+
+    # separate
+    column.separator()
+
+    # row
+    row = column.row()
+
+    # display names
+    row.prop(panel, 'displayNames', icon='OBJECT_DATA')
 
     # enabled
     if panel.displayNames:

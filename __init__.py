@@ -91,17 +91,8 @@ class save(Operator):
       if hasattr(bpy.types, 'VIEW3D_PT_TOOLS_properties'):
         bpy.utils.unregister_class(properties.toolsProperties)
 
-    from .scripts.function import options
-    from .scripts.function.preferences import name as Dname
-    from .scripts.function.preferences import auto as Dauto
-    from .scripts.function.preferences import batch as Dbatch
-    from .scripts.function.preferences import copy as Dcopy
-
-    options.transfer(context, True, True, True, True, True)
-    # Dname.main(context)
-    # Dauto.main(context)
-    # Dbatch.main(context)
-    # Dcopy.main(context)
+    from .scripts.function.preferences import options
+    options.main(context)
 
     return {'FINISHED'}
 

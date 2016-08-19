@@ -20,12 +20,6 @@
 # imports
 import bpy
 from bpy.types import Operator
-from .. import shared
-from ....function import options
-from ....function.preferences import auto
-
-# addon
-addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
 
 # name
 class name(Operator):

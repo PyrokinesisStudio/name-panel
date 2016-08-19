@@ -193,7 +193,7 @@ defaults = {
     'display bones': False,
   },
 
-  'Properties Panel': {
+  'properties panel': {
     'location': 'TOOLS'
   },
 

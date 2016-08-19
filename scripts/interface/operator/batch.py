@@ -22,7 +22,7 @@ import bpy
 from bpy.props import BoolProperty, IntProperty
 from bpy.types import Operator
 from . import shared
-from ...function import batch, options
+from ...function import batch
 
 # addon
 addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
@@ -746,9 +746,6 @@ class name(Operator):
 
     # main
     batch.main(self, context)
-
-    # transfer options
-    options.transfer(context, False, False, False, True, False)
 
     # report
     self.report({'INFO'}, 'Datablocks named: ' + str(self.count))

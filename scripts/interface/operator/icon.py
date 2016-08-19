@@ -23,9 +23,6 @@ import bmesh
 from bpy.types import Operator
 from bpy.props import BoolProperty, StringProperty, EnumProperty
 
-# addon
-addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
-
 # operator
 class operator(Operator):
   '''

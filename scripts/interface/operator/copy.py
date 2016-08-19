@@ -20,10 +20,7 @@
 # imports
 import bpy
 from bpy.types import Operator
-from ...function import copy, options
-
-# addon
-addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
+from ...function import copy
 
 # name
 class name(Operator):
@@ -105,9 +102,6 @@ class name(Operator):
 
     # copy
     copy.main(context)
-
-    # transfer settings
-    options.transfer(context, False, False, False, False, True)
     return {'FINISHED'}
 
   # invoke

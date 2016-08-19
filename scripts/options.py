@@ -317,7 +317,7 @@ class properties(PropertyGroup):
   '''
 
   # default
-  default = defaults['Properties Panel']
+  default = defaults['properties panel']
 
   # location
   location = EnumProperty(

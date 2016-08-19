@@ -21,12 +21,6 @@
 import bpy
 from bpy.props import BoolProperty
 from bpy.types import Operator
-from .. import shared
-from ....function import options
-from ....function.preferences import batch
-
-# addon
-addon = bpy.context.user_preferences.addons.get(__name__.partition('.')[0])
 
 # name
 class name(Operator):

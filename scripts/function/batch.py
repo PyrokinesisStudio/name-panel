@@ -360,7 +360,7 @@ def main(self, context):
               # object type
               if option.objectType in 'ALL':
                 for group in bpy.data.groups:
-                  if object in group.objects:
+                  if object in group.objects[:]:
 
                     # populate
                     populate(self, context, group)
@@ -369,7 +369,7 @@ def main(self, context):
               # object type
               elif option.objectType in object.type:
                 for group in bpy.data.groups:
-                  if object in group.objects:
+                  if object in group.objects[:]:
 
                     # populate
                     populate(self, context, group)
@@ -380,7 +380,7 @@ def main(self, context):
             # object type
             if option.objectType in 'ALL':
               for group in bpy.data.groups:
-                if object in group.objects:
+                if object in group.objects[:]:
 
                   # populate
                   populate(self, context, group)
@@ -388,7 +388,7 @@ def main(self, context):
             # object type
             elif option.objectType in object.type:
               for group in bpy.data.groups:
-                if object in group.objects:
+                if object in group.objects[:]:
 
                   # populate
                   populate(self, context, group)
@@ -1293,7 +1293,7 @@ def main(self, context):
           # object type
           if option.objectType in 'ALL':
             for group in bpy.data.groups:
-              if object in group.objects:
+              if object in group.objects[:]:
 
                 # populate
                 populate(self, context, group)
@@ -1301,7 +1301,7 @@ def main(self, context):
           # object type
           elif option.objectType in object.type:
             for group in bpy.data.groups:
-              if object in group.objects:
+              if object in group.objects[:]:
 
                 # populate
                 populate(self, context, group)
@@ -2819,7 +2819,7 @@ def quick(self, context, object, panel, option):
       # ignore group
       if not option.ignoreGroup or self.simple:
         for group in bpy.data.groups:
-          for groupObject in group.objects:
+          for groupObject in group.objects[:]:
             if groupObject == object:
 
               # search
@@ -2951,38 +2951,44 @@ def quick(self, context, object, panel, option):
               # mode
               if object.mode == 'EDIT':
 
-                # search
-                if search == '' or re.search(search, context.active_bone, re.I):
+                # is active bone
+                if context.active_bone:
 
-                  # new name
-                  newName = rename(self, context, context.active_bone.name, option) if not option.suffixLast else rename(self, context, context.active_bone.name, option) + option.suffix
+                  # search
+                  if search == '' or re.search(search, context.active_bone.name, re.I):
 
-                  # update
-                  if context.active_bone.name != newName:
+                    # new name
+                    newName = rename(self, context, context.active_bone.name, option) if not option.suffixLast else rename(self, context, context.active_bone.name, option) + option.suffix
 
-                    # name
-                    context.active_bone.name = newName
+                    # update
+                    if context.active_bone.name != newName:
 
-                    # count
-                    self.count += 1
+                      # name
+                      context.active_bone.name = newName
+
+                      # count
+                      self.count += 1
 
               # mode
               elif object.mode == 'POSE':
 
-                # search
-                if search == '' or re.search(search, context.active_pose_bone, re.I):
+                # is active pose bone
+                if context.active_pose_bone:
 
-                  # new name
-                  newName = rename(self, context, context.active_pose_bone.name, option) if not option.suffixLast else rename(self, context, context.active_pose_bone.name, option) + option.suffix
+                  # search
+                  if search == '' or re.search(search, context.active_pose_bone.name, re.I):
 
-                  # update
-                  if context.active_pose_bone.name != newName:
+                    # new name
+                    newName = rename(self, context, context.active_pose_bone.name, option) if not option.suffixLast else rename(self, context, context.active_pose_bone.name, option) + option.suffix
 
-                    # name
-                    context.active_pose_bone.name = newName
+                    # update
+                    if context.active_pose_bone.name != newName:
 
-                    # count
-                    self.count += 1
+                      # name
+                      context.active_pose_bone.name = newName
+
+                      # count
+                      self.count += 1
 
       # bone constraints
       if panel.boneConstraints:

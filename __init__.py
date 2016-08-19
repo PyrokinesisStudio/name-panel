@@ -1,29 +1,20 @@
 
-# ##### BEGIN GPL LICENSE BLOCK #####
-#
-#  This program is free software; you can redistribute it and/or modify it
-#  under the terms of the GNU General Public License as published by the Free
-#  Software Foundation; either version 2 of the License, or (at your option)
-#  any later version.
-#
-#  This program is distributed in the hope that it will be useful, but WITHOUT
-#  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-#  more details.
-#
-#  You should have received a copy of the GNU General Public License along with
-#  this program; if not, write to the Free Software Foundation, Inc.,
-#  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-#
-# ##### END GPL LICENSE BLOCK #####
+'''
+Name Panel Addon
+Copyright (C) 2016 Trentin Frederick
 
-# ##### BEGIN INFO BLOCK #####
-#
-#  Author: Trentin Frederick (a.k.a, proxe)
-#  Contact: trentin.shaun.frederick@gmail.com
-#  Version: 1.6.69
-#
-# ##### END INFO BLOCK #####
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with
+this program.  If not, see <http://www.gnu.org/licenses/>.
+'''
 
 # blender info
 bl_info = {
@@ -53,7 +44,7 @@ from .scripts.interface.operator.preferences import copy as Pcopy
 # save
 class save(Operator):
   '''
-    Save current operator positions as the default, update.
+    Save current property positions as the default, update.
   '''
   bl_idname = 'wm.save_name_panel_defaults'
   bl_label = 'Save'
@@ -65,35 +56,63 @@ class save(Operator):
     '''
       Execute the operator.
     '''
-    namePanelLocation = context.window_manager.NamePanel.location
 
-    if namePanelLocation == 'TOOLS':
+    # location
+    location = context.window_manager.NamePanel.location
+
+    # is location tools
+    if location == 'TOOLS':
+
+      # doesnt have tools name
       if not hasattr(bpy.types, 'VIEW3D_PT_TOOLS_name'):
         bpy.utils.register_class(name.toolsName)
+
+      # has ui name
       if hasattr(bpy.types, 'VIEW3D_PT_UI_name')  :
         bpy.utils.unregister_class(name.UIName)
+
+    # isnt location tools
     else:
+
+      # doesnt have ui name
       if not hasattr(bpy.types, 'VIEW3D_PT_UI_name'):
         bpy.utils.register_class(name.UIName)
+
+      # has tools name
       if hasattr(bpy.types, 'VIEW3D_PT_TOOLS_name'):
         bpy.utils.unregister_class(name.toolsName)
 
-    propertyPanelLocation = context.window_manager.PropertyPanel.location
 
-    if propertyPanelLocation == 'TOOLS':
+    # location
+    location = context.window_manager.PropertyPanel.location
+
+    # is location tools
+    if location == 'TOOLS':
+
+      # doesnt have tools properties
       if not hasattr(bpy.types, 'VIEW3D_PT_TOOLS_properties'):
         bpy.utils.register_class(properties.toolsProperties)
+
+      # has ui properties
       if hasattr(bpy.types, 'VIEW3D_PT_UI_properties'):
         bpy.utils.unregister_class(properties.UIProperties)
+
+    # isnt location tools
     else:
+
+      # doesnt have ui properties
       if not hasattr(bpy.types, 'VIEW3D_PT_UI_properties'):
         bpy.utils.register_class(properties.UIProperties)
+
+      # has tools properties
       if hasattr(bpy.types, 'VIEW3D_PT_TOOLS_properties'):
         bpy.utils.unregister_class(properties.toolsProperties)
 
+    # imports
     from .scripts.function.preferences import options
-    options.main(context)
 
+    # main
+    options.main(context)
     return {'FINISHED'}
 
 # preferences
@@ -162,14 +181,17 @@ class preferences(AddonPreferences):
     # pop ups
     row.prop(context.window_manager.BatchShared, 'largePopups')
 
+    # row
     row = box.row()
+
+    # scale y
     row.scale_y = 1.5
+
+    # alignment right
     row.alignment = 'RIGHT'
 
+    # operator; save name panel defaults
     row.operator('wm.save_name_panel_defaults', text='Save')
-
-    # label
-    # layout.label(text='Links:')
 
     # split
     split = layout.split(align=True)
@@ -178,28 +200,33 @@ class preferences(AddonPreferences):
     split.scale_y = 2
 
     # operator; url open
-    # donate
     prop = split.operator('wm.url_open', text='Donate')
+
+    # donate
     prop.url = 'https://paypal.me/proxe'
 
     # operator; url open
-    # blender market
     prop = split.operator('wm.url_open', text='Blender Market')
+
+    # blender market
     prop.url = 'https://cgcookiemarkets.com/all-products/name-panel/'
 
     # operator; url open
-    # gumroad
     prop = split.operator('wm.url_open', text='Gumroad')
+
+    # gumroad
     prop.url = 'https://gumroad.com/l/UyXd'
 
     # operator; url open
-    # blender artists
     prop = split.operator('wm.url_open', text='Blender Artists')
+
+    # blender artists
     prop.url = 'http://blenderartists.org/forum/showthread.php?272086'
 
     # operator; url open
-    # github
     prop = split.operator('wm.url_open', text='Github')
+
+    # github
     prop.url = 'https://github.com/trentinfrederick/name-panel'
 
 # register

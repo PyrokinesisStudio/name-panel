@@ -1,22 +1,4 @@
 
-# ##### BEGIN GPL LICENSE BLOCK #####
-#
-#  This program is free software; you can redistribute it and/or modify it
-#  under the terms of the GNU General Public License as published by the Free
-#  Software Foundation; either version 2 of the License, or (at your option)
-#  any later version.
-#
-#  This program is distributed in the hope that it will be useful, but WITHOUT
-#  ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-#  FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-#  more details.
-#
-#  You should have received a copy of the GNU General Public License along with
-#  this program; if not, write to the Free Software Foundation, Inc.,
-#  51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-#
-# ##### END GPL LICENSE BLOCK #####
-
 # object data
 def ObjectData(self, context, layout, datablock):
   '''
@@ -228,14 +210,13 @@ def ObjectData(self, context, layout, datablock):
 
       layout.prop(datablock.data, "use_path", text="Path Animation:")
 
-      layout.active = datablock.data.use_path
-
       column = layout.column()
+      column.active = datablock.data.use_path
       column.prop(datablock.data, "path_duration", text="Frames")
       column.prop(datablock.data, "eval_time")
 
       # these are for paths only
-      row = layout.row()
+      row = column.row()
       row.prop(datablock.data, "use_path_follow")
       layout.separator()
 
@@ -321,8 +302,6 @@ def ObjectData(self, context, layout, datablock):
       row = layout.split(percentage=0.25)
       row.label(text="Bold & Italic")
       row.template_ID(datablock.data, "font_bold_italic", open="font.open", unlink="font.unlink")
-
-      # layout.prop(datablock.data, "font")
 
       split = layout.split()
 

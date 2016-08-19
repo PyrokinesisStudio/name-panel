@@ -378,7 +378,7 @@ def main(self, context):
               # object type
               if option.objectType in 'ALL':
                 for group in bpy.data.groups:
-                  if object in group.objects:
+                  if object in group.objects[:]:
 
                     # populate
                     populate(self, context, group)
@@ -387,7 +387,7 @@ def main(self, context):
               # object type
               elif option.objectType in object.type:
                 for group in bpy.data.groups:
-                  if object in group.objects:
+                  if object in group.objects[:]:
 
                     # populate
                     populate(self, context, group)
@@ -398,7 +398,7 @@ def main(self, context):
             # object type
             if option.objectType in 'ALL':
               for group in bpy.data.groups:
-                if object in group.objects:
+                if object in group.objects[:]:
 
                   # populate
                   populate(self, context, group)
@@ -406,7 +406,7 @@ def main(self, context):
             # object type
             elif option.objectType in object.type:
               for group in bpy.data.groups:
-                if object in group.objects:
+                if object in group.objects[:]:
 
                   # populate
                   populate(self, context, group)
@@ -1311,7 +1311,7 @@ def main(self, context):
           # object type
           if option.objectType in 'ALL':
             for group in bpy.data.groups:
-              if object in group.objects:
+              if object in group.objects[:]:
 
                 # populate
                 populate(self, context, group)
@@ -1319,7 +1319,7 @@ def main(self, context):
           # object type
           elif option.objectType in object.type:
             for group in bpy.data.groups:
-              if object in group.objects:
+              if object in group.objects[:]:
 
                 # populate
                 populate(self, context, group)
@@ -2837,7 +2837,7 @@ def quick(self, context, object, panel, option):
       # ignore group
       if not option.ignoreGroup or self.simple:
         for group in bpy.data.groups:
-          for groupObject in group.objects:
+          for groupObject in group.objects[:]:
             if groupObject == object:
 
               # search
@@ -2970,7 +2970,7 @@ def quick(self, context, object, panel, option):
               if object.mode == 'EDIT':
 
                 # search
-                if search == '' or re.search(search, context.active_bone, re.I):
+                if search == '' or re.search(search, context.active_bone.name, re.I):
 
                   # new name
                   newName = rename(self, context, context.active_bone.name, option) if not option.suffixLast else rename(self, context, context.active_bone.name, option) + option.suffix
@@ -2988,7 +2988,7 @@ def quick(self, context, object, panel, option):
               elif object.mode == 'POSE':
 
                 # search
-                if search == '' or re.search(search, context.active_pose_bone, re.I):
+                if search == '' or re.search(search, context.active_pose_bone.name, re.I):
 
                   # new name
                   newName = rename(self, context, context.active_pose_bone.name, option) if not option.suffixLast else rename(self, context, context.active_pose_bone.name, option) + option.suffix

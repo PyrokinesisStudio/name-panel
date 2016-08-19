@@ -31,10 +31,10 @@ def main(self, context):
   '''
 
   # panel
-  panel = context.scene.NamePanel
+  panel = context.window_manager.NamePanel
 
   # option
-  option = context.scene.BatchName
+  option = context.window_manager.BatchName
 
   # quick batch
   if self.quickBatch:
@@ -3269,7 +3269,7 @@ def populate(self, context, datablock, source=None):
   '''
 
   # option
-  option = context.scene.BatchName
+  option = context.window_manager.BatchName
 
   # objects
   if datablock.rna_type.identifier == 'Object':
@@ -3574,10 +3574,10 @@ def process(self, context, collection, option):
   else:
 
     # is shared sort or shared count
-    if context.scene.BatchShared.sort or context.scene.BatchShared.count:
+    if context.window_manager.BatchShared.sort or context.window_manager.BatchShared.count:
 
       # sort
-      shared.main(self, context, clean, context.scene.BatchShared)
+      shared.main(self, context, clean, context.window_manager.BatchShared)
 
     # isnt shared sort or shared count
     else:
@@ -3620,7 +3620,7 @@ def rename(self, context, oldName, option):
   '''
 
   # option
-  option = context.scene.BatchName
+  option = context.window_manager.BatchName
 
   # not simple
   if not self.simple:
@@ -3681,14 +3681,14 @@ def rename(self, context, oldName, option):
     newName = oldName
 
     # is search
-    if context.scene.NamePanel.search != '':
+    if context.window_manager.NamePanel.search != '':
 
       # find & replace
-      if context.scene.NamePanel.regex:
-        try: newName = re.sub(context.scene.NamePanel.search, option.replace, newName, re.I)
+      if context.window_manager.NamePanel.regex:
+        try: newName = re.sub(context.window_manager.NamePanel.search, option.replace, newName, re.I)
         except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
       else:
-        newName = re.sub(re.escape(context.scene.NamePanel.search), option.replace, newName, re.I)
+        newName = re.sub(re.escape(context.window_manager.NamePanel.search), option.replace, newName, re.I)
 
   # new name
   return newName

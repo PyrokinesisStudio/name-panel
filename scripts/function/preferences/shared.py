@@ -21,7 +21,11 @@
 from ...defaults import defaults
 
 # main
-def main(context, option, default):
+def main(context):
+
+  option = context.window_manager.BatchShared
+
+  default = defaults['shared']
 
   default['sort'] = option.sort
   default['type'] = option.type

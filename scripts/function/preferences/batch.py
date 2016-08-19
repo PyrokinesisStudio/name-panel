@@ -26,7 +26,7 @@ from ...defaults import defaults
 def main(context):
 
   # option
-  option = context.scene.BatchName
+  option = context.window_manager.BatchName
 
   # default
   default = defaults['batch name']
@@ -110,7 +110,7 @@ def main(context):
   default['trim end'] = option.trimEnd
   default['cut start'] = option.cutStart
   default['cut amount'] = option.cutAmount
-  shared.main(context, context.scene.BatchShared, defaults['shared'])
+  shared.main(context)
 
   # generate
   generate.main(defaults)

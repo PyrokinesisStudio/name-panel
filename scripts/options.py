@@ -115,6 +115,17 @@ class name(PropertyGroup):
     default = 'OBJECT'
   )
 
+  # location
+  location = EnumProperty(
+    name = 'Name Panel Location',
+    description = 'The 3D view shelf to use for the name panel.',
+    items = [
+      ('TOOLS', 'Tool Shelf', 'Places the name panel in the tool shelf under the tab labeled \'Name\''),
+      ('UI', 'Property Shelf', 'Places the name panel in the property shelf.')
+    ],
+    default = default['location']
+  )
+
   # pin active object
   pinActiveObject = BoolProperty(
     name = 'Pin Active Object',
@@ -299,6 +310,26 @@ class name(PropertyGroup):
     default = default['display bones']
   )
 
+# properties
+class properties(PropertyGroup):
+  '''
+    Properties panel options.
+  '''
+
+  # default
+  default = defaults['Properties Panel']
+
+  # location
+  location = EnumProperty(
+    name = 'Property Panel Location',
+    description = 'The 3D view shelf to use for the properties panel.',
+    items = [
+      ('TOOLS', 'Tool Shelf', 'Places the properties panel in the tool shelf under the tab labeled \'Name\''),
+      ('UI', 'Property Shelf', 'Places the properties panel in the property shelf.')
+    ],
+    default = default['location']
+  )
+
 # batch
 class batch:
   '''
@@ -315,6 +346,13 @@ class batch:
 
     # default
     default = defaults['shared']
+
+    # large popups
+    largePopups = BoolProperty(
+      name = 'Large Pop-ups',
+      description = 'Increase the size of pop-ups.',
+      default = default['large popups']
+    )
 
     # sort
     sort = BoolProperty(

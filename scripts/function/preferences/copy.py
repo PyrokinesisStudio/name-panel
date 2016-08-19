@@ -25,7 +25,7 @@ from ...defaults import defaults
 def main(context):
 
   # option
-  option = context.scene.BatchCopyName
+  option = context.window_manager.CopyName
 
   # default
   default = defaults['copy name']

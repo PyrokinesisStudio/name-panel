@@ -20,7 +20,6 @@
 # imports
 import os
 import sys
-from . import shared
 
 # main
 def main(defaults):

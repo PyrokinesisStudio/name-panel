@@ -1,9 +1,9 @@
 # Modified by scripts.function.preferences.generate.main
 defaults = {
   'name panel': {
+    'location': 'TOOLS',
     'pin active object': True,
     'pin active bone': True,
-    'hide search': True,
     'hide find & replace': True,
     'filters': False,
     'shortcuts': False,
@@ -29,7 +29,12 @@ defaults = {
     'display bones': False,
   },
 
+  'Properties Panel': {
+    'location': 'TOOLS'
+  },
+
   'shared': {
+    'large popups': False,
     'sort': False,
     'type': 'ALPHABETICAL',
     'axis': 'X',

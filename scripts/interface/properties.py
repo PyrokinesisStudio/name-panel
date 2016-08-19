@@ -84,7 +84,7 @@ def main(self, context):
   '''
 
   # panel
-  panel = context.scene.NamePanel
+  panel = context.window_manager.NamePanel
 
   # layout
   layout = self.layout

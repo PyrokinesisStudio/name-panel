@@ -38,10 +38,10 @@ class specials(Menu):
     layout = self.layout
 
     # option
-    option = context.scene.NamePanel
+    option = context.window_manager.NamePanel
 
     # batch auto name
-    layout.operator('view3d.batch_auto_name', icon='AUTO')
+    layout.operator('view3d.auto_name', icon='AUTO')
 
     # bath name
     op = layout.operator('wm.batch_name', icon='SORTALPHA')
@@ -49,7 +49,7 @@ class specials(Menu):
     op.quickBatch = False
 
     # batch copy
-    layout.operator('view3d.batch_copy_name', icon='COPYDOWN')
+    layout.operator('view3d.copy_name', icon='COPYDOWN')
 
     # separate
     layout.separator()
@@ -66,7 +66,7 @@ class specials(Menu):
         # pin active bone
         layout.prop(option, 'pinActiveBone')
 
-    # hide search
+    # hide hide find and replace
     layout.prop(option, 'hideFindReplace')
 
     # separate
@@ -81,7 +81,7 @@ class specials(Menu):
     op.copy = False
 
     # is option.regex
-    if option.regex or context.scene.BatchName.regex:
+    if option.regex or context.window_manager.BatchName.regex:
 
         # separate
         layout.separator()

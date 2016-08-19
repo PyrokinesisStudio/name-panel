@@ -34,7 +34,7 @@ class name(Operator):
   '''
   bl_idname = 'wm.name_panel_defaults'
   bl_label = 'Name Panel Defaults'
-  bl_description = 'Name panel defaults.'
+  bl_description = 'Current settings for name panel.'
   bl_options = {'INTERNAL'}
 
   # check
@@ -51,7 +51,7 @@ class name(Operator):
     layout = self.layout
 
     # panel
-    panel = context.scene.NamePanel
+    panel = context.window_manager.NamePanel
 
     # column
     column = layout.column(align=True)
@@ -162,7 +162,7 @@ class name(Operator):
         row = column.row(align=True)
 
         # replace
-        row.prop(context.scene.BatchName, 'replace', text='', icon='FILE_REFRESH')
+        row.prop(context.window_manager.BatchName, 'replace', text='', icon='FILE_REFRESH')
 
         # sub
         sub = row.split(align=True)
@@ -205,7 +205,7 @@ class name(Operator):
       row = column.row(align=True)
 
       # replace
-      row.prop(context.scene.BatchName, 'replace', text='', icon='FILE_REFRESH')
+      row.prop(context.window_manager.BatchName, 'replace', text='', icon='FILE_REFRESH')
 
       # sub
       sub = row.split(align=True)
@@ -261,12 +261,6 @@ class name(Operator):
     '''
       Execute the operator.
     '''
-
-    # main
-    nameD.main(context)
-
-    # transfer options
-    options.transfer(context, True, False, False, False, False)
     return {'FINISHED'}
 
   # invoke
@@ -274,10 +268,6 @@ class name(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-
-    # size
-    try: size = 200 if addon.preferences['largePopups'] == 0 else 400
-    except: size = 200
-
+    size = 200 if not context.window_manager.BatchShared.largePopups else 400
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

@@ -25,7 +25,7 @@ from ...defaults import defaults
 def main(context):
 
   # option
-  option = context.scene.NamePanel
+  option = context.window_manager.NamePanel
 
   # default
   default = defaults['name panel']
@@ -33,7 +33,6 @@ def main(context):
   # options
   default['pin active object'] = option.pinActiveObject
   default['pin active bone'] = option.pinActiveObject
-  default['hide search'] = option.hideSearch
   default['hide find & replace'] = option.hideFindReplace
   default['filters'] = option.filters
   default['shortcuts'] = option.shortcuts

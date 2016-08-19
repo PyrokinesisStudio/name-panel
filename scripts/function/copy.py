@@ -27,7 +27,7 @@ def main(context):
   '''
 
   # option
-  option = context.scene.BatchCopyName
+  option = context.window_manager.CopyName
 
   # mode
   if option.mode in {'SELECTED', 'OBJECTS'}:

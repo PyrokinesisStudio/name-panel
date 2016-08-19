@@ -35,16 +35,13 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['name panel']
 
     # name panel option
-    option = context.scene.NamePanel
+    option = context.window_manager.NamePanel
 
     # pin active object
     option.pinActiveObject = default['pin active object']
 
     # pin active bone
     option.pinActiveBone = default['pin active bone']
-
-    # hide search
-    option.hideSearch = default['hide search']
 
     # hide find & replace
     option.hideFindReplace = default['hide find & replace']
@@ -122,7 +119,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']
 
     # auto name option
-    option = context.scene.BatchAutoName
+    option = context.window_manager.AutoName
 
     # mode
     option.mode = default['mode']
@@ -152,7 +149,7 @@ def reset(context, panel, auto, names, name, copy):
     option.modifierType = default['modifier type']
 
     # option
-    option = context.scene.BatchShared
+    option = context.window_manager.BatchShared
 
     # default
     default = defaults['shared']
@@ -185,7 +182,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['object names']
 
     # object name
-    option = context.scene.ObjectNames
+    option = context.window_manager.ObjectNames
 
     # prefix
     option.prefix = default['prefix']
@@ -227,7 +224,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['constraint names']
 
     # constraint name
-    option = context.scene.ConstraintNames
+    option = context.window_manager.ConstraintNames
 
     # prefix
     option.prefix = default['prefix']
@@ -317,7 +314,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['modifier names']
 
     # modifier name
-    option = context.scene.ModifierNames
+    option = context.window_manager.ModifierNames
 
     # prefix
     option.prefix = default['prefix']
@@ -473,7 +470,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['object data names']
 
     # object data name
-    option = context.scene.ObjectDataNames
+    option = context.window_manager.ObjectDataNames
 
     # prefix
     option.prefix = default['prefix']
@@ -515,7 +512,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['batch name']
 
     # name option
-    option = context.scene.BatchName
+    option = context.window_manager.BatchName
 
     # mode
     option.mode = default['mode']
@@ -761,7 +758,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['shared']
 
     # option
-    option = context.scene.BatchShared
+    option = context.window_manager.BatchShared
 
     # sort
     option.sort = default['sort']
@@ -803,7 +800,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['copy name']
 
     # copy option
-    option = context.scene.BatchCopyName
+    option = context.window_manager.CopyName
 
     # mode
     option.mode = default['mode']
@@ -844,7 +841,7 @@ def transfer(context, panel, auto, names, name, copy):
       if scene != context.scene:
 
         # name panel option
-        option = context.scene.NamePanel
+        option = context.window_manager.NamePanel
 
         # pin active object
         scene.NamePanel.pinActiveObject = option.pinActiveObject
@@ -852,10 +849,7 @@ def transfer(context, panel, auto, names, name, copy):
         # pin active bone
         scene.NamePanel.pinActiveBone = option.pinActiveBone
 
-        # hide search
-        scene.NamePanel.hideSearch = option.hideSearch
-
-        # hide search
+        # hide find and replace
         scene.NamePanel.hideFindReplace = option.hideFindReplace
 
         # filters
@@ -930,37 +924,37 @@ def transfer(context, panel, auto, names, name, copy):
       if scene != context.scene:
 
         # auto name option
-        option = context.scene.BatchAutoName
+        option = context.window_manager.AutoName
 
         # type
-        scene.BatchAutoName.mode = option.mode
+        scene.AutoName.mode = option.mode
 
         # objects
-        scene.BatchAutoName.objects = option.objects
+        scene.AutoName.objects = option.objects
 
         # constraints
-        scene.BatchAutoName.constraints = option.constraints
+        scene.AutoName.constraints = option.constraints
 
         # modifiers
-        scene.BatchAutoName.modifiers = option.modifiers
+        scene.AutoName.modifiers = option.modifiers
 
         # objectData
-        scene.BatchAutoName.objectData = option.objectData
+        scene.AutoName.objectData = option.objectData
 
         # bone Constraints
-        scene.BatchAutoName.boneConstraints = option.boneConstraints
+        scene.AutoName.boneConstraints = option.boneConstraints
 
         # object type
-        scene.BatchAutoName.objectType = option.objectType
+        scene.AutoName.objectType = option.objectType
 
         # constraint type
-        scene.BatchAutoName.constraintType = option.constraintType
+        scene.AutoName.constraintType = option.constraintType
 
         # modifier type
-        scene.BatchAutoName.modifierType = option.modifierType
+        scene.AutoName.modifierType = option.modifierType
 
         # batch shared option
-        option = context.scene.BatchShared
+        option = context.window_manager.BatchShared
 
         # sort
         scene.BatchShared.sort = option.sort
@@ -989,7 +983,7 @@ def transfer(context, panel, auto, names, name, copy):
       if scene != context.scene:
 
         # object name
-        option = context.scene.ObjectNames
+        option = context.window_manager.ObjectNames
 
         # prefix
         scene.ObjectNames.prefix = option.prefix
@@ -1028,7 +1022,7 @@ def transfer(context, panel, auto, names, name, copy):
         scene.ObjectNames.lamp = option.lamp
 
         # constraint name
-        option = context.scene.ConstraintNames
+        option = context.window_manager.ConstraintNames
 
         # prefix
         scene.ConstraintNames.prefix = option.prefix
@@ -1115,7 +1109,7 @@ def transfer(context, panel, auto, names, name, copy):
         scene.ConstraintNames.shrinkwrap = option.shrinkwrap
 
         # modifier name
-        option = context.scene.ModifierNames
+        option = context.window_manager.ModifierNames
 
         # prefix
         scene.ModifierNames.prefix = option.prefix
@@ -1268,7 +1262,7 @@ def transfer(context, panel, auto, names, name, copy):
         scene.ModifierNames.softBody = option.softBody
 
         # object data name
-        option = context.scene.ObjectDataNames
+        option = context.window_manager.ObjectDataNames
 
         # prefix
         scene.ObjectDataNames.prefix = option.prefix
@@ -1309,7 +1303,7 @@ def transfer(context, panel, auto, names, name, copy):
       if scene != context.scene:
 
         # name option
-        option = context.scene.BatchName
+        option = context.window_manager.BatchName
 
         # batch type
         scene.BatchName.mode = option.mode
@@ -1555,7 +1549,7 @@ def transfer(context, panel, auto, names, name, copy):
         scene.BatchName.cutAmount = option.cutAmount
 
         # batch shared option
-        option = context.scene.BatchShared
+        option = context.window_manager.BatchShared
 
         # sort
         scene.BatchShared.sort = option.sort
@@ -1596,31 +1590,31 @@ def transfer(context, panel, auto, names, name, copy):
       if scene != context.scene:
 
         # copy option
-        option = context.scene.BatchCopyName
+        option = context.window_manager.CopyName
 
         # type
-        scene.BatchCopyName.mode = option.mode
+        scene.CopyName.mode = option.mode
 
         # source
-        scene.BatchCopyName.source = option.source
+        scene.CopyName.source = option.source
 
         # objects
-        scene.BatchCopyName.objects = option.objects
+        scene.CopyName.objects = option.objects
 
         # object datas
-        scene.BatchCopyName.objectData = option.objectData
+        scene.CopyName.objectData = option.objectData
 
         # materials
-        scene.BatchCopyName.materials = option.materials
+        scene.CopyName.materials = option.materials
 
         # textures
-        scene.BatchCopyName.textures = option.textures
+        scene.CopyName.textures = option.textures
 
         # particle systems
-        scene.BatchCopyName.particleSystems = option.particleSystems
+        scene.CopyName.particleSystems = option.particleSystems
 
         # particle settings
-        scene.BatchCopyName.particleSettings = option.particleSettings
+        scene.CopyName.particleSettings = option.particleSettings
 
         # use active object
-        scene.BatchCopyName.useActiveObject = option.useActiveObject
+        scene.CopyName.useActiveObject = option.useActiveObject

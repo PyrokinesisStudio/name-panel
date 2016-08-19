@@ -47,7 +47,7 @@ def main(context):
 def name(context):
 
   # option
-  option = context.scene.BatchAutoName
+  option = context.window_manager.AutoName
 
   # default
   default = defaults['auto name']
@@ -62,13 +62,13 @@ def name(context):
   default['object type'] = option.objectType
   default['constraint type'] = option.constraintType
   default['modifier type'] = option.modifierType
-  shared.main(context, context.scene.BatchShared, defaults['shared'])
+  shared.main(context)
 
 # objects
 def objects(context):
 
   # option
-  option = context.scene.ObjectNames
+  option = context.window_manager.ObjectNames
 
   # default
   default = defaults['auto name']['object names']
@@ -91,7 +91,7 @@ def objects(context):
 def constraints(context):
 
   # option
-  option = context.scene.ConstraintNames
+  option = context.window_manager.ConstraintNames
 
   # default
   default = defaults['auto name']['constraint names']
@@ -130,7 +130,7 @@ def constraints(context):
 def modifiers(context):
 
   # option
-  option = context.scene.ModifierNames
+  option = context.window_manager.ModifierNames
 
   # default
   default = defaults['auto name']['modifier names']
@@ -191,7 +191,7 @@ def modifiers(context):
 def objectData(context):
 
   # option
-  option = context.scene.ObjectDataNames
+  option = context.window_manager.ObjectDataNames
 
   # default
   default = defaults['auto name']['object data names']

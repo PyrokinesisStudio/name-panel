@@ -30,8 +30,8 @@ class name(Operator):
   '''
     Transfer names from some types of datablocks to others.
   '''
-  bl_idname = 'view3d.batch_copy_name'
-  bl_label = 'Batch Name Copy'
+  bl_idname = 'view3d.copy_name'
+  bl_label = 'Copy Name'
   bl_description = 'Copy names from some types of datablocks to others.'
   bl_options = {'UNDO'}
 
@@ -57,7 +57,7 @@ class name(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.BatchCopyName
+    option = context.window_manager.CopyName
 
     # row
     row = layout.row(align=True)
@@ -115,10 +115,6 @@ class name(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-
-    # size
-    try: size = 210 if addon.preferences['largePopups'] == 0 else 340
-    except: size = 210
-
+    size = 210 if not context.window_manager.BatchShared.largePopups else 340
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

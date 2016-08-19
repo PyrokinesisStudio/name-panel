@@ -32,7 +32,7 @@ class name(Operator):
   '''
     Automatically name datablocks based on type.
   '''
-  bl_idname = 'view3d.batch_auto_name'
+  bl_idname = 'view3d.auto_name'
   bl_label = 'Auto Name'
   bl_description = 'Automatically name datablocks based on type.'
   bl_options = {'UNDO'}
@@ -99,7 +99,7 @@ class name(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.BatchAutoName
+    option = context.window_manager.AutoName
 
     # label
     layout.label(text='Targets:')
@@ -161,25 +161,25 @@ class name(Operator):
     split = column.split(align=True)
 
     # batch auto name object names
-    split.operator('view3d.batch_auto_name_object_names', text='Objects')
+    split.operator('view3d.auto_name_object_names', text='Objects')
 
     # batch auto name constraint names
-    split.operator('view3d.batch_auto_name_constraint_names', text='Constraints')
+    split.operator('view3d.auto_name_constraint_names', text='Constraints')
 
     # batch auto name modifier names
-    split.operator('view3d.batch_auto_name_modifier_names', text='Modifiers')
+    split.operator('view3d.auto_name_modifier_names', text='Modifiers')
 
     # batch auto name object data names
-    split.operator('view3d.batch_auto_name_object_data_names', text='Object Data')
+    split.operator('view3d.auto_name_object_data_names', text='Object Data')
 
     # column
     column = layout.column(align=True)
 
     # sort
-    shared.sort(column, context.scene.BatchShared)
+    shared.sort(column, context.window_manager.BatchShared)
 
     # count
-    shared.count(column, context.scene.BatchShared)
+    shared.count(column, context.window_manager.BatchShared)
 
   # execute
   def execute(self, context):
@@ -206,11 +206,7 @@ class name(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-
-    # size
-    try: size = 330 if addon.preferences['largePopups'] == 0 else 460
-    except: size = 330
-
+    size = 330 if not context.window_manager.BatchShared.largePopups else 460
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}
 
@@ -219,7 +215,7 @@ class objects(Operator):
   '''
     Invoke the auto name object names dialogue.
   '''
-  bl_idname = 'view3d.batch_auto_name_object_names'
+  bl_idname = 'view3d.auto_name_object_names'
   bl_label = 'Object Names:'
   bl_description = 'Change the names used for objects.'
   bl_options = {'UNDO'}
@@ -234,7 +230,7 @@ class objects(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.ObjectNames
+    option = context.window_manager.ObjectNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -320,11 +316,7 @@ class objects(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-
-    # size
-    try: size = 150 if addon.preferences['largePopups'] == 0 else 225
-    except: size = 150
-
+    size = 150 if not context.window_manager.BatchShared.largePopups else 225
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}
 
@@ -333,7 +325,7 @@ class constraints(Operator):
   '''
     Invoke the auto name constraint names dialogue.
   '''
-  bl_idname = 'view3d.batch_auto_name_constraint_names'
+  bl_idname = 'view3d.auto_name_constraint_names'
   bl_label = 'Constraint Names:'
   bl_description = 'Change the names used for constraints.'
   bl_options = {'UNDO'}
@@ -348,7 +340,7 @@ class constraints(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.ConstraintNames
+    option = context.window_manager.ConstraintNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -520,11 +512,7 @@ class constraints(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-
-    # size
-    try: size = 600 if addon.preferences['largePopups'] == 0 else 900
-    except: size = 600
-
+    size = 600 if not context.window_manager.BatchShared.largePopups else 900
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}
 
@@ -533,7 +521,7 @@ class modifiers(Operator):
   '''
     Invoke the auto name modifier names dialogue.
   '''
-  bl_idname = 'view3d.batch_auto_name_modifier_names'
+  bl_idname = 'view3d.auto_name_modifier_names'
   bl_label = 'Modifier Names:'
   bl_description = 'Change the names used for modifiers.'
   bl_options = {'UNDO'}
@@ -548,7 +536,7 @@ class modifiers(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.ModifierNames
+    option = context.window_manager.ModifierNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -830,11 +818,7 @@ class modifiers(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-
-    # size
-    try: size = 600 if addon.preferences['largePopups'] == 0 else 900
-    except: size = 600
-
+    size = 600 if not context.window_manager.BatchShared.largePopups else 900
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}
 
@@ -843,7 +827,7 @@ class objectData(Operator):
   '''
     Invoke the auto name object data names dialogue.
   '''
-  bl_idname = 'view3d.batch_auto_name_object_data_names'
+  bl_idname = 'view3d.auto_name_object_data_names'
   bl_label = 'Object Data Names:'
   bl_description = 'Change the names used for objects data.'
   bl_options = {'UNDO'}
@@ -858,7 +842,7 @@ class objectData(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.ObjectDataNames
+    option = context.window_manager.ObjectDataNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -938,10 +922,6 @@ class objectData(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
-
-    # size
-    try: size = 150 if addon.preferences['largePopups'] == 0 else 225
-    except: size = 150
-
+    size = 150 if not context.window_manager.BatchShared.largePopups else 225
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

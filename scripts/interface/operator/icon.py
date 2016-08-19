@@ -131,7 +131,7 @@ class operator(Operator):
     '''
 
     # panel
-    panel = context.scene.NamePanel
+    panel = context.window_manager.NamePanel
     panel.previousOwner = panel.owner
     panel.previousTarget = panel.target
     panel.previousContext = panel.context

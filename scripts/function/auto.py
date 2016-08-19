@@ -31,7 +31,7 @@ def main(self, context):
   '''
 
   # option
-  option = context.scene.BatchAutoName
+  option = context.window_manager.AutoName
 
   # mode
   if option.mode in {'SELECTED', 'OBJECTS'}:
@@ -357,7 +357,7 @@ def populate(self, context, datablock, source=None):
   '''
 
   # option
-  option = context.scene.BatchName
+  option = context.window_manager.BatchName
 
   # objects
   if datablock.rna_type.identifier == 'Object':
@@ -441,10 +441,10 @@ def process(self, context, collection):
     name[3][0].name = str(random())
 
   # is shared sort or shared count
-  if context.scene.BatchShared.sort or context.scene.BatchShared.count:
+  if context.window_manager.BatchShared.sort or context.window_manager.BatchShared.count:
 
     # sort
-    shared.main(self, context, clean, context.scene.BatchShared)
+    shared.main(self, context, clean, context.window_manager.BatchShared)
 
   # isnt shared sort or shared count
   else:
@@ -467,19 +467,19 @@ def rename(self, context, name, i):
   '''
 
   # option
-  option = context.scene.BatchAutoName
+  option = context.window_manager.AutoName
 
   # object name
-  objectName = context.scene.ObjectNames
+  objectName = context.window_manager.ObjectNames
 
   # constraint name
-  constraintName = context.scene.ConstraintNames
+  constraintName = context.window_manager.ConstraintNames
 
   # modifier name
-  modifierName = context.scene.ModifierNames
+  modifierName = context.window_manager.ModifierNames
 
   # object data name
-  objectDataName = context.scene.ObjectDataNames
+  objectDataName = context.window_manager.ObjectDataNames
 
   # object
   if name[4] == 'OBJECT':

@@ -47,7 +47,7 @@ class previous(Operator):
     '''
 
     # panel
-    panel = context.scene.NamePanel
+    panel = context.window_manager.NamePanel
 
     # store
     previousOwner = panel.owner
@@ -91,7 +91,7 @@ class toObject(Operator):
     '''
 
     # panel
-    panel = context.scene.NamePanel
+    panel = context.window_manager.NamePanel
 
     # store
     panel.context = 'OBJECT'
@@ -123,7 +123,7 @@ class toData(Operator):
     '''
 
     # panel
-    panel = context.scene.NamePanel
+    panel = context.window_manager.NamePanel
 
     # store
     panel.context = 'OBJECT_DATA'
@@ -155,7 +155,7 @@ class toBone(Operator):
     '''
 
     # panel
-    panel = context.scene.NamePanel
+    panel = context.window_manager.NamePanel
 
     # store
     panel.context = 'BONE'

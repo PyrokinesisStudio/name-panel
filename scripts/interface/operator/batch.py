@@ -220,7 +220,7 @@ class name(Operator):
     layout = self.layout
 
     # option
-    option = context.scene.BatchName
+    option = context.window_manager.BatchName
 
     # column
     column = layout.column(align=True)
@@ -733,10 +733,10 @@ class name(Operator):
     column.separator()
 
     # sort
-    shared.sort(column, context.scene.BatchShared)
+    shared.sort(column, context.window_manager.BatchShared)
 
     # count
-    shared.count(column, context.scene.BatchShared)
+    shared.count(column, context.window_manager.BatchShared)
 
   # execute
   def execute(self, context):
@@ -775,8 +775,7 @@ class name(Operator):
     if not self.simple:
 
       # size
-      try: size = 330 if addon.preferences['largePopups'] == 0 else 460
-      except: size = 330
+      size = 330 if not context.window_manager.BatchShared.largePopups else 460
 
       # props dialog
       context.window_manager.invoke_props_dialog(self, width=size)

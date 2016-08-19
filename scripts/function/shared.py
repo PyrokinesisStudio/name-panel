@@ -67,7 +67,7 @@ def main(self, context, collection, option):
   else:
 
     # batch
-    batch = context.scene.BatchName
+    batch = context.window_manager.BatchName
 
     # apply names
     for name in collection:
@@ -213,7 +213,7 @@ def count(self, context, collection, option):
           name[1] = name[1] + option.separator + name[3][1]
 
   # batch
-  batch = context.scene.BatchName
+  batch = context.window_manager.BatchName
 
   # apply names
   for key in names:

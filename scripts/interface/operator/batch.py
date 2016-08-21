@@ -683,7 +683,7 @@ class name(Operator):
     # trim end
     row.prop(option, 'trimEnd', text='')
 
-    # seperator
+    # separate
     column.separator()
     column.separator()
 

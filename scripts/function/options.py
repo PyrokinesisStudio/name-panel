@@ -17,7 +17,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['name panel']
 
     # name panel option
-    option = context.window_manager.NamePanel
+    option = context.scene.NamePanel
 
     # pin active object
     option.pinActiveObject = default['pin active object']

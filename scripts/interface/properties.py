@@ -66,7 +66,7 @@ def main(self, context):
   '''
 
   # panel
-  panel = context.window_manager.NamePanel
+  panel = context.scene.NamePanel
 
   # layout
   layout = self.layout
@@ -87,10 +87,10 @@ def main(self, context):
   row.operator('view3d.name_panel_to_data', text='', icon='MESH_DATA')
 
   # is context object
-  if context.object:
+  if context.active_object:
 
     # is armature
-    if context.object.type == 'ARMATURE':
+    if context.active_object.type == 'ARMATURE':
 
       # to bone
       row.operator('view3d.name_panel_to_bone', text='', icon='BONE_DATA')
@@ -98,108 +98,118 @@ def main(self, context):
     # object
     if panel.context == 'OBJECT':
 
-      # object
-      Object(self, context, layout, context.object)
+        # object
+        Object(self, context, layout, context.active_object)
 
-    # group
-    elif panel.context == 'GROUP':
-
-      # group
-      Group(self, context, layout, bpy.data.groups[panel.target])
-
-    # grease pencil
-    elif panel.context == 'GREASE_PENCIL':
-
-      # grease pencil
-      GreasePencil(self, context, layout, bpy.data.grease_pencil[panel.target])
-
-    # action
-    elif panel.context == 'ACTION':
-
-      # action
-      Action(self, context, layout, bpy.data.actions[panel.target])
-
-    # constraint
-    elif panel.context == 'CONSTRAINT':
-
-      # constraint
-      Constraint(self, context, layout, bpy.data.objects[panel.owner].constraints[panel.target])
-
-    # modifier
-    elif panel.context == 'MODIFIER':
-
-      # modifier
-      Modifier(self, context, layout, bpy.data.objects[panel.owner], bpy.data.objects[panel.owner].modifiers[panel.target])
 
     # object data
     elif panel.context == 'OBJECT_DATA':
 
       # object
-      ObjectData(self, context, layout, context.object)
+      ObjectData(self, context, layout, context.active_object)
+
+    # is active bone
+    if context.active_bone:
+
+      # bone
+      if panel.context == 'BONE':
+
+
+          # bone
+          Bone(self, context, layout)
+
+  # is owner
+  if panel.owner:
+
+    # group
+    if panel.context == 'GROUP':
+
+      # group
+      Group(self, context, layout, bpy.data.groups[panel.target])
+
+    # # grease pencil
+    # elif panel.context == 'GREASE_PENCIL':
+    #
+    #   # grease pencil
+    #   GreasePencil(self, context, layout, bpy.data.grease_pencil[panel.target])
+
+    # action
+    elif panel.context == 'ACTION':
+
+      # has action
+      if hasattr(bpy.data.objects[panel.owner].animation_data, 'action'):
+
+        # action
+        Action(self, context, layout, bpy.data.objects[panel.owner], bpy.data.actions[panel.target])
+
+    # constraint
+    elif panel.context == 'CONSTRAINT':
+
+      # constraint
+      Constraint.main(self, context, layout, bpy.data.objects[panel.owner].constraints[panel.target])
+
+    # modifier
+    elif panel.context == 'MODIFIER':
+
+      # modifier
+      Modifier.main(self, context, layout, bpy.data.objects[panel.owner], bpy.data.objects[panel.owner].modifiers[panel.target])
 
     # bone group
     elif panel.context == 'BONE_GROUP':
 
       # bone group
-      BoneGroup(self, context, layout, bpy.data.objects[panel.target])
-
-    # bone
-    elif panel.context == 'BONE':
-
-      # bone
-      Bone(self, context, layout, context.active_bone)
-
+      BoneGroup(self, context, layout, bpy.data.objects[panel.owner], bpy.data.objects[panel.owner].pose.bone_groups[panel.target])
 
     # bone constraint
     elif panel.context == 'BONE_CONSTRAINT':
 
       # bone constraint
-      BoneConstraint(self, context, layout, bpy.data.objects[context.active_object.name].pose.bones[panel.owner].constraints[panel.target])
+      Constraint.main(self, context, layout, context.active_object.pose.bones[panel.owner].constraints[panel.target])
 
     # vertex group
     elif panel.context == 'VERTEX_GROUP':
 
       # vertex group
-      VertexGroup(self, context, layout, bpy.data.objects[panel.owner].vertex_groups[panel.target])
+      VertexGroup(self, context, layout, bpy.data.objects[panel.owner], bpy.data.objects[panel.owner].vertex_groups[panel.target])
 
     # shapekey
     elif panel.context == 'SHAPEKEY':
 
       # shapekey
-      Shapekey(self, context, layout, bpy.data.objects[panel.owner].data.shape_keys.key_blocks[panel.target])
+      Shapekey(self, context, layout, bpy.data.objects[panel.owner], bpy.data.objects[panel.owner].data.shape_keys.key_blocks[panel.target])
 
     # uv
     elif panel.context == 'UV':
 
       # uv
-      UV(self, context, layout, bpy.data.objects[panel.owner].data.uv_textures[panel.target])
+      UV(self, context, layout, bpy.data.objects[panel.owner], bpy.data.objects[panel.owner].data.uv_textures[panel.target])
 
     # vertex color
     elif panel.context == 'VERTEX_COLOR':
 
       # vertex color
-      VertexColor(self, context, layout, bpy.data.objects[panel.owner].data.vertex_colors[panel.target])
+      VertexColor(self, context, layout, bpy.data.objects[panel.owner], bpy.data.objects[panel.owner].data.vertex_colors[panel.target])
 
     # material
-    elif panel.context == 'MATERIAL':
-
-      # material
-      Material(self, context, layout, bpy.data.materials[panel.target])
+    # elif panel.context == 'MATERIAL':
+    #
+    #   # material
+    #   Material(self, context, layout, bpy.data.objects[panel.owner], bpy.data.materials[panel.target])
 
     # texture
-    elif panel.context == 'TEXTURE':
-
-      # texture
-      Texture(self, context, layout, bpy.data.textures[panel.target])
+    # elif panel.context == 'TEXTURE':
+    #
+    #   # texture
+    #   Texture(self, context, layout, owner, bpy.data.textures[panel.target])
 
     # particle system
-    elif panel.context == 'PARTICLE_SYSTEM':
-
-      # particle systems
-      ParticleSystem(self, context, layout, bpy.data.objects[panel.owner].particle_systems[panel.target])
+    # elif panel.context == 'PARTICLE_SYSTEM':
+    #
+    #   # particle systems
+    #   ParticleSystem(self, context, layout, bpy.data.objects[panel.owner].particle_systems[panel.target])
 
     # particle setting
-    elif panel.context == 'PARTICLE_SETTING':
-
-      # particle settings
-      ParticleSettings(self, context, layout, bpy.data.particles[panel.target])
+    # elif panel.context == 'PARTICLE_SETTING':
+    #
+    #   # particle settings
+    #   ParticleSettings(self, context, layout, bpy.data.particles[panel.target])

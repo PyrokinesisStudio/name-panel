@@ -58,7 +58,7 @@ def main(self, context):
   layout = self.layout
 
   # panel
-  panel = context.window_manager.NamePanel
+  panel = context.scene.NamePanel
 
   # column
   column = layout.column(align=True)
@@ -67,7 +67,7 @@ def main(self, context):
   filters(self, context, column, panel)
 
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # is mode selected
   if panel.mode == 'SELECTED':
@@ -447,7 +447,7 @@ def gather(context, member):
   '''
 
   # panel
-  panel = context.window_manager.NamePanel
+  panel = context.scene.NamePanel
 
   # is display names
   if panel.displayNames:
@@ -489,10 +489,10 @@ def sort(context, member, object):
   '''
 
   # panel
-  panel = context.window_manager.NamePanel
+  panel = context.scene.NamePanel
 
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # is group
   if panel.groups:
@@ -863,7 +863,7 @@ def populate(self, context, layout, object, panel):
   '''
 
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # column
   column = layout.column()
@@ -953,7 +953,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is groups
       if panel.groups:
@@ -980,7 +980,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is grease pencil
       if panel.greasePencil:
@@ -1013,7 +1013,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is action
       if panel.action:
@@ -1037,7 +1037,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is constraints
       if panel.constraints:
@@ -1058,7 +1058,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is modifiers
       if panel.modifiers:
@@ -1169,7 +1169,7 @@ class block:
       else:
 
         # is particle system
-        if context.window_manager.NamePanel.particleSystems != 0:
+        if context.scene.NamePanel.particleSystems != 0:
 
           # particle systems
           context.scene['NamePanel']['particleSystems'] = 0
@@ -1181,7 +1181,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is materials
       if panel.materials:
@@ -1244,7 +1244,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is vertex groups
       if panel.vertexGroups:
@@ -1268,7 +1268,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # shapekeys
       if panel.shapekeys:
@@ -1295,7 +1295,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is uvs
       if panel.uvs:
@@ -1319,7 +1319,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is vertex colors
       if panel.vertexColors:
@@ -1343,7 +1343,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # is materials
       if panel.materials:
@@ -1394,7 +1394,7 @@ class block:
       '''
 
       # search
-      search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+      search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
       # bone groups
       if panel.boneGroups:
@@ -1418,10 +1418,10 @@ class block:
     '''
 
     # option
-    option = context.window_manager.NamePanel
+    option = context.scene.NamePanel
 
     # search
-    search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+    search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
     # is type armature
     if object.type in 'ARMATURE':
@@ -1642,7 +1642,7 @@ def Object(self, context, layout, datablock, panel):
     The object name row.
   '''
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # is active object
   if datablock == context.active_object:
@@ -1744,7 +1744,7 @@ def GreasePencil(self, context, layout, datablock, object, panel):
   '''
 
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -1762,7 +1762,7 @@ def GreasePencil(self, context, layout, datablock, object, panel):
   op = sub.operator('view3d.name_panel_icon', text='', icon='GREASEPENCIL', emboss=False)
   op.owner = object.name
   op.target = datablock.name
-  op.context = 'GREASE_PENCIL'
+  # op.context = 'GREASE_PENCIL'
 
   # name
   row.prop(datablock, 'name', text='')
@@ -1876,7 +1876,7 @@ def Modifier(self, context, layout, datablock, object, panel):
   '''
 
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -1924,7 +1924,7 @@ def ObjectData(self, context, layout, datablock, panel):
   '''
 
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -2113,7 +2113,7 @@ def Material(self, context, layout, datablock, object, panel):
   '''
 
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -2127,11 +2127,14 @@ def Material(self, context, layout, datablock, object, panel):
   # scale x
   sub.scale_x = 1.6
 
+  # label
+  sub.label(icon='MATERIAL')
+
   # operator; name panel icon
-  op = sub.operator('view3d.name_panel_icon', text='', icon='MATERIAL', emboss=False)
-  op.owner = object.name
-  op.target = datablock.name
-  op.context = 'MATERIAL'
+  # op = sub.operator('view3d.name_panel_icon', text='', icon='MATERIAL', emboss=False)
+  # op.owner = object.name
+  # op.target = datablock.name
+  # op.context = 'MATERIAL'
 
   # name
   row.prop(datablock.material, 'name', text='')
@@ -2151,11 +2154,14 @@ def Texture(self, context, layout, datablock, object, panel):
   # scale x
   sub.scale_x = 1.6
 
+  # label
+  sub.label(icon='TEXTURE')
+
   # operator; name panel icon
-  op = sub.operator('view3d.name_panel_icon', text='', icon='TEXTURE', emboss=False)
-  op.owner = object.name
-  op.target = datablock.name
-  op.context = 'TEXTURE'
+  # op = sub.operator('view3d.name_panel_icon', text='', icon='TEXTURE', emboss=False)
+  # op.owner = object.name
+  # op.target = datablock.name
+  # op.context = 'TEXTURE'
 
   # name
   row.prop(datablock.texture, 'name', text='')
@@ -2187,11 +2193,14 @@ def MaskTexture(self, context, layout, datablock, object, panel):
   # scale x
   sub.scale_x = 1.6
 
+  # label
+  sub.label(icon='TEXTURE')
+
   # icon
-  op = sub.operator('view3d.name_panel_icon', text='', icon='TEXTURE', emboss=False)
-  op.owner = object.name
-  op.target = datablock.name
-  op.context = 'TEXTURE'
+  # op = sub.operator('view3d.name_panel_icon', text='', icon='TEXTURE', emboss=False)
+  # op.owner = object.name
+  # op.target = datablock.name
+  # op.context = 'TEXTURE'
 
   # name
   row.prop(datablock.mask_texture, 'name', text='')
@@ -2215,7 +2224,7 @@ def Particle(self, context, layout, datablock, object, panel):
   '''
 
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)
@@ -2229,11 +2238,14 @@ def Particle(self, context, layout, datablock, object, panel):
   # scale x
   sub.scale_x = 1.6
 
+  # label
+  sub.label(icon='PARTICLES')
+
   # operator; name panel icon
-  op = sub.operator('view3d.name_panel_icon', text='', icon='PARTICLES', emboss=False)
-  op.owner = object.name
-  op.target = datablock.particle_system.name
-  op.context = 'PARTICLE_SYSTEM'
+  # op = sub.operator('view3d.name_panel_icon', text='', icon='PARTICLES', emboss=False)
+  # op.owner = object.name
+  # op.target = datablock.particle_system.name
+  # op.context = 'PARTICLE_SYSTEM'
 
   # name
   row.prop(datablock.particle_system, 'name', text='')
@@ -2250,11 +2262,14 @@ def Particle(self, context, layout, datablock, object, panel):
     # scale
     sub.scale_x = 1.6
 
+    # label
+    sub.label(icon='DOT')
+
     # operator; name panel icon
-    op = sub.operator('view3d.name_panel_icon', text='', icon='DOT', emboss=False)
-    op.owner = object.name
-    op.target = datablock.particle_system.settings.name
-    op.context = 'PARTICLE_SETTING'
+    # op = sub.operator('view3d.name_panel_icon', text='', icon='DOT', emboss=False)
+    # op.owner = object.name
+    # op.target = datablock.particle_system.settings.name
+    # op.context = 'PARTICLE_SETTING'
 
     # name
     row.prop(datablock.particle_system.settings, 'name', text='')
@@ -2290,7 +2305,7 @@ def Bone(self, context, layout, datablock, object, panel):
   '''
 
   # search
-  search = context.window_manager.NamePanel.search if panel.regex else re.escape(context.window_manager.NamePanel.search)
+  search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
   # row
   row = layout.row(align=True)

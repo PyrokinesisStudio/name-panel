@@ -13,7 +13,7 @@ def main(self, context):
   '''
 
   # panel
-  panel = context.window_manager.NamePanel
+  panel = context.scene.NamePanel
 
   # option
   option = context.window_manager.BatchName
@@ -3669,14 +3669,14 @@ def rename(self, context, oldName, option):
     newName = oldName
 
     # is search
-    if context.window_manager.NamePanel.search != '':
+    if context.scene.NamePanel.search != '':
 
       # find & replace
-      if context.window_manager.NamePanel.regex:
-        try: newName = re.sub(context.window_manager.NamePanel.search, option.replace, newName, re.I)
+      if context.scene.NamePanel.regex:
+        try: newName = re.sub(context.scene.NamePanel.search, option.replace, newName, re.I)
         except Exception as e: self.report({'WARNING'}, 'Regular expression: ' + str(e))
       else:
-        newName = re.sub(re.escape(context.window_manager.NamePanel.search), option.replace, newName, re.I)
+        newName = re.sub(re.escape(context.scene.NamePanel.search), option.replace, newName, re.I)
 
   # new name
   return newName

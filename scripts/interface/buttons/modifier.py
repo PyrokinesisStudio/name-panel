@@ -12,6 +12,9 @@ class Modifier:
   # main
   def main(self, context, layout, object, modifier):
 
+    # name
+    layout.prop(modifier, 'name', text='')
+
     # column
     column = layout.column()
 
@@ -2937,13 +2940,13 @@ class Modifier:
       # row
       row = split.row(align=True)
 
-      # layers vcol select src
+      # layers vcolumn select src
       row.prop(modifier, 'layers_vcol_select_src', text='')
 
       # label
       row.label(icon='RIGHTARROW')
 
-      # layers vcol select dst
+      # layers vcolumn select dst
       row.prop(modifier, 'layers_vcol_select_dst', text='')
 
       # split

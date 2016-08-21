@@ -37,7 +37,7 @@ class name(PropertyGroup):
       ('OBJECT', 'Object', '', 'OBJECT_DATA', 0),
       ('GROUP', 'Group', '', 'GROUP', 1),
       ('ACTION', 'Action', '', 'ACTION', 2),
-      ('GREASE_PENCIL', 'Grease Pencil', '', 'GREASEPENCIL', 3),
+      # ('GREASE_PENCIL', 'Grease Pencil', '', 'GREASEPENCIL', 3),
       ('CONSTRAINT', 'Constraint', '', 'CONSTRAINT', 4),
       ('MODIFIER', 'Modifier', '', 'MODIFIER', 5),
       ('OBJECT_DATA', 'Data', '', 'MESH_DATA', 6),
@@ -48,10 +48,10 @@ class name(PropertyGroup):
       ('SHAPEKEY', 'Shapekey', '', 'SHAPEKEY_DATA', 11),
       ('UV', 'UV Map', '', 'GROUP_UVS', 12),
       ('VERTEX_COLOR', 'Vertex Colors', '', 'GROUP_VCOL', 13),
-      ('MATERIAL', 'Material', '', 'MATERIAL', 14),
-      ('TEXTURE', 'Texture', '', 'TEXTURE', 15),
-      ('PARTICLE_SYSTEM', 'Particle System', '', 'PARTICLES', 16),
-      ('PARTICLE_SETTING', 'Particle Settings', '', 'MOD_PARTICLES', 17)
+      # ('MATERIAL', 'Material', '', 'MATERIAL', 14),
+      # ('TEXTURE', 'Texture', '', 'TEXTURE', 15),
+      # ('PARTICLE_SYSTEM', 'Particle System', '', 'PARTICLES', 16),
+      # ('PARTICLE_SETTING', 'Particle Settings', '', 'MOD_PARTICLES', 17)
     ],
     default = 'OBJECT'
   )
@@ -78,7 +78,7 @@ class name(PropertyGroup):
       ('OBJECT', 'Object', '', 'OBJECT_DATA', 0),
       ('GROUP', 'Group', '', 'GROUP', 1),
       ('ACTION', 'Action', '', 'ACTION', 2),
-      ('GREASE_PENCIL', 'Grease Pencil', '', 'GREASEPENCIL', 3),
+      # ('GREASE_PENCIL', 'Grease Pencil', '', 'GREASEPENCIL', 3),
       ('CONSTRAINT', 'Constraint', '', 'CONSTRAINT', 4),
       ('MODIFIER', 'Modifier', '', 'MODIFIER', 5),
       ('OBJECT_DATA', 'Object Data', '', 'MESH_DATA', 6),
@@ -89,10 +89,10 @@ class name(PropertyGroup):
       ('SHAPEKEY', 'Shapekey', '', 'SHAPEKEY_DATA', 11),
       ('UV', 'UV Map', '', 'GROUP_UVS', 12),
       ('VERTEX_COLOR', 'Vertex Colors', '', 'GROUP_VCOL', 13),
-      ('MATERIAL', 'Material', '', 'MATERIAL', 14),
-      ('TEXTURE', 'Texture', '', 'TEXTURE', 15),
-      ('PARTICLE_SYSTEM', 'Particle System', '', 'PARTICLES', 16),
-      ('PARTICLE_SETTING', 'Particle Settings', '', 'MOD_PARTICLES', 17)
+      # ('MATERIAL', 'Material', '', 'MATERIAL', 14),
+      # ('TEXTURE', 'Texture', '', 'TEXTURE', 15),
+      # ('PARTICLE_SYSTEM', 'Particle System', '', 'PARTICLES', 16),
+      # ('PARTICLE_SETTING', 'Particle Settings', '', 'MOD_PARTICLES', 17)
     ],
     default = 'OBJECT'
   )

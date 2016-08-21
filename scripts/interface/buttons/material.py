@@ -1,6 +1,6 @@
 
 # material
-def Material(self, context, layout, datablock):
+def Material(self, context, layout, owner, datablock):
   '''
     Material buttons.
   '''

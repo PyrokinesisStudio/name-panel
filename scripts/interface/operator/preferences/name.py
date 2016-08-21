@@ -28,7 +28,7 @@ class name(Operator):
     layout = self.layout
 
     # panel
-    panel = context.window_manager.NamePanel
+    panel = context.scene.NamePanel
 
     # column
     column = layout.column(align=True)

@@ -32,7 +32,7 @@ def main(context):
 def name(context):
 
   # option
-  option = context.window_manager.NamePanel
+  option = context.scene.NamePanel
 
   # default
   default = defaults['name panel']

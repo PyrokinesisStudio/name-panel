@@ -20,7 +20,7 @@ class specials(Menu):
     layout = self.layout
 
     # option
-    option = context.window_manager.NamePanel
+    option = context.scene.NamePanel
 
     # batch auto name
     layout.operator('view3d.auto_name', icon='AUTO')

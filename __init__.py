@@ -34,6 +34,7 @@ import bpy
 from bpy.types import Operator, AddonPreferences
 from bpy.props import *
 from .scripts import options as PropertyGroup
+from .scripts.defaults import defaults
 from .scripts.interface import button, menu, name, properties
 from .scripts.interface.operator import auto, batch, copy, icon, navigate, options
 from .scripts.interface.operator.preferences import name as Pname
@@ -58,7 +59,7 @@ class save(Operator):
     '''
 
     # location
-    location = context.window_manager.NamePanel.location
+    location = context.scene.NamePanel.location
 
     # is location tools
     if location == 'TOOLS':
@@ -163,7 +164,7 @@ class preferences(AddonPreferences):
     row = box.row()
 
     # location
-    row.prop(context.window_manager.NamePanel, 'location', expand=True)
+    row.prop(context.scene.NamePanel, 'location', expand=True)
 
     # label
     box.label(text='Property Panel Location:')
@@ -295,7 +296,7 @@ def register():
   )
 
   # name panel
-  bpy.types.WindowManager.NamePanel = PointerProperty(
+  bpy.types.Scene.NamePanel = PointerProperty(
     type = PropertyGroup.name,
     name = 'Name Panel Settings',
     description = 'Storage location for the name panel settings.'
@@ -312,20 +313,26 @@ def register():
   bpy.types.OUTLINER_HT_header.append(button.batchName)
 
   # name panel location
-  try: namePanelLocation = addon.preferences['namePanelLocation']
-  except: namePanelLocation = 0
 
-  if namePanelLocation == 0:
+  # location
+  location = defaults['name panel']['location']
+
+  # is location tools
+  if location == 'TOOLS':
     bpy.utils.unregister_class(name.UIName)
+
+  # isnt location tools
   else:
     bpy.utils.unregister_class(name.toolsName)
 
-  # property panel location
-  try: propertyPanelLocation = addon.preferences['propertyPanelLocation']
-  except: propertyPanelLocation = 0
+  # location
+  location = defaults['properties panel']['location']
 
-  if propertyPanelLocation == 0:
+  # is location tools
+  if location == 'TOOLS':
     bpy.utils.unregister_class(properties.UIProperties)
+
+  # isnt location tools
   else:
     bpy.utils.unregister_class(properties.toolsProperties)
 
@@ -346,7 +353,7 @@ def unregister():
   del bpy.types.WindowManager.ObjectDataNames
   del bpy.types.WindowManager.BatchName
   del bpy.types.WindowManager.CopyName
-  del bpy.types.WindowManager.NamePanel
+  del bpy.types.Scene.NamePanel
   del bpy.types.WindowManager.PropertyPanel
 
   # remove batch name button

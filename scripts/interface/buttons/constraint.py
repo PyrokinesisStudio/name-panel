@@ -8,6 +8,9 @@ class Constraint:
   # main
   def main(self, context, layout, constraint):
 
+    # name
+    layout.prop(constraint, 'name', text='')
+
     # column
     column = layout.column()
 

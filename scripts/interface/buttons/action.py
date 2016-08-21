@@ -1,8 +1,11 @@
+# import
+import bpy
 
 # action
-def Action(self, context, layout, datablock):
+def Action(self, context, layout, owner, datablock):
   '''
     Action buttons.
   '''
 
-  pass
+  # template id
+  layout.template_ID(owner.animation_data, 'action')

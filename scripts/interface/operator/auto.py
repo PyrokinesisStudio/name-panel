@@ -209,7 +209,7 @@ class objects(Operator):
     layout = self.layout
 
     # option
-    option = context.window_manager.ObjectNames
+    option = context.scene.ObjectNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -319,7 +319,7 @@ class constraints(Operator):
     layout = self.layout
 
     # option
-    option = context.window_manager.ConstraintNames
+    option = context.scene.ConstraintNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -515,7 +515,7 @@ class modifiers(Operator):
     layout = self.layout
 
     # option
-    option = context.window_manager.ModifierNames
+    option = context.scene.ModifierNames
 
     # prefix
     layout.prop(option, 'prefix')
@@ -821,7 +821,7 @@ class objectData(Operator):
     layout = self.layout
 
     # option
-    option = context.window_manager.ObjectDataNames
+    option = context.scene.ObjectDataNames
 
     # prefix
     layout.prop(option, 'prefix')

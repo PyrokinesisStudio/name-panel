@@ -175,7 +175,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['object names']
 
     # object name
-    option = context.window_manager.ObjectNames
+    option = context.scene.ObjectNames
 
     # prefix
     option.prefix = default['prefix']
@@ -217,7 +217,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['constraint names']
 
     # constraint name
-    option = context.window_manager.ConstraintNames
+    option = context.scene.ConstraintNames
 
     # prefix
     option.prefix = default['prefix']
@@ -307,7 +307,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['modifier names']
 
     # modifier name
-    option = context.window_manager.ModifierNames
+    option = context.scene.ModifierNames
 
     # prefix
     option.prefix = default['prefix']
@@ -463,7 +463,7 @@ def reset(context, panel, auto, names, name, copy):
     default = defaults['auto name']['object data names']
 
     # object data name
-    option = context.window_manager.ObjectDataNames
+    option = context.scene.ObjectDataNames
 
     # prefix
     option.prefix = default['prefix']

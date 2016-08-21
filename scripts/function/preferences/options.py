@@ -124,7 +124,7 @@ def auto(context):
 
 
   # option
-  option = context.window_manager.ObjectNames
+  option = context.scene.ObjectNames
 
   # default
   default = defaults['auto name']['object names']
@@ -145,7 +145,7 @@ def auto(context):
 
 
   # option
-  option = context.window_manager.ConstraintNames
+  option = context.scene.ConstraintNames
 
   # default
   default = defaults['auto name']['constraint names']
@@ -182,7 +182,7 @@ def auto(context):
 
 
   # option
-  option = context.window_manager.ModifierNames
+  option = context.scene.ModifierNames
 
   # default
   default = defaults['auto name']['modifier names']
@@ -241,7 +241,7 @@ def auto(context):
 
 
   # option
-  option = context.window_manager.ObjectDataNames
+  option = context.scene.ObjectDataNames
 
   # default
   default = defaults['auto name']['object data names']

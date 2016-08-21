@@ -452,16 +452,16 @@ def rename(self, context, name, i):
   option = context.window_manager.AutoName
 
   # object name
-  objectName = context.window_manager.ObjectNames
+  objectName = context.scene.ObjectNames
 
   # constraint name
-  constraintName = context.window_manager.ConstraintNames
+  constraintName = context.scene.ConstraintNames
 
   # modifier name
-  modifierName = context.window_manager.ModifierNames
+  modifierName = context.scene.ModifierNames
 
   # object data name
-  objectDataName = context.window_manager.ObjectDataNames
+  objectDataName = context.scene.ObjectDataNames
 
   # object
   if name[4] == 'OBJECT':

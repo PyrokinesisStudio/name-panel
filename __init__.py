@@ -254,28 +254,28 @@ def register():
   )
 
   # object names
-  bpy.types.WindowManager.ObjectNames = PointerProperty(
+  bpy.types.Scene.ObjectNames = PointerProperty(
     type = PropertyGroup.batch.auto.objects,
     name = 'Object Name Settings',
     description = 'Storage location for the object names used during the auto name operation.'
   )
 
   # constraint names
-  bpy.types.WindowManager.ConstraintNames = PointerProperty(
+  bpy.types.Scene.ConstraintNames = PointerProperty(
     type = PropertyGroup.batch.auto.constraints,
     name = 'Constraint Name Settings',
     description = 'Storage location for the constraint names used during the auto name operation.'
   )
 
   # modifier names
-  bpy.types.WindowManager.ModifierNames = PointerProperty(
+  bpy.types.Scene.ModifierNames = PointerProperty(
     type = PropertyGroup.batch.auto.modifiers,
     name = 'Modifier Name Settings',
     description = 'Storage location for the modifier names used during the auto name operation.'
   )
 
   # object data names
-  bpy.types.WindowManager.ObjectDataNames = PointerProperty(
+  bpy.types.Scene.ObjectDataNames = PointerProperty(
     type = PropertyGroup.batch.auto.objectData,
     name = 'Object Data Name Settings',
     description = 'Storage location for the object data names used during the auto name operation.'
@@ -347,10 +347,10 @@ def unregister():
 
   # delete pointer properties
   del bpy.types.WindowManager.AutoName
-  del bpy.types.WindowManager.ObjectNames
-  del bpy.types.WindowManager.ConstraintNames
-  del bpy.types.WindowManager.ModifierNames
-  del bpy.types.WindowManager.ObjectDataNames
+  del bpy.types.Scene.ObjectNames
+  del bpy.types.Scene.ConstraintNames
+  del bpy.types.Scene.ModifierNames
+  del bpy.types.Scene.ObjectDataNames
   del bpy.types.WindowManager.BatchName
   del bpy.types.WindowManager.CopyName
   del bpy.types.Scene.NamePanel

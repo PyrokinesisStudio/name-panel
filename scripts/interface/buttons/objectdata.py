@@ -1,4 +1,7 @@
 
+# imports
+import bpy
+
 # object data
 def ObjectData(self, context, layout, datablock):
   '''

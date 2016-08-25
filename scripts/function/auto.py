@@ -204,6 +204,9 @@ def main(self, context):
                   # populate
                   populate(self, context, constraint)
 
+        # process
+        process(self, context, self.constraints)
+
   # mode
   else:
     for object in context.scene.objects:
@@ -239,6 +242,9 @@ def main(self, context):
             # populate
             populate(self, context, constraint)
 
+        # process
+        process(self, context, self.constraints)
+
       # modifiers
       if option.modifiers:
         for modifier in object.modifiers:
@@ -254,6 +260,9 @@ def main(self, context):
 
             # populate
             populate(self, context, modifier)
+
+        # process
+        process(self, context, self.modifiers)
 
       # object data
       if option.objectData:
@@ -288,6 +297,9 @@ def main(self, context):
 
                 # populate
                 populate(self, context, constraint)
+
+        # process
+        process(self, context, self.constraints)
 
   # all
   all = [

@@ -829,7 +829,7 @@ def sort(context, member, object):
             if bone != context.active_bone:
 
               # constraints
-              try: constraints = [constraint.name for constraint in object.pose.bones[bone.name].constraints]
+              try: constraints = [constraint.name for constraint in object.pose.bones[bone.name].constraints[:]]
               except: constraints = []
 
               # is search
@@ -1440,6 +1440,12 @@ class block:
 
             # separate
             layout.separator()
+
+        # isnt display bones
+        else:
+
+          # bone
+          Bone(self, context, layout, context.active_bone, context.active_object, panel)
 
       # is pin active bone
       if option.pinActiveBone:

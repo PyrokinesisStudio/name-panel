@@ -22,6 +22,12 @@ class specials(Menu):
     # option
     option = context.scene.NamePanel
 
+    # label
+    layout.label(text='Operators')
+
+    # seperate
+    layout.separator()
+
     # batch auto name
     layout.operator('view3d.auto_name', icon='AUTO')
 
@@ -34,6 +40,12 @@ class specials(Menu):
     layout.operator('view3d.copy_name', icon='COPYDOWN')
 
     # separate
+    layout.separator()
+
+    # label
+    layout.label(text='Panel Options')
+
+    # seperate
     layout.separator()
 
     # is display names

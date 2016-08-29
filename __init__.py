@@ -83,7 +83,6 @@ class save(Operator):
       if hasattr(bpy.types, 'VIEW3D_PT_TOOLS_name'):
         bpy.utils.unregister_class(name.toolsName)
 
-
     # location
     location = context.window_manager.PropertyPanel.location
 

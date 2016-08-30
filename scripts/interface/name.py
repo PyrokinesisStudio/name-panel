@@ -868,62 +868,65 @@ def populate(self, context, layout, object, panel):
   # search
   search = context.scene.NamePanel.search if panel.regex else re.escape(context.scene.NamePanel.search)
 
-  # column
-  column = layout.column()
+  # is object
+  if object:
 
-  # object
-  Object(self, context, column, object, panel)
+    # column
+    column = layout.column()
 
-  # group
-  block.object.group(self, context, column, object, panel)
+    # object
+    Object(self, context, column, object, panel)
 
-  # grease pencil
-  block.object.greasePencil(self, context, column, object, panel)
+    # group
+    block.object.group(self, context, column, object, panel)
 
-  # action
-  block.object.action(self, context, column, object, panel)
+    # grease pencil
+    block.object.greasePencil(self, context, column, object, panel)
 
-  # constraint
-  block.object.constraint(self, context, column, object, panel)
+    # action
+    block.object.action(self, context, column, object, panel)
 
-  # modifier
-  block.object.modifier(self, context, column, object, panel)
+    # constraint
+    block.object.constraint(self, context, column, object, panel)
 
-  # material
-  block.object.material(self, context, column, object, panel)
+    # modifier
+    block.object.modifier(self, context, column, object, panel)
 
-  # object data
-  ObjectData(self, context, column, object, panel)
+    # material
+    block.object.material(self, context, column, object, panel)
 
-  # vertex group
-  block.objectData.vertexGroup(self, context, column, object, panel)
+    # object data
+    ObjectData(self, context, column, object, panel)
 
-  # shapekey
-  block.objectData.shapekey(self, context, column, object, panel)
+    # vertex group
+    block.objectData.vertexGroup(self, context, column, object, panel)
 
-  # uv
-  block.objectData.uv(self, context, column, object, panel)
+    # shapekey
+    block.objectData.shapekey(self, context, column, object, panel)
 
-  # vertex color
-  block.objectData.vertexColor(self, context, column, object, panel)
+    # uv
+    block.objectData.uv(self, context, column, object, panel)
 
-  # material
-  block.objectData.material(self, context, column, object, panel)
+    # vertex color
+    block.objectData.vertexColor(self, context, column, object, panel)
 
-  # bone group
-  block.objectData.boneGroup(self, context, column, object, panel)
+    # material
+    block.objectData.material(self, context, column, object, panel)
 
-  # row
-  row = column.row()
+    # bone group
+    block.objectData.boneGroup(self, context, column, object, panel)
 
-  # separate
-  row.separator()
+    # row
+    row = column.row()
 
-  # is active object
-  if object == context.active_object:
+    # separate
+    row.separator()
 
-    # bone
-    block.bone(self, context, column, object, panel)
+    # is active object
+    if object == context.active_object:
+
+      # bone
+      block.bone(self, context, column, object, panel)
 
 # block
 class block:

@@ -449,35 +449,38 @@ def gather(context, member):
   # panel
   panel = context.scene.NamePanel
 
-  # is display names
-  if panel.displayNames:
+  # is member
+  if member:
 
-    # is mode selected
-    if panel.mode == 'SELECTED':
+    # is display names
+    if panel.displayNames:
 
-      # for object
-      for object in context.selected_objects:
+      # is mode selected
+      if panel.mode == 'SELECTED':
 
-        # sort
-        sort(context, member, object)
-
-    # isnt mode selected
-    else:
-
-      # for object
-      for object in context.scene.objects:
-
-        # is layer
-        if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]:
+        # for object
+        for object in context.selected_objects:
 
           # sort
           sort(context, member, object)
 
-  # isnt display names
-  else:
+      # isnt mode selected
+      else:
 
-    # sort
-    sort(context, member, context.active_object)
+        # for object
+        for object in context.scene.objects:
+
+          # is layer
+          if True in [x&y for (x,y) in zip(object.layers, context.scene.layers)]:
+
+            # sort
+            sort(context, member, object)
+
+    # isnt display names
+    else:
+
+      # sort
+      sort(context, member, context.active_object)
 
   # member
   return member

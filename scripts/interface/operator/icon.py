@@ -145,6 +145,10 @@ class operator(Operator):
     # object
     if panel.context not in {'BONE', 'BONE_CONSTRAINT'}: # temporary
 
+      # is hide
+      if bpy.data.objects[panel.owner].hide: # preferable for objects, not bones
+        bpy.data.objects[panel.owner].hide = False
+
       # extend
       if self.extend:
 

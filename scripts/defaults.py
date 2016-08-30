@@ -9,6 +9,7 @@ defaults = {
     'shortcuts': False,
     'display names': False,
     'search': '',
+    'clear search': False,
     'regex': False,
     'mode': 'SELECTED',
     'groups': False,

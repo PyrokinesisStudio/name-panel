@@ -158,6 +158,13 @@ class name(PropertyGroup):
     default = default['search']
   )
 
+  # clear search
+  clearSearch = BoolProperty(
+  name = 'Clear Search',
+  description = 'Clear search after simple find and replace operations.',
+  default = default['clear search']
+  )
+
   # regex
   regex = BoolProperty(
     name = 'Regular Expressions',

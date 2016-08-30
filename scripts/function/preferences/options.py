@@ -46,6 +46,7 @@ def name(context):
   default['shortcuts'] = option.shortcuts
   default['display names'] = option.displayNames
   default['search'] = option.search
+  default['clear search'] = option.clearSearch
   default['regex'] = option.regex
   default['mode'] = option.mode
   default['groups'] = option.groups

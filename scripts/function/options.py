@@ -43,6 +43,9 @@ def reset(context, panel, auto, names, name, copy):
     # search
     option.search = default['search']
 
+    # clear search
+    option.clearSearch = default['clear search']
+
     # regex
     option.regex = default['regex']
 

@@ -39,6 +39,15 @@ class specials(Menu):
     # batch copy
     layout.operator('view3d.copy_name', icon='COPYDOWN')
 
+    # is option.regex
+    if option.regex or context.window_manager.BatchName.regex:
+
+      # separate
+      layout.separator()
+
+      # operator; regular expression cheatsheet
+      layout.operator('wm.regular_expression_cheatsheet', icon='NEW')
+
     # separate
     layout.separator()
 
@@ -60,8 +69,11 @@ class specials(Menu):
         # pin active bone
         layout.prop(option, 'pinActiveBone')
 
-    # hide hide find and replace
+    # hide find and replace
     layout.prop(option, 'hideFindReplace')
+
+    # clear search
+    layout.prop(option, 'clearSearch')
 
     # separate
     layout.separator()
@@ -73,11 +85,3 @@ class specials(Menu):
     op.names = False
     op.name = False
     op.copy = False
-
-    # is option.regex
-    if option.regex or context.window_manager.BatchName.regex:
-
-        # separate
-        layout.separator()
-
-        layout.operator('wm.regular_expression_cheatsheet', icon='NEW')

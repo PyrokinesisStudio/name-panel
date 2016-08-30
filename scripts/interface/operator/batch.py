@@ -768,5 +768,11 @@ class name(Operator):
       # execute
       self.execute(context)
 
+      # is clear search
+      if context.scene.NamePanel.clearSearch:
+
+        # clear search
+        context.scene.NamePanel.search = ''
+
       # finished
       return {'FINISHED'}

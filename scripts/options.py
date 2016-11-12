@@ -126,7 +126,7 @@ class name(PropertyGroup):
   # hide find & replace
   hideFindReplace = BoolProperty(
     name = 'Hide Find & Replace',
-    description = 'Only display the find & replace fields in the panel when the filters option is toggled on.',
+    description = 'Hide the find and replace options from the panel.',
     default = default['hide find & replace']
   )
 
@@ -356,7 +356,9 @@ class batch:
       description = 'Sorting method to use.',
       items = [
         ('ALPHABETICAL', 'Alphabetical', 'Sort names alphabetically.'),
-        ('POSITIONAL', 'Positional', 'Sort names using position.')
+        ('POSITIONAL', 'Positional', 'Sort names using position.'),
+        # ('HIERARCHY', 'Hierarchy', 'Sort names based on parent/child hierarchy.'),
+        # ('SELECTION', 'Selection', 'Sort names based on selection order.'),
       ],
       default = default['type']
     )

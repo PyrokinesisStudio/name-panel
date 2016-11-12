@@ -658,6 +658,12 @@ class name(Operator):
     # suffix last
     row.prop(option, 'suffixLast', text='', icon='FORWARD')
 
+    # # suffix last
+    # row.prop(option, 'suffixLast', text='', icon='AUTO')
+    #
+    # # suffix last
+    # row.prop(option, 'suffixLast', text='', icon='COLLAPSEMENU')
+
     # separate
     column.separator()
     column.separator()

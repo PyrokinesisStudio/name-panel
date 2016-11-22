@@ -121,17 +121,29 @@ class name(Operator):
     # bone constraints
     split.prop(option, 'boneConstraints', text='', icon='CONSTRAINT_BONE')
 
-    # column
-    column = layout.column()
+    # is objects or constraints or modifiers
+    if option.objects or option.constraints or option.boneConstraints or option.modifiers:
 
-    # object type
-    column.prop(option, 'objectType', text='')
+      # column
+      column = layout.column()
 
-    # constraint type
-    column.prop(option, 'constraintType', text='')
+    # is objects
+    if option.objects:
 
-    # modifier type
-    column.prop(option, 'modifierType', text='')
+      # object type
+      column.prop(option, 'objectType', text='')
+
+    # is constraints
+    if option.constraints or option.boneConstraints:
+
+      # constraint type
+      column.prop(option, 'constraintType', text='')
+
+    # is modifiers
+    if option.modifiers:
+
+      # modifier type
+      column.prop(option, 'modifierType', text='')
 
     # column
     column = layout.column()

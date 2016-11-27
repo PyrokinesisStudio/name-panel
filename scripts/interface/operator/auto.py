@@ -197,6 +197,9 @@ class name(Operator):
     '''
       Invoke the operator panel/menu, control its width.
     '''
+
+    self.check(context)
+
     size = 330 if not context.window_manager.BatchShared.largePopups else 460
     context.window_manager.invoke_props_dialog(self, width=size)
     return {'RUNNING_MODAL'}

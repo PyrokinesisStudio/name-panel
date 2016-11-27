@@ -73,7 +73,7 @@ class name(PropertyGroup):
   # previous context
   previousContext = EnumProperty(
     name = 'Previous Context',
-    description = 'The previous context the name panel was in.',
+    description = 'The previous context the name panel was in',
     items = [
       ('OBJECT', 'Object', '', 'OBJECT_DATA', 0),
       ('GROUP', 'Group', '', 'GROUP', 1),
@@ -100,7 +100,7 @@ class name(PropertyGroup):
   # location
   location = EnumProperty(
     name = 'Name Panel Location',
-    description = 'The 3D view shelf to use for the name panel.',
+    description = 'The 3D view shelf to use for the name panel',
     items = [
       ('TOOLS', 'Tool Shelf', 'Places the name panel in the tool shelf under the tab labeled \'Name\''),
       ('UI', 'Property Shelf', 'Places the name panel in the property shelf.')
@@ -175,7 +175,7 @@ class name(PropertyGroup):
   # mode
   mode = EnumProperty(
     name = 'Mode',
-    description = 'Mode option for additional object related names displayed.',
+    description = 'Mode option for additional object related names displayed',
     items = [
       ('SELECTED', 'Selected', 'Display selected objects.'),
       ('LAYERS', 'Layers', 'Display objects in active scene layers.')
@@ -284,7 +284,7 @@ class name(PropertyGroup):
   # bone mode
   boneMode = EnumProperty(
     name = 'Bone Mode',
-    description = 'The display mode for bones.',
+    description = 'The display mode for bones',
     items = [
       ('SELECTED', 'Selected', 'Display the selected bones.'),
       ('LAYERS', 'Layers', 'Display bones in active armature layers.',)
@@ -311,7 +311,7 @@ class properties(PropertyGroup):
   # location
   location = EnumProperty(
     name = 'Property Panel Location',
-    description = 'The 3D view shelf to use for the properties panel.',
+    description = 'The 3D view shelf to use for the properties panel',
     items = [
       ('TOOLS', 'Tool Shelf', 'Places the properties panel in the tool shelf under the tab labeled \'Name\''),
       ('UI', 'Property Shelf', 'Places the properties panel in the property shelf.')
@@ -353,7 +353,7 @@ class batch:
     # type
     type = EnumProperty(
       name = 'Type',
-      description = 'Sorting method to use.',
+      description = 'Sorting method to use',
       items = [
         ('ALPHABETICAL', 'Alphabetical', 'Sort names alphabetically.'),
         ('POSITIONAL', 'Positional', 'Sort names using position.'),
@@ -366,7 +366,7 @@ class batch:
     # axis
     axis = EnumProperty(
       name = 'Axis',
-      description = 'The positional axis to use for sorting.',
+      description = 'The positional axis to use for sorting',
       items = [
         ('X', 'X', 'Sort from lowest to highest X axis position.'),
         ('Y', 'Y', 'Sort from lowest to highest y axis position.'),
@@ -456,7 +456,7 @@ class batch:
       # mode
       mode = EnumProperty(
         name = 'Mode',
-        description = 'How to perform auto naming on datablocks designated below.',
+        description = 'How to perform auto naming on datablocks designated below',
         items = [
           ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
           ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
@@ -503,7 +503,7 @@ class batch:
       # object type
       objectType = EnumProperty(
         name = 'Object Type',
-        description = 'Type of objects to be effected.',
+        description = 'Type of objects to be effected',
         items = storage.batch.menu.objects,
         default = default['object type']
       )
@@ -511,7 +511,7 @@ class batch:
       # constraint type
       constraintType = EnumProperty(
         name = 'Constraint Type',
-        description = 'Type of constraints to be effected.',
+        description = 'Type of constraints to be effected',
         items = storage.batch.menu.constraints,
         default = default['constraint type']
       )
@@ -519,7 +519,7 @@ class batch:
       # modifier type
       modifierType = EnumProperty(
         name = 'Modifier Type',
-        description = 'Type of modifiers to be effected.',
+        description = 'Type of modifiers to be effected',
         items = storage.batch.menu.modifiers,
         default = default['modifier type']
       )
@@ -1278,7 +1278,7 @@ class batch:
     # mode
     mode = EnumProperty(
       name = 'Mode',
-      description = 'How to perform batch naming on datablocks designated below.',
+      description = 'How to perform batch naming on datablocks designated below',
       items = [
         ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
         ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
@@ -1431,7 +1431,7 @@ class batch:
     # object type
     objectType = EnumProperty(
       name = 'Object Type',
-      description = 'Type of objects to be effected.',
+      description = 'Type of objects to be effected',
       items = storage.batch.menu.objects,
       default = default['object type']
     )
@@ -1439,7 +1439,7 @@ class batch:
     # constraint type
     constraintType = EnumProperty(
       name = 'Constraint Type',
-      description = 'Type of constraints to be effected.',
+      description = 'Type of constraints to be effected',
       items = storage.batch.menu.constraints,
       default = default['constraint type']
     )
@@ -1447,7 +1447,7 @@ class batch:
     # modifier type
     modifierType = EnumProperty(
       name = 'Modifier Type',
-      description = 'Type of modifiers to be effected.',
+      description = 'Type of modifiers to be effected',
       items = storage.batch.menu.modifiers,
       default = default['modifier type']
     )
@@ -1497,7 +1497,7 @@ class batch:
     # linestyle modifier type
     linestyleModifierType = EnumProperty(
       name = 'Linestyle Modifier Type',
-      description = 'Type of linestyle modifiers to be effected.',
+      description = 'Type of linestyle modifiers to be effected',
       items = storage.batch.menu.linestyleModifiers,
       default = default['linestyle modifier type']
     )
@@ -1867,7 +1867,7 @@ class batch:
     # mode
     mode = EnumProperty(
       name = 'Mode',
-      description = 'How to perform batch name copying on datablocks designated below.',
+      description = 'How to perform batch name copying on datablocks designated below',
       items = [
         ('SELECTED', 'Selected', 'Effect all objects and object related datablock names in the current 3D view selection.'),
         ('SCENE', 'Scene', 'Effect all objects and object related datablock names in the current scene.'),
@@ -1879,7 +1879,7 @@ class batch:
     # source
     source = EnumProperty(
       name = 'Copy',
-      description = 'Type of datablock to copy the name from.',
+      description = 'Type of datablock to copy the name from',
       items = [
         ('OBJECT', 'Object', 'Use the name from the object.', 'OBJECT_DATA', 0),
         ('DATA', 'Object Data', 'Use the name from the object\'s data.', 'MESH_DATA', 1),

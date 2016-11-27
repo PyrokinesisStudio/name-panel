@@ -764,6 +764,8 @@ class name(Operator):
       Invoke the operator panel/menu, control its width.
     '''
 
+    self.check(context)
+
     # is alt and isnt simple
     if event.alt and not self.simple:
       self.quickBatch = False

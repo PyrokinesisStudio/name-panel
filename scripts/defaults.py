@@ -1,4 +1,4 @@
-# # proxe's defaults
+# proxe's defaults
 # defaults = {
 #   'name panel': {
 #     'location': 'UI',

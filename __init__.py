@@ -1,7 +1,7 @@
 
 '''
 Name Panel Addon
-Copyright (C) 2016 Trentin Frederick All Rights Reserved
+Copyright (C) 2016 Trentin Frederick (proxe) All Rights Reserved
 
 This program is free software: you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software
@@ -20,7 +20,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.
 bl_info = {
   'name': 'Name Panel',
   'author': 'Trentin Frederick (proxe)',
-  'version': (1, 6, 447),
+  'version': (1, 6, 448),
   'blender': (2, 68, 0),
   'location': '3D View \N{Rightwards Arrow} Tool or Property Shelf \N{Rightwards Arrow} Name',
   'description': 'In panel datablock name stack with shortcut and batch name tools.',

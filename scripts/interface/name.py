@@ -342,60 +342,20 @@ def filters(self, context, layout, panel):
     # particles systems
     row.prop(panel, 'particleSystems', text='', icon='PARTICLES')
 
-    # # is hide find & replace
-    # if panel.hideFindReplace:
-    #
-    #   # separate
-    #   layout.separator()
-    #
-    #   # row
-    #   row = layout.row(align=True)
-    #
-    #   # search
-    #   row.prop(panel, 'search', text='', icon='VIEWZOOM')
-    #
-    #   # sub
-    #   sub = row.split(align=True)
-    #
-    #   # scale x
-    #   sub.scale_x = 0.1
-    #
-    #   # regex
-    #   sub.prop(panel, 'regex', text='.*', toggle=True)
-    #
-    #   # row
-    #   row = layout.row(align=True)
-    #
-    #   # replace
-    #   row.prop(context.window_manager.BatchName, 'replace', text='', icon='FILE_REFRESH')
-    #
-    #   # sub
-    #   sub = row.split(align=True)
-    #
-    #   # scale x
-    #   sub.scale_x = 0.15
-    #
-    #   # operator; batch name
-    #   op = sub.operator('wm.batch_name', text='OK')
-    #   op.simple = True
-    #   op.quickBatch = True
-    #
-    #   # operator; batch name
-    #   op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
-    #   op.simple = False
-    #   op.quickBatch = True
+  # isnt hide find
+  if not panel.hideFind:
 
-  # isnt hide find & replace
-  if not panel.hideFindReplace:
+    if not panel.hideReplace:
 
-    # separate
-    layout.separator()
+      # separate
+      layout.separator()
 
     # row
     row = layout.row(align=True)
 
     # find
     row.prop(panel, 'search', text='', icon='VIEWZOOM')
+
 
     # sub
     sub = row.split(align=True)
@@ -406,27 +366,37 @@ def filters(self, context, layout, panel):
     # regex
     sub.prop(panel, 'regex', text='.*', toggle=True)
 
-    # row
-    row = layout.row(align=True)
+    # hide replace
+    if panel.hideReplace:
 
-    # replace
-    row.prop(context.window_manager.BatchName, 'replace', text='', icon='FILE_REFRESH')
+      # operator; batch name
+      op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
+      op.simple = False
+      op.quickBatch = True
 
-    # sub
-    sub = row.split(align=True)
+    else:
 
-    # scale x
-    sub.scale_x = 0.15
+      # row
+      row = layout.row(align=True)
 
-    # operator; batch name
-    op = sub.operator('wm.batch_name', text='OK')
-    op.simple = True
-    op.quickBatch = True
+      # replace
+      row.prop(context.window_manager.BatchName, 'replace', text='', icon='FILE_REFRESH')
 
-    # operator; batch name
-    op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
-    op.simple = False
-    op.quickBatch = True
+      # sub
+      sub = row.split(align=True)
+
+      # scale x
+      sub.scale_x = 0.15
+
+      # operator; batch name
+      op = sub.operator('wm.batch_name', text='OK')
+      op.simple = True
+      op.quickBatch = True
+
+      # operator; batch name
+      op = row.operator('wm.batch_name', text='', icon='SORTALPHA')
+      op.simple = False
+      op.quickBatch = True
 
   # is dispay names
   if panel.displayNames:

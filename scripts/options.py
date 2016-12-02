@@ -123,11 +123,18 @@ class name(PropertyGroup):
     default = default['pin active bone']
   )
 
-  # hide find & replace
-  hideFindReplace = BoolProperty(
-    name = 'Hide Find & Replace',
-    description = 'Hide the find and replace options from the panel.',
-    default = default['hide find & replace']
+  # hide find
+  hideFind = BoolProperty(
+    name = 'Hide Find',
+    description = 'Hide the find field from the panel.',
+    default = default['hide find']
+  )
+
+  # hide replace
+  hideReplace = BoolProperty(
+    name = 'Hide Replace',
+    description = 'Hide the replace field from the panel.',
+    default = default['hide replace']
   )
 
   # filters

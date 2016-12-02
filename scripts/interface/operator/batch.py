@@ -326,119 +326,122 @@ class name(Operator):
         # modifier type
         column.prop(option, 'modifierType', text='')
 
-      # column
-      column = layout.column(align=True)
+      # is global
+      if option.mode == 'GLOBAL':
 
-      # label
-      column.label(text='Game Engine:')
+        # column
+        column = layout.column(align=True)
 
-      # row
-      row = column.row(align=True)
+        # label
+        column.label(text='Game Engine:')
 
-      # sensors
-      row.prop(option, 'sensors', text='Sensors', toggle=True)
+        # row
+        row = column.row(align=True)
 
-      # controllers
-      row.prop(option, 'controllers', text='Controllers', toggle=True)
+        # sensors
+        row.prop(option, 'sensors', text='Sensors', toggle=True)
 
-      # actuators
-      row.prop(option, 'actuators', text='Actuators', toggle=True)
+        # controllers
+        row.prop(option, 'controllers', text='Controllers', toggle=True)
 
-      # column
-      column = layout.column(align=True)
+        # actuators
+        row.prop(option, 'actuators', text='Actuators', toggle=True)
 
-      # label
-      column.label(text='Global:')
+        # column
+        column = layout.column(align=True)
 
-      # row
-      row = column.row(align=True)
+        # label
+        column.label(text='Global:')
 
-      # scale x
-      row.scale_x = 5
+        # row
+        row = column.row(align=True)
 
-      # scenes
-      row.prop(option, 'scenes', text='', icon='SCENE_DATA')
+        # scale x
+        row.scale_x = 5
 
-      # render layers
-      row.prop(option, 'renderLayers', text='', icon='RENDERLAYERS')
+        # scenes
+        row.prop(option, 'scenes', text='', icon='SCENE_DATA')
 
-      # worlds
-      row.prop(option, 'worlds', text='', icon='WORLD')
+        # render layers
+        row.prop(option, 'renderLayers', text='', icon='RENDERLAYERS')
 
-      # libraries
-      row.prop(option, 'libraries', text='', icon='LIBRARY_DATA_DIRECT')
+        # worlds
+        row.prop(option, 'worlds', text='', icon='WORLD')
 
-      # images
-      row.prop(option, 'images', text='', icon='IMAGE_DATA')
+        # libraries
+        row.prop(option, 'libraries', text='', icon='LIBRARY_DATA_DIRECT')
 
-      # masks
-      row.prop(option, 'masks', text='', icon='MOD_MASK')
+        # images
+        row.prop(option, 'images', text='', icon='IMAGE_DATA')
 
-      # sequences
-      row.prop(option, 'sequences', text='', icon='SEQUENCE')
+        # masks
+        row.prop(option, 'masks', text='', icon='MOD_MASK')
 
-      # movie clips
-      row.prop(option, 'movieClips', text='', icon='CLIP')
+        # sequences
+        row.prop(option, 'sequences', text='', icon='SEQUENCE')
 
-      # sounds
-      row.prop(option, 'sounds', text='', icon='SOUND')
+        # movie clips
+        row.prop(option, 'movieClips', text='', icon='CLIP')
 
-      # row
-      row = column.row(align=True)
+        # sounds
+        row.prop(option, 'sounds', text='', icon='SOUND')
 
-      # scale x
-      row.scale_x = 5
+        # row
+        row = column.row(align=True)
 
-      # screens
-      row.prop(option, 'screens', text='', icon='SPLITSCREEN')
+        # scale x
+        row.scale_x = 5
 
-      # keying sets
-      row.prop(option, 'keyingSets', text='', icon='KEYINGSET')
+        # screens
+        row.prop(option, 'screens', text='', icon='SPLITSCREEN')
 
-      # palettes
-      row.prop(option, 'palettes', text='', icon='COLOR')
+        # keying sets
+        row.prop(option, 'keyingSets', text='', icon='KEYINGSET')
 
-      # brushes
-      row.prop(option, 'brushes', text='', icon='BRUSH_DATA')
+        # palettes
+        row.prop(option, 'palettes', text='', icon='COLOR')
 
-      # texts
-      row.prop(option, 'texts', text='', icon='TEXT')
+        # brushes
+        row.prop(option, 'brushes', text='', icon='BRUSH_DATA')
 
-      # nodes
-      row.prop(option, 'nodes', text='', icon='NODE_SEL')
+        # texts
+        row.prop(option, 'texts', text='', icon='TEXT')
 
-      # node labels
-      row.prop(option, 'nodeLabels', text='', icon='NODE')
+        # nodes
+        row.prop(option, 'nodes', text='', icon='NODE_SEL')
 
-      # frame nodes
-      row.prop(option, 'frameNodes', text='', icon='FULLSCREEN')
+        # node labels
+        row.prop(option, 'nodeLabels', text='', icon='NODE')
 
-      # node groups
-      row.prop(option, 'nodeGroups', text='', icon='NODETREE')
+        # frame nodes
+        row.prop(option, 'frameNodes', text='', icon='FULLSCREEN')
 
-      # column
-      column = layout.column(align=True)
+        # node groups
+        row.prop(option, 'nodeGroups', text='', icon='NODETREE')
 
-      # label
-      column.label(text='Freestyle:')
+        # column
+        column = layout.column(align=True)
 
-      # row
-      row = column.row(align=True)
+        # label
+        column.label(text='Freestyle:')
 
-      # scale x
-      row.scale_x = 1.5
+        # row
+        row = column.row(align=True)
 
-      # line sets
-      row.prop(option, 'lineSets', text='', icon='BRUSH_TEXDRAW')
+        # scale x
+        row.scale_x = 1.5
 
-      # linestyles
-      row.prop(option, 'linestyles', text='', icon='LINE_DATA')
+        # line sets
+        row.prop(option, 'lineSets', text='', icon='BRUSH_TEXDRAW')
 
-      # linestyle modifiers
-      row.prop(option, 'linestyleModifiers', text='', icon='MODIFIER')
+        # linestyles
+        row.prop(option, 'linestyles', text='', icon='LINE_DATA')
 
-      # linestyle modifier type
-      row.prop(option, 'linestyleModifierType', text='')
+        # linestyle modifiers
+        row.prop(option, 'linestyleModifiers', text='', icon='MODIFIER')
+
+        # linestyle modifier type
+        row.prop(option, 'linestyleModifierType', text='')
 
       # separate
       column.separator()

@@ -345,7 +345,7 @@ def filters(self, context, layout, panel):
   # isnt hide find
   if not panel.hideFind:
 
-    if not panel.hideReplace:
+    if panel.filters or not panel.hideReplace:
 
       # separate
       layout.separator()

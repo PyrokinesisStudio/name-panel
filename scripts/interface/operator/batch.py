@@ -326,26 +326,26 @@ class name(Operator):
         # modifier type
         column.prop(option, 'modifierType', text='')
 
+      # column
+      column = layout.column(align=True)
+
+      # label
+      column.label(text='Game Engine:')
+
+      # row
+      row = column.row(align=True)
+
+      # sensors
+      row.prop(option, 'sensors', text='Sensors', toggle=True)
+
+      # controllers
+      row.prop(option, 'controllers', text='Controllers', toggle=True)
+
+      # actuators
+      row.prop(option, 'actuators', text='Actuators', toggle=True)
+
       # is global
       if option.mode == 'GLOBAL':
-
-        # column
-        column = layout.column(align=True)
-
-        # label
-        column.label(text='Game Engine:')
-
-        # row
-        row = column.row(align=True)
-
-        # sensors
-        row.prop(option, 'sensors', text='Sensors', toggle=True)
-
-        # controllers
-        row.prop(option, 'controllers', text='Controllers', toggle=True)
-
-        # actuators
-        row.prop(option, 'actuators', text='Actuators', toggle=True)
 
         # column
         column = layout.column(align=True)

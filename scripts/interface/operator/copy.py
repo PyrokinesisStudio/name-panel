@@ -9,9 +9,9 @@ class name(Operator):
   '''
     Transfer names from some types of datablocks to others.
   '''
-  bl_idname = 'view3d.copy_name'
-  bl_label = 'Copy Name'
-  bl_description = 'Copy names from some types of datablocks to others.'
+  bl_idname = 'view3d.transfer_name'
+  bl_label = 'Transfer Names'
+  bl_description = 'Transfer names from some types of datablocks to others.'
   bl_options = {'UNDO'}
 
   # poll

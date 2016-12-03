@@ -56,13 +56,13 @@ class name(Operator):
     column = layout.column(align=True)
 
     # source
-    column.label(text='Copy:', icon='COPYDOWN')
+    column.label(text='From:', icon='COPYDOWN')
     column = layout.column(align=True)
     column.prop(option, 'source', expand=True)
     column = layout.column(align=True)
 
     # targets
-    column.label(text='Paste:', icon='PASTEDOWN')
+    column.label(text='To:', icon='PASTEDOWN')
     column = layout.column(align=True)
     split = column.split(align=True)
     split.prop(option, 'objects', text='', icon='OBJECT_DATA')

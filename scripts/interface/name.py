@@ -1424,7 +1424,7 @@ class block:
           Bone(self, context, layout, context.active_bone, context.active_object, panel)
 
       # is pin active bone
-      if option.pinActiveBone:
+      if option.pinActiveBone and panel.displayBones:
 
         # is mode pose or edit
         if object.mode in {'POSE', 'EDIT'}:

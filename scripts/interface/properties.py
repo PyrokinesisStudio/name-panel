@@ -39,7 +39,8 @@ class toolsProperties(Panel):
     '''
 
     # main
-    main(self, context)
+    try:  main(self, context)
+    except: pass
 
 # UI properties
 class UIProperties(Panel):
@@ -59,7 +60,8 @@ class UIProperties(Panel):
     '''
 
     # main
-    main(self, context)
+    try: main(self, context)
+    except: pass
 
 # main
 def main(self, context):

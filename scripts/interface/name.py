@@ -893,7 +893,7 @@ def populate(self, context, layout, object, panel):
     row.separator()
 
     # is active object
-    if object == context.active_object:
+    if object == context.active_object and context.active_bone:
 
       # bone
       block.bone(self, context, column, object, panel)

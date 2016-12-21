@@ -1935,6 +1935,14 @@ def ObjectData(self, context, layout, datablock, panel):
     # name
     row.prop(datablock.data, 'name', text='')
 
+    if datablock.data.users > 1 and panel.shortcuts:
+
+      sub = row.row(align=True)
+      sub.enabled = False
+      sub.scale_x = 0.1
+
+      sub.prop(panel, 'userCount', toggle=True, text=str(datablock.data.users))
+
     # is type lamp
     if datablock.type == 'LAMP':
 

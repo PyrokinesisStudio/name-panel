@@ -934,6 +934,36 @@ class block:
       # is groups
       if panel.groups:
 
+        # is shortcuts and not search
+        if panel.shortcuts and not panel.search:
+
+          # row
+          row = layout.row(align=True)
+
+          # sub
+          sub = row.row()
+
+          # scale x
+          sub.scale_x = 1.6
+
+          # label
+          sub.label(icon='GROUP')
+
+          # is groups
+          if bpy.data.groups:
+
+            # group link
+            row.operator('object.group_link', text='Add to Group')
+
+            # group add
+            row.operator('object.group_add', text='', icon='ZOOMIN')
+
+          # isnt groups
+          else:
+
+            # group add
+            row.operator('object.group_add', text='Add Group')
+
         # for group
         for group in bpy.data.groups:
 
@@ -1018,6 +1048,24 @@ class block:
       # is constraints
       if panel.constraints:
 
+        # is shortcuts and not search
+        if panel.shortcuts and not panel.search:
+
+          # row
+          row = layout.row(align=True)
+
+          # sub
+          sub = row.row()
+
+          # scale x
+          sub.scale_x = 1.6
+
+          # label
+          sub.label(icon='CONSTRAINT')
+
+          # operator menu enum
+          row.operator_menu_enum('object.constraint_add', 'type', text='Add Constraint')
+
         # for constraint
         for constraint in object.constraints:
 
@@ -1039,6 +1087,32 @@ class block:
       # is modifiers
       if panel.modifiers:
 
+        # is shortcuts and not search
+        if panel.shortcuts and not panel.search:
+
+          # row
+          row = layout.row(align=True)
+
+          # sub
+          sub = row.row()
+
+          # scale x
+          sub.scale_x = 1.6
+
+          # label
+          sub.label(icon='MODIFIER')
+
+          # operator menu enum
+          row.operator_menu_enum('object.modifier_add', 'type', text='Add Modifier')
+
+        # for constraint
+        for constraint in object.constraints:
+
+          # is search
+          if search == '' or re.search(search, constraint.name, re.I):
+
+            # constraint
+            Constraint(self, context, layout, constraint, object, None, panel)
         # for modifier
         for modifier in object.modifiers:
 
@@ -1718,6 +1792,15 @@ def Group(self, context, layout, datablock, object, panel):
 
   # name
   row.prop(datablock, 'name', text='')
+
+  # shortcuts
+  if panel.shortcuts:
+
+    # context pointer set
+    row.context_pointer_set('group', datablock)
+
+    # remove
+    row.operator('object.group_remove', text='', icon='X')
 
 # grease pencil
 def GreasePencil(self, context, layout, datablock, object, panel):

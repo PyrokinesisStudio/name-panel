@@ -1094,7 +1094,7 @@ class block:
       if panel.modifiers:
 
         # is shortcuts and not search
-        if panel.shortcuts and not panel.search:
+        if panel.shortcuts and not panel.search and object.type in {'CURVE', 'SURFACE', 'MESH', 'LATTICE'}:
 
           # row
           row = layout.row(align=True)
@@ -1300,6 +1300,27 @@ class block:
       # is vertex groups
       if panel.vertexGroups:
 
+        # is shortcuts and not search
+        if panel.shortcuts and not panel.search and object.type in {'MESH', 'LATTICE'}:
+
+          # row
+          row = layout.row(align=True)
+
+          # context pointer set
+          row.context_pointer_set('object', object)
+
+          # sub
+          sub = row.row()
+
+          # scale x
+          sub.scale_x = 1.6
+
+          # label
+          sub.label(icon='GROUP_VERTEX')
+
+          # operator menu enum
+          row.operator('object.vertex_group_add', text='Add Vertex Group')
+
         # has vertex groups
         if hasattr(object, 'vertex_groups'):
 
@@ -1323,6 +1344,28 @@ class block:
 
       # shapekeys
       if panel.shapekeys:
+
+        # is shortcuts and not search
+        if panel.shortcuts and not panel.search and object.type in {'CURVE', 'SURFACE', 'MESH', 'LATTICE'}:
+
+          # row
+          row = layout.row(align=True)
+
+          # context pointer set
+          row.context_pointer_set('object', object)
+
+          # sub
+          sub = row.row()
+
+          # scale x
+          sub.scale_x = 1.6
+
+          # label
+          sub.label(icon='SHAPEKEY_DATA')
+
+          # operator menu enum
+          op = row.operator('object.shape_key_add', text='Add Shapekey')
+          op.from_mix = False
 
         # has shape keys
         if hasattr(object.data, 'shape_keys'):
@@ -1354,6 +1397,27 @@ class block:
         # is type mesh
         if object.type in 'MESH':
 
+          # is shortcuts and not search
+          if panel.shortcuts and not panel.search:
+
+            # row
+            row = layout.row(align=True)
+
+            # context pointer set
+            row.context_pointer_set('object', object)
+
+            # sub
+            sub = row.row()
+
+            # scale x
+            sub.scale_x = 1.6
+
+            # label
+            sub.label(icon='GROUP_UVS')
+
+            # operator menu enum
+            row.operator('mesh.uv_texture_add', text='Add UV Map')
+
           # for uv
           for uv in object.data.uv_textures:
 
@@ -1377,6 +1441,27 @@ class block:
 
         # is type mesh
         if object.type in 'MESH':
+
+          # is shortcuts and not search
+          if panel.shortcuts and not panel.search:
+
+            # row
+            row = layout.row(align=True)
+
+            # context pointer set
+            row.context_pointer_set('object', object)
+
+            # sub
+            sub = row.row()
+
+            # scale x
+            sub.scale_x = 1.6
+
+            # label
+            sub.label(icon='GROUP_VCOL')
+
+            # operator menu enum
+            row.operator('mesh.vertex_color_add', text='Add Vertex Color')
 
           # for vertex color
           for vertexColor in object.data.vertex_colors:
@@ -1452,6 +1537,27 @@ class block:
 
         # is type armature
         if object.type in 'ARMATURE':
+
+          # is shortcuts and not search
+          if panel.shortcuts and not panel.search and context.mode == 'POSE':
+
+            # row
+            row = layout.row(align=True)
+
+            # context pointer set
+            row.context_pointer_set('object', object)
+
+            # sub
+            sub = row.row()
+
+            # scale x
+            sub.scale_x = 1.6
+
+            # label
+            sub.label(icon='GROUP_BONE')
+
+            # operator menu enum
+            row.operator('pose.group_add', text='Add Bone Group')
 
           # for group
           for group in object.pose.bone_groups:

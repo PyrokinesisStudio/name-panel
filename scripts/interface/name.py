@@ -940,6 +940,9 @@ class block:
           # row
           row = layout.row(align=True)
 
+          # context pointer set
+          row.context_pointer_set('object', object)
+
           # sub
           sub = row.row()
 
@@ -1054,6 +1057,9 @@ class block:
           # row
           row = layout.row(align=True)
 
+          # context pointer set
+          row.context_pointer_set('object', object)
+
           # sub
           sub = row.row()
 
@@ -1093,6 +1099,9 @@ class block:
           # row
           row = layout.row(align=True)
 
+          # context pointer set
+          row.context_pointer_set('object', object)
+
           # sub
           sub = row.row()
 
@@ -1105,14 +1114,6 @@ class block:
           # operator menu enum
           row.operator_menu_enum('object.modifier_add', 'type', text='Add Modifier')
 
-        # for constraint
-        for constraint in object.constraints:
-
-          # is search
-          if search == '' or re.search(search, constraint.name, re.I):
-
-            # constraint
-            Constraint(self, context, layout, constraint, object, None, panel)
         # for modifier
         for modifier in object.modifiers:
 

@@ -5,6 +5,7 @@ from bpy.types import PropertyGroup
 from bpy.props import *
 from . import storage
 from .defaults import defaults
+from .function.name import toggle_all_datablocks
 
 # name
 class name(PropertyGroup):
@@ -149,6 +150,14 @@ class name(PropertyGroup):
         name = 'shortcuts',
         description = 'Show shortcuts to settings next to the datablock names.',
         default = default['shortcuts']
+    )
+
+    # toggle all
+    toggleAll = BoolProperty(
+        name = 'Toggle All',
+        description = 'Display all datablocks.',
+        update = toggle_all_datablocks,
+        default = default['toggle all']
     )
 
     # display names

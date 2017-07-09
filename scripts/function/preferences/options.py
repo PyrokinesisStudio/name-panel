@@ -45,6 +45,7 @@ def name(context):
     default['hide replace'] = option.hideReplace
     default['filters'] = option.filters
     default['shortcuts'] = option.shortcuts
+    default['toggle all'] = option.toggleAll
     default['display names'] = option.displayNames
     default['search'] = option.search
     default['clear search'] = option.clearSearch

@@ -279,6 +279,15 @@ def filters(self, context, layout, panel):
     # shortcuts
     row.prop(panel, 'shortcuts', text='', icon='SETTINGS')
 
+    # is filters
+    if panel.filters:
+
+        # toggle all
+        sub = row.row(align=True)
+        sub.active =  panel.toggleAll
+        sub.scale_y = 1.25
+        sub.prop(panel, 'toggleAll', text='', icon='OOPS', toggle=True)
+
     # menu; name panel specials
     row.menu('VIEW3D_MT_name_panel_specials', text='', icon='COLLAPSEMENU')
 
@@ -292,7 +301,7 @@ def filters(self, context, layout, panel):
         row = layout.row(align=True)
 
         # scale x
-        row.scale_x = 5 # hack: forces buttons to line up correctly
+        row.scale_x = 10 # hack: helps buttons to span the width of the shelf
 
         # groups
         row.prop(panel, 'groups', text='', icon='GROUP')
@@ -319,7 +328,7 @@ def filters(self, context, layout, panel):
         row = layout.row(align=True)
 
         # scale x
-        row.scale_x = 5 # hack: forces buttons to line up correctly
+        row.scale_x = 10
 
         # vertex groups
         row.prop(panel, 'vertexGroups', text='', icon='GROUP_VERTEX')

@@ -1,4 +1,3 @@
-import os
 import re
 
 import bpy
@@ -9,213 +8,51 @@ from .config import defaults
 
 
 @persistent
-def write_config(void):
+def keep_session_settings(void):
 
     preferences = get.preferences(bpy.context)
-    panel = get.panel.options(bpy.context)
+    panel = get.name_panel.options(bpy.context)
     filters = panel.filters['options']
 
-    defaults = {
-        'preferences': {
-            'remove_item': preferences.remove_item,
-            'auto_save': preferences.auto_save,
-            'popup_width': preferences.popup_width
-        },
-        'panel': {
-            'location': panel.location,
-            'find': '',
-            'replace': '',
-            'case_sensitive': panel.case_sensitive,
-            'regex': panel.regex,
-            'filters': {
-                'mode': filters.mode,
-                'display_mode': filters.display_mode,
-                'groups': filters.groups,
-                'grease_pencils': filters.grease_pencils,
-                'actions': filters.actions,
-                'constraints': filters.constraints,
-                'modifiers': filters.modifiers,
-                'bones': filters.bones,
-                'bone_groups': filters.bone_groups,
-                'bone_constraints': filters.bone_constraints,
-                'shapekeys': filters.shapekeys,
-                'vertex_groups': filters.vertex_groups,
-                'uv_maps': filters.uv_maps,
-                'vertex_colors': filters.vertex_colors,
-                'materials': filters.materials,
-                'textures': filters.textures,
-                'images': filters.images,
-                'particle_systems': filters.particle_systems,
-                'pin_active': filters.pin_active,
-            }
-        },
-        'namer': {
-            'mode': 'TARGET',
-            'option_mode': 'PRESETS',
-            'target': {
-                'mode': 'CONTEXT',
-                'effect': 'ALL',
-                'object_target': 'BOTH',
-                'display_more': False,
-                'datablocks': {
-                    'cameras': False,
-                    'scenes': False,
-                    'render_layers': False,
-                    'views': False,
-                    'keying_sets': False,
-                    'empties': False,
-                    'materials': False,
-                    'nodes': False,
-                    'node_labels': False,
-                    'node_frames': False,
-                    'node_groups': False,
-                    'meshes': False,
-                    'vertex_groups': False,
-                    'uv_maps': False,
-                    'vertex_colors': False,
-                    'lamps': False,
-                    'libraries': False,
-                    'screens': False,
-                    'images': False,
-                    'lattices': False,
-                    'curves': False,
-                    'surfaces': False,
-                    'metaballs': False,
-                    'text_curves': False,
-                    'fonts': False,
-                    'textures': False,
-                    'brushes': False,
-                    'worlds': False,
-                    'groups': False,
-                    'shapekeys': False,
-                    'constraints': False,
-                    'modifiers': False,
-                    'texts': False,
-                    'speakers': False,
-                    'sounds': False,
-                    'armatures': False,
-                    'bones': False,
-                    'bone_groups': False,
-                    'pose_libraries': False,
-                    'pose_markers': False,
-                    'bone_constraints': False,
-                    'actions': False,
-                    'action_groups': False,
-                    'tracks': False,
-                    'markers': False,
-                    'particles': False,
-                    'particle_settings': False,
-                    'particle_textures': False,
-                    'palletes': False,
-                    'grease_pencils': False,
-                    'grease_pencil_layers': False,
-                    'grease_pencil_pallettes': False,
-                    'grease_pencil_pallette_colors': False,
-                    'movie_clips': False,
-                    'masks': False,
-                    'line_sets': False,
-                    'line_styles': False,
-                    'line_style_modifiers': False,
-                    'line_style_textures': False,
-                    'sequences': False,
-                    'sensors': False,
-                    'controllers': False,
-                    'actuators': False,
-                    'custom_properties': False
-                },
-                'custom_property_path': ''
-            },
-            'entry': {
-                'mode': 'REPLACE',
-                'replace_mode': 'FIND',
-                'find': '',
-                'case_sensitive': False,
-                're': False,
-                'position': 0,
-                'begin': 0,
-                'end': 1,
-                'outside': False,
-                'before': '',
-                'after': '',
-                'replace': '',
-                'insert_mode': 'PREFIX',
-                'insert': '',
-                'convert_mode': 'ALL',
-                'case_mode': 'NONE',
-                'separate_mode': 'NONE',
-                'custom': '',
-                'move_mode': 'FIND',
-                'move_to': 'POSITION',
-                'move_case_sensitive': False,
-                'move_re': False,
-                'move_position': 0,
-                'move_before': '',
-                'move_after': '',
-                'swap_mode': 'FIND',
-                'swap_to': 'FIND',
-                'swap_find': '',
-                'swap_case_sensitive': False,
-                'swap_re': False,
-                'swap_begin': 0,
-                'swap_end': 1,
-                'swap_outside': False,
-                'swap_before': '',
-                'swap_after': ''
-            },
-            'sort': {
-                'mode': 'ASCEND',
-                'sort_mode': 'ALL',
-                'begin': 0,
-                'end': 1,
-                'outside': False,
-                'starting_point': 'CENTER',
-                'axis_3d': 'X',
-                'camera': False,
-                'axis_2d': 'X',
-                'left': 'L',
-                'right': 'R',
-                'front': 'Fr',
-                'back': 'Bk',
-                'top': 'Top',
-                'bottom': 'Bot',
-                'positional_placement': 'SUFFIX',
-                'separator': '.',
-                'before': '',
-                'after': '',
-                're': False,
-                'case_sensitive': False,
-                'position': 0,
-                'fallback_mode': 'ASCEND',
-                'display_options': False,
-                'hierarchy_mode': 'PARENT'
-            },
-            'count': {
-                'mode': 'NUMERIC',
-                'placement': 'SUFFIX',
-                'position': 0,
-                'auto': True,
-                'pad': 0,
-                'character': '0',
-                'separator': '.',
-                'start': 1,
-                'alphabetic_start': 1,
-                'roman_numeral_start': 1,
-                'step': 1,
-                'uppercase': True
-            }
-        }
-    }
+    defaults['preferences']['location'] = panel.location
+    defaults['preferences']['pin_active']= filters.pin_active
+    defaults['preferences']['click_through'] = preferences.click_through
+    defaults['preferences']['remove_item'] = preferences.remove_item
+    defaults['preferences']['keep_session_settings'] = preferences.keep_session_settings
+    defaults['preferences']['popup_width'] = preferences.popup_width
+    defaults['preferences']['use_last'] = preferences.use_last
+    defaults['preferences']['auto_name_operations'] = preferences.auto_name_operations
+    defaults['preferences']['namer_popup_width'] = preferences.namer_popup_width
 
-    filepath = os.path.abspath(os.path.join(os.path.dirname(__file__), 'config.py'))
-    print('Writing config at: {}'.format(filepath))
-    # with open(filepath, 'r+') as default:
-    #     default.truncate()
-    #     default.write('# Written by name_panel.addon.utilities.write_config\n' + 'defaults = ' + str(defaults))
+    defaults['panel']['case_sensitive'] = panel.case_sensitive
+    defaults['panel']['regex'] = panel.regex
+
+    defaults['panel']['filters']['mode'] = filters.mode
+    defaults['panel']['filters']['display_mode'] = filters.display_mode
+    defaults['panel']['filters']['groups'] = filters.groups
+    defaults['panel']['filters']['grease_pencils'] = filters.grease_pencils
+    defaults['panel']['filters']['actions'] = filters.actions
+    defaults['panel']['filters']['constraints'] = filters.constraints
+    defaults['panel']['filters']['modifiers'] = filters.modifiers
+    defaults['panel']['filters']['bones'] = filters.bones
+    defaults['panel']['filters']['bone_groups'] = filters.bone_groups
+    defaults['panel']['filters']['bone_constraints'] = filters.bone_constraints
+    defaults['panel']['filters']['shapekeys'] = filters.shapekeys
+    defaults['panel']['filters']['vertex_groups'] = filters.vertex_groups
+    defaults['panel']['filters']['uv_maps'] = filters.uv_maps
+    defaults['panel']['filters']['vertex_colors'] = filters.vertex_colors
+    defaults['panel']['filters']['materials'] = filters.materials
+    defaults['panel']['filters']['textures'] = filters.textures
+    defaults['panel']['filters']['images'] = filters.images
+    defaults['panel']['filters']['particle_systems'] = filters.particle_systems
 
 
-def check_re(context, name):
+class regex:
 
-        option = get.panel.options(context)
+
+    def panel_search(context, name):
+
+        option = get.name_panel.options(context)
 
         if option.find:
             if option.regex:
@@ -277,7 +114,6 @@ class get:
         def __new__(self, type):
 
             icons = {
-                'action'
                 'meshes': 'OUTLINER_OB_MESH',
                 'curves': 'OUTLINER_OB_CURVE',
                 'surfaces': 'OUTLINER_OB_SURFACE',
@@ -471,7 +307,7 @@ class get:
             return icons[type]
 
 
-    class panel:
+    class name_panel:
 
 
         def options(context):
@@ -507,7 +343,7 @@ class get:
 
             def __new__(self, context):
 
-                option = get.panel.options(context).filters['options']
+                option = get.name_panel.options(context).filters['options']
 
                 if option.display_mode == 'ACTIVE':
 
@@ -531,7 +367,7 @@ class get:
                             'datablocks': self.objects(context, option, context.selected_objects)
                         }
 
-                    elif context.active_object and option.pin_active:
+                    elif context.active_object and get.preferences(context).pin_active:
 
                         stack = {
                             'objects': {},
@@ -551,7 +387,7 @@ class get:
                             'datablocks': self.objects(context, option, context.visible_objects)
                         }
 
-                    elif context.active_object and option.pin_active:
+                    elif context.active_object and get.preferences(context).pin_active:
 
                         stack = {
                             'objects': {},
@@ -563,7 +399,7 @@ class get:
                         stack = {}
 
                 if 'datablocks' in stack:
-                    if context.active_object and option.pin_active and option.display_mode != 'ACTIVE':
+                    if context.active_object and get.preferences(context).pin_active and option.display_mode != 'ACTIVE':
 
                         stack['datablocks'].insert(0, context.active_object)
 
@@ -571,11 +407,11 @@ class get:
 
                         stack['objects'][object.name] = {
                             'datablock': object,
-                            'active': check_re(context, object.name),
+                            'active': regex.panel_search(context, object.name),
                             'types': []
                         }
 
-                        for type in get.panel.name_stack.types:
+                        for type in get.name_panel.name_stack.types:
                             if type not in {'object_data'}:
                                 if getattr(option, type):
                                     if getattr(self, type)(context, object):
@@ -583,19 +419,19 @@ class get:
                                         stack['objects'][object.name]['types'].append(type)
 
                                         stack['objects'][object.name][type] = {
-                                            'datablocks': getattr(get.panel.name_stack, type)(context, object)
+                                            'datablocks': getattr(get.name_panel.name_stack, type)(context, object)
                                         }
 
                                         for datablock in stack['objects'][object.name][type]['datablocks']:
+                                            if datablock:
+                                                stack['objects'][object.name][type][datablock.name] = {
+                                                    'datablock': datablock,
+                                                    'active': regex.panel_search(context, datablock.name)
+                                                }
 
-                                            stack['objects'][object.name][type][datablock.name] = {
-                                                'datablock': datablock,
-                                                'active': check_re(context, datablock.name)
-                                            }
+                                                if type in {'grease_pencils', 'modifiers', 'bones', 'materials'}:
 
-                                            if type in {'grease_pencils', 'modifiers', 'bones', 'materials'}:
-
-                                                self.subtypes(context, option, stack, object, type, datablock)
+                                                    self.subtypes(context, option, stack, object, type, datablock)
 
                             else:
                                 if object.type == 'EMPTY':
@@ -608,7 +444,7 @@ class get:
                                                 'datablocks': [object.data],
                                                 object.data.name: {
                                                     'datablock': object.data,
-                                                    'active': check_re(context, object.data.name)
+                                                    'active': regex.panel_search(context, object.data.name)
                                                 }
                                             }
 
@@ -620,7 +456,7 @@ class get:
                                         'datablocks': [object.data],
                                         object.data.name: {
                                             'datablock': object.data,
-                                            'active': check_re(context, object.data.name)
+                                            'active': regex.panel_search(context, object.data.name)
                                         }
                                     }
 
@@ -629,7 +465,7 @@ class get:
 
             def objects(context, option, location):
 
-                return sorted([object for object in location if object != context.active_object], key=lambda object: object.name) if option.pin_active else sorted([object for object in location], key=lambda object: object.name)
+                return sorted([object for object in location if object != context.active_object], key=lambda object: object.name) if get.preferences(context).pin_active else sorted([object for object in location], key=lambda object: object.name)
 
 
             def groups(context, object):
@@ -673,8 +509,8 @@ class get:
 
                 if object == context.active_object and object.type == 'ARMATURE':
 
-                    option = get.panel.options(context).filters['options']
-                    display_mode = get.panel.options(context).filters['options'].display_mode
+                    option = get.name_panel.options(context).filters['options']
+                    display_mode = get.name_panel.options(context).filters['options'].display_mode
 
                     if context.mode == 'POSE':
 
@@ -684,13 +520,13 @@ class get:
 
                         elif option.display_mode == 'SELECTED':
 
-                            bones = [pose_bone for pose_bone in context.selected_pose_bones if pose_bone != context.active_pose_bone] if option.pin_active else [pose_bone for pose_bone in context.selected_pose_bones]
+                            bones = [pose_bone for pose_bone in context.selected_pose_bones if pose_bone != context.active_pose_bone] if get.preferences(context).pin_active else [pose_bone for pose_bone in context.selected_pose_bones]
 
                         else:
 
-                            bones = [pose_bone for pose_bone in context.visible_pose_bones if pose_bone != context.active_pose_bone] if option.pin_active else [pose_bone for pose_bone in context.visible_pose_bones]
+                            bones = [pose_bone for pose_bone in context.visible_pose_bones if pose_bone != context.active_pose_bone] if get.preferences(context).pin_active else [pose_bone for pose_bone in context.visible_pose_bones]
 
-                        if option.pin_active and option.display_mode != 'ACTIVE':
+                        if get.preferences(context).pin_active and option.display_mode != 'ACTIVE':
 
                             bones.insert(0, context.active_pose_bone)
 
@@ -702,13 +538,13 @@ class get:
 
                         elif option.display_mode == 'SELECTED':
 
-                            bones = [bone for bone in context.selected_bones if bone != context.active_bone] if option.pin_active else [bone for bone in context.selected_bones]
+                            bones = [bone for bone in context.selected_bones if bone != context.active_bone] if get.preferences(context).pin_active else [bone for bone in context.selected_bones]
 
                         else:
 
-                            bones = [bone for bone in context.visible_bones if bone != context.active_bone] if option.pin_active else [bone for bone in context.visible_bones]
+                            bones = [bone for bone in context.visible_bones if bone != context.active_bone] if get.preferences(context).pin_active else [bone for bone in context.visible_bones]
 
-                        if option.pin_active and option.display_mode != 'ACTIVE':
+                        if get.preferences(context).pin_active and option.display_mode != 'ACTIVE':
 
                             bones.insert(0, context.active_bone)
 
@@ -753,7 +589,7 @@ class get:
 
                         stack['objects'][object.name][type][datablock.name]['grease_pencil_layers'][layer.info] = {
                             'datablock': layer,
-                            'active': check_re(context, layer.info)
+                            'active': regex.panel_search(context, layer.info)
                         }
 
                 if type == 'modifiers':
@@ -764,14 +600,14 @@ class get:
                             stack['objects'][object.name][type][datablock.name]['particle_system'] = {
                                 datablock.particle_system.name: {
                                     'datablock': datablock.particle_system,
-                                    'active': check_re(context, datablock.particle_system.name)
+                                    'active': regex.panel_search(context, datablock.particle_system.name)
                                 }
                             }
 
                             stack['objects'][object.name][type][datablock.name]['particle_system'][datablock.particle_system.name]['particle_settings'] = {
                                 datablock.particle_system.settings.name: {
                                     'datablock': datablock.particle_system.settings,
-                                    'active': check_re(context, datablock.particle_system.settings.name)
+                                    'active': regex.panel_search(context, datablock.particle_system.settings.name)
                                 }
                             }
 
@@ -785,7 +621,7 @@ class get:
 
                                     stack['objects'][object.name][type][datablock.name]['particle_system'][datablock.particle_system.name]['particle_settings'][datablock.particle_system.settings.name]['textures'][texture.name] = {
                                         'datablock': texture,
-                                        'active': check_re(context, texture.name)
+                                        'active': regex.panel_search(context, texture.name)
                                     }
 
                 if type == 'bones':
@@ -800,7 +636,7 @@ class get:
 
                                 stack['objects'][object.name][type][datablock.name]['bone_constraints'][constraint.name] = {
                                     'datablock': constraint,
-                                    'active': check_re(context, constraint.name)
+                                    'active': regex.panel_search(context, constraint.name)
                                 }
 
                 if type == 'materials':
@@ -814,7 +650,7 @@ class get:
 
                             stack['objects'][object.name][type][datablock.name]['textures'][texture.name] = {
                                 'datablock': texture,
-                                'active': check_re(context, texture.name)
+                                'active': regex.panel_search(context, texture.name)
                             }
 
 
@@ -826,6 +662,7 @@ class get:
                 return getattr(self, operator.identifier)(operator, context)
 
 
+            # need to add look-up for object-data
             def Object(operator, context):
 
                 return bpy.data.objects[operator.target_name]
@@ -921,23 +758,178 @@ class get:
                 return bpy.data.particles[operator.target_name]
 
 
+    class namer:
+
+
+        def options(context):
+
+            location = context.window_manager.name_panel.namer
+
+            if not location:
+
+                location.add().name = 'options'
+
+                if not location['options'].targeting:
+                    location['options'].targeting.add().name = 'options'
+
+                if not location['options'].naming:
+                    location['options'].naming.add().name = 'options'
+
+                if not location['options'].naming['options'].operations:
+                    location['options'].naming['options'].operations.add().name = 'Default'
+
+                if not location['options'].sorting:
+                    location['options'].sorting.add().name = 'options'
+
+                if not location['options'].counting:
+                    location['options'].counting.add().name = 'options'
+
+            return location['options']
+
+
+        def operation_name(operation):
+
+            if operation.mode not in {'CONVERT', 'TRANSFER'}:
+
+                mode = '{}_mode'.format(operation.mode.lower()).lower()
+                filler = ' at ' if mode == 'insert_mode' and operation.insert_mode == 'POSITION' else ' '
+
+                if mode in {'replace_mode', 'move_mode', 'swap_mode'} and getattr(operation, mode) == 'FIND':
+
+                    secondary = filler + 'Found'
+
+                else:
+
+                    secondary = filler + getattr(operation, mode).title()
+
+            elif operation.mode == 'CONVERT':
+
+                secondary = ''
+
+                if operation.case_mode != 'NONE':
+
+                    secondary = ' Case'
+
+                if operation.separate_mode != 'NONE':
+                    if secondary != '':
+
+                        secondary += ' & Separators'
+
+                    else:
+
+                        secondary = ' Separators'
+
+            else:
+
+                secondary = ''
+
+            return operation.mode.title() + secondary
+
 class update:
 
 
     def handlers(remove=False):
 
-        if get.preferences(bpy.context).auto_save:
+        if get.preferences(bpy.context).keep_session_settings:
             if not remove:
 
-                bpy.app.handlers.load_pre.append(write_config)
-                bpy.app.handlers.save_post.append(write_config)
+                bpy.app.handlers.load_pre.append(keep_session_settings)
+                bpy.app.handlers.save_post.append(keep_session_settings)
 
             else:
 
-                bpy.app.handlers.load_pre.remove(write_config)
-                bpy.app.handlers.save_post.remove(write_config)
+                bpy.app.handlers.load_pre.remove(keep_session_settings)
+                bpy.app.handlers.save_post.remove(keep_session_settings)
 
 
-    def entry_name(operator, context):
+    def selection(operator, context, event):
 
-        pass
+        option = get.name_panel.options(context).filters['options']
+
+        objects = context.scene.objects
+        object_selected = True if not objects[operator.object_name].select else False
+
+        if objects[operator.object_name] != objects.active:
+
+            objects.active = objects[operator.object_name]
+            objects[operator.object_name].select = object_selected if event.shift and operator.identifier not in {'PoseBone', 'EditBone'} else True
+
+        else:
+
+            objects[operator.object_name].select = object_selected if event.shift and operator.identifier not in {'PoseBone', 'EditBone'} else True
+
+        if operator.identifier not in {'PoseBone', 'EditBone'}:
+
+            if operator.identifier == 'ParticleSystem':
+
+                location = objects[operator.object_name].particle_system
+
+                if location[operator.target_name] != location.active:
+
+                    location.active_index = 0
+
+                    while location[operator.target_name] != location.active:
+
+                        location.active_index += 1
+
+            if not event.shift:
+                for object in context.visible_objects:
+                    if object != objects[operator.object_name]:
+
+                        object.select = False
+
+            bpy.ops.object.mode_set(mode='OBJECT')
+
+        elif operator.identifier == 'PoseBone':
+
+            bones = objects.active.data.bones
+            bone_selected = True if not bones[operator.target].select else False
+
+            if bones[operator.target] != bones.active:
+
+                bones.active = bones[operator.target]
+                bones[operator.target].select = bone_selected if event.shift else True
+
+            else:
+
+                bones.active.select = bone_selected if event.shift else True
+
+            if not event.shift:
+                for bone in context.visible_pose_bones:
+                    if bones[bone.name] != bones[operator.target]:
+
+                        bone.bone.select = False
+
+        elif operator.identifier == 'EditBone':
+
+            bones = objects.active.data.edit_bones
+            bone_selected = True if not bones[operator.target].select else False
+
+            if bones[operator.target] != bones.active:
+
+                bones.active = bones[operator.target]
+                bones[operator.target].select = bone_selected if event.shift else True
+                bones[operator.target].select_head = bone_selected if event.shift else True
+                bones[operator.target].select_tail = bone_selected if event.shift else True
+
+            else:
+
+                bones[operator.target].select = bone_selected if event.shift else True
+                bones[operator.target].select_head = bone_selected if event.shift else True
+                bones[operator.target].select_tail = bone_selected if event.shift else True
+
+
+            if not event.shift:
+                for bone in context.visible_bones:
+                    if bone != bones[operator.target]:
+
+                        bone.select = False
+                        bone.select_head = False
+                        bone.select_tail = False
+
+
+    def operation_name(operator, context):
+
+        naming = get.namer.options(context).naming['options']
+        active_operation = naming.operations[naming.active_index]
+        active_operation.name = get.namer.operation_name(active_operation)

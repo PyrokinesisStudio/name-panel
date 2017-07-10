@@ -13,9 +13,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
 bl_info = {
-    'name': 'Name Panel Revision',
+    'name': 'Name Panel',
     'author': 'proxe',
-    'version': (1, 8, 472),
+    'version': (1, 8, 473),
     'blender': (2, 78, 0),
     'location': '3D View \N{Rightwards Arrow} Property or Tool Shelf.',
     'description': 'In panel datablock name stack with additional naming tools.',
@@ -43,12 +43,13 @@ def register():
         description = 'Storage location for name panel addon options',
     )
 
-    if get.preferences(bpy.context).remove_item:
+    try:
+        if get.preferences(bpy.context).remove_item:
+            unregister_class(bpy.types.VIEW3D_PT_view3d_name)
+    except: pass
 
-        unregister_class(bpy.types.VIEW3D_PT_view3d_name)
-
-    # keymap = bpy.context.window_manager.keyconfigs.addon.keymaps.new(name='Window')
-    # keymap.keymap_items.new('wm.batch_name', 'F7', 'PRESS')
+    keymap = bpy.context.window_manager.keyconfigs.addon.keymaps.new(name='Window')
+    keymap.keymap_items.new('wm.namer', 'F7', 'PRESS')
 
     update.handlers()
 
@@ -57,8 +58,8 @@ def unregister():
 
     del bpy.types.WindowManager.name_panel
 
-    # keymap = bpy.context.window_manager.keyconfigs.addon.keymaps['Window']
-    # keymap.keymap_items.remove(keymap.keymap_items['wm.batch_name'])
+    keymap = bpy.context.window_manager.keyconfigs.addon.keymaps['Window']
+    keymap.keymap_items.remove(keymap.keymap_items['wm.namer'])
 
     update.handlers(remove=True)
 

@@ -1,12 +1,18 @@
 
 defaults = {
     'preferences': {
+        'mode': 'GENERAL',
+        'location': 'TOOLS',
+        'pin_active': False,
+        'click_through': True,
         'remove_item': True,
-        'auto_save': True,
-        'popup_width': 330
+        'keep_session_settings': True,
+        'popup_width': 330,
+        'use_last': True,
+        'auto_name_operations': True,
+        'namer_popup_width': 460,
     },
     'panel': {
-        'location': 'TOOLS',
         'find': '',
         'replace': '',
         'case_sensitive': False,
@@ -30,8 +36,7 @@ defaults = {
             'textures': True,
             'images': True,
             'particle_systems': True,
-            'pin_active': False,
-        }
+        },
     },
     'namer': {
         'mode': 'TARGET',
@@ -105,11 +110,11 @@ defaults = {
                 'sensors': False,
                 'controllers': False,
                 'actuators': False,
-                'custom_properties': False
+                'custom_properties': False,
             },
-            'custom_property_path': ''
+            'custom_property_path': '',
         },
-        'entry': {
+        'operation': {
             'mode': 'REPLACE',
             'replace_mode': 'FIND',
             'find': '',
@@ -144,7 +149,7 @@ defaults = {
             'swap_end': 1,
             'swap_outside': False,
             'swap_before': '',
-            'swap_after': ''
+            'swap_after': '',
         },
         'sort': {
             'mode': 'ASCEND',
@@ -171,7 +176,7 @@ defaults = {
             'position': 0,
             'fallback_mode': 'ASCEND',
             'display_options': False,
-            'hierarchy_mode': 'PARENT'
+            'hierarchy_mode': 'PARENT',
         },
         'count': {
             'mode': 'NUMERIC',
@@ -186,6 +191,6 @@ defaults = {
             'roman_numeral_start': 1,
             'step': 1,
             'uppercase': True
-        }
-    }
+        },
+    },
 }

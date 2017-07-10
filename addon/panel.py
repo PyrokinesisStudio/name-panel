@@ -17,12 +17,12 @@ class tool_shelf(Panel):
     @classmethod
     def poll(cls, context):
 
-        return get.panel.options(context).location == 'TOOLS'
+        return get.preferences(context).location == 'TOOLS'
 
 
     def draw(self, context):
 
-        interface.panel(self, context)
+        interface.name_panel(self, context)
 
 
 class property_shelf(Panel):
@@ -35,9 +35,9 @@ class property_shelf(Panel):
     @classmethod
     def poll(cls, context):
 
-        return get.panel.options(context).location == 'UI'
+        return get.preferences(context).location == 'UI'
 
 
     def draw(self, context):
 
-        interface.panel(self, context)
+        interface.name_panel(self, context)

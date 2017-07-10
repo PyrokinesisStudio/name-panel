@@ -1,5 +1,3 @@
-import random
-
 import bpy
 
 from bpy.types import PropertyGroup
@@ -18,7 +16,7 @@ class filter_options(PropertyGroup):
         description = 'Mode',
         items = [
             ('FILTERS', 'Filters', ''),
-            ('OPTIONS', 'Options', ''),
+            ('OPTIONS', 'options', ''),
         ],
         default = default['mode']
     )
@@ -130,16 +128,10 @@ class filter_options(PropertyGroup):
         default = default['particle_systems']
     )
 
-    pin_active = BoolProperty(
-        name = 'Pin Active',
-        description = 'Keep the active object/bone at the top of the name stack.',
-        default = default['pin_active']
-    )
 
+class operation_options(PropertyGroup):
 
-class entry_options(PropertyGroup):
-
-    default = defaults['namer']['entry']
+    default = defaults['namer']['operation']
 
     mode = EnumProperty(
          name = 'Mode',
@@ -152,7 +144,7 @@ class entry_options(PropertyGroup):
             ('SWAP', 'Swap', 'Swap characters'),
             ('TRANSFER', 'Transfer', 'Transfer names'),
          ],
-         update = update.entry_name,
+         update = update.operation_name,
          default = default['mode']
     )
 
@@ -167,7 +159,7 @@ class entry_options(PropertyGroup):
             ('FIND', 'Find', 'Replace this string'),
             ('ALL', 'All', 'Replace entire name'),
         ],
-        update = update.entry_name,
+        update = update.operation_name,
         default = default['replace_mode']
     )
 
@@ -242,7 +234,7 @@ class entry_options(PropertyGroup):
             ('SUFFIX', 'Suffix', 'As suffix'),
             ('PREFIX', 'Prefix', 'As prefix'),
         ],
-        update = update.entry_name,
+        update = update.operation_name,
         default = default['insert_mode']
     )
 
@@ -278,7 +270,7 @@ class entry_options(PropertyGroup):
             ('UPPER', 'UPPER', 'To upper'),
             ('NONE', 'No Conversion', 'By doing nothing'),
         ],
-        update = update.entry_name,
+        update = update.operation_name,
         default = default['case_mode']
     )
 
@@ -292,7 +284,7 @@ class entry_options(PropertyGroup):
             ('UNDERSCORE', 'Underscore', 'Into underscores'),
             ('NONE', 'No Conversion', 'By doing nothing'),
         ],
-        update = update.entry_name,
+        update = update.operation_name,
         default = default['separate_mode']
     )
 
@@ -312,7 +304,7 @@ class entry_options(PropertyGroup):
             ('POSITION', 'Position', 'Move string at position'),
             ('FIND', 'Find', 'Find string to move'),
         ],
-        update = update.entry_name,
+        update = update.operation_name,
         default = default['move_mode']
     )
 
@@ -325,7 +317,7 @@ class entry_options(PropertyGroup):
             ('BEFORE', 'Before', 'Move before string'),
             ('POSITION', 'Position', 'Move to posiiton'),
         ],
-        update = update.entry_name,
+        update = update.operation_name,
         default = default['move_to']
     )
 
@@ -369,7 +361,7 @@ class entry_options(PropertyGroup):
             ('POSITION', 'Position', 'Text at position'),
             ('FIND', 'Find', 'Swap with string'),
         ],
-        update = update.entry_name,
+        update = update.operation_name,
         default = default['swap_mode']
     )
 
@@ -383,7 +375,7 @@ class entry_options(PropertyGroup):
             ('POSITION', 'Position', 'Swap with text at position'),
             ('FIND', 'Find', 'Swap with string'),
         ],
-        update = update.entry_name,
+        update = update.operation_name,
         default = default['swap_to']
     )
 
@@ -872,9 +864,9 @@ class target_options(PropertyGroup):
 
 class name_options(PropertyGroup):
 
-    entries = CollectionProperty(
-        type = entry_options,
-        name = 'Entries'
+    operations = CollectionProperty(
+        type = operation_options,
+        name = 'Operations'
     )
 
     active_index = IntProperty(
@@ -1169,16 +1161,6 @@ class panel_options(PropertyGroup):
         default = False
     )
 
-    location = EnumProperty(
-        name = 'Location',
-        description = 'The 3D view shelf to use for the name panel',
-        items = [
-            ('TOOLS', 'Tool Shelf', 'Places the name panel in the tool shelf under the tab labeled \'Name\''),
-            ('UI', 'Property Shelf', 'Places the name panel in the property shelf.')
-        ],
-        default = default['location']
-    )
-
     find = StringProperty(
         name = 'Find',
         description = 'Search filter for the name stack',
@@ -1222,7 +1204,7 @@ class namer_options(PropertyGroup):
             ('SORT', 'Sort', 'Sorting options'),
             ('COUNT', 'Count', 'Counting options'),
             ('PREVIEW', 'Preview', 'Preview the changes'),
-            ('OPTIONS', 'Options', 'Namer addon options and utilities'),
+            ('OPTIONS', 'options', 'Namer addon options and utilities'),
         ],
         default = default['mode']
     )

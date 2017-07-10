@@ -2,7 +2,9 @@ import bpy
 
 from bpy.types import Menu
 
+from . import interface
 from .utilities import get
+
 
 
 class name_panel_specials(Menu):
@@ -13,25 +15,44 @@ class name_panel_specials(Menu):
 
     def draw(self, context):
 
-        option = get.panel.options(context)
-        layout = self.layout
+        interface.name_panel.specials(self, context)
 
-        layout.label(text='Find & Replace')
 
-        layout.separator()
+class namer_search_specials(Menu):
+    bl_idname = 'WM_MT_namer_search_specials'
+    bl_label = 'Search Options'
 
-        layout.prop(option, 'case_sensitive')
-        layout.prop(option, 'regex')
 
-        layout.separator()
+    def draw(self, context):
 
-        layout.label(text='Batch Naming')
+        interface.namer.search_specials(self, context)
 
-        layout.separator()
 
-        # layout.operator('wm.namer', text='Transfer Names')
-        # layout.operator('wm.namer', text='Count Names')
-        #
-        # layout.separator()
-        #
-        # layout.operator('wm.namer', text='Namer', icon='SORTALPHA')
+class move_search_specials(Menu):
+    bl_idname = 'WM_MT_namer_move_search_specials'
+    bl_label = 'Search Options'
+
+
+    def draw(self, context):
+
+        interface.namer.move_search_specials(self, context)
+
+
+class swap_search_specials(Menu):
+    bl_idname = 'WM_MT_namer_swap_search_specials'
+    bl_label = 'Search Options'
+
+
+    def draw(self, context):
+
+        interface.namer.swap_search_specials(self, context)
+
+
+class operation_specials(Menu):
+    bl_idname = 'WM_MT_namer_operation_specials'
+    bl_label = 'Name Operation Specials'
+
+
+    def draw(self, context):
+
+        interface.namer.operation_specials(self, context)

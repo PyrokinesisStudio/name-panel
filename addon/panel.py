@@ -7,7 +7,7 @@ from .utilities import get
 
 
 class tool_shelf(Panel):
-    bl_idname = 'view3d.name_panel_tool_shelf'
+    bl_idname = 'view3d.name_panel'
     bl_space_type = 'VIEW_3D'
     bl_label = 'Name'
     bl_region_type = 'TOOLS'
@@ -26,7 +26,7 @@ class tool_shelf(Panel):
 
 
 class property_shelf(Panel):
-    bl_idname = 'view3d.name_panel_property_shelf'
+    bl_idname = 'view3d.view3d_name'
     bl_space_type = 'VIEW_3D'
     bl_label = 'Name'
     bl_region_type = 'UI'

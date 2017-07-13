@@ -15,11 +15,10 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 bl_info = {
     'name': 'Name Panel',
     'author': 'proxe',
-    'version': (1, 8, 473),
+    'version': (1, 8, 474),
     'blender': (2, 78, 0),
-    'location': '3D View \N{Rightwards Arrow} Property or Tool Shelf.',
+    'location': '3D View \N{Rightwards Arrow} Property | Tool Shelf.',
     'description': 'In panel datablock name stack with additional naming tools.',
-    'wiki_url': 'https://cgcookiemarkets.com/all-products/name-panel/?view=docs',
     'tracker_url': 'https://github.com/proxeIO/name-panel/issues',
     'category': '3D View'
 }
@@ -46,7 +45,8 @@ def register():
     try:
         if get.preferences(bpy.context).remove_item:
             unregister_class(bpy.types.VIEW3D_PT_view3d_name)
-    except: pass
+    except:
+        pass
 
     keymap = bpy.context.window_manager.keyconfigs.addon.keymaps.new(name='Window')
     keymap.keymap_items.new('wm.namer', 'F7', 'PRESS')

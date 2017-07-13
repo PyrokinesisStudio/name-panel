@@ -8,14 +8,14 @@ from .config import defaults
 
 
 @persistent
-def keep_session_settings(void):
+def keep_session_settings(none):
 
     preferences = get.preferences(bpy.context)
     panel = get.name_panel.options(bpy.context)
     filters = panel.filters['options']
 
-    defaults['preferences']['location'] = panel.location
-    defaults['preferences']['pin_active']= filters.pin_active
+    defaults['preferences']['location'] = preferences.location
+    defaults['preferences']['pin_active']= preferences.pin_active
     defaults['preferences']['click_through'] = preferences.click_through
     defaults['preferences']['remove_item'] = preferences.remove_item
     defaults['preferences']['keep_session_settings'] = preferences.keep_session_settings
@@ -115,16 +115,27 @@ class get:
 
             icons = {
                 'meshes': 'OUTLINER_OB_MESH',
+                'meshes_data': 'OUTLINER_DATA_MESH',
                 'curves': 'OUTLINER_OB_CURVE',
+                'curves_data': 'OUTLINER_DATA_CURVE',
                 'surfaces': 'OUTLINER_OB_SURFACE',
+                'surfaces_data': 'OUTLINER_DATA_SURFACE',
                 'metaballs': 'OUTLINER_OB_META',
+                'metaballs_data': 'OUTLINER_DATA_META',
                 'text_curves': 'OUTLINER_OB_FONT',
+                'text_curves_data': 'OUTLINER_DATA_FONT',
                 'armatures': 'OUTLINER_OB_ARMATURE',
+                'armatures_data': 'OUTLINER_DATA_ARMATURE',
                 'lattices': 'OUTLINER_OB_LATTICE',
+                'lattices_data': 'OUTLINER_DATA_LATTICE',
                 'empties': 'OUTLINER_OB_EMPTY',
+                'empties_data': 'OUTLINER_DATA_EMPTY',
                 'speakers': 'OUTLINER_OB_SPEAKER',
+                'speakers_data': 'OUTLINER_DATA_SPEAKER',
                 'cameras': 'OUTLINER_OB_CAMERA',
+                'cameras_data': 'OUTLINER_DATA_CAMERA',
                 'lamps': 'OUTLINER_OB_LAMP',
+                'lamps_data': 'OUTLINER_DATA_LAMP',
                 'groups': 'GROUP',
                 'grease_pencils': 'GREASEPENCIL',
                 'grease_pencil_layers': 'LAYER_USED',
@@ -156,6 +167,7 @@ class get:
                 'particle_systems': 'PARTICLE_DATA',
                 'particle_settings': 'MOD_PARTICLES',
                 'particle_textures': 'TEXTURE_DATA',
+                'line_sets': 'OOPS',
                 'line_styles': 'LINE_DATA',
                 'line_style_modifiers': 'MODIFIER',
                 'line_style_textures': 'TEXTURE_DATA',
@@ -167,6 +179,9 @@ class get:
                 'sequences': 'SEQUENCE',
                 'movie_clips': 'CLIP',
                 'sounds': 'SOUND',
+                'sensors': 'NONE',
+                'actuators': 'NONE',
+                'controllers': 'NONE',
                 'worlds': 'WORLD_DATA',
                 'screens': 'SPLITSCREEN',
                 'masks': 'MOD_MASK',
@@ -174,7 +189,7 @@ class get:
                 'texts': 'FILE_TEXT',
                 'libraries': 'LIBRARY_DATA_DIRECT',
                 'custom_properties': 'RNA_ADD',
-                'custom_property_paths': 'RNA'
+                'custom_property_path': 'RNA'
             }
 
             return icons[type]
@@ -662,7 +677,6 @@ class get:
                 return getattr(self, operator.identifier)(operator, context)
 
 
-            # need to add look-up for object-data
             def Object(operator, context):
 
                 return bpy.data.objects[operator.target_name]
@@ -760,6 +774,110 @@ class get:
 
     class namer:
 
+        catagories = {
+            'Objects': [
+                'meshes',
+                'curves',
+                'surfaces',
+                'metaballs',
+                'text_curves',
+                'armatures',
+                'lattices',
+                'empties',
+                'speakers',
+                'cameras',
+                'lamps',
+            ],
+            'Objects Data': [
+                'meshes_data',
+                'curves_data',
+                'surfaces_data',
+                'metaballs_data',
+                'text_curves_data',
+                'armatures_data',
+                'lattices_data',
+                'empties_data',
+                'speakers_data',
+                'cameras_data',
+                'lamps_data',
+            ],
+            'Object Related': [
+                'groups',
+                'constraints',
+                'modifiers',
+                'vertex_groups',
+                'uv_maps',
+                'vertex_colors',
+                'shapekeys',
+                'bones',
+                'bone_groups',
+                'bone_constraints',
+                'materials',
+            ],
+            'Grease Pencil': [
+                'grease_pencils',
+                'grease_pencil_layers',
+                'grease_pencil_pallettes',
+                'grease_pencil_pallette_colors',
+            ],
+            'Animation': [
+                'actions',
+                'action_groups',
+                'keying_sets',
+                'pose_libraries',
+                'pose_markers',
+                'tracks',
+                'markers',
+            ],
+            'Node': [
+                'nodes',
+                'node_labels',
+                'node_frames',
+                'node_groups',
+            ],
+            'Particle': [
+                'particle_systems',
+                'particle_settings',
+            ],
+            'Freestyle': [
+                'line_sets',
+                'line_styles',
+                'line_style_modifiers',
+            ],
+            'Scene': [
+                'scenes',
+                'render_layers',
+                'views',
+            ],
+            'Image & Brush': [
+                'images',
+                'brushes',
+                'textures',
+                'palletes',
+            ],
+            'Sequence': [
+                'sequences',
+                'movie_clips',
+                'sounds',
+            ],
+            'Game Engine': [
+                'sensors',
+                'controllers',
+                'actuators',
+            ],
+            'Misc': [
+                'worlds',
+                'screens',
+                'masks',
+                'fonts',
+                'texts',
+                'libraries',
+            ],
+            'Custom Property': [
+                'custom_properties',
+                'custom_property_path',
+            ]
+        }
 
         def options(context):
 
@@ -789,9 +907,9 @@ class get:
 
         def operation_name(operation):
 
-            if operation.mode not in {'CONVERT', 'TRANSFER'}:
+            if operation.operation_options_mode not in {'CONVERT', 'TRANSFER'}:
 
-                mode = '{}_mode'.format(operation.mode.lower()).lower()
+                mode = '{}_mode'.format(operation.operation_options_mode.lower())
                 filler = ' at ' if mode == 'insert_mode' and operation.insert_mode == 'POSITION' else ' '
 
                 if mode in {'replace_mode', 'move_mode', 'swap_mode'} and getattr(operation, mode) == 'FIND':
@@ -802,7 +920,7 @@ class get:
 
                     secondary = filler + getattr(operation, mode).title()
 
-            elif operation.mode == 'CONVERT':
+            elif operation.operation_options_mode == 'CONVERT':
 
                 secondary = ''
 
@@ -823,7 +941,8 @@ class get:
 
                 secondary = ''
 
-            return operation.mode.title() + secondary
+            return operation.operation_options_mode.title() + secondary
+
 
 class update:
 
@@ -933,3 +1052,27 @@ class update:
         naming = get.namer.options(context).naming['options']
         active_operation = naming.operations[naming.active_index]
         active_operation.name = get.namer.operation_name(active_operation)
+
+
+    def target_options(operator, context):
+
+        option = get.namer.options(context).targeting['options']
+
+        if option.toggle_objects:
+            for target in get.namer.catagories['Objects']:
+
+                setattr(option, target, True)
+
+        else:
+            for target in get.namer.catagories['Objects']:
+
+                setattr(option, target, False)
+
+        if option.toggle_objects_data:
+            for target in get.namer.catagories['Objects Data']:
+
+                setattr(option, target, True)
+
+        else:
+            for target in get.namer.catagories['Objects Data']:
+                setattr(option, target, False)

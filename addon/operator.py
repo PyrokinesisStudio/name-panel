@@ -65,7 +65,7 @@ class options(Operator):
 class datablock(Operator):
     bl_idname = 'view3d.name_panel_datablock'
     bl_label = 'Datablock Settings'
-    bl_description = 'Update the selection\n  Ctrl \N{Rightwards Arrow} Disable pop-up\n  Alt \N{Rightwards Arrow} Center view on selected\n  Shift \N{Rightwards Arrow} Add/Remove selection'
+    bl_description = 'Adjust datablock settings\n  Ctrl \N{Rightwards Arrow} Disable pop-up\n  Alt \N{Rightwards Arrow} Center view on selected\n  Shift \N{Rightwards Arrow} Add/Remove selection'
     bl_options = {'REGISTER', 'UNDO'}
 
     object_name = StringProperty()
@@ -112,7 +112,7 @@ class datablock(Operator):
 class datablock_click_through(Operator):
     bl_idname = 'view3d.name_panel_datablock_click_through'
     bl_label = 'Datablock Settings'
-    bl_description = 'Update the selection\n  Ctrl \N{Rightwards Arrow} Adjust datablock settings\n  Alt \N{Rightwards Arrow} Center view on selected\n  Shift \N{Rightwards Arrow} Add/Remove selection'
+    bl_description = 'Make active object\n  Ctrl \N{Rightwards Arrow} Adjust datablock settings\n  Alt \N{Rightwards Arrow} Center view on selected\n  Shift \N{Rightwards Arrow} Add/Remove selection'
     bl_options = {'REGISTER', 'UNDO'}
 
     object_name = StringProperty()
@@ -227,7 +227,7 @@ class operation_add(Operator):
 class operation_remove(Operator):
     bl_idname = 'wm.namer_operation_remove'
     bl_label = 'Remove'
-    bl_description = 'Remove active name operation from the list. (Hold Alt to clear all)'
+    bl_description = 'Remove active name operation from the list\n  Alt \N{Rightwards Arrow} to clear all)'
     bl_options = {'INTERNAL'}
 
     all = BoolProperty()

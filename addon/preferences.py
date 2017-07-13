@@ -13,7 +13,7 @@ class name_panel(AddonPreferences):
 
     mode = EnumProperty(
         name = 'Mode',
-        description = 'Preference Mode',
+        description = 'Mode',
         items = [
             ('GENERAL', 'General', 'Adjust general preferences'),
             ('PANEL', 'Name Panel', 'Adjust preferences related to the name stack'),
@@ -24,7 +24,7 @@ class name_panel(AddonPreferences):
 
     keep_session_settings = BoolProperty(
         name = 'Keep Session Settings',
-        description = 'Remember common settings values related to this addon consistent across blend files',
+        description = 'Keep common settings values related to this addon consistent across blend files\n  Note: resets on exit',
         default = default['keep_session_settings']
     )
 
@@ -33,14 +33,14 @@ class name_panel(AddonPreferences):
         description = 'The 3D view shelf to use for the name panel',
         items = [
             ('TOOLS', 'Tool Shelf', 'Places the name panel in the tool shelf under the tab labeled \'Name\''),
-            ('UI', 'Property Shelf', 'Places the name panel in the property shelf.')
+            ('UI', 'Property Shelf', 'Places the name panel in the property shelf')
         ],
         default = default['location']
     )
 
     pin_active = BoolProperty(
         name = 'Pin Active',
-        description = 'Keep the active object/bone at the top of the name stack.',
+        description = 'Keep the active object/bone at the top of the name stack',
         default = default['pin_active']
     )
 

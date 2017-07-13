@@ -133,9 +133,9 @@ class operation_options(PropertyGroup):
 
     default = defaults['namer']['operation']
 
-    mode = EnumProperty(
-         name = 'Mode',
-         description = 'Mode',
+    operation_options_mode = EnumProperty(
+         name = 'Operation Options',
+         description = 'Type of operation to perform',
          items = [
             ('REPLACE', 'Replace', 'Replace characters'),
             ('INSERT', 'Insert', 'Insert characters'),
@@ -145,7 +145,7 @@ class operation_options(PropertyGroup):
             ('TRANSFER', 'Transfer', 'Transfer names'),
          ],
          update = update.operation_name,
-         default = default['mode']
+         default = default['operation_options_mode']
     )
 
     replace_mode = EnumProperty(
@@ -278,7 +278,7 @@ class operation_options(PropertyGroup):
         name = 'Separate Mode',
         description = 'Type of separator conversion',
         items = [
-            ('CUSTOM', 'Custom', 'Into custom character(s).'),
+            ('CUSTOM', 'Custom', 'Into custom character(s)'),
             ('SPACE', 'Space', 'Into spaces'),
             ('DASH', 'Dash', 'Into dashes'),
             ('UNDERSCORE', 'Underscore', 'Into underscores'),
@@ -295,7 +295,7 @@ class operation_options(PropertyGroup):
     )
 
     move_mode = EnumProperty(
-        name = 'Mode',
+        name = 'Move Mode',
         description = 'What you wish to move',
         items = [
             ('BETWEEN', 'Between', 'Move characters between srings'),
@@ -309,7 +309,7 @@ class operation_options(PropertyGroup):
     )
 
     move_to = EnumProperty(
-        name = 'Mode',
+        name = 'Move To',
         description = 'Where you want it to move',
         items = [
             ('BETWEEN', 'Between', 'Move between strings'),
@@ -352,7 +352,7 @@ class operation_options(PropertyGroup):
     )
 
     swap_mode = EnumProperty(
-        name = 'Mode',
+        name = 'Swap Mode',
         description = 'What you wish to swap',
         items = [
             ('BETWEEN', 'Between', 'Text between strings'),
@@ -366,7 +366,7 @@ class operation_options(PropertyGroup):
     )
 
     swap_to = EnumProperty(
-        name = 'Mode',
+        name = 'Swap To',
         description = 'What you wish to swap with',
         items = [
             ('BETWEEN', 'Between', 'Swap with text between strings'),
@@ -432,37 +432,41 @@ class target_options(PropertyGroup):
 
     default = defaults['namer']['target']
 
-    mode = EnumProperty(
-        name = 'Mode',
+    target_options_mode = EnumProperty(
+        name = 'Target Options Mode',
         description = 'Mode',
         items = [
             ('CONTEXT', 'Context', 'Context specific datablock target options'),
             ('GLOBAL', 'Global', 'Generalized datablock target options'),
         ],
-        default = default['mode']
+        default = default['target_options_mode']
     )
 
-    effect = EnumProperty(
-        name = 'Effect',
-        description = 'Name',
+    target_mode = EnumProperty(
+        name = 'Target Mode',
+        description = 'Mode',
         items = [
             ('ALL', 'All', 'All the designated targets'),
             ('SELECTED', 'Selected', 'The targets that are currently selected when possible'),
             ('SCENE', 'Scene', 'Only targets that are in the current scene when possible'),
             ('VISIBLE', 'Visible', 'The targets that are currently visible when possible'),
         ],
-        default = default['effect']
+        default = default['target_mode']
     )
 
-    object_target = EnumProperty(
-        name = 'Object Target',
-        description = 'Name',
-        items = [
-            ('BOTH', 'Object & Object Data', 'Both the object and its data'),
-            ('OBJECT', 'Object', 'The objects'),
-            ('OBJECT_DATA', 'Object Data', 'The object\'s data'),
-        ],
-        default = default['object_target']
+    toggle_objects = BoolProperty(
+        name = 'Toggle Objects',
+        description = 'Enable/Disable all objects',
+        update = update.target_options,
+        default = default['toggle_objects']
+    )
+
+
+    toggle_objects_data = BoolProperty(
+        name = 'Toggle Objects Data',
+        description = 'Enable/Disable all objects data',
+        update = update.target_options,
+        default = default['toggle_objects_data']
     )
 
     display_more = BoolProperty(
@@ -471,10 +475,28 @@ class target_options(PropertyGroup):
         default = default['display_more']
     )
 
+    meshes = BoolProperty(
+        name = 'Meshes',
+        description = 'Name meshes',
+        default = default['datablocks']['meshes']
+    )
+
+    meshes_data = BoolProperty(
+        name = 'Meshes Data',
+        description = 'Name meshes data',
+        default = default['datablocks']['meshes_data']
+    )
+
     cameras = BoolProperty(
         name = 'Camera',
         description = 'Name cameras',
         default = default['datablocks']['cameras']
+    )
+
+    cameras_data = BoolProperty(
+        name = 'Camera Data',
+        description = 'Name cameras data',
+        default = default['datablocks']['cameras_data']
     )
 
     scenes = BoolProperty(
@@ -507,6 +529,12 @@ class target_options(PropertyGroup):
         default = default['datablocks']['empties']
     )
 
+    empties_data = BoolProperty(
+        name = 'Empties Data',
+        description = 'Name empties data',
+        default = default['datablocks']['empties_data']
+    )
+
     materials = BoolProperty(
         name = 'Materials',
         description = 'Name materials',
@@ -537,12 +565,6 @@ class target_options(PropertyGroup):
         default = default['datablocks']['node_groups']
     )
 
-    meshes = BoolProperty(
-        name = 'Meshes',
-        description = 'Name meshes',
-        default = default['datablocks']['meshes']
-    )
-
     vertex_groups = BoolProperty(
         name = 'Vertex Groups',
         description = 'Name vertex groups',
@@ -565,6 +587,12 @@ class target_options(PropertyGroup):
         name = 'Lamp',
         description = 'Name lamps',
         default = default['datablocks']['lamps']
+    )
+
+    lamps_data = BoolProperty(
+        name = 'Lamp Data',
+        description = 'Name lamps data',
+        default = default['datablocks']['lamps_data']
     )
 
     libraries = BoolProperty(
@@ -591,10 +619,22 @@ class target_options(PropertyGroup):
         default = default['datablocks']['lattices']
     )
 
+    lattices_data = BoolProperty(
+        name = 'Lattices Data',
+        description = 'Name lattices data',
+        default = default['datablocks']['lattices_data']
+    )
+
     curves = BoolProperty(
         name = 'Curves',
         description = 'Name curves',
         default = default['datablocks']['curves']
+    )
+
+    curves_data = BoolProperty(
+        name = 'Curves Data',
+        description = 'Name curves data',
+        default = default['datablocks']['curves_data']
     )
 
     surfaces = BoolProperty(
@@ -603,16 +643,34 @@ class target_options(PropertyGroup):
         default = default['datablocks']['surfaces']
     )
 
+    surfaces_data = BoolProperty(
+        name = 'Surfaces Data',
+        description = 'Name surfaces data',
+        default = default['datablocks']['surfaces_data']
+    )
+
     metaballs = BoolProperty(
         name = 'Metaballs',
         description = 'Name metaballs',
         default = default['datablocks']['metaballs']
     )
 
+    metaballs_data = BoolProperty(
+        name = 'Metaballs Data',
+        description = 'Name metaballs data',
+        default = default['datablocks']['metaballs_data']
+    )
+
     text_curves = BoolProperty(
-        name = 'Texts',
-        description = 'Name texts',
+        name = 'Text Curves',
+        description = 'Name text curves',
         default = default['datablocks']['text_curves']
+    )
+
+    text_curves_data = BoolProperty(
+        name = 'Text Curves Data',
+        description = 'Name text curves data',
+        default = default['datablocks']['text_curves_data']
     )
 
     fonts = BoolProperty(
@@ -627,7 +685,7 @@ class target_options(PropertyGroup):
         default = default['datablocks']['textures']
     )
 
-    brushs = BoolProperty(
+    brushes = BoolProperty(
         name = 'Brushes',
         description = 'Name brushes',
         default = default['datablocks']['brushes']
@@ -675,6 +733,12 @@ class target_options(PropertyGroup):
         default = default['datablocks']['speakers']
     )
 
+    speakers_data = BoolProperty(
+        name = 'Speakers Data',
+        description = 'Name speakers data',
+        default = default['datablocks']['speakers_data']
+    )
+
     sounds = BoolProperty(
         name = 'Sounds',
         description = 'Name sounds',
@@ -685,6 +749,12 @@ class target_options(PropertyGroup):
         name = 'Armatures',
         description = 'Name armatures',
         default = default['datablocks']['armatures']
+    )
+
+    armatures_data = BoolProperty(
+        name = 'Armatures Data',
+        description = 'Name armatures data',
+        default = default['datablocks']['armatures_data']
     )
 
     bones = BoolProperty(
@@ -741,10 +811,10 @@ class target_options(PropertyGroup):
         default = default['datablocks']['markers']
     )
 
-    particles = BoolProperty(
-        name = 'Particles',
-        description = 'Name particles',
-        default = default['datablocks']['particles']
+    particle_systems = BoolProperty(
+        name = 'Particle Systems',
+        description = 'Name particle systems',
+        default = default['datablocks']['particle_systems']
     )
 
     particle_settings = BoolProperty(
@@ -878,8 +948,8 @@ class sort_options(PropertyGroup):
 
     default = defaults['namer']['sort']
 
-    mode = EnumProperty(
-        name = 'Mode',
+    sort_options_mode = EnumProperty(
+        name = 'Sort Options Mode',
         description = 'Type of sorting to perform',
         items = [
             ('NONE', 'No Sorting', 'Do not sort the names'),
@@ -889,11 +959,11 @@ class sort_options(PropertyGroup):
             ('HIERARCHY', 'Hierarchy', 'In hierarchical order'),
             ('MANUAL', 'Manual', 'By defining the order')
         ],
-        default = default['mode']
+        default = default['sort_options_mode']
     )
 
     sort_mode = EnumProperty(
-        name = 'Mode',
+        name = 'Sort Mode',
         description = 'How to sort',
         items = [
             ('ALL', 'Full Name', 'Sort using entire name'),
@@ -933,7 +1003,7 @@ class sort_options(PropertyGroup):
 
     camera = BoolProperty(
         name = 'Use Camera',
-        description = 'Sort using the camera axis orientation.',
+        description = 'Sort using the camera axis orientation',
         default = default['camera']
     )
 
@@ -996,18 +1066,15 @@ class sort_options(PropertyGroup):
         default = default['right']
     )
 
-    positional_placement = EnumProperty(
-        name = 'Positional Location',
-        description = 'Location of the positional tag',
+    placement = EnumProperty(
+        name = 'Placement',
+        description = 'Where to place the position tag',
         items = [
             ('PREFIX', 'Prefix', 'As a prefix'),
             ('SUFFIX', 'Suffix', 'As a suffix'),
             ('POSITION', 'Position', 'At this position'),
-            ('AFTER', 'After', 'After this string'),
-            ('BEFORE', 'Before', 'After this string'),
-            ('BETWEEN', 'Between', 'Between these strings'),
         ],
-        default = default['positional_placement']
+        default = default['placement']
     )
 
     separator = StringProperty(
@@ -1065,7 +1132,7 @@ class sort_options(PropertyGroup):
     )
 
     hierarchy_mode = EnumProperty(
-        name = 'Mode',
+        name = 'Hierarchy Mode',
         description = 'The hierarchy order to sort in',
         items = [
             ('PARENT', 'Parent First', 'sort the parent before the child'),
@@ -1079,8 +1146,8 @@ class count_options(PropertyGroup):
 
     default = defaults['namer']['count']
 
-    mode = EnumProperty(
-        name = 'Mode',
+    count_options_mode = EnumProperty(
+        name = 'Count Options Mode',
         description = 'Type of counting to perform',
         items = [
             ('NONE', 'No Counting', 'Do not count the names'),
@@ -1088,12 +1155,12 @@ class count_options(PropertyGroup):
             ('ALPHABETIC', 'Alphabetic', 'Alphabetics'),
             ('ROMAN_NUMERAL', 'Roman Numeral', 'Roman numerals'),
         ],
-        default = default['mode']
+        default = default['count_options_mode']
     )
 
     placement = EnumProperty(
         name = 'Placement',
-        description = 'Placement',
+        description = 'Where to place the count',
         items = [
             ('PREFIX', 'Prefix', 'The beginning of the name'),
             ('SUFFIX', 'Suffix', 'The end of the name'),
@@ -1196,30 +1263,26 @@ class namer_options(PropertyGroup):
     default = defaults['namer']
 
     mode = EnumProperty(
-        name = 'Batch Name Mode',
+        name = 'Namer Mode',
         description = 'Mode',
         items = [
             ('TARGET', 'Target', 'Choose the targets you wish to name'),
             ('NAME', 'Name', 'Perform naming operations'),
             ('SORT', 'Sort', 'Sorting options'),
             ('COUNT', 'Count', 'Counting options'),
-            ('PREVIEW', 'Preview', 'Preview the changes'),
-            ('OPTIONS', 'options', 'Namer addon options and utilities'),
+            ('OPTIONS', 'Options', 'Presets and preferences'),
         ],
         default = default['mode']
     )
 
-    option_mode = EnumProperty(
-        name = 'Mode',
-        description = 'Catagory',
+    options_mode = EnumProperty(
+        name = 'Options Mode',
+        description = 'Mode',
         items = [
             ('PRESETS', 'Presets', 'Namer presets'),
-            ('RESTORE', 'Restore', 'Namer restore points'),
-            ('IMPORTING', 'Import', 'Import a batch name generated script'),
-            ('EXPORTING', 'Export', 'Export a batch name generated script'),
             ('PREFERENCES', 'Preferences', 'Addon preferences'),
         ],
-        default = default['option_mode']
+        default = default['options_mode']
     )
 
     targeting = CollectionProperty(

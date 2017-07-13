@@ -150,7 +150,7 @@ class name_panel:
                 sub.active = active
 
                 op_prop = 'view3d.name_panel_datablock_click_through' if get.preferences(self.context).click_through else 'view3d.name_panel_datablock'
-                op = sub.operator('view3d.name_panel_datablock', text='', icon=icon, emboss=emboss)
+                op = sub.operator(op_prop, text='', icon=icon, emboss=emboss)
                 op.object_name = self.object.name
                 op.target_name = getattr(datablock, name_type)
                 op.identifier = get.identifier(datablock)
@@ -289,14 +289,14 @@ class options:
         column = split.column()
         column.prop(self.option, 'mode', expand=True)
 
-        self.set_height(column, 4)
+        # self.set_height(column, 4)
 
-        self.split = split.column()
+        self.split = split.column(align=True)
 
         if self.option.mode == 'FILTERS':
 
-            self.display_mode(context)
             self.filters(context)
+            self.display_mode(context)
 
         else:
 
@@ -306,9 +306,7 @@ class options:
     @staticmethod
     def set_height(column, separators):
 
-        for _ in range(0, separators):
-
-            column.separator()
+        for _ in range(0, separators): column.separator()
 
 
     def display_mode(self, context):
@@ -340,24 +338,23 @@ class options:
         row.prop(self.option, 'vertex_groups', text='', icon=get.icon('vertex_groups'))
         row.prop(self.option, 'uv_maps', text='', icon=get.icon('uv_maps'))
         row.prop(self.option, 'vertex_colors', text='', icon=get.icon('vertex_colors'))
+        row.prop(self.option, 'particle_systems', text='', icon=get.icon('particle_systems'))
         row.prop(self.option, 'materials', text='', icon=get.icon('materials'))
         row.prop(self.option, 'textures', text='', icon=get.icon('textures'))
         row.prop(self.option, 'images', text='', icon=get.icon('images'))
-        row.prop(self.option, 'particle_systems', text='', icon=get.icon('particle_systems'))
 
 
     def extra_options(self, context):
 
-        row = self.split.row()
+        row = self.split.row(align=True)
         row.prop(get.preferences(context), 'location', expand=True)
 
-        row = self.split.row()
-        row.prop(get.preferences(context), 'pin_active')
-        row.prop(get.preferences(context), 'click_through')
+        row = self.split.row(align=True)
+        row.prop(get.preferences(context), 'popup_width', text='Pop-up Width')
 
-        row = self.split.row()
-        row.label(text='Pop-up Width:')
-        row.prop(get.preferences(context), 'popup_width', text='')
+        row = self.split.row(align=True)
+        row.prop(get.preferences(context), 'pin_active', toggle=True)
+        row.prop(get.preferences(context), 'click_through', toggle=True)
 
 
 class datablock:
@@ -385,12 +382,17 @@ class namer:
         column = split.column()
         column.prop(option, 'mode', expand=True)
 
-        for _ in range(0, 9):
-            column.separator()
+        self.set_height(column, 11)
 
         column = split.column()
 
         getattr(self, option.mode.lower())(operator, context, option, column)
+
+
+    @staticmethod
+    def set_height(column, separators):
+
+        for _ in range(0, separators): column.separator()
 
 
     @staticmethod
@@ -405,120 +407,30 @@ class namer:
     @staticmethod
     def datablock_buttons(category, option, layout):
 
-        targets = {
-            'Objects': [
-                'meshes',
-                'curves',
-                'surfaces',
-                'metaballs',
-                'text_curves',
-                'armatures',
-                'lattices',
-                'empties',
-                'speakers',
-                'cameras',
-                'lamps',
-            ],
-            'Object Related': [
-                'groups',
-                'constraints',
-                'modifiers',
-                'vertex_groups',
-                'uv_maps',
-                'vertex_colors',
-                'shapekeys',
-                'bones',
-                'bone_groups',
-                'bone_constraints',
-                'materials',
-            ],
-            'Grease Pencil': [
-                'grease_pencils',
-                'grease_pencil_layers',
-                'grease_pencil_pallettes',
-                'grease_pencil_pallette_colors',
-            ],
-            'Animation': [
-                'actions',
-                'action_groups',
-                'keying_sets',
-                'pose_librarys',
-                'pose_markers',
-                'tracks',
-                'markers',
-            ],
-            'Node': [
-                'nodes',
-                'node_labels',
-                'node_frames',
-                'node_groups',
-            ],
-            'Particle': [
-                'particle_systems',
-                'particle_settings',
-                'particle_textures',
-            ],
-            'Freestyle': [
-                'line_sets',
-                'line_styles',
-                'line_style_modifiers',
-                'line_style_textures',
-            ],
-            'Scene': [
-                'scenes',
-                'render_layers',
-                'views',
-            ],
-            'Image & Brush': [
-                'images',
-                'brushes',
-                'palletes',
-            ],
-            'Sequence': [
-                'sequences',
-                'movie_clips',
-                'sounds',
-            ],
-            'Game Engine': [
-                'sensors',
-                'controllers',
-                'actuators',
-            ],
-            'Misc': [
-                'worlds',
-                'screens',
-                'textures',
-                'masks',
-                'fonts',
-                'texts',
-                'librarys',
-            ],
-            'Custom Property': [
-                'custom_properties',
-                'custom_property_paths',
-            ]
-        }
-
-        if category not in {'Objects', 'Custom Property'}:
+        if category not in {'Objects', 'Objects Data', 'Custom Property'}:
             layout.label(text=category + ':')
 
         row = layout.row(align=True)
         row.scale_x = 5
 
-        for target in targets[category]:
+        if category == 'Objects':
 
-            if target not in {'line_set', 'sensor', 'controller', 'actuator'}:
+            row.prop(option, 'toggle_objects', text='', icon='RADIOBUT_OFF' if not option.toggle_objects else 'RADIOBUT_ON')
+
+        elif category == 'Objects Data':
+
+            row.prop(option, 'toggle_objects_data', text='', icon='RADIOBUT_OFF' if not option.toggle_objects_data else 'RADIOBUT_ON')
+
+        for target in get.namer.catagories[category]:
+
+            if target not in {'line_sets', 'sensors', 'controllers', 'actuators'}:
                 row.prop(option, target, text='', icon=get.icon(target))
 
-            elif target == 'line_set':
+            elif target == 'line_sets':
                 row.prop(option, target, text='Line Sets', toggle=True)
 
             else:
-                row.prop(option, target, text=target.title() + 's', toggle=True)
-
-        if category == 'Objects':
-            row = layout.row()
-            row.prop(option, 'object_target', expand=True)
+                row.prop(option, target, text=target.title(), toggle=True)
 
 
     @staticmethod
@@ -591,10 +503,10 @@ class namer:
             self.move = True if move else False
 
             if self.sorting and not custom_mode:
-                operation_mode = 'positional_placement'
+                operation_mode = 'placement'
 
             else:
-                operation_mode = '{}_mode'.format(option.mode.lower()) if not custom_mode else custom_mode
+                operation_mode = '{}_mode'.format(option.operation_options_mode.lower()) if not custom_mode else custom_mode
 
             split = namer.split_row(column)
             split.prop(option, operation_mode, text='')
@@ -733,15 +645,18 @@ class namer:
             option = option.targeting['options']
 
             row = layout.row()
-            row.prop(option, 'mode', expand=True)
+            row.prop(option, 'target_options_mode', expand=True)
 
             layout.separator()
 
-            if option.mode == 'CONTEXT':
+            layout = layout.column(align=True)
+
+            if option.target_options_mode == 'CONTEXT':
                 self.context_area(operator, context, option, layout)
 
             else:
                 namer.datablock_buttons('Objects', option, layout)
+                namer.datablock_buttons('Objects Data', option, layout)
                 namer.datablock_buttons('Object Related', option, layout)
 
                 layout.separator()
@@ -990,9 +905,10 @@ class namer:
             @staticmethod
             def view_3d(operator, context, option, layout):
 
-                row = layout.row()
-                row.prop(option, 'effect', expand=True)
                 namer.datablock_buttons('Objects', option, layout)
+                namer.datablock_buttons('Objects Data', option, layout)
+                row = layout.row(align=True)
+                row.prop(option, 'target_mode', expand=True)
                 namer.datablock_buttons('Object Related', option, layout)
 
             class image_editor:
@@ -1166,10 +1082,10 @@ class namer:
                 option = option.operations[option.active_index]
 
                 row = column.row()
-                row.prop(option, 'mode', expand=True)
+                row.prop(option, 'operation_options_mode', expand=True)
                 column.separator()
 
-                getattr(self, option.mode.lower())(option, column)
+                getattr(self, option.operation_options_mode.lower())(option, column)
 
 
             def replace(self, option, column):
@@ -1246,11 +1162,11 @@ class namer:
             option = option.sorting['options']
 
             row = column.row()
-            row.prop(option, 'mode', expand=True)
+            row.prop(option, 'sort_options_mode', expand=True)
 
             column.separator()
 
-            getattr(self, option.mode.lower())(option, column)
+            getattr(self, option.sort_options_mode.lower())(option, column)
 
 
         @staticmethod
@@ -1293,7 +1209,7 @@ class namer:
                 namer.mode_row(option, column, custom_mode='sort_mode')
 
 
-        def position(self, option, column): # orientation? contains, rotation, scale, location modes...
+        def position(self, option, column): # TODO: orientation? contains, rotation, scale, location modes...
 
             if option.display_options:
                 getattr(self, option.fallback_mode.lower())(option, column)
@@ -1303,15 +1219,15 @@ class namer:
                 split.prop(option, 'starting_point', text='')
 
                 row = split.row(align=True)
-                row.prop(option, 'axis_3D', expand=True)
+                row.prop(option, 'axis_3d', expand=True)
 
                 if option.starting_point in {'CURSOR', 'CENTER', 'ACTIVE'}:
                     column.separator()
 
-                    if option.axis_3D == 'Z':
+                    if option.axis_3d == 'Z':
                         props = ['top', 'bottom']
 
-                    elif option.axis_3D == 'Y':
+                    elif option.axis_3d == 'Y':
                         props = ['front', 'back']
 
                     else:
@@ -1329,7 +1245,7 @@ class namer:
                     row = split.row()
                     row.prop(option, props[1], text='')
 
-                    if option.positional_placement not in {'PREFIX', 'SUFFIX'}:
+                    if option.placement not in {'PREFIX', 'SUFFIX'}:
                         split = namer.split_row(column, offset=-0.01)
                         split.label(text='Separator:')
 
@@ -1366,11 +1282,11 @@ class namer:
             option = option.counting['options']
 
             row = column.row()
-            row.prop(option, 'mode', expand=True)
+            row.prop(option, 'count_options_mode', expand=True)
 
             column.separator()
 
-            getattr(self, option.mode.lower())(operator, context, option, column)
+            getattr(self, option.count_options_mode.lower())(operator, context, option, column)
 
 
         @staticmethod
@@ -1441,11 +1357,11 @@ class namer:
         def __init__(self, operator, context, option, column):
 
             row = column.row()
-            row.prop(option, 'option_mode', expand=True)
+            row.prop(option, 'options_mode', expand=True)
 
             column.separator()
 
-            getattr(self, option.option_mode.lower())(operator, context, option, column)
+            getattr(self, option.options_mode.lower())(operator, context, option, column)
 
 
         @staticmethod

@@ -427,7 +427,7 @@ class get:
                         }
 
                         for type in get.name_panel.name_stack.types:
-                            if type not in {'object_data'}:
+                            if type != 'object_data':
                                 if getattr(option, type):
                                     if getattr(self, type)(context, object):
 
@@ -515,7 +515,15 @@ class get:
 
             def bone_groups(context, object):
 
-                return [bone_group for bone_group in object.pose.bone_groups] if context.mode == 'POSE' else []
+                if object.type == 'ARMATURE':
+
+                    object = context.active_object if object == context.active_object else object
+
+                    return [bone_group for bone_group in object.pose.bone_groups]
+
+                else:
+
+                    return []
 
 
             def bones(context, object):
@@ -679,7 +687,52 @@ class get:
 
             def Object(operator, context):
 
-                return bpy.data.objects[operator.target_name]
+                return context.active_object
+
+
+            def Mesh(operator, context):
+
+                return context.active_object.data
+
+
+            def Curve(operator, context):
+
+                return context.active_object.data
+
+
+            def MetaBall(operator, context):
+
+                return context.active_object.data
+
+
+            def Armature(operator, context):
+
+                return context.active_object.data
+
+
+            def Lattice(operator, context):
+
+                return context.active_object.data
+
+
+            def Empty(operator, context):
+
+                return context.active_object.data
+
+
+            def Speaker(operator, context):
+
+                return context.active_object.data
+
+
+            def Camera(operator, context):
+
+                return context.active_object.data
+
+
+            def Lamp(operator, context):
+
+                return contet.active_object.data
 
 
             def Group(operator, context):
@@ -689,72 +742,72 @@ class get:
 
             def GreasePencil(operator, context):
 
-                return bpy.data.grease_pencils[operator.target_name]
+                return context.active_object.grease_pencil
 
 
             def GPencilLayer(operator, context):
 
-                return bpy.data.objects[operator.object_name].grease_pencil.layers[operator.target_name]
+                return context.active_object.grease_pencil.layers[operator.target_name]
 
 
             def Action(operator, context):
 
-                return bpy.data.actions[operator.target_name]
+                return context.active_object.animation_data.action
 
 
             def Constraint(operator, context):
 
-                return bpy.data.objects[operator.object_name].constraints[operator.target_name]
+                return context.active_object.constraints[operator.target_name]
 
 
             def Modifier(operator, context):
 
-                return bpy.data.objects[operator.object_name].modifiers[operator.target_name]
+                return context.active_object.modifiers[operator.target_name]
 
 
             def Image(operator, context):
 
-                return bpy.data.images[operator.target_name]
+                return context.active_object.data
 
 
             def BoneGroup(operator, context):
 
-                return bpy.data.objects[operator.object_name].pose.bone_groups[operator.target_name]
+                return context.active_object.pose.bone_groups[operator.target_name]
 
 
             def PoseBone(operator, context):
 
-                return bpy.data.objects[operator.object_name].pose.bones[operator.target_name]
+                return context.active_pose_bone
 
 
             def EditBone(operator, context):
 
-                return bpy.data.objects[operator.object_name].data.bones[operator.target_name]
+                return context.active_bone
 
 
             def VertexGroup(operator, context):
 
-                return bpy.data.objects[operator.object_name].vertex_groups[operator.target_name]
+                return context.active_object.vertex_groups[operator.target_name]
 
 
             def ShapeKey(operator, context):
 
-                return bpy.data.objects[operator.object_name].shapekeys.key_blocks[operator.target_name]
+                return context.active_object.data.shape_keys.key_blocks[operator.target_name]
 
 
             def MeshTexturePolyLayer(operator, context):
 
-                return bpy.data.objects[operator.object_name].data.uv_textures[operator.target_name]
+                return context.active_object.data.uv_textures[operator.target_name]
 
 
             def MeshLoopColorLayer(operator, context):
 
-                return bpy.data.objects[operator.object_name].data.vertex_colors[operator.target_name]
+                return context.active_object.data.vertex_colors[operator.target_name]
 
 
             def Material(operator, context):
 
-                return bpy.data.materials[operator.target_name]
+                return context.active_object.materials[operator.target_name]
 
 
             def Texture(operator, context):
@@ -764,7 +817,7 @@ class get:
 
             def ParticleSystem(operator, context):
 
-                return bpy.data.objects[operator.object_name].particle_systems.active
+                return context.active_object.particle_systems[operator.target_name]
 
 
             def ParticleSettings(operator, context):
@@ -873,10 +926,10 @@ class get:
                 'texts',
                 'libraries',
             ],
-            'Custom Property': [
-                'custom_properties',
-                'custom_property_path',
-            ]
+            # 'Custom Properties': [
+            #     'custom_properties',
+            #     'custom_property_path',
+            # ]
         }
 
         def options(context):
@@ -966,48 +1019,37 @@ class update:
         option = get.name_panel.options(context).filters['options']
 
         objects = context.scene.objects
-        object_selected = True if not objects[operator.object_name].select else False
-
-        if objects[operator.object_name] != objects.active:
-
-            objects.active = objects[operator.object_name]
-            objects[operator.object_name].select = object_selected if event.shift and operator.identifier not in {'PoseBone', 'EditBone'} else True
-
-        else:
-
-            objects[operator.object_name].select = object_selected if event.shift and operator.identifier not in {'PoseBone', 'EditBone'} else True
 
         if operator.identifier not in {'PoseBone', 'EditBone'}:
 
-            if operator.identifier == 'ParticleSystem':
+            object_selected = True if not objects[operator.object_name].select else False
 
-                location = objects[operator.object_name].particle_system
+            if objects[operator.object_name] != objects.active:
 
-                if location[operator.target_name] != location.active:
+                objects.active = objects[operator.object_name]
+                objects[operator.object_name].select = object_selected if event.shift else True
 
-                    location.active_index = 0
+                bpy.ops.object.mode_set(mode='OBJECT')
 
-                    while location[operator.target_name] != location.active:
+            else:
 
-                        location.active_index += 1
+                objects[operator.object_name].select = object_selected if event.shift else True
 
             if not event.shift:
-                for object in context.visible_objects:
+                for object in objects:
                     if object != objects[operator.object_name]:
 
                         object.select = False
 
-            bpy.ops.object.mode_set(mode='OBJECT')
-
-        elif operator.identifier == 'PoseBone':
+        if operator.identifier == 'PoseBone':
 
             bones = objects.active.data.bones
-            bone_selected = True if not bones[operator.target].select else False
+            bone_selected = True if not bones[operator.target_name].select else False
 
-            if bones[operator.target] != bones.active:
+            if bones[operator.target_name] != bones.active:
 
-                bones.active = bones[operator.target]
-                bones[operator.target].select = bone_selected if event.shift else True
+                bones.active = bones[operator.target_name]
+                bones[operator.target_name].select = bone_selected if event.shift else True
 
             else:
 
@@ -1015,32 +1057,31 @@ class update:
 
             if not event.shift:
                 for bone in context.visible_pose_bones:
-                    if bones[bone.name] != bones[operator.target]:
+                    if bones[bone.name] != bones[operator.target_name]:
 
                         bone.bone.select = False
 
         elif operator.identifier == 'EditBone':
 
             bones = objects.active.data.edit_bones
-            bone_selected = True if not bones[operator.target].select else False
+            bone_selected = True if not bones[operator.target_name].select else False
 
-            if bones[operator.target] != bones.active:
+            if bones[operator.target_name] != bones.active:
 
-                bones.active = bones[operator.target]
-                bones[operator.target].select = bone_selected if event.shift else True
-                bones[operator.target].select_head = bone_selected if event.shift else True
-                bones[operator.target].select_tail = bone_selected if event.shift else True
+                bones.active = bones[operator.target_name]
+                bones[operator.target_name].select = bone_selected if event.shift else True
+                bones[operator.target_name].select_head = bone_selected if event.shift else True
+                bones[operator.target_name].select_tail = bone_selected if event.shift else True
 
             else:
 
-                bones[operator.target].select = bone_selected if event.shift else True
-                bones[operator.target].select_head = bone_selected if event.shift else True
-                bones[operator.target].select_tail = bone_selected if event.shift else True
-
+                bones[operator.target_name].select = bone_selected if event.shift else True
+                bones[operator.target_name].select_head = bone_selected if event.shift else True
+                bones[operator.target_name].select_tail = bone_selected if event.shift else True
 
             if not event.shift:
                 for bone in context.visible_bones:
-                    if bone != bones[operator.target]:
+                    if bone != bones[operator.target_name]:
 
                         bone.select = False
                         bone.select_head = False
@@ -1052,6 +1093,39 @@ class update:
         naming = get.namer.options(context).naming['options']
         active_operation = naming.operations[naming.active_index]
         active_operation.name = get.namer.operation_name(active_operation)
+
+
+    def filter_options(operator, context):
+
+        option = get.name_panel.options(context).filters['options']
+
+        toggles = [
+            'groups',
+            'grease_pencils',
+            'actions',
+            'constraints',
+            'modifiers',
+            'bones',
+            'bone_groups',
+            'bone_constraints',
+            'shapekeys',
+            'vertex_groups',
+            'uv_maps',
+            'vertex_colors',
+            'materials',
+            'textures',
+            'images',
+            'particle_systems',
+        ]
+
+        if option.toggle_all:
+            for toggle in toggles:
+                setattr(option, toggle, True)
+
+
+        else:
+            for toggle in toggles:
+                setattr(option, toggle, False)
 
 
     def target_options(operator, context):
@@ -1076,3 +1150,87 @@ class update:
         else:
             for target in get.namer.catagories['Objects Data']:
                 setattr(option, target, False)
+
+
+class rna_prop_ui:
+
+
+    def rna_idprop_ui_get(item, create=True):
+
+        try:
+
+            return item['_RNA_UI']
+
+        except:
+
+            if create:
+
+                item['_RNA_UI'] = {}
+
+                return item['_RNA_UI']
+
+            else:
+
+                return None
+
+
+    def rna_idprop_ui_del(item):
+
+        try: del item['_RNA_UI']
+        except KeyError: pass
+
+
+    def rna_idprop_ui_prop_update(item, prop):
+
+        prop_rna = item.path_resolve("[\"%s\"]" % prop.replace("\"", "\\\""), False)
+
+        if isinstance(prop_rna, bpy.types.bpy_prop):
+
+            prop_rna.update()
+
+
+    def rna_idprop_ui_prop_get(item, prop, create=True):
+
+        rna_ui = rna_idprop_ui_get(item, create)
+
+        if rna_ui is None:
+
+            return None
+
+        try:
+
+            return rna_ui[prop]
+
+        except:
+
+            rna_ui[prop] = {}
+
+            return rna_ui[prop]
+
+
+    def rna_idprop_ui_prop_clear(item, prop, remove=True):
+
+        rna_ui = rna_idprop_ui_get(item, False)
+
+        if rna_ui is None:
+            return
+
+        try: del rna_ui[prop]
+
+        except KeyError: pass
+
+        if remove and len(item.keys()) == 1:
+
+            rna_idprop_ui_del(item)
+
+
+    def rna_idprop_context_value(context, context_member, property_type):
+
+        rna_item = eval("context." + context_member)
+
+        return rna_item, context_member
+
+
+    def rna_idprop_has_properties(rna_item):
+
+        return (len(rna_item.keys()) > 1) or (len(rna_item.keys()) and '_RNA_UI' not in rna_item.keys())

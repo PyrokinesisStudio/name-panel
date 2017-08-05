@@ -65,6 +65,14 @@ class name_panel(AddonPreferences):
         default = default['popup_width']
     )
 
+    separators = IntProperty(
+        name = 'Separators',
+        description = 'Number of separators between objects in the name stack',
+        min = 0,
+        max = 10,
+        default = default['separators']
+    )
+
     use_last = BoolProperty(
         name = 'Use Last Settings',
         description = 'When adding a naming operation use the previous settings',
@@ -84,6 +92,86 @@ class name_panel(AddonPreferences):
         max = 1000,
         subtype = 'PIXEL',
         default = default['namer_popup_width']
+    )
+
+    # expanded boxes
+
+    object_levels_of_detail_expanded = BoolProperty(
+        name = 'Levels of Detail Expand',
+        description = 'Show levels of detail options expanded',
+        default = default['object_levels_of_detail_expanded']
+    )
+
+    object_transform_expanded = BoolProperty(
+        name = 'Transform Expand',
+        description = 'Show transform options expanded',
+        default = default['object_transform_expanded']
+    )
+
+    object_delta_transform_expanded = BoolProperty(
+        name = 'Delta Transform Expand',
+        description = 'Show delta transform options expanded',
+        default = default['object_delta_transform_expanded']
+    )
+
+    object_transform_locks_expanded = BoolProperty(
+        name = 'Delta Transform Expand',
+        description = 'Show delta transform options expanded',
+        default = default['object_delta_transform_expanded']
+    )
+
+    object_display_expanded = BoolProperty(
+        name = 'Display Expand',
+        description = 'Show display options expanded',
+        default = default['object_display_expanded']
+    )
+
+    object_groups_expanded = BoolProperty(
+        name = 'Groups Expand',
+        description = 'Show group options expanded',
+        default = default['object_groups_expanded']
+    )
+
+    object_relations_expanded = BoolProperty(
+        name = 'Relations Expand',
+        description = 'Show relation options expanded',
+        default = default['object_relations_expanded']
+    )
+
+    object_relations_extras_expanded = BoolProperty(
+        name = 'Relations Extras Expand',
+        description = 'Show relations extra options expanded',
+        default = default['object_relations_extras_expanded']
+    )
+
+    object_duplication_expanded = BoolProperty(
+        name = 'Duplication Expand',
+        description = 'Show duplication options expanded',
+        default = default['object_duplication_expanded']
+    )
+
+    object_motion_paths_expanded = BoolProperty(
+        name = 'Motion Paths Expand',
+        description = 'Show motion path options expanded',
+        default = default['object_motion_paths_expanded']
+    )
+
+    object_motion_blur_expanded = BoolProperty(
+        name = 'Motion Blur Expand',
+        description = 'Show motion blur options expanded',
+        default = default['object_motion_blur_expanded']
+    )
+
+    object_cycles_settings_expanded = BoolProperty(
+        name = 'Cycles Settings Expand',
+        description = 'Show cycles settings options expanded',
+        default = default['object_cycles_settings_expanded']
+    )
+
+    object_custom_properties_expanded = BoolProperty(
+        name = 'Custom Properties Expand',
+        description = 'Show custom properties options expanded',
+        default = default['object_custom_properties_expanded']
     )
 
 
@@ -135,7 +223,12 @@ class name_panel(AddonPreferences):
 
         row = box.row()
         row.label(text='Pop-up Width:')
-        row.prop(self.preference, 'popup_width')
+        row.prop(self.preference, 'popup_width', text='')
+
+        row = box.row()
+        row.label(text='Separators:')
+        row.prop(self.preference, 'separators', text='')
+
 
     def namer(self, context):
 

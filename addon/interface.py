@@ -1,4 +1,10 @@
-from .utilities import get
+import bpy
+
+from bpy.utils import escape_identifier
+from bl_ui.properties_animviz import MotionPathButtonsPanel, OnionSkinButtonsPanel
+from rna_prop_ui import PropertyPanel
+
+from .utilities import get, rna_prop_ui
 
 
 class name_panel:
@@ -135,7 +141,9 @@ class name_panel:
 
                 getattr(self, type)(panel.stack['objects'][object.name][type], column)
 
-            panel.layout.separator()
+            for _ in range(get.preferences(self.context).separators):
+
+                panel.layout.separator()
 
 
         def row(self, location, column, datablock, icon, name_type='name', emboss=False, active=True):
@@ -149,11 +157,11 @@ class name_panel:
                 sub.scale_x = 1.5 if not emboss else 1.6
                 sub.active = active
 
-                op_prop = 'view3d.name_panel_datablock_click_through' if get.preferences(self.context).click_through else 'view3d.name_panel_datablock'
-                op = sub.operator(op_prop, text='', icon=icon, emboss=emboss)
-                op.object_name = self.object.name
-                op.target_name = getattr(datablock, name_type)
-                op.identifier = get.identifier(datablock)
+                operator_prop = 'view3d.name_panel_datablock_click_through' if get.preferences(self.context).click_through else 'view3d.name_panel_datablock'
+                operator = sub.operator(operator_prop, text='', icon=icon, emboss=emboss)
+                operator.object_name = self.object.name
+                operator.target_name = getattr(datablock, name_type)
+                operator.identifier = get.identifier(datablock)
 
                 row.prop(datablock, name_type, text='')
 
@@ -204,7 +212,6 @@ class name_panel:
                             self.row(location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]['textures'], column,  location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]['textures'][texture.name]['datablock'], get.icon('textures'))
 
 
-
         def object_data(self, location, column):
 
             self.row(location, column, location['datablocks'][0], get.icon.object_data(self.object), emboss=True if self.object.select or self.object == self.context.active_object else False, active=not (self.object == self.context.scene.objects.active and not self.object.select))
@@ -217,7 +224,7 @@ class name_panel:
                 self.row(location, column, group, get.icon('bone_groups'))
 
 
-        def bones(self, location, column):
+        def bones(self, location, column): # TODO: implement bones for all armatures
 
             if location['datablocks']:
 
@@ -278,95 +285,943 @@ class name_panel:
                             self.row(location[material.name]['textures'], column, texture, get.icon('textures'))
 
 
-class options:
+    class options:
 
 
-    def __init__(self, operator, context):
+        def __init__(self, operator, context):
 
-        self.option = get.name_panel.options(context).filters['options']
+            self.option = get.name_panel.options(context).filters['options']
 
-        split = operator.layout.column().split(percentage=0.15)
-        column = split.column()
-        column.prop(self.option, 'mode', expand=True)
+            split = operator.layout.column().split(percentage=0.15)
+            column = split.column()
+            column.prop(self.option, 'mode', expand=True)
 
-        # self.set_height(column, 4)
+            # self.set_height(column, 4)
 
-        self.split = split.column(align=True)
+            self.split = split.column(align=True)
 
-        if self.option.mode == 'FILTERS':
+            if self.option.mode == 'FILTERS':
 
-            self.filters(context)
-            self.display_mode(context)
+                self.display_mode(context)
+                self.filters(context)
 
-        else:
+            else:
 
-            self.extra_options(context)
-
-
-    @staticmethod
-    def set_height(column, separators):
-
-        for _ in range(0, separators): column.separator()
+                self.extra_options(context)
 
 
-    def display_mode(self, context):
+        @staticmethod
+        def set_height(column, separators):
 
-        row = self.split.row(align=True)
-
-        row.prop(self.option, 'display_mode', expand=True)
-
-
-    def filters(self, context):
-
-        column = self.split.column(align=True)
-
-        row = column.row(align=True)
-        row.scale_x = 10 # Forced to fit
-        row.prop(self.option, 'groups', text='', icon=get.icon('groups'))
-        row.prop(self.option, 'grease_pencils', text='', icon=get.icon('grease_pencils'))
-        row.prop(self.option, 'actions', text='', icon=get.icon('actions'))
-        row.prop(self.option, 'constraints', text='', icon=get.icon('constraints'))
-        row.prop(self.option, 'modifiers', text='', icon=get.icon('modifiers'))
-        # sounds
-        row.prop(self.option, 'bones', text='', icon=get.icon('bones'))
-        row.prop(self.option, 'bone_groups', text='', icon=get.icon('bone_groups'))
-        row.prop(self.option, 'bone_constraints', text='', icon=get.icon('bone_constraints'))
-
-        row = column.row(align=True)
-        row.scale_x = 10
-        row.prop(self.option, 'shapekeys', text='', icon=get.icon('shapekeys'))
-        row.prop(self.option, 'vertex_groups', text='', icon=get.icon('vertex_groups'))
-        row.prop(self.option, 'uv_maps', text='', icon=get.icon('uv_maps'))
-        row.prop(self.option, 'vertex_colors', text='', icon=get.icon('vertex_colors'))
-        row.prop(self.option, 'particle_systems', text='', icon=get.icon('particle_systems'))
-        row.prop(self.option, 'materials', text='', icon=get.icon('materials'))
-        row.prop(self.option, 'textures', text='', icon=get.icon('textures'))
-        row.prop(self.option, 'images', text='', icon=get.icon('images'))
+            for _ in range(0, separators): column.separator()
 
 
-    def extra_options(self, context):
+        def display_mode(self, context):
 
-        row = self.split.row(align=True)
-        row.prop(get.preferences(context), 'location', expand=True)
+            row = self.split.row(align=True)
 
-        row = self.split.row(align=True)
-        row.prop(get.preferences(context), 'popup_width', text='Pop-up Width')
+            row.prop(self.option, 'display_mode', expand=True)
 
-        row = self.split.row(align=True)
-        row.prop(get.preferences(context), 'pin_active', toggle=True)
-        row.prop(get.preferences(context), 'click_through', toggle=True)
+
+        def filters(self, context):
+
+            column = self.split.column(align=True)
+
+            row = column.row(align=True)
+            split = row.split(percentage=0.1, align=True)
+            column = split.column(align=True)
+            column.scale_y = 2
+            column.prop(self.option, 'toggle_all', text='', icon='RADIOBUT_OFF' if not self.option.toggle_all else 'RADIOBUT_ON')
+
+            column = split.column(align=True)
+            row = column.row(align=True)
+            row.scale_x = 2
+            row.prop(self.option, 'groups', text='', icon=get.icon('groups'))
+            row.prop(self.option, 'grease_pencils', text='', icon=get.icon('grease_pencils'))
+            row.prop(self.option, 'actions', text='', icon=get.icon('actions'))
+            row.prop(self.option, 'constraints', text='', icon=get.icon('constraints'))
+            row.prop(self.option, 'modifiers', text='', icon=get.icon('modifiers'))
+            row.prop(self.option, 'bones', text='', icon=get.icon('bones'))
+            row.prop(self.option, 'bone_groups', text='', icon=get.icon('bone_groups'))
+            row.prop(self.option, 'bone_constraints', text='', icon=get.icon('bone_constraints'))
+
+            row = column.row(align=True)
+            row.scale_x = 2
+            row.prop(self.option, 'shapekeys', text='', icon=get.icon('shapekeys'))
+            row.prop(self.option, 'vertex_groups', text='', icon=get.icon('vertex_groups'))
+            row.prop(self.option, 'uv_maps', text='', icon=get.icon('uv_maps'))
+            row.prop(self.option, 'vertex_colors', text='', icon=get.icon('vertex_colors'))
+            row.prop(self.option, 'particle_systems', text='', icon=get.icon('particle_systems'))
+            row.prop(self.option, 'materials', text='', icon=get.icon('materials'))
+            row.prop(self.option, 'textures', text='', icon=get.icon('textures'))
+            row.prop(self.option, 'images', text='', icon=get.icon('images'))
+
+
+        def extra_options(self, context):
+
+            row = self.split.row(align=True)
+            row.prop(get.preferences(context), 'location', expand=True)
+
+            row = self.split.row(align=True)
+            row.prop(get.preferences(context), 'popup_width', text='Pop-up Width')
+
+            row = self.split.row(align=True)
+            row.prop(get.preferences(context), 'pin_active', toggle=True)
+            row.prop(get.preferences(context), 'click_through', toggle=True)
 
 
 class datablock:
+
+    # TODO: Create a properties pop-up that behaves the same as the properties window place it on the search row, right after filters
 
 
     def __init__(self, operator, context):
 
         layout = operator.layout
 
-        layout.prop(operator.object[operator.object_name], 'name')
+        column = layout.column()
 
-        # getattr(self, operator.type)()
+        getattr(self, operator.identifier)(operator, context)
+
+
+    class Object:
+
+        boxes = [
+            ('Levels of Detail', 'levels_of_detail'),
+            ('Transform', 'transform'),
+            ('Delta Transform', 'delta_transform'),
+            ('Transform Locks', 'transform_locks'),
+            ('Display', 'display'),
+            ('Groups', 'groups'),
+            ('Relations', 'relations'),
+            ('Relations Extras', 'relations_extras'),
+            ('Duplication', 'duplication'),
+            ('Motion Paths', 'motion_paths'),
+            ('Motion Blur', 'motion_blur', {'MESH', 'CURVE', 'CURVE', 'SURFACE', 'FONT', 'META'}),
+            ('Cycles Settings', 'cycles_settings', {'MESH', 'CURVE', 'SURFACE', 'FONT', 'META', 'LAMP'}),
+            ('Custom Properties', 'custom_properties'),
+        ]
+
+
+        def __init__(self, operator, context):
+
+            self.layout = operator.layout
+            self.context = context
+            self.object = self.context.active_object
+            self.preferences = get.preferences(self.context)
+
+            self.layout.separator()
+            row = self.layout.row()
+            row.alignment = 'CENTER'
+            row.scale_x = 2
+            row.template_ID(context.scene.objects, 'active')
+
+            for box_type in self.boxes:
+
+                state = 'object_{}{}'.format(box_type[1], '_expanded')
+                expanded = self.preferences['box_state'][state]
+
+                if len(box_type) == 3:
+                    if self.object.type in box_type[2]:
+                        if box_type[1] == 'motion_blur':
+                            if self.context.scene.render.engine == 'CYCLES':
+
+                                box_column = self.layout.column(align=True)
+                                self.header(box_column, box_type, option, expanded, toggle_prop='use_motion_blur', toggle_prop_target=self.object.cycles)
+
+                                if expanded:
+
+                                    self.motion_blur(box_column)
+
+                        elif box_type[1] == 'cycles_settings':
+                            if self.context.scene.render.engine == 'CYCLES':
+
+                                box_column = self.layout.column(align=True)
+                                self.header(box_column, box_type, option, expanded)
+
+                                if expanded:
+
+                                    self.cycles_settings(box_column)
+
+                        else:
+
+                            box_column = self.layout.column(align=True)
+                            self.header(box_column, box_type, option, expanded)
+
+                            if expanded:
+
+                                getattr(self, box_type[1])(box_column)
+
+                else:
+                    if box_type[1] == 'levels_of_detail':
+                        if context.scene.render.engine == 'BLENDER_GAME':
+
+                            box_column = self.layout.column(align=True)
+                            self.header(box_column, box_type, option, expanded)
+
+                            if expanded:
+
+                                self.levels_of_detail(box_column)
+
+                    elif box_type[1] == 'custom_properties':
+
+                        rna_item, context_member = rna_prop_ui.rna_idprop_context_value(self.context, 'object', bpy.types.Object)
+
+                        if rna_item and bool(rna_item):
+
+                            box_column = self.layout.column(align=True)
+                            self.header(box_column, box_type, option, expanded)
+
+                            if expanded:
+
+                                self.custom_properties(box_column)
+
+                    else:
+
+                        box_column = self.layout.column(align=True)
+                        self.header(box_column, box_type, option, expanded)
+
+                        if expanded:
+
+                            getattr(self, box_type[1])(box_column)
+
+
+        def header(self, box_column, box_type, option, expanded, toggle_prop='', toggle_prop_target=None):
+
+            box = box_column.box()
+
+            row = box.row(align=True)
+            row.alignment = 'LEFT'
+
+            sub = row.row(align=True)
+            sub.scale_x = 0.5
+            sub.prop(self.preferences, option, text='', icon='TRIA_DOWN' if expanded else 'TRIA_RIGHT', emboss=False)
+
+            if toggle_prop:
+
+                sub = row.row(align=True)
+                sub.scale_x = 0.8
+                sub.prop(toggle_prop_target, toggle_prop, text='')
+
+            row.prop(self.preferences, option, text=box_type[0], toggle=True, emboss=False)
+
+            sub = row.row(align=True)
+            sub.prop(self.preferences, option, text=' ', toggle=True, emboss=False)
+
+
+        def levels_of_detail(self, box_column):
+
+            game_settings = self.context.scene.game_settings
+
+            box = box_column.box()
+            column = box.column()
+
+            for i, level in enumerate(self.object.lod_levels):
+                if i == 0:
+
+                    continue
+
+                box = column.box()
+
+                row = box.row()
+                row.prop(level, 'object', text='')
+                row.operator('object.lod_remove', text='', icon='PANEL_CLOSE').index = i
+
+                row = box.row()
+                row.prop(level, 'distance')
+
+                row = row.row(align=True)
+                row.prop(level, 'use_mesh', text='')
+                row.prop(level, 'use_material', text='')
+
+                row = box.row()
+                row.active = game_settings.use_scene_hysteresis
+                row.prop(level, 'use_object_hysteresis', text='Hysteresis Override')
+
+                row = box.row()
+                row.active = game_settings.use_scene_hysteresis and level.use_object_hysteresis
+                row.prop(level, 'object_hysteresis_percentage', text='')
+
+            row = column.row(align=True)
+            row.operator('object.lod_add', text='Add', icon='ZOOMIN')
+            row.menu('OBJECT_MT_lod_tools', text='', icon='TRIA_DOWN')
+
+
+        def transform(self, box_column):
+
+            box = box_column.box()
+            split = box.split()
+
+            column = split.column()
+            column.prop(self.object, 'location')
+
+            if self.object.rotation_mode == 'QUATERNION':
+
+                column = split.column()
+                column.prop(self.object, 'rotation_quaternion', text='Rotation')
+
+            elif self.object.rotation_mode == 'AXIS_ANGLE':
+
+                column = split.column()
+                column.prop(self.object, 'rotation_axis_angle', text='Rotation')
+
+            else:
+
+                column = split.column()
+                column.prop(self.object, 'rotation_euler', text='Rotation')
+
+            column = split.column()
+            column.prop(self.object, 'scale')
+
+            box.prop(self.object, 'rotation_mode')
+
+
+        def delta_transform(self, box_column):
+
+            box = box_column.box()
+            split = box.split()
+
+            column = split.column()
+            column.prop(self.object, 'delta_location')
+
+            if self.object.rotation_mode == 'QUATERNION':
+
+                column = split.column()
+                column.prop(self.object, 'delta_rotation_quaternion', text='Rotation')
+
+            elif self.object.rotation_mode == 'AXIS_ANGLE':
+
+                column = split.column()
+                column.label(text='Not for Axis-Angle')
+
+            else:
+
+                column = split.column()
+                column.prop(self.object, 'delta_rotation_euler', text='Delta Rotation')
+
+            column = split.column()
+            column.prop(self.object, 'delta_scale')
+
+
+        def transform_locks(self, box_column):
+
+            box = box_column.box()
+            split = box.split(percentage=0.1)
+
+            column = split.column(align=True)
+            column.label(text='')
+            column.label(text='X:')
+            column.label(text='Y:')
+            column.label(text='Z:')
+
+            split.column().prop(self.object, 'lock_location', text='Location')
+            split.column().prop(self.object, 'lock_rotation', text='Rotation')
+            split.column().prop(self.object, 'lock_scale', text='Scale')
+
+            if self.object.rotation_mode in {'QUATERNION', 'AXIS_ANGLE'}:
+
+                row = box.row()
+                row.prop(self.object, 'lock_rotations_4d', text='Lock Rotation')
+
+                sub = row.row()
+                sub.active = self.object.lock_rotations_4d
+                sub.prop(self.object, 'lock_rotation_w', text='W')
+
+
+        def relations(self, box_column):
+
+            box = box_column.box()
+            split = box.split()
+
+            column = split.column()
+            column.prop(self.object, 'layers')
+            column.separator()
+            column.prop(self.object, 'pass_index')
+
+            column = split.column()
+            column.label(text='Parent:')
+            column.prop(self.object, 'parent', text='')
+
+            sub = column.column()
+            sub.active = self.object.parent != None
+            sub.prop(self.object, 'parent_type', text='')
+
+            if self.object.parent and self.object.parent_type == 'BONE' and self.object.parent.type == 'ARMATURE':
+
+                sub.prop_search(self.object, 'parent_bone', self.object.parent.data, 'bones', text='')
+
+
+        def groups(self, box_column):
+
+            box = box_column.box()
+            row = box.row(align=True)
+
+            if get.name_panel.name_stack.groups(self.context, self.object):
+
+                row.operator('object.group_link', text='Add to Group')
+
+            else:
+
+                row.operator('object.group_add', text='Add to Group')
+
+            row.operator('object.group_add', text='', icon='ZOOMIN')
+
+            groups = get.name_panel.name_stack.groups(self.context, self.object)
+
+            for group in groups:
+
+                column = box.box().column(align=True)
+
+                column.context_pointer_set('group', group)
+
+                row = column.box().row()
+                row.prop(group, 'name', text='')
+                row.operator('object.group_remove', text='', icon='X', emboss=False)
+                row.menu('GROUP_MT_specials', icon='DOWNARROW_HLT', text='')
+
+                split = column.box().split()
+
+                column = split.column()
+                column.prop(group, 'layers', text='Dupli Visibility')
+
+                column = split.column()
+                column.prop(group, 'dupli_offset', text='')
+
+
+        def display(self, box_column):
+
+            is_geometry = self.object.type in {'MESH', 'CURVE', 'SURFACE', 'META', 'FONT'}
+            is_wire = self.object.type in {'CAMERA', 'EMPTY'}
+            is_empty_image = self.object.type == 'EMPTY' and self.object.empty_draw_type == 'IMAGE'
+            is_dupli = self.object.dupli_type != 'NONE'
+
+            box = box_column.box()
+            split = box.split()
+
+            column = split.column()
+            column.prop(self.object, 'show_name', text='Name')
+            column.prop(self.object, 'show_axis', text='Axis')
+
+            if is_geometry or is_dupli:
+
+                column.prop(self.object, 'show_wire', text='Wire')
+
+            if self.object.type == 'MESH' or is_dupli:
+
+                column.prop(self.object, 'show_all_edges')
+
+            column = split.column()
+            row = column.row()
+            row.prop(self.object, 'show_bounds', text='Bounds')
+
+            sub = row.row()
+            sub.active = self.object.show_bounds
+            sub.prop(self.object, 'draw_bounds_type', text='')
+
+            if is_geometry:
+
+                column.prop(self.object, 'show_texture_space', text='Texture Space')
+
+            column.prop(self.object, 'show_x_ray', text='X-Ray')
+
+            if self.object.type == 'MESH' or is_empty_image:
+
+                column.prop(self.object, 'show_transparent', text='Transparency')
+
+            split = box.split()
+            column = split.column()
+
+            if is_wire:
+
+                column.active = is_dupli
+                column.label(text='Maximum Dupli Draw Type:')
+
+            else:
+
+                column.label(text='Maximum Draw Type:')
+
+            column.prop(self.object, 'draw_type', text='')
+
+            column = split.column()
+
+            if is_geometry or is_empty_image:
+
+                column.label(text='Object Color:')
+                column.prop(self.object, 'color', text='')
+
+
+        def duplication(self, box_column):
+
+            box = box_column.box()
+            row = box.row()
+            row.prop(self.object, 'dupli_type', expand=True)
+
+            if self.object.dupli_type == 'FRAMES':
+
+                split = box.split()
+                column = split.column(align=True)
+                column.prop(self.object, 'dupli_frames_start', text='Start')
+                column.prop(self.object, 'dupli_frames_end', text='End')
+
+                column = split.column(align=True)
+                column.prop(self.object, 'dupli_frames_on', text='On')
+                column.prop(self.object, 'dupli_frames_off', text='Off')
+
+                box.prop(self.object, 'use_dupli_frames_speed', text='Speed')
+
+            elif self.object.dupli_type == 'VERTS':
+
+                box.prop(self.object, 'use_dupli_vertices_rotation', text='Rotation')
+
+            elif self.object.dupli_type == 'FACES':
+
+                row = box.row()
+                row.prop(self.object, 'use_dupli_faces_scale', text='Scale')
+
+                sub = row.row()
+                sub.active = self.object.use_dupli_faces_scale
+                sub.prop(self.object, 'dupli_faces_scale', text='Inherit Scale')
+
+            elif self.object.dupli_type == 'GROUP':
+
+                box.prop(self.object, 'dupli_group', text='Group')
+
+
+        def relations_extras(self, box_column):
+
+            box = box_column.box()
+            split = box.split()
+
+            if self.context.scene.render.engine != 'BLENDER_GAME':
+
+                column = split.column()
+                column.label(text='Tracking Axes:')
+                column.prop(self.object, 'track_axis', text='Axis')
+                column.prop(self.object, 'up_axis', text='Up Axis')
+
+            column = split.column()
+            column.prop(self.object, 'use_slow_parent')
+
+            row = column.row()
+            row.active = self.object.parent != None and self.object.use_slow_parent
+            row.prop(self.object, 'slow_parent_offset', text='Offset')
+
+            box.prop(self.object, 'use_extra_recalc_object')
+            box.prop(self.object, 'use_extra_recalc_data')
+
+
+        def motion_paths(self, box_column):
+
+            box = box_column.box()
+
+            row = box.row()
+            row.prop(self.object.animation_visualization.motion_path, 'type', expand=True)
+
+            split = box.split()
+            column = split.column()
+            column.label(text='Display Range:')
+
+            sub = column.column(align=True)
+
+            if self.object.animation_visualization.motion_path.type == 'CURRENT_FRAME':
+
+               sub.prop(self.object.animation_visualization.motion_path, 'frame_before', text='Before')
+               sub.prop(self.object.animation_visualization.motion_path, 'frame_after', text='After')
+
+            elif self.object.animation_visualization.motion_path.type == 'RANGE':
+
+               sub.prop(self.object.animation_visualization.motion_path, 'frame_start', text='Start')
+               sub.prop(self.object.animation_visualization.motion_path, 'frame_end', text='End')
+
+            sub.prop(self.object.animation_visualization.motion_path, 'frame_step', text='Step')
+
+            column = split.column()
+            column.label(text='Cache:')
+
+            if self.object.motion_path:
+
+               sub = column.column(align=True)
+               sub.enabled = False
+               sub.prop(self.object.motion_path, 'frame_start', text='From')
+               sub.prop(self.object.motion_path, 'frame_end', text='To')
+
+               sub = column.row(align=True)
+               sub.operator('object.paths_update', text='Update Paths', icon='OBJECT_DATA')
+               sub.operator('object.paths_clear', text='', icon='X')
+
+            else:
+
+               sub = column.column(align=True)
+               sub.label(text='Nothing to show yet...', icon='ERROR')
+               sub.operator('object.paths_calculate', text='Calculate...', icon='OBJECT_DATA')
+
+            split = box.split()
+            column = split.column()
+            column.label(text='Show:')
+            column.prop(self.object.animation_visualization.motion_path, 'show_frame_numbers', text='Frame Numbers')
+
+            column = split.column()
+            column.prop(self.object.animation_visualization.motion_path, 'show_keyframe_highlight', text='Keyframes')
+
+            sub = column.column()
+            sub.enabled = self.object.animation_visualization.motion_path.show_keyframe_highlight
+            sub.prop(self.object.animation_visualization.motion_path, 'show_keyframe_numbers', text='Keyframe Numbers')
+
+
+        def motion_blur(self, box_column):
+
+            box = box_column.box()
+
+            split = box.split()
+            split.active = self.context.scene.render.use_motion_blur and self.object.cycles.use_motion_blur
+            split.prop(self.object.cycles, 'use_deform_motion', text='Deformation')
+
+            sub = split.row()
+            sub.active = self.object.cycles.use_deform_motion
+            sub.prop(self.object.cycles, 'motion_steps', text='Steps')
+
+
+        def cycles_settings(self, box_column):
+
+            box = box_column.box()
+
+            box.label(text='Ray Visibility:')
+            flow = box.column_flow()
+
+            flow.prop(self.object.cycles_visibility, 'camera')
+            flow.prop(self.object.cycles_visibility, 'diffuse')
+            flow.prop(self.object.cycles_visibility, 'glossy')
+            flow.prop(self.object.cycles_visibility, 'transmission')
+            flow.prop(self.object.cycles_visibility, 'scatter')
+
+            if self.object.type != 'LAMP':
+                flow.prop(self.object.cycles_visibility, 'shadow')
+
+            column = box.column()
+            column.label(text='Performance:')
+            row = column.row()
+            sub = row.row()
+            sub.active = self.context.scene.render.use_simplify and self.context.scene.cycles.use_camera_cull
+            sub.prop(self.object.cycles, 'use_camera_cull')
+
+            sub = row.row()
+            sub.active = self.context.scene.render.use_simplify and self.context.scene.cycles.use_distance_cull
+            sub.prop(self.object.cycles, 'use_distance_cull')
+
+
+        def custom_properties(self, box_column, use_edit=True):
+
+
+            def assign_props(prop, val, key):
+
+                prop.data_path = context_member
+                prop.property = key
+
+                try: prop.value = str(val)
+                except: pass
+
+
+            rna_item, context_member = rna_prop_ui.rna_idprop_context_value(self.context, 'object', bpy.types.Object)
+
+            if rna_item.id_data.library is not None:
+
+                use_edit = False
+
+            assert(isinstance(rna_item, bpy.types.Object))
+
+            items = rna_item.items()
+            items.sort()
+
+            box = box_column.box()
+
+            if use_edit:
+
+                row = box.row()
+                operator = row.operator("wm.properties_add", text="Add")
+                operator.data_path = context_member
+
+            rna_properties = {prop.identifier for prop in rna_item.bl_rna.properties if prop.is_runtime} if items else None
+
+            for key, value in items:
+
+                if key == '_RNA_UI':
+                    continue
+
+                to_dict = getattr(value, "to_dict", None)
+                to_list = getattr(value, "to_list", None)
+
+                if to_dict:
+
+                    value = to_dict()
+                    value_draw = str(value)
+
+                elif to_list:
+
+                    value = to_list()
+                    value_draw = str(value)
+
+                else:
+
+                    value_draw = value
+
+                if use_edit:
+
+                    split = box.row().box().split(percentage=0.75)
+                    row = split.row()
+
+                else:
+
+                    row = box.row().box().row()
+
+                row.label(text=key, translate=False)
+
+                is_rna = (key in rna_properties)
+
+                if to_dict or to_list:
+
+                    row.label(text=value_draw, translate=False)
+
+                else:
+
+                    if is_rna:
+
+                        row.prop(rna_item, key, text="")
+
+                    else:
+
+                        row.prop(rna_item, '["{}"]'.format(escape_identifier(key)), text="")
+
+                if use_edit:
+
+                    row = split.row(align=True)
+
+                    if not is_rna:
+
+                        operator = row.operator("wm.properties_edit", text="Edit")
+                        assign_props(operator, value_draw, key)
+
+                    else:
+
+                        row.label(text="API Defined")
+
+                    operator = row.operator("wm.properties_remove", text="", icon='ZOOMOUT')
+                    assign_props(operator, value_draw, key)
+
+
+    class Mesh:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Curve:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class MetaBall:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Armature:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Lattice:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Empty:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Speaker:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Camera:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Lamp:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Group:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class GreasePencil:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class GPencilLayer:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Action:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Constraint:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Modifier:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Image:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class BoneGroup:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class PoseBone:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class EditBone:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class VertexGroup:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class ShapeKey:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class MeshTexturePolyLayer:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class MeshLoopColorLayer:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Material:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class Texture:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class ParticleSystem:
+
+
+        def __init__(self, operator, context):
+
+            pass
+
+
+    class ParticleSettings:
+
+
+        def __init__(self, operator, context):
+
+            pass
 
 
 class namer:
@@ -405,9 +1260,10 @@ class namer:
 
 
     @staticmethod
-    def datablock_buttons(category, option, layout):
+    def datablock_buttons(category, option, layout, use_label=True):
 
-        if category not in {'Objects', 'Objects Data', 'Custom Property'}:
+        # if category not in {'Objects', 'Objects Data', 'Custom Properties'}:
+        if use_label:
             layout.label(text=category + ':')
 
         row = layout.row(align=True)
@@ -652,11 +1508,13 @@ class namer:
             layout = layout.column(align=True)
 
             if option.target_options_mode == 'CONTEXT':
+
                 self.context_area(operator, context, option, layout)
 
             else:
-                namer.datablock_buttons('Objects', option, layout)
-                namer.datablock_buttons('Objects Data', option, layout)
+
+                namer.datablock_buttons('Objects', option, layout, use_label=False)
+                namer.datablock_buttons('Objects Data', option, layout, use_label=False)
                 namer.datablock_buttons('Object Related', option, layout)
 
                 layout.separator()
@@ -665,6 +1523,7 @@ class namer:
                 row.prop(option, 'display_more')
 
                 if option.display_more:
+
                     namer.datablock_buttons('Grease Pencil', option, layout)
                     namer.datablock_buttons('Animation', option, layout)
                     namer.datablock_buttons('Node', option, layout)
@@ -675,7 +1534,7 @@ class namer:
                     namer.datablock_buttons('Sequence', option, layout)
                     namer.datablock_buttons('Game Engine', option, layout)
                     namer.datablock_buttons('Misc', option, layout)
-                    namer.datablock_buttons('Custom Property', option, layout)
+                    # namer.datablock_buttons('Custom Properties', option, layout, use_label=False)
 
 
         class context_area:
@@ -905,11 +1764,13 @@ class namer:
             @staticmethod
             def view_3d(operator, context, option, layout):
 
-                namer.datablock_buttons('Objects', option, layout)
-                namer.datablock_buttons('Objects Data', option, layout)
+                namer.datablock_buttons('Objects', option, layout, use_label=False)
+                namer.datablock_buttons('Objects Data', option, layout, use_label=False)
                 row = layout.row(align=True)
                 row.prop(option, 'target_mode', expand=True)
                 namer.datablock_buttons('Object Related', option, layout)
+                # namer.datablock_buttons('Custom Properties', option, layout)
+
 
             class image_editor:
 
@@ -1067,11 +1928,11 @@ class namer:
 
             column.separator()
 
-            op = column.operator('wm.namer_operation_move', text='', icon='TRIA_UP')
-            op.up = True
+            operator = column.operator('wm.namer_operation_move', text='', icon='TRIA_UP')
+            operator.up = True
 
-            op = column.operator('wm.namer_operation_move', text='', icon='TRIA_DOWN')
-            op.up = False
+            operator = column.operator('wm.namer_operation_move', text='', icon='TRIA_DOWN')
+            operator.up = False
 
 
         class name_operation:

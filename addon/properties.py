@@ -16,7 +16,7 @@ class filter_options(PropertyGroup):
         description = 'Mode',
         items = [
             ('FILTERS', 'Filters', ''),
-            ('OPTIONS', 'options', ''),
+            ('OPTIONS', 'Options', ''),
         ],
         default = default['mode']
     )
@@ -30,6 +30,13 @@ class filter_options(PropertyGroup):
             ('VISIBLE', 'Visible', '')
         ],
         default = default['display_mode']
+    )
+
+    toggle_all = BoolProperty(
+        name = 'Toggle All',
+        description = 'Toggle display state of all datablocks',
+        update = update.filter_options,
+        default = default['toggle_all']
     )
 
     groups = BoolProperty(

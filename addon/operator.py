@@ -47,7 +47,7 @@ class options(Operator):
 
     def draw(self, context):
 
-        interface.options(self, context)
+        interface.name_panel.options(self, context)
 
 
     def invoke(self, context, event):
@@ -80,6 +80,9 @@ class datablock(Operator):
 
     def draw(self, context):
 
+        self.object = self.data[self.object_name]
+        self.target = self.data[self.target_name]
+
         interface.datablock(self, context)
 
 
@@ -87,13 +90,15 @@ class datablock(Operator):
 
         update.selection(self, context, event)
 
-        self.object = {self.object_name: bpy.data.objects[self.object_name]}
-        self.target = {self.target_name: get.name_panel.target(self, context)}
-
         if event.alt:
             bpy.ops.view3d.view_selected()
 
         if not event.ctrl:
+
+            self.data = {
+                self.object_name: context.active_object,
+                self.target_name: get.name_panel.target(self, context)
+            }
 
             context.window_manager.invoke_popup(self, width=get.preferences(context).popup_width)
 
@@ -127,6 +132,9 @@ class datablock_click_through(Operator):
 
     def draw(self, context):
 
+        self.object = self.data[self.object_name]
+        self.target = self.data[self.target_name]
+
         interface.datablock(self, context)
 
 
@@ -134,13 +142,15 @@ class datablock_click_through(Operator):
 
         update.selection(self, context, event)
 
-        self.object = {self.object_name: bpy.data.objects[self.object_name]}
-        self.target = {self.target_name: get.name_panel.target(self, context)}
-
         if event.alt:
             bpy.ops.view3d.view_selected()
 
         if event.ctrl:
+
+            self.data = {
+                self.object_name: context.active_object,
+                self.target_name: get.name_panel.target(self, context)
+            }
 
             context.window_manager.invoke_popup(self, width=get.preferences(context).popup_width)
 

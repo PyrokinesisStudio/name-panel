@@ -415,14 +415,17 @@ class datablock:
             row.alignment = 'CENTER'
             row.scale_x = 2
             row.template_ID(context.scene.objects, 'active')
+            self.layout.separator()
 
             for box_type in self.boxes:
 
-                state = 'object_{}{}'.format(box_type[1], '_expanded')
-                expanded = self.preferences['box_state'][state]
+                option = 'object_{}{}'.format(box_type[1], '_expanded')
+                expanded = getattr(self.preferences, option)
 
                 if len(box_type) == 3:
+
                     if self.object.type in box_type[2]:
+
                         if box_type[1] == 'motion_blur':
                             if self.context.scene.render.engine == 'CYCLES':
 
@@ -453,6 +456,7 @@ class datablock:
                                 getattr(self, box_type[1])(box_column)
 
                 else:
+
                     if box_type[1] == 'levels_of_detail':
                         if context.scene.render.engine == 'BLENDER_GAME':
 

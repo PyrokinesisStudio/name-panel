@@ -99,79 +99,79 @@ class name_panel(AddonPreferences):
     object_levels_of_detail_expanded = BoolProperty(
         name = 'Levels of Detail Expand',
         description = 'Show levels of detail options expanded',
-        default = default['object_levels_of_detail_expanded']
+        default = default['box_state']['object_levels_of_detail_expanded']
     )
 
     object_transform_expanded = BoolProperty(
         name = 'Transform Expand',
         description = 'Show transform options expanded',
-        default = default['object_transform_expanded']
+        default = default['box_state']['object_transform_expanded']
     )
 
     object_delta_transform_expanded = BoolProperty(
         name = 'Delta Transform Expand',
         description = 'Show delta transform options expanded',
-        default = default['object_delta_transform_expanded']
+        default = default['box_state']['object_delta_transform_expanded']
     )
 
     object_transform_locks_expanded = BoolProperty(
         name = 'Delta Transform Expand',
         description = 'Show delta transform options expanded',
-        default = default['object_delta_transform_expanded']
+        default = default['box_state']['object_delta_transform_expanded']
     )
 
     object_display_expanded = BoolProperty(
         name = 'Display Expand',
         description = 'Show display options expanded',
-        default = default['object_display_expanded']
+        default = default['box_state']['object_display_expanded']
     )
 
     object_groups_expanded = BoolProperty(
         name = 'Groups Expand',
         description = 'Show group options expanded',
-        default = default['object_groups_expanded']
+        default = default['box_state']['object_groups_expanded']
     )
 
     object_relations_expanded = BoolProperty(
         name = 'Relations Expand',
         description = 'Show relation options expanded',
-        default = default['object_relations_expanded']
+        default = default['box_state']['object_relations_expanded']
     )
 
     object_relations_extras_expanded = BoolProperty(
         name = 'Relations Extras Expand',
         description = 'Show relations extra options expanded',
-        default = default['object_relations_extras_expanded']
+        default = default['box_state']['object_relations_extras_expanded']
     )
 
     object_duplication_expanded = BoolProperty(
         name = 'Duplication Expand',
         description = 'Show duplication options expanded',
-        default = default['object_duplication_expanded']
+        default = default['box_state']['object_duplication_expanded']
     )
 
     object_motion_paths_expanded = BoolProperty(
         name = 'Motion Paths Expand',
         description = 'Show motion path options expanded',
-        default = default['object_motion_paths_expanded']
+        default = default['box_state']['object_motion_paths_expanded']
     )
 
     object_motion_blur_expanded = BoolProperty(
         name = 'Motion Blur Expand',
         description = 'Show motion blur options expanded',
-        default = default['object_motion_blur_expanded']
+        default = default['box_state']['object_motion_blur_expanded']
     )
 
     object_cycles_settings_expanded = BoolProperty(
         name = 'Cycles Settings Expand',
         description = 'Show cycles settings options expanded',
-        default = default['object_cycles_settings_expanded']
+        default = default['box_state']['object_cycles_settings_expanded']
     )
 
     object_custom_properties_expanded = BoolProperty(
         name = 'Custom Properties Expand',
         description = 'Show custom properties options expanded',
-        default = default['object_custom_properties_expanded']
+        default = default['box_state']['object_custom_properties_expanded']
     )
 
 

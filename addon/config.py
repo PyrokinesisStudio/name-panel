@@ -14,8 +14,8 @@ defaults = {
         'use_last': True,
         'auto_name_operations': True,
         # 'namer_popup_width': 600,
+        'namer_popup_width': 460,
         'box_state': {
-            'namer_popup_width': 460,
             'object_levels_of_detail_expanded': False,
             'object_transform_expanded': False,
             'object_delta_transform_expanded': False,

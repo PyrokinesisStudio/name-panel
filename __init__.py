@@ -18,7 +18,7 @@ import bpy
 bl_info = {
     'name': 'Name Panel',
     'author': 'Trentin Frederick a.k.a. proxe',
-    'version': (1, 8, 470),
+    'version': (1, 8, 478),
     'blender': (2, 78, 0),
     'location': '3D View \N{Rightwards Arrow} Tool (T) | Property (N)',
     'description': 'In panel datablock name stack with additional naming tools.',

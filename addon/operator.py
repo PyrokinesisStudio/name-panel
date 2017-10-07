@@ -72,6 +72,14 @@ class datablock(Operator):
     target_name = StringProperty()
     identifier = StringProperty()
 
+    context = EnumProperty(
+        name = "Context",
+        description = "Datablock",
+        items = [
+            ('SCENE', '')
+        ]
+    )
+
 
     def check(self, context):
 

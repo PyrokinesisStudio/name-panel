@@ -649,7 +649,7 @@ class get:
 
                 if type == 'bones':
                     if option.bones and option.bone_constraints:
-                        if object == context.active_object and object.type == 'ARMATURE' and context.mode == 'POSE': # TODO: Account for weight paint
+                        if object == context.active_object and object.type == 'ARMATURE' and context.mode == 'POSE': # TODO: account for weight paint mode and and any active pose bone in it
 
                             stack['objects'][object.name][type][datablock.name]['bone_constraints'] = {
                                 'datablocks': [constraint for constraint in datablock.constraints]
@@ -732,7 +732,7 @@ class get:
 
             def Lamp(operator, context):
 
-                return contet.active_object.data
+                return context.active_object.data
 
 
             def Group(operator, context):
@@ -1152,6 +1152,7 @@ class update:
                 setattr(option, target, False)
 
 
+# TODO: can we get away with pulling from rna_prop_ui directly?
 class rna_prop_ui:
 
 

@@ -23,8 +23,7 @@ bl_info = {
     'location': '3D View \N{Rightwards Arrow} Tool (T) | Property (N)',
     'description': 'In panel datablock name stack with additional naming tools.',
     'tracker_url': 'https://github.com/proxeIO/name-panel/issues',
-    'category': '3D View'
-}
+    'category': '3D View'}
 
 from bpy.utils import register_module, unregister_module, unregister_class
 from bpy.props import PointerProperty
@@ -41,8 +40,7 @@ def register():
     bpy.types.WindowManager.name_panel = PointerProperty(
         type = properties.name_panel,
         name = 'Name Panel Addon',
-        description = 'Storage location for name panel addon options',
-    )
+        description = 'Storage location for name panel addon options')
 
     try:
         if get.preferences(bpy.context).remove_item:

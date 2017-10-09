@@ -189,8 +189,7 @@ class get:
                 'texts': 'FILE_TEXT',
                 'libraries': 'LIBRARY_DATA_DIRECT',
                 'custom_properties': 'RNA_ADD',
-                'custom_property_path': 'RNA'
-            }
+                'custom_property_path': 'RNA'}
 
             return icons[type]
 
@@ -208,8 +207,7 @@ class get:
                 'EMPTY': 'OUTLINER_OB_EMPTY',
                 'SPEAKER': 'OUTLINER_OB_SPEAKER',
                 'CAMERA': 'OUTLINER_OB_CAMERA',
-                'LAMP': 'OUTLINER_OB_LAMP'
-            }
+                'LAMP': 'OUTLINER_OB_LAMP'}
 
             return icons[object.type]
 
@@ -265,8 +263,7 @@ class get:
                 'PARTICLE_INSTANCE': 'MOD_PARTICLES',
                 'PARTICLE_SYSTEM': 'MOD_PARTICLES',
                 'SMOKE': 'MOD_SMOKE',
-                'SOFT_BODY': 'MOD_SOFT'
-            }
+                'SOFT_BODY': 'MOD_SOFT'}
 
             return icons[modifier.type]
 
@@ -284,8 +281,7 @@ class get:
                 'EMPTY': 'IMAGE_DATA',
                 'SPEAKER': 'SPEAKER',
                 'CAMERA': 'CAMERA_DATA',
-                'LAMP': 'LAMP_DATA',
-            }
+                'LAMP': 'LAMP_DATA'}
 
             return icons[object.type]
 
@@ -316,8 +312,7 @@ class get:
                 'vertex_group_b': 'GROUP_VERTEX',
                 'mask_vertex_group': 'GROUP_VERTEX',
                 'mask_texture': 'TEXTURE_DATA',
-                'particle_system': 'PARTICLE_DATA'
-            }
+                'particle_system': 'PARTICLE_DATA'}
 
             return icons[type]
 
@@ -352,8 +347,7 @@ class get:
                 'shapekeys',
                 'uv_maps',
                 'vertex_colors',
-                'materials',
-            ]
+                'materials']
 
 
             def __new__(self, context):
@@ -366,8 +360,7 @@ class get:
 
                         stack = {
                             'objects': {},
-                            'datablocks': [context.active_object]
-                        }
+                            'datablocks': [context.active_object]}
 
                     else:
 
@@ -379,15 +372,13 @@ class get:
 
                         stack = {
                             'objects': {},
-                            'datablocks': self.objects(context, option, context.selected_objects)
-                        }
+                            'datablocks': self.objects(context, option, context.selected_objects)}
 
                     elif context.active_object and get.preferences(context).pin_active:
 
                         stack = {
                             'objects': {},
-                            'datablocks': []
-                        }
+                            'datablocks': []}
 
                     else:
 
@@ -399,15 +390,13 @@ class get:
 
                         stack = {
                             'objects': {},
-                            'datablocks': self.objects(context, option, context.visible_objects)
-                        }
+                            'datablocks': self.objects(context, option, context.visible_objects)}
 
                     elif context.active_object and get.preferences(context).pin_active:
 
                         stack = {
                             'objects': {},
-                            'datablocks': []
-                        }
+                            'datablocks': []}
 
                     else:
 
@@ -423,8 +412,7 @@ class get:
                         stack['objects'][object.name] = {
                             'datablock': object,
                             'active': regex.panel_search(context, object.name),
-                            'types': []
-                        }
+                            'types': []}
 
                         for type in get.name_panel.name_stack.types:
                             if type != 'object_data':
@@ -434,46 +422,39 @@ class get:
                                         stack['objects'][object.name]['types'].append(type)
 
                                         stack['objects'][object.name][type] = {
-                                            'datablocks': getattr(get.name_panel.name_stack, type)(context, object)
-                                        }
+                                            'datablocks': getattr(get.name_panel.name_stack, type)(context, object)}
 
                                         for datablock in stack['objects'][object.name][type]['datablocks']:
                                             if datablock:
                                                 stack['objects'][object.name][type][datablock.name] = {
                                                     'datablock': datablock,
-                                                    'active': regex.panel_search(context, datablock.name)
-                                                }
+                                                    'active': regex.panel_search(context, datablock.name)}
 
                                                 if type in {'grease_pencils', 'modifiers', 'bones', 'materials'}:
 
                                                     self.subtypes(context, option, stack, object, type, datablock)
 
+                            elif object.type == 'EMPTY':
+                                if object.empty_draw_type == 'IMAGE':
+                                    if object.data:
+
+                                        stack['objects'][object.name]['types'].append('object_data')
+
+                                        stack['objects'][object.name]['object_data'] = {
+                                            'datablocks': [object.data],
+                                            object.data.name: {
+                                                'datablock': object.data,
+                                                'active': regex.panel_search(context, object.data.name)}}
+
                             else:
-                                if object.type == 'EMPTY':
-                                    if object.empty_draw_type == 'IMAGE':
-                                        if object.data:
 
-                                            stack['objects'][object.name]['types'].append('object_data')
+                                stack['objects'][object.name]['types'].append('object_data')
 
-                                            stack['objects'][object.name]['object_data'] = {
-                                                'datablocks': [object.data],
-                                                object.data.name: {
-                                                    'datablock': object.data,
-                                                    'active': regex.panel_search(context, object.data.name)
-                                                }
-                                            }
-
-                                else:
-
-                                    stack['objects'][object.name]['types'].append('object_data')
-
-                                    stack['objects'][object.name]['object_data'] = {
-                                        'datablocks': [object.data],
-                                        object.data.name: {
-                                            'datablock': object.data,
-                                            'active': regex.panel_search(context, object.data.name)
-                                        }
-                                    }
+                                stack['objects'][object.name]['object_data'] = {
+                                    'datablocks': [object.data],
+                                    object.data.name: {
+                                        'datablock': object.data,
+                                        'active': regex.panel_search(context, object.data.name)}}
 
                 return stack
 
@@ -605,15 +586,13 @@ class get:
                 if type == 'grease_pencils':
 
                     stack['objects'][object.name][type][datablock.name]['grease_pencil_layers'] = {
-                        'datablocks': [layer for layer in datablock.layers]
-                    }
+                        'datablocks': [layer for layer in datablock.layers]}
 
                     for layer in stack['objects'][object.name][type][datablock.name]['grease_pencil_layers']['datablocks']:
 
                         stack['objects'][object.name][type][datablock.name]['grease_pencil_layers'][layer.info] = {
                             'datablock': layer,
-                            'active': regex.panel_search(context, layer.info)
-                        }
+                            'active': regex.panel_search(context, layer.info)}
 
                 if type == 'modifiers':
 
@@ -623,58 +602,48 @@ class get:
                             stack['objects'][object.name][type][datablock.name]['particle_system'] = {
                                 datablock.particle_system.name: {
                                     'datablock': datablock.particle_system,
-                                    'active': regex.panel_search(context, datablock.particle_system.name)
-                                }
-                            }
+                                    'active': regex.panel_search(context, datablock.particle_system.name)}}
 
                             stack['objects'][object.name][type][datablock.name]['particle_system'][datablock.particle_system.name]['particle_settings'] = {
                                 datablock.particle_system.settings.name: {
                                     'datablock': datablock.particle_system.settings,
-                                    'active': regex.panel_search(context, datablock.particle_system.settings.name)
-                                }
-                            }
+                                    'active': regex.panel_search(context, datablock.particle_system.settings.name)}}
 
                             if option.textures and context.scene.render.engine == 'CYCLES':
 
                                 stack['objects'][object.name][type][datablock.name]['particle_system'][datablock.particle_system.name]['particle_settings'][datablock.particle_system.settings.name]['textures'] = {
-                                    'datablocks': [texture_slot.texture for texture_slot in datablock.particle_system.settings.texture_slots if texture_slot != None]
-                                }
+                                    'datablocks': [texture_slot.texture for texture_slot in datablock.particle_system.settings.texture_slots if texture_slot != None]}
 
                                 for texture in stack['objects'][object.name][type][datablock.name]['particle_system'][datablock.particle_system.name]['particle_settings'][datablock.particle_system.settings.name]['textures']['datablocks']:
 
                                     stack['objects'][object.name][type][datablock.name]['particle_system'][datablock.particle_system.name]['particle_settings'][datablock.particle_system.settings.name]['textures'][texture.name] = {
                                         'datablock': texture,
-                                        'active': regex.panel_search(context, texture.name)
-                                    }
+                                        'active': regex.panel_search(context, texture.name)}
 
                 if type == 'bones':
                     if option.bones and option.bone_constraints:
                         if object == context.active_object and object.type == 'ARMATURE' and context.mode == 'POSE': # TODO: account for weight paint mode and and any active pose bone in it
 
                             stack['objects'][object.name][type][datablock.name]['bone_constraints'] = {
-                                'datablocks': [constraint for constraint in datablock.constraints]
-                            }
+                                'datablocks': [constraint for constraint in datablock.constraints]}
 
                             for constraint in stack['objects'][object.name][type][datablock.name]['bone_constraints']['datablocks']:
 
                                 stack['objects'][object.name][type][datablock.name]['bone_constraints'][constraint.name] = {
                                     'datablock': constraint,
-                                    'active': regex.panel_search(context, constraint.name)
-                                }
+                                    'active': regex.panel_search(context, constraint.name)}
 
                 if type == 'materials':
                     if option.textures and context.scene.render.engine == 'BLENDER_RENDER':
 
                         stack['objects'][object.name][type][datablock.name]['textures'] = {
-                            'datablocks': [texture_slot.texture for texture_slot in datablock.texture_slots if texture_slot != None]
-                        }
+                            'datablocks': [texture_slot.texture for texture_slot in datablock.texture_slots if texture_slot != None]}
 
                         for texture in stack['objects'][object.name][type][datablock.name]['textures']['datablocks']:
 
                             stack['objects'][object.name][type][datablock.name]['textures'][texture.name] = {
                                 'datablock': texture,
-                                'active': regex.panel_search(context, texture.name)
-                            }
+                                'active': regex.panel_search(context, texture.name)}
 
 
         class target:
@@ -839,8 +808,7 @@ class get:
                 'empties',
                 'speakers',
                 'cameras',
-                'lamps',
-            ],
+                'lamps'],
             'Objects Data': [
                 'meshes_data',
                 'curves_data',
@@ -852,8 +820,7 @@ class get:
                 'empties_data',
                 'speakers_data',
                 'cameras_data',
-                'lamps_data',
-            ],
+                'lamps_data'],
             'Object Related': [
                 'groups',
                 'constraints',
@@ -865,14 +832,12 @@ class get:
                 'bones',
                 'bone_groups',
                 'bone_constraints',
-                'materials',
-            ],
+                'materials'],
             'Grease Pencil': [
                 'grease_pencils',
                 'grease_pencil_layers',
                 'grease_pencil_pallettes',
-                'grease_pencil_pallette_colors',
-            ],
+                'grease_pencil_pallette_colors'],
             'Animation': [
                 'actions',
                 'action_groups',
@@ -880,57 +845,48 @@ class get:
                 'pose_libraries',
                 'pose_markers',
                 'tracks',
-                'markers',
-            ],
+                'markers'],
             'Node': [
                 'nodes',
                 'node_labels',
                 'node_frames',
-                'node_groups',
-            ],
+                'node_groups'],
             'Particle': [
                 'particle_systems',
-                'particle_settings',
-            ],
+                'particle_settings'],
             'Freestyle': [
                 'line_sets',
                 'line_styles',
-                'line_style_modifiers',
-            ],
+                'line_style_modifiers'],
             'Scene': [
                 'scenes',
                 'render_layers',
-                'views',
-            ],
+                'views'],
             'Image & Brush': [
                 'images',
                 'brushes',
                 'textures',
-                'palletes',
-            ],
+                'palletes'],
             'Sequence': [
                 'sequences',
                 'movie_clips',
-                'sounds',
-            ],
+                'sounds'],
             'Game Engine': [
                 'sensors',
                 'controllers',
-                'actuators',
-            ],
+                'actuators'],
             'Misc': [
                 'worlds',
                 'screens',
                 'masks',
                 'fonts',
                 'texts',
-                'libraries',
-            ],
+                'libraries']}
             # 'Custom Properties': [
             #     'custom_properties',
             #     'custom_property_path',
             # ]
-        }
+
 
         def options(context):
 
@@ -939,21 +895,14 @@ class get:
             if not location:
 
                 location.add().name = 'options'
+                location['options'].targeting.add().name = 'options'
+                location['options'].naming.add().name = 'options'
+                location['options'].sorting.add().name = 'options'
+                location['options'].counting.add().name = 'options'
 
-                if not location['options'].targeting:
-                    location['options'].targeting.add().name = 'options'
+            if not location['options'].naming['options'].operations:
 
-                if not location['options'].naming:
-                    location['options'].naming.add().name = 'options'
-
-                if not location['options'].naming['options'].operations:
-                    location['options'].naming['options'].operations.add().name = 'Default'
-
-                if not location['options'].sorting:
-                    location['options'].sorting.add().name = 'options'
-
-                if not location['options'].counting:
-                    location['options'].counting.add().name = 'options'
+                location['options'].naming['options'].operations.add().name = 'Default'
 
             return location['options']
 
@@ -995,6 +944,99 @@ class get:
                 secondary = ''
 
             return operation.operation_options_mode.title() + secondary
+
+
+    class datablock:
+
+
+        def options(context):
+
+            location = get.preferences(context).datablock
+
+            if not location:
+
+                # NOTE: adding panels
+                # to add box panels use the format: (*module path*, *panel class name*)
+                # if the box panel does not display correctly you can override the draw function by creating a function in interface.datablock
+                # this function must be defined in the form; def *panel class name*(self, operator, context, layout):
+
+                panels = (
+                    'render',
+
+                    bl_ui.properties_render, 'RENDER_PT_render',
+                    bl_ui.properties_render, 'RENDER_PT_dimensions',
+                    bl_ui.properties_render, 'RENDER_PT_antialiasing',
+                    bl_ui.properties_render, 'RENDER_PT_motion_blur',
+                    bl_ui.properties_render, 'RENDER_PT_shading',
+                    bl_ui.properties_render, 'RENDER_PT_performance',
+                    bl_ui.properties_render, 'RENDER_PT_post_processing',
+                    bl_ui.properties_render, 'RENDER_PT_stamp',
+                    bl_ui.properties_render, 'RENDER_PT_output',
+                    bl_ui.properties_render, 'RENDER_PT_encoding',
+                    bl_ui.properties_render, 'RENDER_PT_bake',
+                    bl_ui.properties_freestyle, 'RENDER_PT_freestyle',
+                    cycles.ui, 'CyclesRender_PT_sampling',
+                    cycles.ui, 'CyclesRender_PT_geometry',
+                    cycles.ui, 'CyclesRender_PT_light_paths',
+                    cycles.ui, 'CyclesRender_PT_motion_blur',
+                    cycles.ui, 'CyclesRender_PT_film',
+                    cycles.ui, 'CyclesRender_PT_performance',
+                    cycles.ui, 'CyclesRender_PT_layer_options',
+                    cycles.ui, 'CyclesRender_PT_layer_passes',
+                    cycles.ui, 'CyclesRender_PT_views',
+                    cycles.ui, 'CyclesRender_PT_denoising',
+
+                    'render_layers',
+
+                    'RENDERLAYER_PT_layers',
+                    'RENDERLAYER_PT_layer_options',
+                    'RENDERLAYER_PT_layer_passes',
+                    'RENDERLAYER_UL_renderviews',
+                    'RENDERLAYER_PT_views',
+                    # scene
+                    # world
+                    # object
+                    # constraints
+                    # modifiers
+                    # mesh
+                    # curve
+                    # metaball
+                    # armature
+                    # lattice
+                    # empty
+                    # speaker
+                    # camera
+                    # lamp
+                    # material
+                    # texture
+                    # particles
+                    # physics
+
+                    )
+
+                update.datablock_panel_collection(location, panels)
+
+
+            return location['options']
+
+
+        def contexts(scene, context):
+
+            items = [
+                ('RENDER', 'Render', '', 'SCENE', 0),
+                ('RENDER_LAYER', 'Render layers', '', 'RENDERLAYERS', 1),
+                ('SCENE', 'Scene', '', 'SCENE_DATA', 2),
+                ('WORLD', 'World', '', 'WORLD_DATA', 3),
+                ('TEXTURE', 'Texture', '', 'TEXTURE_DATA', 9)]
+
+            if context.active_object:
+
+                items.append(('OBJECT', 'Object', '', 'OBJECT_DATA', 4))
+
+                if context.active_object.type in {'OBJECT'}:
+                    pass
+
+            return items
 
 
 class update:
@@ -1115,8 +1157,7 @@ class update:
             'materials',
             'textures',
             'images',
-            'particle_systems',
-        ]
+            'particle_systems']
 
         if option.toggle_all:
             for toggle in toggles:
@@ -1150,6 +1191,11 @@ class update:
         else:
             for target in get.namer.catagories['Objects Data']:
                 setattr(option, target, False)
+
+
+    def datablock_panel_collection(location, panels):
+
+        pass
 
 
 # TODO: can we get away with pulling from rna_prop_ui directly?

@@ -6,7 +6,6 @@ from . import interface
 from .utilities import get
 
 
-
 class name_panel_specials(Menu):
     bl_idname = 'view3d.name_panel_specials'
     bl_label = 'Specials'

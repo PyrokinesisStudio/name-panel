@@ -5,8 +5,8 @@ defaults = {
         'location': 'TOOLS',
         'keep_session_settings': True,
         'pin_active': False,
-        # 'click_through': False,
-        'click_through': True,
+        'click_through': False,
+        # 'click_through': True,
         'remove_item': False,
         # 'popup_width': 330,
         'popup_width': 310,
@@ -15,22 +15,87 @@ defaults = {
         'auto_name_operations': True,
         # 'namer_popup_width': 600,
         'namer_popup_width': 460,
-        'box_state': {
-            'object_levels_of_detail_expanded': False,
-            'object_transform_expanded': False,
-            'object_delta_transform_expanded': False,
-            'object_transform_locks_expanded': False,
-            'object_display_expanded': False,
-            'object_groups_expanded': False,
-            'object_relations_expanded': False,
-            'object_relations_extras_expanded': False,
-            'object_duplication_expanded': False,
-            'object_motion_paths_expanded': False,
-            'object_motion_blur_expanded': False,
-            'object_cycles_settings_expanded': False,
-            'object_custom_properties_expanded': False,
-        }
-    },
+        'datablock': {
+            'render': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'render_layers': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'scene': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'world': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'object': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'constraints': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'modifiers': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'mesh': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'curve': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'metaball': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'armature': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'lattice': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'empty': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'speaker': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'camera': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'lamp': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'material': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'texture': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'particles': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True},
+            'physics': {
+                'label': '',
+                'hidden': False,
+                'collapsed': True}}},
     'panel': {
         'find': '',
         'replace': '',
@@ -55,9 +120,7 @@ defaults = {
             'materials': True,
             'textures': True,
             'images': True,
-            'particle_systems': True,
-        },
-    },
+            'particle_systems': True}},
     'namer': {
         'mode': 'TARGET',
         'options_mode': 'PRESETS',
@@ -143,10 +206,8 @@ defaults = {
                 'sensors': False,
                 'controllers': False,
                 'actuators': False,
-                'custom_properties': False,
-            },
-            'custom_property_path': '',
-        },
+                'custom_properties': False},
+            'custom_property_path': ''},
         'operation': {
             'operation_options_mode': 'REPLACE',
             'replace_mode': 'FIND',
@@ -182,8 +243,7 @@ defaults = {
             'swap_end': 1,
             'swap_outside': False,
             'swap_before': '',
-            'swap_after': '',
-        },
+            'swap_after': ''},
         'sort': {
             'sort_options_mode': 'ASCEND',
             'sort_mode': 'ALL',
@@ -209,8 +269,7 @@ defaults = {
             'position': 0,
             'fallback_mode': 'ASCEND',
             'display_options': False,
-            'hierarchy_mode': 'PARENT',
-        },
+            'hierarchy_mode': 'PARENT'},
         'count': {
             'count_options_mode': 'NUMERIC',
             'placement': 'SUFFIX',
@@ -223,7 +282,4 @@ defaults = {
             'alphabetic_start': 1,
             'roman_numeral_start': 1,
             'step': 1,
-            'uppercase': True
-        },
-    },
-}
+            'uppercase': True}}}

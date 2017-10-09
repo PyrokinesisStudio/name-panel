@@ -1,7 +1,7 @@
 import bpy
 
 from bpy.types import Operator
-from bpy.props import StringProperty, BoolProperty
+from bpy.props import StringProperty, BoolProperty, EnumProperty
 
 from . import interface
 from .utilities import get, update
@@ -72,13 +72,10 @@ class datablock(Operator):
     target_name = StringProperty()
     identifier = StringProperty()
 
-    context = EnumProperty(
-        name = "Context",
-        description = "Datablock",
-        items = [
-            ('SCENE', '')
-        ]
-    )
+    data_context = EnumProperty(
+        name = 'Context',
+        description = 'Type of active data to display and edit',
+        items = get.datablock.contexts)
 
 
     def check(self, context):
@@ -128,9 +125,11 @@ class datablock_click_through(Operator):
     bl_description = 'Make active object\n  Ctrl \N{Rightwards Arrow} Adjust datablock settings\n  Alt \N{Rightwards Arrow} Center view on selected\n  Shift \N{Rightwards Arrow} Add/Remove selection'
     bl_options = {'REGISTER', 'UNDO'}
 
-    object_name = StringProperty()
-    target_name = StringProperty()
-    identifier = StringProperty()
+    object_name = datablock.object_name
+    target_name = datablock.target_name
+    identifier = datablock.identifier
+
+    data_context = datablock.data_context
 
 
     def check(self, context):
@@ -140,33 +139,12 @@ class datablock_click_through(Operator):
 
     def draw(self, context):
 
-        self.object = self.data[self.object_name]
-        self.target = self.data[self.target_name]
-
-        interface.datablock(self, context)
+        datablock.draw(self, context)
 
 
     def invoke(self, context, event):
 
-        update.selection(self, context, event)
-
-        if event.alt:
-            bpy.ops.view3d.view_selected()
-
-        if event.ctrl:
-
-            self.data = {
-                self.object_name: context.active_object,
-                self.target_name: get.name_panel.target(self, context)
-            }
-
-            context.window_manager.invoke_popup(self, width=get.preferences(context).popup_width)
-
-            return {'RUNNING_MODAL'}
-
-        else:
-
-            return {'FINISHED'}
+        return {'FINISHED'}
 
 
     def execute(self, context):

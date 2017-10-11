@@ -1,10 +1,16 @@
+import os
 import re
 
+from datetime import datetime,timedelta
+
 import bpy
+import addon_utils
 
 from bpy.app.handlers import persistent
+from bpy.utils import unregister_class
 
-from .config import defaults
+from ..update_info import info
+from .config import default_panels, defaults
 
 
 @persistent
@@ -47,6 +53,11 @@ def keep_session_settings(none):
     defaults['panel']['filters']['particle_systems'] = filters.particle_systems
 
 
+def check_for_update(bl_info):
+
+    pass
+
+
 class regex:
 
 
@@ -56,20 +67,27 @@ class regex:
 
         if option.find:
             if option.regex:
-                if option.case_sensitive:
-                    return re.search(option.find, name) != None
-                else:
-                    return re.search(option.find, name, re.I) != None
-            else:
-                if option.case_sensitive:
-                    return re.search(re.escape(option.find), name) != None
-                else:
-                    return re.search(re.escape(option.find), name, re.I) != None
-        else:
-            return True
+                if option.case_sensitive: return re.search(option.find, name) != None
+                else: return re.search(option.find, name, re.I) != None
+            elif option.case_sensitive: return re.search(re.escape(option.find), name) != None
+            else: return re.search(re.escape(option.find), name, re.I) != None
+        else: return True
 
 
 class get:
+
+
+    @classmethod
+    def item_panel_poll(cls, context):
+        return (context.space_data and context.active_object)
+
+
+    @classmethod
+    def item_panel_poll_override(cls, context):
+
+        preferences = get.preferences(context)
+
+        return (context.space_data and context.active_object) and not (preferences.location == 'UI' and preferences.remove_item_panel)
 
 
     def preferences(context):
@@ -86,26 +104,15 @@ class get:
 
             self.check_bases(self, datablock.rna_type.base)
 
-            if self.identifiers[-1] == 'ID':
-
-                identifier = self.identifiers[-2]
-
-            else:
-
-                identifier = self.identifiers[-1]
-
+            if self.identifiers[-1] == 'ID': identifier = self.identifiers[-2]
+            else: identifier = self.identifiers[-1]
             return identifier
 
 
         def check_bases(self, base):
 
-            if hasattr(base, 'identifier'):
-
-                self.identifiers.append(base.identifier)
-
-            if hasattr(base, 'base'):
-
-                self.check_bases(self, base.base)
+            if hasattr(base, 'identifier'): self.identifiers.append(base.identifier)
+            if hasattr(base, 'base'): self.check_bases(self, base.base)
 
 
     class icon:
@@ -324,8 +331,7 @@ class get:
 
             location = context.window_manager.name_panel.panel
 
-            if not location:
-
+            if not 'options' in location:
                 location.add().name = 'options'
                 location['options'].filters.add().name = 'options'
 
@@ -355,60 +361,45 @@ class get:
                 option = get.name_panel.options(context).filters['options']
 
                 if option.display_mode == 'ACTIVE':
-
                     if context.active_object:
-
                         stack = {
                             'objects': {},
                             'datablocks': [context.active_object]}
 
                     else:
-
                         stack = {}
 
                 elif option.display_mode == 'SELECTED':
-
                     if context.selected_objects:
-
                         stack = {
                             'objects': {},
                             'datablocks': self.objects(context, option, context.selected_objects)}
 
                     elif context.active_object and get.preferences(context).pin_active:
-
                         stack = {
                             'objects': {},
                             'datablocks': []}
 
                     else:
-
                         stack = {}
 
                 else:
-
                     if context.visible_objects:
-
                         stack = {
                             'objects': {},
                             'datablocks': self.objects(context, option, context.visible_objects)}
 
                     elif context.active_object and get.preferences(context).pin_active:
-
                         stack = {
                             'objects': {},
                             'datablocks': []}
 
                     else:
-
                         stack = {}
 
                 if 'datablocks' in stack:
-                    if context.active_object and get.preferences(context).pin_active and option.display_mode != 'ACTIVE':
-
-                        stack['datablocks'].insert(0, context.active_object)
-
+                    if context.active_object and get.preferences(context).pin_active and option.display_mode != 'ACTIVE': stack['datablocks'].insert(0, context.active_object)
                     for object in stack['datablocks']:
-
                         stack['objects'][object.name] = {
                             'datablock': object,
                             'active': regex.panel_search(context, object.name),
@@ -418,7 +409,6 @@ class get:
                             if type != 'object_data':
                                 if getattr(option, type):
                                     if getattr(self, type)(context, object):
-
                                         stack['objects'][object.name]['types'].append(type)
 
                                         stack['objects'][object.name][type] = {
@@ -430,14 +420,11 @@ class get:
                                                     'datablock': datablock,
                                                     'active': regex.panel_search(context, datablock.name)}
 
-                                                if type in {'grease_pencils', 'modifiers', 'bones', 'materials'}:
-
-                                                    self.subtypes(context, option, stack, object, type, datablock)
+                                                if type in {'grease_pencils', 'modifiers', 'bones', 'materials'}: self.subtypes(context, option, stack, object, type, datablock)
 
                             elif object.type == 'EMPTY':
                                 if object.empty_draw_type == 'IMAGE':
                                     if object.data:
-
                                         stack['objects'][object.name]['types'].append('object_data')
 
                                         stack['objects'][object.name]['object_data'] = {
@@ -447,7 +434,6 @@ class get:
                                                 'active': regex.panel_search(context, object.data.name)}}
 
                             else:
-
                                 stack['objects'][object.name]['types'].append('object_data')
 
                                 stack['objects'][object.name]['object_data'] = {
@@ -460,51 +446,41 @@ class get:
 
 
             def objects(context, option, location):
-
                 return sorted([object for object in location if object != context.active_object], key=lambda object: object.name) if get.preferences(context).pin_active else sorted([object for object in location], key=lambda object: object.name)
 
 
             def groups(context, object):
-
                 return [group for group in bpy.data.groups for group_object in group.objects if group_object == object] if bpy.data.groups else []
 
 
             def grease_pencils(context, object):
-
                 return [object.grease_pencil] if hasattr(object.grease_pencil, 'name') else []
 
 
             def actions(context, object):
-
                 return [object.animation_data.action] if hasattr(object.animation_data, 'action') and hasattr(object.animation_data.action, 'name') else []
 
 
             def constraints(context, object):
-
                 return [constraint for constraint in object.constraints]
 
 
             def modifiers(context, object):
-
                 return [modifier for modifier in object.modifiers]
 
 
             def images(context, object):
-
                 return [object.data] if object.type == 'EMPTY' and object.empty_draw_type == 'IMAGE' and hasattr(object, 'data') else []
 
 
             def bone_groups(context, object):
 
                 if object.type == 'ARMATURE':
-
                     object = context.active_object if object == context.active_object else object
 
                     return [bone_group for bone_group in object.pose.bone_groups]
 
-                else:
-
-                    return []
+                else: return []
 
 
             def bones(context, object):
@@ -512,93 +488,72 @@ class get:
                 bones = []
 
                 if object == context.active_object and object.type == 'ARMATURE':
-
                     option = get.name_panel.options(context).filters['options']
                     display_mode = get.name_panel.options(context).filters['options'].display_mode
 
                     if context.mode == 'POSE':
-
                         if option.display_mode == 'ACTIVE':
-
                             bones = [context.active_pose_bone]
 
                         elif option.display_mode == 'SELECTED':
-
                             bones = [pose_bone for pose_bone in context.selected_pose_bones if pose_bone != context.active_pose_bone] if get.preferences(context).pin_active else [pose_bone for pose_bone in context.selected_pose_bones]
 
                         else:
-
                             bones = [pose_bone for pose_bone in context.visible_pose_bones if pose_bone != context.active_pose_bone] if get.preferences(context).pin_active else [pose_bone for pose_bone in context.visible_pose_bones]
 
                         if get.preferences(context).pin_active and option.display_mode != 'ACTIVE':
-
                             bones.insert(0, context.active_pose_bone)
 
                     elif context.mode == 'EDIT_ARMATURE':
-
                         if option.display_mode == 'ACTIVE':
-
                             bones = [context.active_bone]
 
                         elif option.display_mode == 'SELECTED':
-
                             bones = [bone for bone in context.selected_bones if bone != context.active_bone] if get.preferences(context).pin_active else [bone for bone in context.selected_bones]
 
                         else:
-
                             bones = [bone for bone in context.visible_bones if bone != context.active_bone] if get.preferences(context).pin_active else [bone for bone in context.visible_bones]
 
                         if get.preferences(context).pin_active and option.display_mode != 'ACTIVE':
-
                             bones.insert(0, context.active_bone)
-
 
                 return bones
 
 
             def vertex_groups(context, object):
-
                 return [vertex_group for vertex_group in object.vertex_groups] if hasattr(object, 'vertex_groups') else []
 
 
             def shapekeys(context, object):
-
                 return [shape_key for shape_key in object.data.shape_keys.key_blocks] if hasattr(object.data, 'shape_keys') and hasattr(object.data.shape_keys, 'key_blocks') else []
 
 
             def uv_maps(context, object):
-
                 return [uv_map for uv_map in object.data.uv_textures] if object.type == 'MESH' else []
 
 
             def vertex_colors(context, object):
-
                 return [vertex_color for vertex_color in object.data.vertex_colors] if object.type == 'MESH' else []
 
 
             def materials(context, object):
-
                 return [material_slot.material for material_slot in object.material_slots if material_slot != None]
 
 
             def subtypes(context, option, stack, object, type, datablock):
 
                 if type == 'grease_pencils':
-
                     stack['objects'][object.name][type][datablock.name]['grease_pencil_layers'] = {
                         'datablocks': [layer for layer in datablock.layers]}
 
                     for layer in stack['objects'][object.name][type][datablock.name]['grease_pencil_layers']['datablocks']:
-
                         stack['objects'][object.name][type][datablock.name]['grease_pencil_layers'][layer.info] = {
                             'datablock': layer,
                             'active': regex.panel_search(context, layer.info)}
 
                 if type == 'modifiers':
-
                     if option.particle_systems:
                         if datablock.type == 'PARTICLE_SYSTEM':
-
                             stack['objects'][object.name][type][datablock.name]['particle_system'] = {
                                 datablock.particle_system.name: {
                                     'datablock': datablock.particle_system,
@@ -610,7 +565,6 @@ class get:
                                     'active': regex.panel_search(context, datablock.particle_system.settings.name)}}
 
                             if option.textures and context.scene.render.engine == 'CYCLES':
-
                                 stack['objects'][object.name][type][datablock.name]['particle_system'][datablock.particle_system.name]['particle_settings'][datablock.particle_system.settings.name]['textures'] = {
                                     'datablocks': [texture_slot.texture for texture_slot in datablock.particle_system.settings.texture_slots if texture_slot != None]}
 
@@ -628,19 +582,16 @@ class get:
                                 'datablocks': [constraint for constraint in datablock.constraints]}
 
                             for constraint in stack['objects'][object.name][type][datablock.name]['bone_constraints']['datablocks']:
-
                                 stack['objects'][object.name][type][datablock.name]['bone_constraints'][constraint.name] = {
                                     'datablock': constraint,
                                     'active': regex.panel_search(context, constraint.name)}
 
                 if type == 'materials':
                     if option.textures and context.scene.render.engine == 'BLENDER_RENDER':
-
                         stack['objects'][object.name][type][datablock.name]['textures'] = {
                             'datablocks': [texture_slot.texture for texture_slot in datablock.texture_slots if texture_slot != None]}
 
                         for texture in stack['objects'][object.name][type][datablock.name]['textures']['datablocks']:
-
                             stack['objects'][object.name][type][datablock.name]['textures'][texture.name] = {
                                 'datablock': texture,
                                 'active': regex.panel_search(context, texture.name)}
@@ -650,147 +601,118 @@ class get:
 
 
             def __new__(self, operator, context):
-
                 return getattr(self, operator.identifier)(operator, context)
 
 
             def Object(operator, context):
-
                 return context.active_object
 
 
             def Mesh(operator, context):
-
                 return context.active_object.data
 
 
             def Curve(operator, context):
-
                 return context.active_object.data
 
 
             def MetaBall(operator, context):
-
                 return context.active_object.data
 
 
             def Armature(operator, context):
-
                 return context.active_object.data
 
 
             def Lattice(operator, context):
-
                 return context.active_object.data
 
 
             def Empty(operator, context):
-
                 return context.active_object.data
 
 
             def Speaker(operator, context):
-
                 return context.active_object.data
 
 
             def Camera(operator, context):
-
                 return context.active_object.data
 
 
             def Lamp(operator, context):
-
                 return context.active_object.data
 
 
             def Group(operator, context):
-
                 return bpy.data.groups[operator.target_name]
 
 
             def GreasePencil(operator, context):
-
                 return context.active_object.grease_pencil
 
 
             def GPencilLayer(operator, context):
-
                 return context.active_object.grease_pencil.layers[operator.target_name]
 
 
             def Action(operator, context):
-
                 return context.active_object.animation_data.action
 
 
             def Constraint(operator, context):
-
                 return context.active_object.constraints[operator.target_name]
 
 
             def Modifier(operator, context):
-
                 return context.active_object.modifiers[operator.target_name]
 
 
             def Image(operator, context):
-
                 return context.active_object.data
 
 
             def BoneGroup(operator, context):
-
                 return context.active_object.pose.bone_groups[operator.target_name]
 
 
             def PoseBone(operator, context):
-
                 return context.active_pose_bone
 
 
             def EditBone(operator, context):
-
                 return context.active_bone
 
 
             def VertexGroup(operator, context):
-
                 return context.active_object.vertex_groups[operator.target_name]
 
 
             def ShapeKey(operator, context):
-
                 return context.active_object.data.shape_keys.key_blocks[operator.target_name]
 
 
             def MeshTexturePolyLayer(operator, context):
-
                 return context.active_object.data.uv_textures[operator.target_name]
 
 
             def MeshLoopColorLayer(operator, context):
-
                 return context.active_object.data.vertex_colors[operator.target_name]
 
 
             def Material(operator, context):
-
                 return context.active_object.materials[operator.target_name]
 
 
             def Texture(operator, context):
-
                 return bpy.data.textures[operator.texture_name]
 
 
             def ParticleSystem(operator, context):
-
                 return context.active_object.particle_systems[operator.target_name]
 
 
             def ParticleSettings(operator, context):
-
                 return bpy.data.particles[operator.target_name]
 
 
@@ -892,57 +814,34 @@ class get:
 
             location = context.window_manager.name_panel.namer
 
-            if not location:
-
+            if not 'options' in location:
                 location.add().name = 'options'
                 location['options'].targeting.add().name = 'options'
                 location['options'].naming.add().name = 'options'
                 location['options'].sorting.add().name = 'options'
                 location['options'].counting.add().name = 'options'
 
-            if not location['options'].naming['options'].operations:
-
-                location['options'].naming['options'].operations.add().name = 'Default'
-
+            if not location['options'].naming['options'].operations: location['options'].naming['options'].operations.add().name = 'Default'
             return location['options']
 
 
         def operation_name(operation):
 
             if operation.operation_options_mode not in {'CONVERT', 'TRANSFER'}:
-
                 mode = '{}_mode'.format(operation.operation_options_mode.lower())
                 filler = ' at ' if mode == 'insert_mode' and operation.insert_mode == 'POSITION' else ' '
 
-                if mode in {'replace_mode', 'move_mode', 'swap_mode'} and getattr(operation, mode) == 'FIND':
-
-                    secondary = filler + 'Found'
-
-                else:
-
-                    secondary = filler + getattr(operation, mode).title()
-
+                if mode in {'replace_mode', 'move_mode', 'swap_mode'} and getattr(operation, mode) == 'FIND': secondary = filler + 'Found'
+                else: secondary = filler + getattr(operation, mode).title()
             elif operation.operation_options_mode == 'CONVERT':
 
                 secondary = ''
 
-                if operation.case_mode != 'NONE':
-
-                    secondary = ' Case'
-
+                if operation.case_mode != 'NONE': secondary = ' Case'
                 if operation.separate_mode != 'NONE':
-                    if secondary != '':
-
-                        secondary += ' & Separators'
-
-                    else:
-
-                        secondary = ' Separators'
-
-            else:
-
-                secondary = ''
-
+                    if secondary != '': secondary += ' & Separators'
+                    else: secondary = ' Separators'
+            else: secondary = ''
             return operation.operation_options_mode.title() + secondary
 
 
@@ -953,71 +852,20 @@ class get:
 
             location = get.preferences(context).datablock
 
-            if not location:
+            if not 'panel' in location:
+                location.add().name = 'panel'
 
-                # NOTE: adding panels
-                # to add box panels use the format: (*module path*, *panel class name*)
-                # if the box panel does not display correctly you can override the draw function by creating a function in interface.datablock
-                # this function must be defined in the form; def *panel class name*(self, operator, context, layout):
-
-                panels = (
-                    'render',
-
-                    bl_ui.properties_render, 'RENDER_PT_render',
-                    bl_ui.properties_render, 'RENDER_PT_dimensions',
-                    bl_ui.properties_render, 'RENDER_PT_antialiasing',
-                    bl_ui.properties_render, 'RENDER_PT_motion_blur',
-                    bl_ui.properties_render, 'RENDER_PT_shading',
-                    bl_ui.properties_render, 'RENDER_PT_performance',
-                    bl_ui.properties_render, 'RENDER_PT_post_processing',
-                    bl_ui.properties_render, 'RENDER_PT_stamp',
-                    bl_ui.properties_render, 'RENDER_PT_output',
-                    bl_ui.properties_render, 'RENDER_PT_encoding',
-                    bl_ui.properties_render, 'RENDER_PT_bake',
-                    bl_ui.properties_freestyle, 'RENDER_PT_freestyle',
-                    cycles.ui, 'CyclesRender_PT_sampling',
-                    cycles.ui, 'CyclesRender_PT_geometry',
-                    cycles.ui, 'CyclesRender_PT_light_paths',
-                    cycles.ui, 'CyclesRender_PT_motion_blur',
-                    cycles.ui, 'CyclesRender_PT_film',
-                    cycles.ui, 'CyclesRender_PT_performance',
-                    cycles.ui, 'CyclesRender_PT_layer_options',
-                    cycles.ui, 'CyclesRender_PT_layer_passes',
-                    cycles.ui, 'CyclesRender_PT_views',
-                    cycles.ui, 'CyclesRender_PT_denoising',
-
-                    'render_layers',
-
-                    'RENDERLAYER_PT_layers',
-                    'RENDERLAYER_PT_layer_options',
-                    'RENDERLAYER_PT_layer_passes',
-                    'RENDERLAYER_UL_renderviews',
-                    'RENDERLAYER_PT_views',
-                    # scene
-                    # world
-                    # object
-                    # constraints
-                    # modifiers
-                    # mesh
-                    # curve
-                    # metaball
-                    # armature
-                    # lattice
-                    # empty
-                    # speaker
-                    # camera
-                    # lamp
-                    # material
-                    # texture
-                    # particles
-                    # physics
-
-                    )
-
-                update.datablock_panel_collection(location, panels)
+                for panel in default_panels:
+                    collection = getattr(location['panel'], panel[0].lower())
+                    bl_label = getattr(bpy.types, panel[1]).bl_label
+                    collection.add().name = panel[1]
+                    collection[panel[1]].id = panel[1]
+                    collection[panel[1]].label = bl_label
+                    collection[panel[1]].hidden = False
+                    collection[panel[1]].collapsed = True
 
 
-            return location['options']
+            return location['panel']
 
 
         def contexts(scene, context):
@@ -1026,15 +874,24 @@ class get:
                 ('RENDER', 'Render', '', 'SCENE', 0),
                 ('RENDER_LAYER', 'Render layers', '', 'RENDERLAYERS', 1),
                 ('SCENE', 'Scene', '', 'SCENE_DATA', 2),
-                ('WORLD', 'World', '', 'WORLD_DATA', 3),
-                ('TEXTURE', 'Texture', '', 'TEXTURE_DATA', 9)]
+                ('WORLD', 'World', '', 'WORLD_DATA', 3)]
 
             if context.active_object:
 
                 items.append(('OBJECT', 'Object', '', 'OBJECT_DATA', 4))
+                items.append(('CONSTRAINT', 'Constraint', '', 'CONSTRAINT', 5))
 
-                if context.active_object.type in {'OBJECT'}:
-                    pass
+                if context.active_object.type in {'CURVE', 'LATTICE', 'MESH', 'SURFACE', 'FONT'}: items.append(('MODIFIER', 'Modifier', '', 'MODIFIER', 6))
+                if context.active_object.type in {'CURVE', 'SURFACE', 'FONT'}: items.append(('DATA', 'Data', '', 'CURVE_DATA', 7))
+                else: items.append(('DATA', 'Data', '', '{}_DATA'.format(context.active_object.type), 7))
+                if context.active_object.type in {'CURVE', 'MESH', 'META', 'SURFACE', 'FONT'}: items.append(('MATERIAL', 'Material', '', 'MATERIAL_DATA', 8))
+
+            items.append(('TEXTURE', 'Texture', '', 'TEXTURE_DATA', 9))
+
+            if context.active_object:
+                if context.active_object.type == 'MESH': items.append(('PARTICLES', 'Particles', '', 'PARTICLE_DATA', 10))
+
+                items.append(('PHYSICS', 'Physics', '', 'PHYSICS', 11))
 
             return items
 
@@ -1046,14 +903,24 @@ class update:
 
         if get.preferences(bpy.context).keep_session_settings:
             if not remove:
-
                 bpy.app.handlers.load_pre.append(keep_session_settings)
                 bpy.app.handlers.save_post.append(keep_session_settings)
 
             else:
-
                 bpy.app.handlers.load_pre.remove(keep_session_settings)
                 bpy.app.handlers.save_post.remove(keep_session_settings)
+
+
+    def item_panel_poll(restore=False):
+
+        if restore: bpy.types.VIEW3D_PT_view3d_name.poll = get.item_panel_poll
+        else: bpy.types.VIEW3D_PT_view3d_name.poll = get.item_panel_poll_override
+
+
+    def prop_item_panel_poll(scene, context):
+
+        if get.preferences(context).remove_item_panel: bpy.types.VIEW3D_PT_view3d_name.poll = get.item_panel_poll_override
+        else: bpy.types.VIEW3D_PT_view3d_name.poll = get.item_panel_poll
 
 
     def selection(operator, context, event):
@@ -1063,60 +930,46 @@ class update:
         objects = context.scene.objects
 
         if operator.identifier not in {'PoseBone', 'EditBone'}:
-
             object_selected = True if not objects[operator.object_name].select else False
 
             if objects[operator.object_name] != objects.active:
-
                 objects.active = objects[operator.object_name]
                 objects[operator.object_name].select = object_selected if event.shift else True
 
                 bpy.ops.object.mode_set(mode='OBJECT')
 
-            else:
-
-                objects[operator.object_name].select = object_selected if event.shift else True
+            else: objects[operator.object_name].select = object_selected if event.shift else True
 
             if not event.shift:
                 for object in objects:
                     if object != objects[operator.object_name]:
-
                         object.select = False
 
         if operator.identifier == 'PoseBone':
-
             bones = objects.active.data.bones
             bone_selected = True if not bones[operator.target_name].select else False
 
             if bones[operator.target_name] != bones.active:
-
                 bones.active = bones[operator.target_name]
                 bones[operator.target_name].select = bone_selected if event.shift else True
 
-            else:
-
-                bones.active.select = bone_selected if event.shift else True
-
+            else: bones.active.select = bone_selected if event.shift else True
             if not event.shift:
                 for bone in context.visible_pose_bones:
                     if bones[bone.name] != bones[operator.target_name]:
-
                         bone.bone.select = False
 
         elif operator.identifier == 'EditBone':
-
             bones = objects.active.data.edit_bones
             bone_selected = True if not bones[operator.target_name].select else False
 
             if bones[operator.target_name] != bones.active:
-
                 bones.active = bones[operator.target_name]
                 bones[operator.target_name].select = bone_selected if event.shift else True
                 bones[operator.target_name].select_head = bone_selected if event.shift else True
                 bones[operator.target_name].select_tail = bone_selected if event.shift else True
 
             else:
-
                 bones[operator.target_name].select = bone_selected if event.shift else True
                 bones[operator.target_name].select_head = bone_selected if event.shift else True
                 bones[operator.target_name].select_tail = bone_selected if event.shift else True
@@ -1124,7 +977,6 @@ class update:
             if not event.shift:
                 for bone in context.visible_bones:
                     if bone != bones[operator.target_name]:
-
                         bone.select = False
                         bone.select_head = False
                         bone.select_tail = False
@@ -1160,13 +1012,9 @@ class update:
             'particle_systems']
 
         if option.toggle_all:
-            for toggle in toggles:
-                setattr(option, toggle, True)
-
-
+            for toggle in toggles: setattr(option, toggle, True)
         else:
-            for toggle in toggles:
-                setattr(option, toggle, False)
+            for toggle in toggles: setattr(option, toggle, False)
 
 
     def target_options(operator, context):
@@ -1174,110 +1022,10 @@ class update:
         option = get.namer.options(context).targeting['options']
 
         if option.toggle_objects:
-            for target in get.namer.catagories['Objects']:
-
-                setattr(option, target, True)
-
+            for target in get.namer.catagories['Objects']: setattr(option, target, True)
         else:
-            for target in get.namer.catagories['Objects']:
-
-                setattr(option, target, False)
-
+            for target in get.namer.catagories['Objects']: setattr(option, target, False)
         if option.toggle_objects_data:
-            for target in get.namer.catagories['Objects Data']:
-
-                setattr(option, target, True)
-
+            for target in get.namer.catagories['Objects Data']: setattr(option, target, True)
         else:
-            for target in get.namer.catagories['Objects Data']:
-                setattr(option, target, False)
-
-
-    def datablock_panel_collection(location, panels):
-
-        pass
-
-
-# TODO: can we get away with pulling from rna_prop_ui directly?
-class rna_prop_ui:
-
-
-    def rna_idprop_ui_get(item, create=True):
-
-        try:
-
-            return item['_RNA_UI']
-
-        except:
-
-            if create:
-
-                item['_RNA_UI'] = {}
-
-                return item['_RNA_UI']
-
-            else:
-
-                return None
-
-
-    def rna_idprop_ui_del(item):
-
-        try: del item['_RNA_UI']
-        except KeyError: pass
-
-
-    def rna_idprop_ui_prop_update(item, prop):
-
-        prop_rna = item.path_resolve("[\"%s\"]" % prop.replace("\"", "\\\""), False)
-
-        if isinstance(prop_rna, bpy.types.bpy_prop):
-
-            prop_rna.update()
-
-
-    def rna_idprop_ui_prop_get(item, prop, create=True):
-
-        rna_ui = rna_idprop_ui_get(item, create)
-
-        if rna_ui is None:
-
-            return None
-
-        try:
-
-            return rna_ui[prop]
-
-        except:
-
-            rna_ui[prop] = {}
-
-            return rna_ui[prop]
-
-
-    def rna_idprop_ui_prop_clear(item, prop, remove=True):
-
-        rna_ui = rna_idprop_ui_get(item, False)
-
-        if rna_ui is None:
-            return
-
-        try: del rna_ui[prop]
-
-        except KeyError: pass
-
-        if remove and len(item.keys()) == 1:
-
-            rna_idprop_ui_del(item)
-
-
-    def rna_idprop_context_value(context, context_member, property_type):
-
-        rna_item = eval("context." + context_member)
-
-        return rna_item, context_member
-
-
-    def rna_idprop_has_properties(rna_item):
-
-        return (len(rna_item.keys()) > 1) or (len(rna_item.keys()) and '_RNA_UI' not in rna_item.keys())
+            for target in get.namer.catagories['Objects Data']: setattr(option, target, False)

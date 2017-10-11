@@ -13,43 +13,43 @@ You should have received a copy of the GNU General Public License along with
 this program. If not, see <http://www.gnu.org/licenses/>.
 '''
 
-import bpy
-
 bl_info = {
     'name': 'Name Panel',
     'author': 'Trentin Frederick a.k.a. proxe',
-    'version': (1, 8, 478),
-    'blender': (2, 78, 0),
+    'version': (1, '8  rc1  commit: 481'),
+    'blender': (2, 79, 0),
     'location': '3D View \N{Rightwards Arrow} Tool (T) | Property (N)',
-    'description': 'In panel datablock name stack with additional naming tools.',
+    'description': 'In panel datablock name stack with additional naming and productivity tools.',
     'tracker_url': 'https://github.com/proxeIO/name-panel/issues',
     'category': '3D View'}
+
+import bpy
 
 from bpy.utils import register_module, unregister_module, unregister_class
 from bpy.props import PointerProperty
 
 from .addon import menu, operator, panel, preferences, properties
-from .addon.utilities import get, update
+from .addon.utilities import get, update, check_for_update
 
 
 def register():
 
-
     register_module(__name__)
+
+    if get.preferences(bpy.context).auto_check:
+        check_for_update(bl_info)
 
     bpy.types.WindowManager.name_panel = PointerProperty(
         type = properties.name_panel,
         name = 'Name Panel Addon',
         description = 'Storage location for name panel addon options')
 
-    try:
-        if get.preferences(bpy.context).remove_item:
-            unregister_class(bpy.types.VIEW3D_PT_view3d_name)
-    except:
-        pass
+    if get.preferences(bpy.context).remove_item_panel: update.item_panel_poll()
 
     keymap = bpy.context.window_manager.keyconfigs.addon.keymaps.new(name='Window')
-    keymap.keymap_items.new('wm.namer', 'F7', 'PRESS')
+    kmi = keymap.keymap_items.new('wm.datablock_settings', 'F7', 'PRESS')
+    kmi.properties.object_name = ''
+    keymap.keymap_items.new('wm.namer', 'NONE', 'PRESS')
 
     update.handlers()
 
@@ -60,7 +60,9 @@ def unregister():
 
     keymap = bpy.context.window_manager.keyconfigs.addon.keymaps['Window']
     keymap.keymap_items.remove(keymap.keymap_items['wm.namer'])
+    keymap.keymap_items.remove(keymap.keymap_items['wm.datablock_settings'])
 
     update.handlers(remove=True)
+    update.item_panel_poll(restore=True)
 
     unregister_module(__name__)

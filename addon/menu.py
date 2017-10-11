@@ -13,7 +13,6 @@ class name_panel_specials(Menu):
 
 
     def draw(self, context):
-
         interface.name_panel.specials(self, context)
 
 
@@ -23,7 +22,6 @@ class namer_search_specials(Menu):
 
 
     def draw(self, context):
-
         interface.namer.search_specials(self, context)
 
 
@@ -33,7 +31,6 @@ class move_search_specials(Menu):
 
 
     def draw(self, context):
-
         interface.namer.move_search_specials(self, context)
 
 
@@ -43,7 +40,6 @@ class swap_search_specials(Menu):
 
 
     def draw(self, context):
-
         interface.namer.swap_search_specials(self, context)
 
 
@@ -53,5 +49,4 @@ class operation_specials(Menu):
 
 
     def draw(self, context):
-
         interface.namer.operation_specials(self, context)

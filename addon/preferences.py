@@ -3,11 +3,13 @@ import bpy
 from bpy.types import PropertyGroup, AddonPreferences
 from bpy.props import *
 
+from . import interface
+
 from .config import defaults
-from .utilities import get
+from .utilities import get, update
 
 
-class render_options(PropertyGroup):
+class render_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['render']
 
@@ -29,7 +31,7 @@ class render_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class render_layers_options(PropertyGroup):
+class render_layer_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['render_layers']
 
@@ -51,7 +53,7 @@ class render_layers_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class scene_options(PropertyGroup):
+class scene_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['scene']
 
@@ -73,7 +75,7 @@ class scene_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class world_options(PropertyGroup):
+class world_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['world']
 
@@ -95,7 +97,7 @@ class world_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class object_options(PropertyGroup):
+class object_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['object']
 
@@ -117,7 +119,7 @@ class object_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class constraints_options(PropertyGroup):
+class constraint_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['constraints']
 
@@ -139,7 +141,7 @@ class constraints_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class modifiers_options(PropertyGroup):
+class modifier_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['modifiers']
 
@@ -161,31 +163,9 @@ class modifiers_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class mesh_options(PropertyGroup):
+class data_context(PropertyGroup):
 
-    default = defaults['preferences']['datablock']['mesh']
-
-    id = StringProperty()
-
-    label = StringProperty(
-        name = 'Label',
-        description = 'Name to display in the box panel header',
-        default = default['label'])
-
-    hidden = BoolProperty(
-        name = 'Hide',
-        description='Hide this panel in the datablock popup',
-        default = default['hidden'])
-
-    collapsed = BoolProperty(
-        name = 'Collapse',
-        description = 'Callapse this box panel',
-        default = default['collapsed'])
-
-
-class curve_options(PropertyGroup):
-
-    default = defaults['preferences']['datablock']['curve']
+    default = defaults['preferences']['datablock']['data']
 
     id = StringProperty()
 
@@ -205,31 +185,9 @@ class curve_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class metaball_options(PropertyGroup):
+class bone_context(PropertyGroup):
 
-    default = defaults['preferences']['datablock']['metaball']
-
-    id = StringProperty()
-
-    label = StringProperty(
-        name = 'Label',
-        description = 'Name to display in the box panel header',
-        default = default['label'])
-
-    hidden = BoolProperty(
-        name = 'Hide',
-        description='Hide this panel in the datablock popup',
-        default = default['hidden'])
-
-    collapsed = BoolProperty(
-        name = 'Collapse',
-        description = 'Callapse this box panel',
-        default = default['collapsed'])
-
-
-class armature_options(PropertyGroup):
-
-    default = defaults['preferences']['datablock']['armature']
+    default = defaults['preferences']['datablock']['data']
 
     id = StringProperty()
 
@@ -249,31 +207,9 @@ class armature_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class lattice_options(PropertyGroup):
+class bone_constraint_context(PropertyGroup):
 
-    default = defaults['preferences']['datablock']['lattice']
-
-    id = StringProperty()
-
-    label = StringProperty(
-        name = 'Label',
-        description = 'Name to display in the box panel header',
-        default = default['label'])
-
-    hidden = BoolProperty(
-        name = 'Hide',
-        description='Hide this panel in the datablock popup',
-        default = default['hidden'])
-
-    collapsed = BoolProperty(
-        name = 'Collapse',
-        description = 'Callapse this box panel',
-        default = default['collapsed'])
-
-
-class empty_options(PropertyGroup):
-
-    default = defaults['preferences']['datablock']['empty']
+    default = defaults['preferences']['datablock']['data']
 
     id = StringProperty()
 
@@ -293,73 +229,7 @@ class empty_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class speaker_options(PropertyGroup):
-
-    default = defaults['preferences']['datablock']['speaker']
-
-    id = StringProperty()
-
-    label = StringProperty(
-        name = 'Label',
-        description = 'Name to display in the box panel header',
-        default = default['label'])
-
-    hidden = BoolProperty(
-        name = 'Hide',
-        description='Hide this panel in the datablock popup',
-        default = default['hidden'])
-
-    collapsed = BoolProperty(
-        name = 'Collapse',
-        description = 'Callapse this box panel',
-        default = default['collapsed'])
-
-
-class camera_options(PropertyGroup):
-
-    default = defaults['preferences']['datablock']['camera']
-
-    id = StringProperty()
-
-    label = StringProperty(
-        name = 'Label',
-        description = 'Name to display in the box panel header',
-        default = default['label'])
-
-    hidden = BoolProperty(
-        name = 'Hide',
-        description='Hide this panel in the datablock popup',
-        default = default['hidden'])
-
-    collapsed = BoolProperty(
-        name = 'Collapse',
-        description = 'Callapse this box panel',
-        default = default['collapsed'])
-
-
-class lamp_options(PropertyGroup):
-
-    default = defaults['preferences']['datablock']['lamp']
-
-    id = StringProperty()
-
-    label = StringProperty(
-        name = 'Label',
-        description = 'Name to display in the box panel header',
-        default = default['label'])
-
-    hidden = BoolProperty(
-        name = 'Hide',
-        description='Hide this panel in the datablock popup',
-        default = default['hidden'])
-
-    collapsed = BoolProperty(
-        name = 'Collapse',
-        description = 'Callapse this box panel',
-        default = default['collapsed'])
-
-
-class material_options(PropertyGroup):
+class material_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['material']
 
@@ -381,7 +251,7 @@ class material_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class texture_options(PropertyGroup):
+class texture_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['texture']
 
@@ -403,7 +273,7 @@ class texture_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class particles_options(PropertyGroup):
+class particles_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['particles']
 
@@ -425,7 +295,7 @@ class particles_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class physics_options(PropertyGroup):
+class physics_context(PropertyGroup):
 
     default = defaults['preferences']['datablock']['physics']
 
@@ -447,7 +317,7 @@ class physics_options(PropertyGroup):
         default = default['collapsed'])
 
 
-class datablock_options(PropertyGroup):
+class datablock_settings(PropertyGroup):
 
     default = defaults['preferences']['datablock']
 
@@ -458,83 +328,59 @@ class datablock_options(PropertyGroup):
 
     render = CollectionProperty(
         name = 'Render',
-        type = render_options)
+        type = render_context)
 
-    render_layers = CollectionProperty(
-        name = 'Render Layers',
-        type = render_layers_options)
+    render_layer = CollectionProperty(
+        name = 'Render Layer',
+        type = render_layer_context)
 
     scene = CollectionProperty(
         name = 'Scene',
-        type = scene_options)
+        type = scene_context)
 
     world = CollectionProperty(
         name = 'World',
-        type = world_options)
+        type = world_context)
 
     object = CollectionProperty(
         name = 'Object',
-        type = object_options)
+        type = object_context)
 
-    constraints = CollectionProperty(
-        name = 'Constraints',
-        type = constraints_options)
+    constraint = CollectionProperty(
+        name = 'Constraint',
+        type = constraint_context)
 
-    modifiers = CollectionProperty(
-        name = 'Modifiers',
-        type = modifiers_options)
+    modifier = CollectionProperty(
+        name = 'Modifier',
+        type = modifier_context)
 
-    mesh = CollectionProperty(
-        name = 'Mesh',
-        type = mesh_options)
+    data = CollectionProperty(
+        name = 'Data',
+        type = data_context)
 
-    curve = CollectionProperty(
-        name = 'Curve',
-        type = curve_options)
+    bone = CollectionProperty(
+        name = 'Bone',
+        type = bone_context)
 
-    metaball = CollectionProperty(
-        name = 'Metaball',
-        type = metaball_options)
-
-    armature = CollectionProperty(
-        name = 'Armature',
-        type = armature_options)
-
-    lattice = CollectionProperty(
-        name = 'Lattice',
-        type = lattice_options)
-
-    empty = CollectionProperty(
-        name = 'Empty',
-        type = empty_options)
-
-    speaker = CollectionProperty(
-        name = 'Speaker',
-        type = speaker_options)
-
-    camera = CollectionProperty(
-        name = 'Camera',
-        type = camera_options)
-
-    lamp = CollectionProperty(
-        name = 'Lamp',
-        type = lamp_options)
+    bone_constraint = CollectionProperty(
+        name = 'Bone Constraint',
+        type = bone_constraint_context)
 
     material = CollectionProperty(
         name = 'Material',
-        type = material_options)
+        type = material_context)
 
     texture = CollectionProperty(
         name = 'Texture',
-        type = texture_options)
+        type = texture_context)
 
     particles = CollectionProperty(
         name = 'Particles',
-        type = particles_options)
+        type = particles_context)
 
     physics = CollectionProperty(
         name = 'Physics',
-        type = physics_options)
+        type = physics_context)
 
 
 class name_panel(AddonPreferences):
@@ -544,11 +390,14 @@ class name_panel(AddonPreferences):
 
     mode = EnumProperty(
         name = 'Mode',
-        description = 'Mode',
+        description = 'Adjust preferences',
         items = [
-            ('GENERAL', 'General', 'Adjust general preferences'),
-            ('PANEL', 'Name Panel', 'Adjust preferences related to the name stack'),
-            ('NAMER', 'Namer', 'Adjust preferences related to namer')],
+            ('GENERAL', 'General', ''),
+            ('PANEL', 'Panel', ''),
+            ('DATABLOCK', 'Properties', ''),
+            ('NAMER', 'Namer', ''),
+            ('HOTKEY', 'Hotkeys', ''),
+            ('UPDATES', 'Updates', '')],
         default = default['mode'])
 
     keep_session_settings = BoolProperty(
@@ -571,17 +420,18 @@ class name_panel(AddonPreferences):
 
     click_through = BoolProperty(
         name = 'Click Through',
-        description = 'Do not activate the pop-up when clicking a datablock icon',
+        description = 'Do not activate the pop-up when clicking a name stack icon',
         default = default['click_through'])
 
-    remove_item = BoolProperty(
+    remove_item_panel = BoolProperty(
         name = 'Remove Item Panel',
-        description = 'Remove the item panel from the properties shelf when this addon is active',
-        default = default['remove_item'])
+        description = 'Remove the item panel from the properties shelf when the name panel is there',
+        update = update.prop_item_panel_poll,
+        default = default['remove_item_panel'])
 
     popup_width = IntProperty(
         name = 'Width',
-        description = 'Width of the pop-up panels in pixels',
+        description = 'Width of the filters pop-up panel in pixels',
         min = 200,
         max = 1000,
         subtype = 'PIXEL',
@@ -599,6 +449,14 @@ class name_panel(AddonPreferences):
         description = 'When adding a naming operation use the previous settings',
         default = default['use_last'])
 
+    datablock_popup_width = IntProperty(
+        name = 'Width',
+        description = 'Width of the datablock properties pop-up panel in pixels',
+        min = 200,
+        max = 1000,
+        subtype = 'PIXEL',
+        default = default['datablock_popup_width'])
+
     auto_name_operations = BoolProperty(
         name = 'Auto Name Operations',
         description = 'Automatically name operation entries based on operation modes',
@@ -614,71 +472,30 @@ class name_panel(AddonPreferences):
 
     datablock = CollectionProperty(
         name = 'Datablock',
-        type = datablock_options)
+        type = datablock_settings)
 
+    update_check = BoolProperty(
+        name = 'Check at startup',
+        description = 'Check at blender startup for updates',
+        default = default['update_check'])
+
+    display_menu = BoolProperty(
+        name = 'Display in menu',
+        description = 'Display update information in the name panel specials menu',
+        default = default['display_menu'])
+
+    display_panel = BoolProperty(
+        name = 'Display in panel',
+        description = 'Display update information in the name panel',
+        default = default['display_panel'])
+
+    web_links = [
+        ('Thread', ''),
+        ('Blender Market', ''),
+        ('Github', ''),
+        ('Report Bug', ''),
+        ('Donate', '')]
 
     def draw(self, context):
 
-        web_links = [
-            ('Thread', ''),
-            ('Blender Market', ''),
-            ('Github', ''),
-            ('Report Bug', ''),
-            ('Donate', '')]
-
-        self.preference = get.preferences(context)
-
-        row = self.layout.row()
-        row.prop(self.preference, 'mode', expand=True)
-
-        getattr(self, self.preference.mode.lower())(context)
-
-        row = self.layout.row(align=True)
-        row.scale_y = 1.5
-        for name, url in web_links:
-            row.operator('wm.url_open', text=name).url = url
-
-
-    def general(self, context):
-
-        box = self.layout.box()
-
-        row = box.row()
-        row.prop(self.preference, 'keep_session_settings')
-
-
-    def panel(self, context):
-
-        box = self.layout.box()
-
-        row = box.row()
-        row.label(text='Location:')
-        row.prop(self.preference, 'location', expand=True)
-
-        row = box.row()
-        row.prop(self.preference, 'pin_active')
-        row.prop(self.preference, 'remove_item')
-
-        row = box.row()
-        row.prop(self.preference, 'click_through')
-
-        row = box.row()
-        row.label(text='Pop-up Width:')
-        row.prop(self.preference, 'popup_width', text='')
-
-        row = box.row()
-        row.label(text='Separators:')
-        row.prop(self.preference, 'separators', text='')
-
-
-    def namer(self, context):
-
-        box = self.layout.box()
-
-        row = box.row()
-        row.prop(self.preference, 'use_last')
-        row.prop(self.preference, 'auto_name_operations')
-
-        row = box.row()
-        row.label(text='Namer Pop-up Width:')
-        row.prop(self.preference, 'namer_popup_width')
+        interface.name_panel.preferences(self, context)

@@ -1,13 +1,7 @@
-
 import bpy
-import bl_ui
-import cycles
+import rna_keymap_ui
 
-from bpy.utils import escape_identifier
-from bl_ui.properties_animviz import MotionPathButtonsPanel, OnionSkinButtonsPanel
-from rna_prop_ui import PropertyPanel
-
-from .utilities import get, rna_prop_ui
+from .utilities import get
 
 
 class name_panel:
@@ -34,23 +28,17 @@ class name_panel:
 
         row.prop(self.option, 'find', text='', icon='VIEWZOOM')
 
-        if self.option.find:
-
-            row.operator('view3d.name_panel_clear_find', text='', icon='X')
+        if self.option.find: row.operator('view3d.name_panel_clear_find', text='', icon='X')
 
         row.operator('view3d.name_panel_options', text='', icon='FILTER')
-
         row.menu('view3d.name_panel_specials', text='', icon='COLLAPSEMENU')
 
         if self.option.find:
-
             row = column.row(align=True)
 
             row.prop(self.option, 'replace', text='', icon='FILE_REFRESH')
 
-            if self.option.replace:
-
-                row.operator('view3d.name_panel_clear_replace', text='', icon='X')
+            if self.option.replace: row.operator('view3d.name_panel_clear_replace', text='', icon='X')
 
             sub = row.row(align=True)
             sub.scale_x = 0.2
@@ -64,14 +52,8 @@ class name_panel:
 
         # TODO: add display limit
         if self.stack:
-
-            for object in self.stack['datablocks']:
-
-                self.stack_object(self, context, object)
-
-        else:
-
-            self.no_stack()
+            for object in self.stack['datablocks']: self.stack_object(self, context, object)
+        else: self.no_stack()
 
 
     def no_stack(self):
@@ -85,17 +67,9 @@ class name_panel:
         #
         #     row.label(text='No matches found')
 
-        if option.display_mode == 'ACTIVE':
-
-            row.label(text='No active object')
-
-        elif option.display_mode == 'SELECTED':
-
-            row.label(text='No selected objects')
-
-        else: # option.display_mode == 'VISIBLE':
-
-            row.label(text='No visible objects')
+        if option.display_mode == 'ACTIVE': row.label(text='No active object')
+        elif option.display_mode == 'SELECTED': row.label(text='No selected objects')
+        else: row.label(text='No visible objects')
 
         self.layout.separator()
 
@@ -140,19 +114,13 @@ class name_panel:
 
             self.row(panel.stack['objects'], column, self.object, get.icon.object(self.object), emboss=True if self.object.select or self.object == self.context.active_object else False, active=not (self.object == self.context.scene.objects.active and not self.object.select))
 
-            for type in panel.stack['objects'][object.name]['types']:
-
-                getattr(self, type)(panel.stack['objects'][object.name][type], column)
-
-            for _ in range(get.preferences(self.context).separators):
-
-                panel.layout.separator()
+            for type in panel.stack['objects'][object.name]['types']: getattr(self, type)(panel.stack['objects'][object.name][type], column)
+            for _ in range(get.preferences(self.context).separators): panel.layout.separator()
 
 
         def row(self, location, column, datablock, icon, name_type='name', emboss=False, active=True):
 
             if datablock:
-
                 row = column.row(align=True)
                 row.active = location[getattr(datablock, name_type)]['active']
 
@@ -160,8 +128,9 @@ class name_panel:
                 sub.scale_x = 1.5 if not emboss else 1.6
                 sub.active = active
 
-                operator_prop = 'view3d.name_panel_datablock_click_through' if get.preferences(self.context).click_through else 'view3d.name_panel_datablock'
-                operator = sub.operator(operator_prop, text='', icon=icon, emboss=emboss)
+                operator = sub.operator('wm.datablock_settings', text='', icon=icon, emboss=emboss)
+                operator.click_through = get.preferences(self.context).click_through
+                operator.context_override = ''
                 operator.object_name = self.object.name
                 operator.target_name = getattr(datablock, name_type)
                 operator.identifier = get.identifier(datablock)
@@ -170,121 +139,82 @@ class name_panel:
 
 
         def groups(self, location, column):
-
-            for group in location['datablocks']:
-
-                self.row(location, column, group, get.icon('groups'))
+            for group in location['datablocks']: self.row(location, column, group, get.icon('groups'))
 
 
         def grease_pencils(self, location, column):
 
             self.row(location, column, location['datablocks'][0], get.icon('grease_pencils'))
 
-            for layer in location[location['datablocks'][0].name]['grease_pencil_layers']['datablocks']:
-
-                self.row(location[location['datablocks'][0].name]['grease_pencil_layers'], column, layer, get.icon('grease_pencil_layers'), name_type='info')
+            for layer in location[location['datablocks'][0].name]['grease_pencil_layers']['datablocks']: self.row(location[location['datablocks'][0].name]['grease_pencil_layers'], column, layer, get.icon('grease_pencil_layers'), name_type='info')
 
 
         def actions(self, location, column):
-
             self.row(location, column, location['datablocks'][0], get.icon('actions'))
 
 
         def constraints(self, location, column):
-
-            for constraint in location['datablocks']:
-
-                self.row(location, column, constraint, get.icon('constraints'))
+            for constraint in location['datablocks']: self.row(location, column, constraint, get.icon('constraints'))
 
 
         def modifiers(self, location, column):
 
             for modifier in location['datablocks']:
-
                 self.row(location, column, modifier, get.icon.modifier(modifier))
 
                 if 'particle_system' in location[modifier.name]:
-
                     self.row(location[modifier.name]['particle_system'], column, location[modifier.name]['particle_system'][modifier.particle_system.name]['datablock'], get.icon.subtype('particle_system'))
                     self.row(location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'], column, location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]['datablock'], 'DOT')
 
                     if 'textures' in location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]:
-
-                        for texture in location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]['textures']['datablocks']:
-
-                            self.row(location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]['textures'], column,  location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]['textures'][texture.name]['datablock'], get.icon('textures'))
+                        for texture in location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]['textures']['datablocks']: self.row(location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]['textures'], column,  location[modifier.name]['particle_system'][modifier.particle_system.name]['particle_settings'][modifier.particle_system.settings.name]['textures'][texture.name]['datablock'], get.icon('textures'))
 
 
         def object_data(self, location, column):
-
             self.row(location, column, location['datablocks'][0], get.icon.object_data(self.object), emboss=True if self.object.select or self.object == self.context.active_object else False, active=not (self.object == self.context.scene.objects.active and not self.object.select))
 
 
         def bone_groups(self, location, column):
-
-            for group in location['datablocks']:
-
-                self.row(location, column, group, get.icon('bone_groups'))
+            for group in location['datablocks']: self.row(location, column, group, get.icon('bone_groups'))
 
 
         def bones(self, location, column): # TODO: implement bones for all armatures in namestack
 
-            if location['datablocks']:
-
-                column.separator()
+            if location['datablocks']: column.separator()
 
             for bone in location['datablocks']:
-
                 active_bone = self.context.active_bone if self.context.mode == 'EDIT_ARMATURE' else self.context.active_pose_bone
                 bone_selected = bone.select if self.context.mode == 'EDIT_ARMATURE' else bone.bone.select
 
                 self.row(location, column, bone, get.icon('bones'), emboss=True if bone_selected or bone == active_bone else False, active=not (bone == active_bone and not bone_selected))
 
-                if 'bone_constraints' in location[bone.name]:
-
-                    self.constraints(location[bone.name]['bone_constraints'], column)
+                if 'bone_constraints' in location[bone.name]: self.constraints(location[bone.name]['bone_constraints'], column)
 
 
         def shapekeys(self, location, column):
-
-            for shapekey in location['datablocks']:
-
-                self.row(location, column, shapekey, get.icon('shapekeys'))
+            for shapekey in location['datablocks']: self.row(location, column, shapekey, get.icon('shapekeys'))
 
 
         def vertex_groups(self, location, column):
-
-            for vertex_group in location['datablocks']:
-
-                self.row(location, column, vertex_group, get.icon('vertex_groups'))
+            for vertex_group in location['datablocks']: self.row(location, column, vertex_group, get.icon('vertex_groups'))
 
 
         def uv_maps(self, location, column):
-
-            for uv_map in location['datablocks']:
-
-                self.row(location, column, uv_map, get.icon('uv_maps'))
+            for uv_map in location['datablocks']: self.row(location, column, uv_map, get.icon('uv_maps'))
 
 
         def vertex_colors(self, location, column):
-
-            for vertex_color in location['datablocks']:
-
-                self.row(location, column, vertex_color, get.icon('vertex_colors'))
+            for vertex_color in location['datablocks']: self.row(location, column, vertex_color, get.icon('vertex_colors'))
 
 
         def materials(self, location, column):
 
             for material in location['datablocks']:
-
                 self.row(location, column, material, get.icon('materials'))
 
                 if material:
-
                     if 'textures' in location[material.name]:
-
                         for texture in location[material.name]['textures']['datablocks']:
-
                             self.row(location[material.name]['textures'], column, texture, get.icon('textures'))
 
 
@@ -304,13 +234,10 @@ class name_panel:
             self.split = split.column(align=True)
 
             if self.option.mode == 'FILTERS':
-
-                self.display_mode(context)
                 self.filters(context)
+                self.display_mode(context)
 
-            else:
-
-                self.extra_options(context)
+            else: self.extra_options(context)
 
 
         @staticmethod
@@ -321,7 +248,7 @@ class name_panel:
 
         def display_mode(self, context):
 
-            row = self.split.row(align=True)
+            row = self.split.row()
 
             row.prop(self.option, 'display_mode', expand=True)
 
@@ -363,76 +290,121 @@ class name_panel:
         def extra_options(self, context):
 
             row = self.split.row(align=True)
-            row.prop(get.preferences(context), 'location', expand=True)
-
-            row = self.split.row(align=True)
-            row.prop(get.preferences(context), 'popup_width', text='Pop-up Width')
-
-            row = self.split.row(align=True)
             row.prop(get.preferences(context), 'pin_active', toggle=True)
             row.prop(get.preferences(context), 'click_through', toggle=True)
+
+            row = self.split.row(align=True)
+            row.prop(get.preferences(context), 'location', expand=True)
+
+            row = self.split.row()
+            row.prop(get.preferences(context), 'popup_width', text='Pop-up Width')
+
+
+    class preferences:
+
+
+        def __init__(self, addon, context):
+            addon.preference = get.preferences(context)
+
+            row = addon.layout.row()
+            row.prop(addon.preference, 'mode', expand=True)
+
+            getattr(self, addon.preference.mode.lower())(addon, context)
+
+            row = addon.layout.row(align=True)
+            row.scale_y = 1.5
+
+            for name, url in addon.web_links:
+                row.operator('wm.url_open', text=name).url = url
+
+
+        def general(self, addon, context):
+
+            box = addon.layout.box()
+
+            row = box.row()
+            row.prop(addon.preference, 'keep_session_settings')
+
+
+        def panel(self, addon, context):
+
+            box = addon.layout.box()
+
+            row = box.row()
+            row.label(text='Location:')
+            row.prop(addon.preference, 'location', expand=True)
+
+            row = box.row()
+            row.prop(addon.preference, 'pin_active')
+            row.prop(addon.preference, 'remove_item_panel')
+
+            row = box.row()
+            row.prop(addon.preference, 'click_through')
+
+            row = box.row()
+            row.label(text='Pop-up Width:')
+            row.prop(addon.preference, 'popup_width', text='')
+
+            row = box.row()
+            row.label(text='Separators:')
+            row.prop(addon.preference, 'separators', text='')
+
+
+        def datablock(self, addon, context):
+
+            box = addon.layout.box()
+
+            row = box.row()
+            row.label(text='Pop-up Width:')
+            row.prop(addon.preference, 'datablock_popup_width', text='')
+
+
+        def namer(self, addon, context):
+
+            box = addon.layout.box()
+
+            row = box.row()
+            row.prop(addon.preference, 'use_last')
+            row.prop(addon.preference, 'auto_name_operations')
+
+            row = box.row()
+            row.label(text='Pop-up Width:')
+            row.prop(addon.preference, 'namer_popup_width')
+
+
+        def hotkey(self, addon, context):
+
+            layout = addon.layout
+            column = layout.column()
+
+            keyconfig = context.window_manager.keyconfigs.addon
+            keymap = keyconfig.keymaps['Window']
+
+            if 'wm.datablock_settings' in keymap.keymap_items:
+                keymapitem = keymap.keymap_items['wm.datablock_settings']
+                column.context_pointer_set("keymap", keymap)
+                rna_keymap_ui.draw_kmi([], keyconfig, keymap, keymapitem, column, 0)
+
+            if 'wm.namer' in keymap.keymap_items:
+                keymapitem = keymap.keymap_items['wm.namer']
+                column.context_pointer_set("keymap", keymap)
+                rna_keymap_ui.draw_kmi([], keyconfig, keymap, keymapitem, column, 0)
+
+
+        def updates(self, addon, context):
+
+            box = addon.layout.box()
+
+            row = box.row()
+            row.prop(addon, 'auto_check')
+            row.prop(addon, 'display_menu')
+
+            row = box.row()
+            row.prop(addon, 'display_panel')
 
 
 class datablock:
 
-
-    # TODO: pin id, name panel needs to override but not replace pin state if it is called from name stack
-        # this should work with the individual states too such as modifier, if a modifier is pinned after being called from name stack, unless the operator is called again from the stack only show the last pin state, otherwise show the new datablock target and maintain the old pin state
-        #XXX: add pin history navigation
-    # TODO: Create a properties pop-up that behaves the same as the properties window place it on the search row, right after filters
-    def __init__(self, operator, context):
-
-        layout = operator.layout
-
-        # option = get.preferences(context).box_panels['box_panels']
-        option = get.datablock.options(context)
-
-        # context row
-
-        # header
-
-        # template id or ui list
-
-        # box panel
-
-
-    def context_row(self):
-
-        pass
-
-
-    def name_ui_list(self):
-
-        pass
-
-
-    def name_row(self):
-
-        pass
-
-
-    # render
-    # render layers
-    # scene
-    # world
-    # object
-    # constraints
-    # modifiers
-    # mesh
-    # curve
-    # metaball
-    # armature
-    # lattice
-    # empty
-    # speaker
-    # camera
-    # lamp
-    # material
-    # texture
-    # particles
-    # physics
-
-    # targeted
     # TODO: hide extra settings for these datablock types if there is a target in datablock oeprator
     # target object
     # target mesh
@@ -466,6 +438,83 @@ class datablock:
     # target particle system
     # target particle settings
 
+    # TODO: pin id, name panel needs to override but not replace pin state if it is called from name stack
+        # this should work with the individual states too such as modifier, if a modifier is pinned after being called from name stack, unless the operator is called again from the stack only show the last pin state, otherwise show the new datablock target and maintain the old pin state
+        #XXX: add pin history navigation
+    # TODO: Create a properties pop-up that behaves the same as the properties window place it on the search row, right after filters
+    def __init__(self, operator, context):
+
+        restore = {'layout': operator.layout}
+        layout = operator.layout
+        option = get.datablock.options(context)
+
+        row = layout.row(align=True)
+        row.prop(get.datablock.options(context), 'context', text='', expand=True)
+        row.menu('view3d.name_panel_specials', text='', icon='COLLAPSEMENU') # TODO: make specials operator pop-up
+
+        box_column = layout.column(align=True)
+
+        panels = getattr(option, option.context.lower())
+
+        # render
+        if option.context == 'RENDER':
+            # RENDER_PT_dimensions
+            self._frame_rate_args_prev = None
+            self._preset_class = None
+            RENDER_PT_dimensions = bpy.types.RENDER_PT_dimensions
+            self._draw_framerate_label = bpy.types.RENDER_PT_dimensions._draw_framerate_label
+            self.draw_framerate = bpy.types.RENDER_PT_dimensions.draw_framerate
+        # render layer
+        # elif option.context == 'RENDER_LAYER':
+            # RENDERLAYER_PT_freestyle
+            # RENDERLAYER_PT_freestyle_lineset
+            # RENDERLAYER_PT_freestyle_linestyle
+
+        # TODO: hide headers
+        # context overrides
+        # see how many issues this solves
+        for panel in panels:
+            type = getattr(bpy.types, panel.id)
+            if hasattr(type, 'COMPAT_ENGINES'):
+                if context.scene.render.engine in type.COMPAT_ENGINES:
+                    if hasattr(type, 'poll'):
+                        if type.poll(context): self.draw_box(context, box_column, panel, type)
+                    else: self.draw_box(context, box_column, panel, type)
+            elif hasattr(type, 'poll'):
+                if type.poll: self.draw_box(context, box_column, panel, type)
+            else: self.draw_box(context, box_column, panel, type)
+
+
+    def draw_box(self, context, box_column, panel, type):
+
+        box = box_column.box()
+        row = box.row(align=True)
+        row.alignment = 'LEFT'
+
+        sub = row.row(align=True)
+        sub.scale_x = 0.5
+        sub.prop(panel, 'collapsed', text='', icon='TRIA_DOWN' if not panel.collapsed else 'TRIA_RIGHT', emboss=False)
+
+        if hasattr(type, 'draw_header'):
+            sub = row.row(align=True)
+            sub.scale_x = 0.8
+            self.layout = sub
+            type.draw_header(self, context)
+
+        row.prop(panel, 'collapsed', text=panel.label, toggle=True, emboss=False) # TODO: Run this as a collapse oeprator, catch event and emulate panel behavior
+
+        sub = row.row(align=True)
+        sub.prop(panel, 'collapsed', text=' ', toggle=True, emboss=False)
+
+        if not panel.collapsed:
+            box = box_column.box()
+            column = box.column()
+
+            self.layout = column
+            type.draw(self, context)
+
+        box_column.separator()
+
 
 class namer:
 
@@ -489,7 +538,6 @@ class namer:
 
     @staticmethod
     def set_height(column, separators):
-
         for _ in range(0, separators): column.separator()
 
 
@@ -512,24 +560,12 @@ class namer:
         row = layout.row(align=True)
         row.scale_x = 5
 
-        if category == 'Objects':
-
-            row.prop(option, 'toggle_objects', text='', icon='RADIOBUT_OFF' if not option.toggle_objects else 'RADIOBUT_ON')
-
-        elif category == 'Objects Data':
-
-            row.prop(option, 'toggle_objects_data', text='', icon='RADIOBUT_OFF' if not option.toggle_objects_data else 'RADIOBUT_ON')
-
+        if category == 'Objects': row.prop(option, 'toggle_objects', text='', icon='RADIOBUT_OFF' if not option.toggle_objects else 'RADIOBUT_ON')
+        elif category == 'Objects Data': row.prop(option, 'toggle_objects_data', text='', icon='RADIOBUT_OFF' if not option.toggle_objects_data else 'RADIOBUT_ON')
         for target in get.namer.catagories[category]:
-
-            if target not in {'line_sets', 'sensors', 'controllers', 'actuators'}:
-                row.prop(option, target, text='', icon=get.icon(target))
-
-            elif target == 'line_sets':
-                row.prop(option, target, text='Line Sets', toggle=True)
-
-            else:
-                row.prop(option, target, text=target.title(), toggle=True)
+            if target not in {'line_sets', 'sensors', 'controllers', 'actuators'}: row.prop(option, target, text='', icon=get.icon(target))
+            elif target == 'line_sets': row.prop(option, target, text='Line Sets', toggle=True)
+            else: row.prop(option, target, text=target.title(), toggle=True)
 
 
     @staticmethod
@@ -538,13 +574,10 @@ class namer:
         layout = operator.layout
 
         if get.namer.options(context).mode == 'NAME':
-
             naming = get.namer.options(context).naming['options']
             option = naming.operations[naming.active_index]
 
-        else:
-
-            option = get.namer.options(context).sorting['options']
+        else: option = get.namer.options(context).sorting['options']
 
         layout.prop(option, 'case_sensitive')
         layout.prop(option, 're')
@@ -601,11 +634,8 @@ class namer:
             self.swap = True if swap else False
             self.move = True if move else False
 
-            if self.sorting and not custom_mode:
-                operation_mode = 'placement'
-
-            else:
-                operation_mode = '{}_mode'.format(option.operation_options_mode.lower()) if not custom_mode else custom_mode
+            if self.sorting and not custom_mode: operation_mode = 'placement'
+            else: operation_mode = '{}_mode'.format(option.operation_options_mode.lower()) if not custom_mode else custom_mode
 
             split = namer.split_row(column)
             split.prop(option, operation_mode, text='')
@@ -619,7 +649,6 @@ class namer:
 
         @staticmethod
         def search_prop(option, row, prop):
-
             row.prop(option, prop, text='', icon='VIEWZOOM')
 
 
@@ -634,7 +663,6 @@ class namer:
 
 
         def position_prop(self, option, row):
-
             if self.dual_position:
                 begin = 'begin' if not self.swap else 'swap_begin'
                 end = 'end' if not self.swap else 'swap_end'
@@ -658,8 +686,7 @@ class namer:
                 self.search_prop(option, row, 'find')
                 self.search_specials(row)
 
-            else:
-                self.position_prop(option, row)
+            else: self.position_prop(option, row)
 
 
         def find(self, option, row):
@@ -720,20 +747,14 @@ class namer:
 
         def prefix(self, option, row):
 
-            if self.sorting:
-                self.separator_prop(option, row)
-
-            else:
-                self.insert_prop(option, row)
+            if self.sorting: self.separator_prop(option, row)
+            else: self.insert_prop(option, row)
 
 
         def suffix(self, option, row):
 
-            if self.sorting:
-                self.separator_prop(option, row)
-
-            else:
-                self.insert_prop(option, row)
+            if self.sorting: self.separator_prop(option, row)
+            else: self.insert_prop(option, row)
 
 
     class target:
@@ -751,11 +772,9 @@ class namer:
             layout = layout.column(align=True)
 
             if option.target_options_mode == 'CONTEXT':
-
                 self.context_area(operator, context, option, layout)
 
             else:
-
                 namer.datablock_buttons('Objects', option, layout, use_label=False)
                 namer.datablock_buttons('Objects Data', option, layout, use_label=False)
                 namer.datablock_buttons('Object Related', option, layout)
@@ -766,7 +785,6 @@ class namer:
                 row.prop(option, 'display_more')
 
                 if option.display_more:
-
                     namer.datablock_buttons('Grease Pencil', option, layout)
                     namer.datablock_buttons('Animation', option, layout)
                     namer.datablock_buttons('Node', option, layout)
@@ -783,7 +801,6 @@ class namer:
         class context_area:
 
             def __init__(self, operator, context, option, layout):
-
                 getattr(self, operator.area_type.lower())(operator, context, option, layout)
 
 
@@ -791,7 +808,6 @@ class namer:
 
 
                 def __init__(self, operator, context, option, layout):
-
                     getattr(self, context.space_data.context.lower())(operator, context, option, layout)
 
 
@@ -930,7 +946,6 @@ class namer:
 
 
                 def __init__(self, operator, context, option, layout):
-
                     getattr(self, context.space_data.mode.lower())(operator, context, option, layout)
 
 
@@ -983,7 +998,6 @@ class namer:
 
 
                 def __init__(self, operator, context, option, layout):
-
                     getattr(self, context.space_data.mode.lower())(operator, context, option, layout)
 
 
@@ -1019,7 +1033,6 @@ class namer:
 
 
                 def __init__(self, operator, context, option, layout):
-
                     getattr(self, context.space_data.mode.lower())(operator, context, option, layout)
 
 
@@ -1271,7 +1284,6 @@ class namer:
 
         @staticmethod
         def name_slice(option, column):
-
             pass
 
 
@@ -1287,33 +1299,24 @@ class namer:
 
         @staticmethod
         def none(option, column):
-
             column.label(text='No sorting will be performed')
 
 
         def ascend(self, option, column):
 
-            if option.sort_mode == 'ALL':
-                namer.mode_row(option, column, active=False, custom_mode='sort_mode', sorting=True)
-
-            else:
-                namer.mode_row(option, column, custom_mode='sort_mode', sorting=True)
+            if option.sort_mode == 'ALL': namer.mode_row(option, column, active=False, custom_mode='sort_mode', sorting=True)
+            else: namer.mode_row(option, column, custom_mode='sort_mode', sorting=True)
 
 
         def descend(self, option, column):
 
-            if option.sort_mode == 'ALL':
-                namer.mode_row(option, column, active=False, custom_mode='sort_mode', sorting=True)
-
-            else:
-                namer.mode_row(option, column, custom_mode='sort_mode')
+            if option.sort_mode == 'ALL': namer.mode_row(option, column, active=False, custom_mode='sort_mode', sorting=True)
+            else: namer.mode_row(option, column, custom_mode='sort_mode')
 
 
         def position(self, option, column): # TODO: orientation? contains, rotation, scale, location modes, from viewport perspective?
 
-            if option.display_options:
-                getattr(self, option.fallback_mode.lower())(option, column)
-
+            if option.display_options: getattr(self, option.fallback_mode.lower())(option, column)
             else:
                 split = namer.split_row(column)
                 split.prop(option, 'starting_point', text='')
@@ -1324,14 +1327,9 @@ class namer:
                 if option.starting_point in {'CURSOR', 'CENTER', 'ACTIVE'}:
                     column.separator()
 
-                    if option.axis_3d == 'Z':
-                        props = ['top', 'bottom']
-
-                    elif option.axis_3d == 'Y':
-                        props = ['front', 'back']
-
-                    else:
-                        props = ['left', 'right']
+                    if option.axis_3d == 'Z': props = ['top', 'bottom']
+                    elif option.axis_3d == 'Y': props = ['front', 'back']
+                    else: props = ['left', 'right']
 
                     split = namer.split_row(column, offset=-0.01)
                     split.label(text=props[0].title() + ':')
@@ -1359,9 +1357,7 @@ class namer:
 
         def hierarchy(self, option, column):
 
-            if option.display_options:
-                getattr(self, option.fallback_mode.lower())(option, column)
-
+            if option.display_options: getattr(self, option.fallback_mode.lower())(option, column)
             else:
                 row = column.row()
                 row.prop(option, 'hierarchy_mode', expand=True)
@@ -1370,7 +1366,6 @@ class namer:
 
 
         def manual(self, option, column):
-
             column.label(text='Manual sort options have not yet been implemented')
 
 
@@ -1466,25 +1461,21 @@ class namer:
 
         @staticmethod
         def presets(operator, context, option, column):
-
             column.label(text='Presets are not yet implemented')
 
 
         @staticmethod
         def restore(operator, context, option, column):
-
             column.label(text='Restore points are not yet implemented')
 
 
         @staticmethod
         def importing(operator, context, option, column):
-
             column.label(text='Importing is not yet implemented')
 
 
         @staticmethod
         def exporting(operator, context, option, column):
-
             column.label(text='Exporting is not yet implemented')
 
 

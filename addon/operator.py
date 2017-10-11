@@ -41,12 +41,10 @@ class options(Operator):
 
 
     def check(self, context):
-
         return True
 
 
     def draw(self, context):
-
         interface.name_panel.options(self, context)
 
 
@@ -58,113 +56,88 @@ class options(Operator):
 
 
     def execute(self, context):
-
         return {'FINISHED'}
 
 
-class datablock(Operator):
-    bl_idname = 'view3d.name_panel_datablock'
+class datablock_settings(Operator):
+    bl_idname = 'wm.datablock_settings'
     bl_label = 'Datablock Settings'
-    bl_description = 'Adjust datablock settings\n  Ctrl \N{Rightwards Arrow} Disable pop-up\n  Alt \N{Rightwards Arrow} Center view on selected\n  Shift \N{Rightwards Arrow} Add/Remove selection'
+    bl_description = 'Adjust datablock settings\n  Ctrl \N{Rightwards Arrow} Display pop-up\n  Alt \N{Rightwards Arrow} Center view on selected\n  Shift \N{Rightwards Arrow} Add/Remove selection'
     bl_options = {'REGISTER', 'UNDO'}
 
-    object_name = StringProperty()
-    target_name = StringProperty()
-    identifier = StringProperty()
+    click_through = BoolProperty(
+        name = 'Click Through',
+        description = 'Do not activate the pop-up when clicking',
+        default = False)
 
-    data_context = EnumProperty(
+    context_override = StringProperty(
         name = 'Context',
-        description = 'Type of active data to display and edit',
-        items = get.datablock.contexts)
+        description = 'Context to load',
+        default = 'render')
+
+    object_name = StringProperty(
+        name = 'Object',
+        description = 'Base object',
+        default = '')
+
+    target_name = StringProperty(
+        name = 'Target',
+        description = 'Target datablock',
+        default = '')
+
+    identifier = StringProperty(
+        name = 'Identifier',
+        description = 'RNA type identifier for the target datablock',
+        default = '')
 
 
     def check(self, context):
-
         return True
 
 
     def draw(self, context):
-
-        self.object = self.data[self.object_name]
-        self.target = self.data[self.target_name]
-
         interface.datablock(self, context)
 
 
     def invoke(self, context, event):
 
-        update.selection(self, context, event)
+        if self.object_name:
+            update.selection(self, context, event)
 
-        if event.alt:
-            bpy.ops.view3d.view_selected()
+            if event.alt:
+                bpy.ops.view3d.view_selected()
 
-        if not event.ctrl:
-
-            self.data = {
-                self.object_name: context.active_object,
-                self.target_name: get.name_panel.target(self, context)
-            }
-
-            context.window_manager.invoke_popup(self, width=get.preferences(context).popup_width)
-
-            return {'RUNNING_MODAL'}
+            if self.click_through:
+                self.click_through = False
+                if event.ctrl:
+                    context.window_manager.invoke_popup(self, width=get.preferences(context).datablock_popup_width)
+                    return {'RUNNING_MODAL'}
+                else: return {'FINISHED'}
+            elif event.ctrl: return {'FINISHED'}
+            else:
+                context.window_manager.invoke_popup(self, width=get.preferences(context).datablock_popup_width)
+                return {'RUNNING_MODAL'}
 
         else:
-
-            return {'FINISHED'}
-
-
-    def execute(self, context):
-
-        return {'FINISHED'}
-
-
-class datablock_click_through(Operator):
-    bl_idname = 'view3d.name_panel_datablock_click_through'
-    bl_label = 'Datablock Settings'
-    bl_description = 'Make active object\n  Ctrl \N{Rightwards Arrow} Adjust datablock settings\n  Alt \N{Rightwards Arrow} Center view on selected\n  Shift \N{Rightwards Arrow} Add/Remove selection'
-    bl_options = {'REGISTER', 'UNDO'}
-
-    object_name = datablock.object_name
-    target_name = datablock.target_name
-    identifier = datablock.identifier
-
-    data_context = datablock.data_context
-
-
-    def check(self, context):
-
-        return True
-
-
-    def draw(self, context):
-
-        datablock.draw(self, context)
-
-
-    def invoke(self, context, event):
-
-        return {'FINISHED'}
+            context.window_manager.invoke_popup(self, width=get.preferences(context).datablock_popup_width)
+        return {'RUNNING_MODAL'}
 
 
     def execute(self, context):
-
         return {'FINISHED'}
 
 
 class namer(Operator):
     bl_idname = 'wm.namer'
-    bl_label = 'Namer (Preview)'
+    bl_label = 'Namer'
     bl_description = 'Batch name datablocks'
 
 
     def check(self, context):
-
         return True
 
 
     def draw(self, context):
-
         interface.namer(self, context)
 
 
@@ -178,7 +151,6 @@ class namer(Operator):
 
 
     def execute(self, context):
-
         return {'FINISHED'}
 
 
@@ -242,7 +214,6 @@ class operation_remove(Operator):
         naming = get.namer.options(context).naming['options']
 
         if len(naming.operations):
-
             if not self.all:
                 naming.operations.remove(naming.active_index)
                 naming.active_index -= 1 if naming.active_index != 0 else 0
@@ -280,9 +251,7 @@ class operation_rename_all(Operator):
 
         naming = get.namer.options(context).naming['options']
 
-        for operation in naming.operations:
-            operation.name = get.namer.operation_name(operation)
-
+        for operation in naming.operations: operation.name = get.namer.operation_name(operation)
         return {'FINISHED'}
 
 

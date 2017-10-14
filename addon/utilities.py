@@ -111,15 +111,6 @@ class get:
             return version
 
 
-        def info():
-
-            info_file = open(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'update_info')), 'r')
-            text = update_info.read()
-            info_file.close()
-
-            return text
-
-
         def remote_info(): return requests.get('{}{}/{}/{}/update_info'.format(remote['raw'], remote['user'], remote['repo'], remote['branch'])).text
 
 

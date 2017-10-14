@@ -307,36 +307,33 @@ class update_info(Update, Operator):
         # TODO: move to interface
         layout = self.layout
 
-        # if no connection
-            # label Unable to gather update information
-        # elif current == latest
-            # label You are up to date
-        # else
         column = layout.column(align=True)
-
-        # row = column.row()
-        # row.scale_y = 0.5
-        # row.label('Current: '+get.version.string())
-        # row = column.row()
-        # # row.scale_y = 0.6
-        # row.label('Latest: '+get.version.string())
-
-        # column.separator()
-
         row = column.row()
-        row.alignment = 'CENTER'
-        row.label('New Update! ({})'.format(get.version.string()))
 
-        # body
-        print(get.version.info().split('\n')[1:-1][0])
-        for line in get.version.info().split('\n'):
+        if get.preferences(context).update_ready:
+
+            row.alignment = 'CENTER'
+            row.label(text='New Update! ({})'.format(get.version.remote_string()))
+
+            for line in get.version.remote_info().split('\n'):
+                row = column.row()
+                row.scale_y = 0.6
+                row.label(line)
+
             row = column.row()
-            row.scale_y = 0.6
-            row.label(line)
+            row.scale_y = 1.5
+            row.operator('wm.name_panel_update', text='Update')
 
-        row = column.row()
-        row.scale_y = 1.5
-        row.operator('wm.name_panel_update', text='Update')
+        elif not update.check.connection():
+
+            row.alignment = 'CENTER'
+            row.label(text='Unable to connect to github', icon='ERROR')
+
+
+        else:
+
+            row.alignment = 'CENTER'
+            row.label(text='Your version is up to date!')
 
 
     def invoke(self, context, event):

@@ -16,7 +16,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 bl_info = {
     'name': 'Name Panel',
     'author': 'Trentin Frederick a.k.a. proxe',
-    'version': (1, '8  dev  commit: 482'),
+    'version': (1, '8  dev  commit: 483'),
     'blender': (2, 79, 0),
     'location': '3D View \N{Rightwards Arrow} Tool (T) | Property (N)',
     'description': 'In panel datablock name stack with additional naming and productivity tools.',

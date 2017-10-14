@@ -13,7 +13,7 @@ class name_panel:
 
         self.layout = panel.layout
 
-        if get.preferences(context).update_display_panel:
+        if get.preferences(context).update_display_panel and get.preferences(context).update_ready:
 
             row = self.layout.row()
             row.alignment = 'CENTER'
@@ -110,7 +110,7 @@ class name_panel:
 
         layout.operator('wm.namer', text='Namer', icon='SORTALPHA')
 
-        if get.preferences(context).update_display_menu:
+        if get.preferences(context).update_display_menu and get.preferences(context).update_ready:
             layout.separator()
 
             layout.operator('wm.name_panel_update_info', text='Update Available!', icon='ERROR')

@@ -101,10 +101,10 @@ class get:
 
             # get remote raw
             # https://raw.githubusercontent.com/proxeIO/name-panel/master/__init__.py
-            raw_text = requests.get('{}{}/{}/{}/__init__.py'.format(remote['raw'], remote['user'], remote['repo'], remote['branch'])).text
+            init_text = requests.get('{}{}/{}/{}/__init__.py'.format(remote['raw'], remote['user'], remote['repo'], remote['branch'])).text
 
             # get version
-            version = re.search(r'\'version\': [ ,\':()1-9A-z]*', raw_text).group()
+            version = re.search(r'\'version\': [ ,\':()1-9A-z]*', init_text).group()
             version = version.split('(')[1][:-2]
             version = version.split(',')[0] + '.' + version.split(',')[1][2:-1]
 
@@ -120,7 +120,7 @@ class get:
             return text
 
 
-        def remote_info(): return ''
+        def remote_info(): return requests.get('{}{}/{}/{}/update_info'.format(remote['raw'], remote['user'], remote['repo'], remote['branch'])).text
 
 
     class identifier:
@@ -891,17 +891,15 @@ class update:
 
         def __init__(self, bl_info):
 
-            # allowed raw data and download access
-            # grab all raw data from server
-
             current_version = get.version.string(bl_info)
 
             if self.connection():
                 if current_version != self.version(bl_info):
-                    # dont update
+                    get.preferences(bpy.context).update_ready = True
+                    # update
                     pass
                 else:
-                    # update
+                    # dont update
                     pass
             else:
                 # cannot get update info

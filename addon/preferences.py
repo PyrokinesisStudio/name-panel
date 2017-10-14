@@ -489,6 +489,11 @@ class name_panel(AddonPreferences):
         description = 'Display update information in the name panel',
         default = default['update_display_panel'])
 
+    update_ready = BoolProperty(
+        name = 'update_ready',
+        description = 'Used internally to determine if an update is ready',
+        default = False)
+
     def draw(self, context):
 
         interface.name_panel.preferences(self, context)

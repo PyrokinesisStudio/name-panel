@@ -3,6 +3,7 @@ import bpy
 from bpy.types import Operator
 from bpy.props import StringProperty, BoolProperty, EnumProperty
 
+
 from . import interface
 from .utilities import get, update
 from .config import defaults
@@ -40,8 +41,7 @@ class options(Operator):
     bl_description = 'Adjust display options for the name stack'
 
 
-    def check(self, context):
-        return True
+    def check(self, context): return True
 
 
     def draw(self, context):
@@ -55,8 +55,7 @@ class options(Operator):
         return {'RUNNING_MODAL'}
 
 
-    def execute(self, context):
-        return {'FINISHED'}
+    def execute(self, context): return {'FINISHED'}
 
 
 class datablock_settings(Operator):
@@ -91,8 +90,7 @@ class datablock_settings(Operator):
         default = '')
 
 
-    def check(self, context):
-        return True
+    def check(self, context): return True
 
 
     def draw(self, context):
@@ -123,8 +121,7 @@ class datablock_settings(Operator):
         return {'RUNNING_MODAL'}
 
 
-    def execute(self, context):
-        return {'FINISHED'}
+    def execute(self, context): return {'FINISHED'}
 
 
 class namer(Operator):
@@ -133,8 +130,7 @@ class namer(Operator):
     bl_description = 'Batch name datablocks'
 
 
-    def check(self, context):
-        return True
+    def check(self, context): return True
 
 
     def draw(self, context):
@@ -150,8 +146,7 @@ class namer(Operator):
         return {'RUNNING_MODAL'}
 
 
-    def execute(self, context):
-        return {'FINISHED'}
+    def execute(self, context): return {'FINISHED'}
 
 
 class operation_add(Operator):
@@ -277,3 +272,115 @@ class operation_move(Operator):
             naming.active_index += 1 if naming.active_index < len(naming.operations) - 1 else 0
 
         return {'FINISHED'}
+
+
+class Update:
+    bl_options = {'INTERNAL'}
+
+    @classmethod
+    def poll(cls, context): return True
+    # check for github head
+
+
+class update_check(Update, Operator):
+    bl_idname = 'wm.name_panel_update_check'
+    bl_label = 'Check for update'
+    bl_description = 'Check for update'
+
+
+    def execute(self, context): return {'FINISHED'}
+
+
+class update_info(Update, Operator):
+    bl_idname = 'wm.name_panel_update_info'
+    bl_label = 'Update info'
+    bl_description = 'Latest update information'
+
+
+    def check(self, context): return True
+
+
+    def draw(self, context):
+
+        # TODO: Check update presents a pop
+
+        # TODO: move to interface
+        layout = self.layout
+
+        # if no connection
+            # label Unable to gather update information
+        # elif current == latest
+            # label You are up to date
+        # else
+        column = layout.column(align=True)
+
+        # row = column.row()
+        # row.scale_y = 0.5
+        # row.label('Current: '+get.version.string())
+        # row = column.row()
+        # # row.scale_y = 0.6
+        # row.label('Latest: '+get.version.string())
+
+        # column.separator()
+
+        row = column.row()
+        row.alignment = 'CENTER'
+        row.label('New Update! ({})'.format(get.version.string()))
+
+        # body
+        print(get.version.info().split('\n')[1:-1][0])
+        for line in get.version.info().split('\n'):
+            row = column.row()
+            row.scale_y = 0.6
+            row.label(line)
+
+        row = column.row()
+        row.scale_y = 1.5
+        row.operator('wm.name_panel_update', text='Update')
+
+
+    def invoke(self, context, event):
+        context.window_manager.invoke_popup(self, width=get.preferences(context).popup_width)
+        return {'RUNNING_MODAL'}
+
+
+    def execute(self, context): return {'FINISHED'}
+
+
+class update(Update, Operator):
+    bl_idname = 'wm.name_panel_update'
+    bl_label = 'Update'
+    bl_description = 'Update'
+
+
+    def execute(self, context): return {'FINISHED'}
+
+
+
+class update_confirm(Update, Operator):
+    bl_idname = 'wm.name_panel_update_info_confirm'
+    bl_label = ''
+    bl_description = ''
+
+
+    def check(self, context): return True
+
+
+    def draw(self, context):
+
+        layout = self.layout
+
+
+        layout.separator()
+        row = layout.row()
+        row.alignment = 'CENTER'
+        row.label(text='Successfully updated')
+        layout.separator()
+
+
+    def invoke(self, context, event):
+        context.window_manager.invoke_popup(self, width=get.preferences(context).popup_width)
+        return {'RUNNING_MODAL'}
+
+
+    def execute(self, context): return {'FINISHED'}

@@ -479,22 +479,15 @@ class name_panel(AddonPreferences):
         description = 'Check at blender startup for updates',
         default = default['update_check'])
 
-    display_menu = BoolProperty(
-        name = 'Display in menu',
+    update_display_menu = BoolProperty(
+        name = 'Display menu notification',
         description = 'Display update information in the name panel specials menu',
-        default = default['display_menu'])
+        default = default['update_display_menu'])
 
-    display_panel = BoolProperty(
-        name = 'Display in panel',
+    update_display_panel = BoolProperty(
+        name = 'Display panel notification',
         description = 'Display update information in the name panel',
-        default = default['display_panel'])
-
-    web_links = [
-        ('Thread', ''),
-        ('Blender Market', ''),
-        ('Github', ''),
-        ('Report Bug', ''),
-        ('Donate', '')]
+        default = default['update_display_panel'])
 
     def draw(self, context):
 

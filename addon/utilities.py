@@ -1,16 +1,13 @@
 import os
 import re
-
-from datetime import datetime,timedelta
+import requests
 
 import bpy
 import addon_utils
 
 from bpy.app.handlers import persistent
-from bpy.utils import unregister_class
 
-from ..update_info import info
-from .config import default_panels, defaults
+from .config import default_panels, defaults, remote
 
 
 @persistent
@@ -21,14 +18,19 @@ def keep_session_settings(none):
     filters = panel.filters['options']
 
     defaults['preferences']['location'] = preferences.location
+    defaults['preferences']['keep_session_settings'] = preferences.keep_session_settings
     defaults['preferences']['pin_active']= preferences.pin_active
     defaults['preferences']['click_through'] = preferences.click_through
-    defaults['preferences']['remove_item'] = preferences.remove_item
-    defaults['preferences']['keep_session_settings'] = preferences.keep_session_settings
+    defaults['preferences']['remove_item_panel'] = preferences.remove_item_panel
     defaults['preferences']['popup_width'] = preferences.popup_width
+    defaults['preferences']['separators'] = preferences.separators
     defaults['preferences']['use_last'] = preferences.use_last
+    defaults['preferences']['datablock_popup_width'] = preferences.datablock_popup_width
     defaults['preferences']['auto_name_operations'] = preferences.auto_name_operations
     defaults['preferences']['namer_popup_width'] = preferences.namer_popup_width
+    defaults['preferences']['update_check'] = preferences.update_check
+    defaults['preferences']['update_display_menu'] = preferences.update_display_menu
+    defaults['preferences']['update_display_panel'] = preferences.update_display_panel
 
     defaults['panel']['case_sensitive'] = panel.case_sensitive
     defaults['panel']['regex'] = panel.regex
@@ -53,11 +55,6 @@ def keep_session_settings(none):
     defaults['panel']['filters']['particle_systems'] = filters.particle_systems
 
 
-def check_for_update(bl_info):
-
-    pass
-
-
 class regex:
 
 
@@ -78,8 +75,7 @@ class get:
 
 
     @classmethod
-    def item_panel_poll(cls, context):
-        return (context.space_data and context.active_object)
+    def item_panel_poll(cls, context): return (context.space_data and context.active_object)
 
 
     @classmethod
@@ -93,6 +89,38 @@ class get:
     def preferences(context):
 
         return context.user_preferences.addons[__name__.partition('.')[0]].preferences
+
+
+    class version:
+
+
+        def string(bl_info): return '{}.{}'.format(str(bl_info['version'][0]), bl_info['version'][1])
+
+
+        def remote_string():
+
+            # get remote raw
+            # https://raw.githubusercontent.com/proxeIO/name-panel/master/__init__.py
+            raw_text = requests.get('{}{}/{}/{}/__init__.py'.format(remote['raw'], remote['user'], remote['repo'], remote['branch'])).text
+
+            # get version
+            version = re.search(r'\'version\': [ ,\':()1-9A-z]*', raw_text).group()
+            version = version.split('(')[1][:-2]
+            version = version.split(',')[0] + '.' + version.split(',')[1][2:-1]
+
+            return version
+
+
+        def info():
+
+            info_file = open(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'update_info')), 'r')
+            text = update_info.read()
+            info_file.close()
+
+            return text
+
+
+        def remote_info(): return ''
 
 
     class identifier:
@@ -445,32 +473,25 @@ class get:
                 return stack
 
 
-            def objects(context, option, location):
-                return sorted([object for object in location if object != context.active_object], key=lambda object: object.name) if get.preferences(context).pin_active else sorted([object for object in location], key=lambda object: object.name)
+            def objects(context, option, location): return sorted([object for object in location if object != context.active_object], key=lambda object: object.name) if get.preferences(context).pin_active else sorted([object for object in location], key=lambda object: object.name)
 
 
-            def groups(context, object):
-                return [group for group in bpy.data.groups for group_object in group.objects if group_object == object] if bpy.data.groups else []
+            def groups(context, object): return [group for group in bpy.data.groups for group_object in group.objects if group_object == object] if bpy.data.groups else []
 
 
-            def grease_pencils(context, object):
-                return [object.grease_pencil] if hasattr(object.grease_pencil, 'name') else []
+            def grease_pencils(context, object): return [object.grease_pencil] if hasattr(object.grease_pencil, 'name') else []
 
 
-            def actions(context, object):
-                return [object.animation_data.action] if hasattr(object.animation_data, 'action') and hasattr(object.animation_data.action, 'name') else []
+            def actions(context, object): return [object.animation_data.action] if hasattr(object.animation_data, 'action') and hasattr(object.animation_data.action, 'name') else []
 
 
-            def constraints(context, object):
-                return [constraint for constraint in object.constraints]
+            def constraints(context, object): return [constraint for constraint in object.constraints]
 
 
-            def modifiers(context, object):
-                return [modifier for modifier in object.modifiers]
+            def modifiers(context, object): return [modifier for modifier in object.modifiers]
 
 
-            def images(context, object):
-                return [object.data] if object.type == 'EMPTY' and object.empty_draw_type == 'IMAGE' and hasattr(object, 'data') else []
+            def images(context, object): return [object.data] if object.type == 'EMPTY' and object.empty_draw_type == 'IMAGE' and hasattr(object, 'data') else []
 
 
             def bone_groups(context, object):
@@ -520,24 +541,19 @@ class get:
                 return bones
 
 
-            def vertex_groups(context, object):
-                return [vertex_group for vertex_group in object.vertex_groups] if hasattr(object, 'vertex_groups') else []
+            def vertex_groups(context, object): return [vertex_group for vertex_group in object.vertex_groups] if hasattr(object, 'vertex_groups') else []
 
 
-            def shapekeys(context, object):
-                return [shape_key for shape_key in object.data.shape_keys.key_blocks] if hasattr(object.data, 'shape_keys') and hasattr(object.data.shape_keys, 'key_blocks') else []
+            def shapekeys(context, object): return [shape_key for shape_key in object.data.shape_keys.key_blocks] if hasattr(object.data, 'shape_keys') and hasattr(object.data.shape_keys, 'key_blocks') else []
 
 
-            def uv_maps(context, object):
-                return [uv_map for uv_map in object.data.uv_textures] if object.type == 'MESH' else []
+            def uv_maps(context, object): return [uv_map for uv_map in object.data.uv_textures] if object.type == 'MESH' else []
 
 
-            def vertex_colors(context, object):
-                return [vertex_color for vertex_color in object.data.vertex_colors] if object.type == 'MESH' else []
+            def vertex_colors(context, object): return [vertex_color for vertex_color in object.data.vertex_colors] if object.type == 'MESH' else []
 
 
-            def materials(context, object):
-                return [material_slot.material for material_slot in object.material_slots if material_slot != None]
+            def materials(context, object): return [material_slot.material for material_slot in object.material_slots if material_slot != None]
 
 
             def subtypes(context, option, stack, object, type, datablock):
@@ -600,120 +616,91 @@ class get:
         class target:
 
 
-            def __new__(self, operator, context):
-                return getattr(self, operator.identifier)(operator, context)
+            def __new__(self, operator, context): return getattr(self, operator.identifier)(operator, context)
 
 
-            def Object(operator, context):
-                return context.active_object
+            def Object(operator, context): return context.active_object
 
 
-            def Mesh(operator, context):
-                return context.active_object.data
+            def Mesh(operator, context): return context.active_object.data
 
 
-            def Curve(operator, context):
-                return context.active_object.data
+            def Curve(operator, context): return context.active_object.data
 
 
-            def MetaBall(operator, context):
-                return context.active_object.data
+            def MetaBall(operator, context): return context.active_object.data
 
 
-            def Armature(operator, context):
-                return context.active_object.data
+            def Armature(operator, context): return context.active_object.data
 
 
-            def Lattice(operator, context):
-                return context.active_object.data
+            def Lattice(operator, context): return context.active_object.data
 
 
-            def Empty(operator, context):
-                return context.active_object.data
+            def Empty(operator, context): return context.active_object.data
 
 
-            def Speaker(operator, context):
-                return context.active_object.data
+            def Speaker(operator, context): return context.active_object.data
 
 
-            def Camera(operator, context):
-                return context.active_object.data
+            def Camera(operator, context): return context.active_object.data
 
 
-            def Lamp(operator, context):
-                return context.active_object.data
+            def Lamp(operator, context): return context.active_object.data
 
 
-            def Group(operator, context):
-                return bpy.data.groups[operator.target_name]
+            def Group(operator, context): return bpy.data.groups[operator.target_name]
 
 
-            def GreasePencil(operator, context):
-                return context.active_object.grease_pencil
+            def GreasePencil(operator, context): return context.active_object.grease_pencil
 
 
-            def GPencilLayer(operator, context):
-                return context.active_object.grease_pencil.layers[operator.target_name]
+            def GPencilLayer(operator, context): return context.active_object.grease_pencil.layers[operator.target_name]
 
 
-            def Action(operator, context):
-                return context.active_object.animation_data.action
+            def Action(operator, context): return context.active_object.animation_data.action
 
 
-            def Constraint(operator, context):
-                return context.active_object.constraints[operator.target_name]
+            def Constraint(operator, context): return context.active_object.constraints[operator.target_name]
 
 
-            def Modifier(operator, context):
-                return context.active_object.modifiers[operator.target_name]
+            def Modifier(operator, context): return context.active_object.modifiers[operator.target_name]
 
 
-            def Image(operator, context):
-                return context.active_object.data
+            def Image(operator, context): return context.active_object.data
 
 
-            def BoneGroup(operator, context):
-                return context.active_object.pose.bone_groups[operator.target_name]
+            def BoneGroup(operator, context): return context.active_object.pose.bone_groups[operator.target_name]
 
 
-            def PoseBone(operator, context):
-                return context.active_pose_bone
+            def PoseBone(operator, context): return context.active_pose_bone
 
 
-            def EditBone(operator, context):
-                return context.active_bone
+            def EditBone(operator, context): return context.active_bone
 
 
-            def VertexGroup(operator, context):
-                return context.active_object.vertex_groups[operator.target_name]
+            def VertexGroup(operator, context): return context.active_object.vertex_groups[operator.target_name]
 
 
-            def ShapeKey(operator, context):
-                return context.active_object.data.shape_keys.key_blocks[operator.target_name]
+            def ShapeKey(operator, context): return context.active_object.data.shape_keys.key_blocks[operator.target_name]
 
 
-            def MeshTexturePolyLayer(operator, context):
-                return context.active_object.data.uv_textures[operator.target_name]
+            def MeshTexturePolyLayer(operator, context): return context.active_object.data.uv_textures[operator.target_name]
 
 
-            def MeshLoopColorLayer(operator, context):
-                return context.active_object.data.vertex_colors[operator.target_name]
+            def MeshLoopColorLayer(operator, context): return context.active_object.data.vertex_colors[operator.target_name]
 
 
-            def Material(operator, context):
-                return context.active_object.materials[operator.target_name]
+            def Material(operator, context): return context.active_object.materials[operator.target_name]
 
 
-            def Texture(operator, context):
-                return bpy.data.textures[operator.texture_name]
+            def Texture(operator, context): return bpy.data.textures[operator.texture_name]
 
 
-            def ParticleSystem(operator, context):
-                return context.active_object.particle_systems[operator.target_name]
+            def ParticleSystem(operator, context): return context.active_object.particle_systems[operator.target_name]
 
 
-            def ParticleSettings(operator, context):
-                return bpy.data.particles[operator.target_name]
+            def ParticleSettings(operator, context): return bpy.data.particles[operator.target_name]
 
 
     class namer:
@@ -897,6 +884,51 @@ class get:
 
 
 class update:
+
+
+    class check:
+
+
+        def __init__(self, bl_info):
+
+            # allowed raw data and download access
+            # grab all raw data from server
+
+            current_version = get.version.string(bl_info)
+
+            if self.connection():
+                if current_version != self.version(bl_info):
+                    # dont update
+                    pass
+                else:
+                    # update
+                    pass
+            else:
+                # cannot get update info
+                pass
+
+
+        @staticmethod
+        def version(bl_info):
+            current = get.version.string(bl_info)
+            latest = get.version.remote_string()
+
+            if current == latest: return current
+            return latest
+
+
+        @staticmethod
+        def connection():
+
+            try:
+                requests.get(remote['api'])
+                return True
+            except Exception as e:
+                # debug
+                print('')
+                print(e)
+                print('')
+                return False
 
 
     def handlers(remove=False):

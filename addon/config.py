@@ -1,3 +1,15 @@
+remote = {
+    'api': 'http://api.github.com/',
+    'raw': 'https://raw.githubusercontent.com/',
+    # 'branch': 'master',
+    'branch': 'development',
+    'user': 'proxeIO',
+    'repo': 'name-panel',
+    'bug_report': '',
+    'thread': '',
+    'github': '',
+    'patreon': '',
+    'donate': ''}
 
 default_panels = (
     ('RENDER', 'RENDER_PT_render'),
@@ -284,8 +296,8 @@ defaults = {
         'auto_name_operations': True,
         'namer_popup_width': 460,
         'update_check': True,
-        'display_menu': True,
-        'display_panel': False,
+        'update_display_menu': True,
+        'update_display_panel': True,
         'datablock': {
             'render': {
                 'label': '',

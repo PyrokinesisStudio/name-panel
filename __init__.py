@@ -16,7 +16,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 bl_info = {
     'name': 'Name Panel',
     'author': 'Trentin Frederick a.k.a. proxe',
-    'version': (1, '8  rc1  commit: 481'),
+    'version': (1, '8  dev  commit: 482'),
     'blender': (2, 79, 0),
     'location': '3D View \N{Rightwards Arrow} Tool (T) | Property (N)',
     'description': 'In panel datablock name stack with additional naming and productivity tools.',
@@ -29,40 +29,38 @@ from bpy.utils import register_module, unregister_module, unregister_class
 from bpy.props import PointerProperty
 
 from .addon import menu, operator, panel, preferences, properties
-from .addon.utilities import get, update, check_for_update
+from .addon.utilities import get, update
 
 
 def register():
 
     register_module(__name__)
 
-    if get.preferences(bpy.context).auto_check:
-        check_for_update(bl_info)
+    update.handlers()
+    if get.preferences(bpy.context).update_check: update.check(bl_info)
+    if get.preferences(bpy.context).remove_item_panel: update.item_panel_poll()
 
     bpy.types.WindowManager.name_panel = PointerProperty(
         type = properties.name_panel,
         name = 'Name Panel Addon',
         description = 'Storage location for name panel addon options')
 
-    if get.preferences(bpy.context).remove_item_panel: update.item_panel_poll()
-
     keymap = bpy.context.window_manager.keyconfigs.addon.keymaps.new(name='Window')
     kmi = keymap.keymap_items.new('wm.datablock_settings', 'F7', 'PRESS')
     kmi.properties.object_name = ''
     keymap.keymap_items.new('wm.namer', 'NONE', 'PRESS')
 
-    update.handlers()
 
 
 def unregister():
+
+    update.handlers(remove=True)
+    update.item_panel_poll(restore=True)
 
     del bpy.types.WindowManager.name_panel
 
     keymap = bpy.context.window_manager.keyconfigs.addon.keymaps['Window']
     keymap.keymap_items.remove(keymap.keymap_items['wm.namer'])
     keymap.keymap_items.remove(keymap.keymap_items['wm.datablock_settings'])
-
-    update.handlers(remove=True)
-    update.item_panel_poll(restore=True)
 
     unregister_module(__name__)

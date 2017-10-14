@@ -2,6 +2,7 @@ import bpy
 import rna_keymap_ui
 
 from .utilities import get
+from .config import remote
 
 
 class name_panel:
@@ -9,7 +10,16 @@ class name_panel:
 
     def __init__(self, panel, context):
 
+
         self.layout = panel.layout
+
+        if get.preferences(context).update_display_panel:
+
+            row = self.layout.row()
+            row.alignment = 'CENTER'
+            row.scale_y = 2
+            row.operator('wm.name_panel_update_info', text='Update Available!', icon='ERROR', emboss=False)
+
 
         self.option = get.name_panel.options(context)
 
@@ -99,6 +109,11 @@ class name_panel:
         layout.separator()
 
         layout.operator('wm.namer', text='Namer', icon='SORTALPHA')
+
+        if get.preferences(context).update_display_menu:
+            layout.separator()
+
+            layout.operator('wm.name_panel_update_info', text='Update Available!', icon='ERROR')
 
 
     class stack_object:
@@ -307,15 +322,20 @@ class name_panel:
             addon.preference = get.preferences(context)
 
             row = addon.layout.row()
+            row.scale_y = 2
             row.prop(addon.preference, 'mode', expand=True)
 
             getattr(self, addon.preference.mode.lower())(addon, context)
 
+            addon.layout.separator()
+
             row = addon.layout.row(align=True)
             row.scale_y = 1.5
-
-            for name, url in addon.web_links:
-                row.operator('wm.url_open', text=name).url = url
+            row.operator('wm.url_open', text='Report a bug').url = remote['bug_report']
+            row.operator('wm.url_open', text='Thread').url = remote['thread']
+            row.operator('wm.url_open', text='Github').url = remote['github']
+            row.operator('wm.url_open', text='Patreon').url = remote['patreon']
+            row.operator('wm.url_open', text='Donate').url = remote['donate']
 
 
         def general(self, addon, context):
@@ -336,9 +356,9 @@ class name_panel:
 
             row = box.row()
             row.prop(addon.preference, 'pin_active')
-            row.prop(addon.preference, 'remove_item_panel')
 
             row = box.row()
+            row.prop(addon.preference, 'remove_item_panel')
             row.prop(addon.preference, 'click_through')
 
             row = box.row()
@@ -396,11 +416,17 @@ class name_panel:
             box = addon.layout.box()
 
             row = box.row()
-            row.prop(addon, 'auto_check')
-            row.prop(addon, 'display_menu')
+            row.prop(addon, 'update_check')
 
             row = box.row()
-            row.prop(addon, 'display_panel')
+            row.prop(addon, 'update_display_menu')
+            row.prop(addon, 'update_display_panel')
+
+            row = box.row()
+            row.scale_y = 1.25
+            row.alignment = 'RIGHT'
+            row.operator('wm.name_panel_update_check')
+            row.operator('wm.name_panel_update_info')
 
 
 class datablock:
@@ -955,21 +981,21 @@ class namer:
                     # object
                     # action
                     # group
-                    layout.label('Dopesheet\'s dopesheet mode is not yet supported')
+                    layout.label(text='Dopesheet\'s dopesheet mode is not yet supported')
 
 
                 @staticmethod
                 def action(operator, context, option, layout):
 
                     # group
-                    layout.label('Dopesheet\'s action mode is not yet supported')
+                    layout.label(text='Dopesheet\'s action mode is not yet supported')
 
 
                 @staticmethod
                 def shapekey(operator, context, option, layout):
 
                     # group
-                    layout.label('Dopesheet\'s shapekey mode is not yet supported')
+                    layout.label(text='Dopesheet\'s shapekey mode is not yet supported')
 
 
                 @staticmethod
@@ -977,7 +1003,7 @@ class namer:
 
                     # g pencil
                     # layers
-                    layout.label('Dopesheet\'s grease pencil mode is not yet supported')
+                    layout.label(text='Dopesheet\'s grease pencil mode is not yet supported')
 
 
                 @staticmethod
@@ -985,13 +1011,13 @@ class namer:
 
                     # mask
                     # layer
-                    layout.label('Dopesheet\'s mask file mode is not yet supported')
+                    layout.label(text='Dopesheet\'s mask file mode is not yet supported')
 
 
                 @staticmethod
                 def cachefile(operator, context, option, layout):
 
-                    layout.label('Dopesheet\'s cache file mode is not yet supported')
+                    layout.label(text='Dopesheet\'s cache file mode is not yet supported')
 
 
             class graph_editor:
@@ -1283,8 +1309,7 @@ class namer:
 
 
         @staticmethod
-        def name_slice(option, column):
-            pass
+        def name_slice(option, column): pass
 
 
         @staticmethod
@@ -1443,7 +1468,7 @@ class namer:
     @staticmethod
     def preview(operator, context, options, column):
 
-        column.label('Preview is not yet implemented')
+        column.label(text='Preview is not yet implemented')
 
 
     class options:

@@ -422,16 +422,10 @@ class name_panel:
             row.prop(addon, 'update_display_menu')
             row.prop(addon, 'update_display_panel')
 
-            row = box.row()
-            row.scale_y = 1.25
-            row.alignment = 'RIGHT'
-            row.operator('wm.name_panel_update_check')
-            row.operator('wm.name_panel_update_info')
-
 
 class datablock:
 
-    # TODO: hide extra settings for these datablock types if there is a target in datablock oeprator
+    # TODO: hide extra settings for these datablock types if there is a target and context override in datablock oeprator
     # target object
     # target mesh
     # target curve
@@ -482,6 +476,8 @@ class datablock:
 
         panels = getattr(option, option.context.lower())
 
+        override = False
+
         # render
         if option.context == 'RENDER':
             # RENDER_PT_dimensions
@@ -491,55 +487,597 @@ class datablock:
             self._draw_framerate_label = bpy.types.RENDER_PT_dimensions._draw_framerate_label
             self.draw_framerate = bpy.types.RENDER_PT_dimensions.draw_framerate
         # render layer
-        # elif option.context == 'RENDER_LAYER':
+        elif option.context == 'RENDER_LAYER':
+            self.draw_pass_type_buttons = bpy.types.RENDERLAYER_PT_layer_passes.draw_pass_type_buttons
+            self.draw_edge_type_buttons = bpy.types.RENDERLAYER_PT_freestyle_lineset.draw_edge_type_buttons
+            self.draw_modifier_box_header = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_box_header
+            self.draw_modifier_common = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_common
+            self.draw_modifier_box_error = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_box_error
+            self.draw_modifier_color_ramp_common = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_color_ramp_common
+            self.draw_modifier_curve_common = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_curve_common
+
+            override = True
+
+            for panel in panels:
+                type = getattr(bpy.types, panel.id)
+                if hasattr(type, 'COMPAT_ENGINES'):
+                    if context.scene.render.engine in type.COMPAT_ENGINES:
+                        if hasattr(type, 'poll'):
+                            if type.poll(context):
+                                if panel.id == 'RENDERLAYER_PT_freestyle_lineset': self.draw_box(context, box_column, panel, type, draw_override=self.freestyle_lineset_draw)
+                                else: self.draw_box(context, box_column, panel, type)
+                        else: self.draw_box(context, box_column, panel, type)
+                elif hasattr(type, 'poll'):
+                    if type.poll: self.draw_box(context, box_column, panel, type)
+                else: self.draw_box(context, box_column, panel, type)
             # RENDERLAYER_PT_freestyle
             # RENDERLAYER_PT_freestyle_lineset
             # RENDERLAYER_PT_freestyle_linestyle
+        # worl
+        elif option.context == 'WORLD':
+            override = True
+        # modifier
+        elif option.context == 'CONSTRAINT':
+            override = True
+
+        elif option.context == 'MODIFIER':
+
+            self.ARMATURE = bpy.types.DATA_PT_modifiers.ARMATURE
+            self.ARRAY = bpy.types.DATA_PT_modifiers.ARRAY
+            self.BEVEL = bpy.types.DATA_PT_modifiers.BEVEL
+            self.BOOLEAN = bpy.types.DATA_PT_modifiers.BOOLEAN
+            self.BUILD = bpy.types.DATA_PT_modifiers.BUILD
+            self.MESH_CACHE = bpy.types.DATA_PT_modifiers.MESH_CACHE
+            self.MESH_SEQUENCE_CACHE = bpy.types.DATA_PT_modifiers.MESH_SEQUENCE_CACHE
+            self.CAST = bpy.types.DATA_PT_modifiers.CAST
+            self.CLOTH = bpy.types.DATA_PT_modifiers.CLOTH
+            self.COLLISION = bpy.types.DATA_PT_modifiers.COLLISION
+            self.CURVE = bpy.types.DATA_PT_modifiers.CURVE
+            self.DECIMATE = bpy.types.DATA_PT_modifiers.DECIMATE
+            self.DISPLACE = bpy.types.DATA_PT_modifiers.DISPLACE
+            self.DYNAMIC_PAINT = bpy.types.DATA_PT_modifiers.DYNAMIC_PAINT
+            self.EDGE_SPLIT = bpy.types.DATA_PT_modifiers.EDGE_SPLIT
+            self.EXPLODE = bpy.types.DATA_PT_modifiers.EXPLODE
+            self.FLUID_SIMULATION = bpy.types.DATA_PT_modifiers.FLUID_SIMULATION
+            self.HOOK = bpy.types.DATA_PT_modifiers.HOOK
+            self.LAPLACIANDEFORM = bpy.types.DATA_PT_modifiers.LAPLACIANDEFORM
+            self.LAPLACIANSMOOTH = bpy.types.DATA_PT_modifiers.LAPLACIANSMOOTH
+            self.LATTICE = bpy.types.DATA_PT_modifiers.LATTICE
+            self.MASK = bpy.types.DATA_PT_modifiers.MASK
+            self.MESH_DEFORM = bpy.types.DATA_PT_modifiers.MESH_DEFORM
+            self.MIRROR = bpy.types.DATA_PT_modifiers.MIRROR
+            self.MULTIRES = bpy.types.DATA_PT_modifiers.MULTIRES
+            self.OCEAN = bpy.types.DATA_PT_modifiers.OCEAN
+            self.PARTICLE_INSTANCE = bpy.types.DATA_PT_modifiers.PARTICLE_INSTANCE
+            self.PARTICLE_SYSTEM = bpy.types.DATA_PT_modifiers.PARTICLE_SYSTEM
+            self.SCREW = bpy.types.DATA_PT_modifiers.SCREW
+            self.SHRINKWRAP = bpy.types.DATA_PT_modifiers.SHRINKWRAP
+            self.SIMPLE_DEFORM = bpy.types.DATA_PT_modifiers.SIMPLE_DEFORM
+            self.SMOKE = bpy.types.DATA_PT_modifiers.SMOKE
+            self.SMOOTH = bpy.types.DATA_PT_modifiers.SMOOTH
+            self.SOFT_BODY = bpy.types.DATA_PT_modifiers.SOFT_BODY
+            self.SOLIDIFY = bpy.types.DATA_PT_modifiers.SOLIDIFY
+            self.SUBSURF = bpy.types.DATA_PT_modifiers.SUBSURF
+            self.SURFACE = bpy.types.DATA_PT_modifiers.SURFACE
+            self.SURFACE_DEFORM = bpy.types.DATA_PT_modifiers.SURFACE_DEFORM
+            self.UV_PROJECT = bpy.types.DATA_PT_modifiers.UV_PROJECT
+            self.WARP = bpy.types.DATA_PT_modifiers.WARP
+            self.WAVE = bpy.types.DATA_PT_modifiers.WAVE
+            self.REMESH = bpy.types.DATA_PT_modifiers.REMESH
+            self.vertex_weight_mask = bpy.types.DATA_PT_modifiers.vertex_weight_mask
+            self.VERTEX_WEIGHT_EDIT = bpy.types.DATA_PT_modifiers.VERTEX_WEIGHT_EDIT
+            self.VERTEX_WEIGHT_MIX = bpy.types.DATA_PT_modifiers.VERTEX_WEIGHT_MIX
+            self.VERTEX_WEIGHT_PROXIMITY = bpy.types.DATA_PT_modifiers.VERTEX_WEIGHT_PROXIMITY
+            self.SKIN = bpy.types.DATA_PT_modifiers.SKIN
+            self.TRIANGULATE = bpy.types.DATA_PT_modifiers.TRIANGULATE
+            self.UV_WARP = bpy.types.DATA_PT_modifiers.UV_WARP
+            self.WIREFRAME = bpy.types.DATA_PT_modifiers.WIREFRAME
+            self.DATA_TRANSFER = bpy.types.DATA_PT_modifiers.DATA_TRANSFER
+            self.NORMAL_EDIT = bpy.types.DATA_PT_modifiers.NORMAL_EDIT
+            self.CORRECTIVE_SMOOTH = bpy.types.DATA_PT_modifiers.CORRECTIVE_SMOOTH
+
+            override = True
+
+            def modifiers_draw(self, context):
+
+                layout = self.layout
+
+                ob = context.active_object
+
+                layout.operator_menu_enum("object.modifier_add", "type")
+
+                for md in ob.modifiers:
+                    box = layout.template_modifier(md)
+                    if box:
+                        # match enum type to our functions, avoids a lookup table.
+                        getattr(self, md.type)(self, box, ob, md)
+
+            self.layout = layout.column()
+            modifiers_draw(self, context)
+
 
         # TODO: hide headers
         # context overrides
         # see how many issues this solves
-        for panel in panels:
-            type = getattr(bpy.types, panel.id)
-            if hasattr(type, 'COMPAT_ENGINES'):
-                if context.scene.render.engine in type.COMPAT_ENGINES:
-                    if hasattr(type, 'poll'):
-                        if type.poll(context): self.draw_box(context, box_column, panel, type)
-                    else: self.draw_box(context, box_column, panel, type)
-            elif hasattr(type, 'poll'):
-                if type.poll: self.draw_box(context, box_column, panel, type)
-            else: self.draw_box(context, box_column, panel, type)
+        if not override:
+            for panel in panels:
+                type = getattr(bpy.types, panel.id)
+                if hasattr(type, 'COMPAT_ENGINES'):
+                    if context.scene.render.engine in type.COMPAT_ENGINES:
+                        if hasattr(type, 'poll'):
+                            if type.poll(context): self.draw_box(context, box_column, panel, type)
+                        else: self.draw_box(context, box_column, panel, type)
+                elif hasattr(type, 'poll'):
+                    if type.poll: self.draw_box(context, box_column, panel, type)
+                else: self.draw_box(context, box_column, panel, type)
 
 
-    def draw_box(self, context, box_column, panel, type):
+    def draw_box(self, context, box_column, panel, type, draw_override=False):
 
-        box = box_column.box()
-        row = box.row(align=True)
-        row.alignment = 'LEFT'
+        if hasattr(type, 'bl_options'):
+            if 'HIDE_HEADER' in getattr(type, 'bl_options'): hidden_header = True
+            else: hidden_header = False
+        else: hidden_header = False
 
-        sub = row.row(align=True)
-        sub.scale_x = 0.5
-        sub.prop(panel, 'collapsed', text='', icon='TRIA_DOWN' if not panel.collapsed else 'TRIA_RIGHT', emboss=False)
-
-        if hasattr(type, 'draw_header'):
-            sub = row.row(align=True)
-            sub.scale_x = 0.8
-            self.layout = sub
-            type.draw_header(self, context)
-
-        row.prop(panel, 'collapsed', text=panel.label, toggle=True, emboss=False) # TODO: Run this as a collapse oeprator, catch event and emulate panel behavior
-
-        sub = row.row(align=True)
-        sub.prop(panel, 'collapsed', text=' ', toggle=True, emboss=False)
-
-        if not panel.collapsed:
+        if not hidden_header:
             box = box_column.box()
-            column = box.column()
+            row = box.row(align=True)
+            row.alignment = 'LEFT'
+
+            sub = row.row(align=True)
+            sub.scale_x = 0.5
+            sub.prop(panel, 'collapsed', text='', icon='TRIA_DOWN' if not panel.collapsed else 'TRIA_RIGHT', emboss=False)
+
+            if hasattr(type, 'draw_header'):
+                sub = row.row(align=True)
+                sub.scale_x = 0.8
+                self.layout = sub
+                type.draw_header(self, context)
+
+            row.prop(panel, 'collapsed', text=panel.label, toggle=True, emboss=False) # TODO: Run this as a collapse operator, catch event and emulate panel behavior
+
+            sub = row.row(align=True)
+            sub.prop(panel, 'collapsed', text=' ', toggle=True, emboss=False)
+
+            if not panel.collapsed:
+                box = box_column.box()
+                column = box.column()
+
+                self.layout = column
+                if not draw_override:
+                    type.draw(self, context)
+                else:
+                    draw_override(context)
+
+        else:
+            column = box_column
 
             self.layout = column
             type.draw(self, context)
 
         box_column.separator()
+
+
+    def freestyle_lineset_draw(self, context):
+        layout = self.layout
+
+        rd = context.scene.render
+        rl = rd.layers.active
+        freestyle = rl.freestyle_settings
+        lineset = freestyle.linesets.active
+
+        layout.active = rl.use_freestyle
+
+        row = layout.row()
+        rows = 4 if lineset else 2
+        row.template_list("RENDERLAYER_UL_linesets", "", freestyle, "linesets", freestyle.linesets, "active_index", rows=rows)
+
+        sub = row.column(align=True)
+        sub.operator("scene.freestyle_lineset_add", icon='ZOOMIN', text="")
+        sub.operator("scene.freestyle_lineset_remove", icon='ZOOMOUT', text="")
+        sub.menu("RENDER_MT_lineset_specials", icon='DOWNARROW_HLT', text="")
+        if lineset:
+            sub.separator()
+            sub.separator()
+            sub.operator("scene.freestyle_lineset_move", icon='TRIA_UP', text="").direction = 'UP'
+            sub.operator("scene.freestyle_lineset_move", icon='TRIA_DOWN', text="").direction = 'DOWN'
+
+            col = layout.column()
+            col.label(text="Selection By:")
+            row = col.row(align=True)
+            row.prop(lineset, "select_by_visibility", text="Visibility", toggle=True)
+            row.prop(lineset, "select_by_edge_types", text="Edge Types", toggle=True)
+            row.prop(lineset, "select_by_face_marks", text="Face Marks", toggle=True)
+            row.prop(lineset, "select_by_group", text="Group", toggle=True)
+            row.prop(lineset, "select_by_image_border", text="Image Border", toggle=True)
+
+            if lineset.select_by_visibility:
+                col.label(text="Visibility:")
+                row = col.row(align=True)
+                row.prop(lineset, "visibility", expand=True)
+                if lineset.visibility == 'RANGE':
+                    row = col.row(align=True)
+                    row.prop(lineset, "qi_start")
+                    row.prop(lineset, "qi_end")
+
+            if lineset.select_by_edge_types:
+                col.label(text="Edge Types:")
+                row = col.row()
+                row.prop(lineset, "edge_type_negation", expand=True)
+                row.prop(lineset, "edge_type_combination", expand=True)
+
+                split = col.split()
+
+                sub = split.column()
+                self.draw_edge_type_buttons(self, sub, lineset, "silhouette")
+                self.draw_edge_type_buttons(self, sub, lineset, "border")
+                self.draw_edge_type_buttons(self, sub, lineset, "contour")
+                self.draw_edge_type_buttons(self, sub, lineset, "suggestive_contour")
+                self.draw_edge_type_buttons(self, sub, lineset, "ridge_valley")
+
+                sub = split.column()
+                self.draw_edge_type_buttons(self, sub, lineset, "crease")
+                self.draw_edge_type_buttons(self, sub, lineset, "edge_mark")
+                self.draw_edge_type_buttons(self, sub, lineset, "external_contour")
+                self.draw_edge_type_buttons(self, sub, lineset, "material_boundary")
+
+            if lineset.select_by_face_marks:
+                col.label(text="Face Marks:")
+                row = col.row()
+                row.prop(lineset, "face_mark_negation", expand=True)
+                row.prop(lineset, "face_mark_condition", expand=True)
+
+            if lineset.select_by_group:
+                col.label(text="Group:")
+                row = col.row()
+                row.prop(lineset, "group", text="")
+                row.prop(lineset, "group_negation", expand=True)
+
+
+    def draw_color_modifier(self, context, modifier):
+        layout = self.layout
+
+        col = layout.column(align=True)
+        self.draw_modifier_box_header(self, col.box(), modifier)
+        if modifier.expanded:
+            box = col.box()
+            self.draw_modifier_common(self, box, modifier)
+
+            if modifier.type == 'ALONG_STROKE':
+                self.draw_modifier_color_ramp_common(self, box, modifier, False)
+
+            elif modifier.type == 'DISTANCE_FROM_OBJECT':
+                box.prop(modifier, "target")
+                self.draw_modifier_color_ramp_common(self, box, modifier, True)
+                prop = box.operator("scene.freestyle_fill_range_by_selection")
+                prop.type = 'COLOR'
+                prop.name = modifier.name
+
+            elif modifier.type == 'DISTANCE_FROM_CAMERA':
+                self.draw_modifier_color_ramp_common(self, box, modifier, True)
+                prop = box.operator("scene.freestyle_fill_range_by_selection")
+                prop.type = 'COLOR'
+                prop.name = modifier.name
+
+            elif modifier.type == 'MATERIAL':
+                row = box.row()
+                row.prop(modifier, "material_attribute", text="")
+                sub = row.column()
+                sub.prop(modifier, "use_ramp")
+                if modifier.material_attribute in {'LINE', 'DIFF', 'SPEC'}:
+                    sub.active = True
+                    show_ramp = modifier.use_ramp
+                else:
+                    sub.active = False
+                    show_ramp = True
+                if show_ramp:
+                    self.draw_modifier_color_ramp_common(self, box, modifier, False)
+
+            elif modifier.type == 'TANGENT':
+                self.draw_modifier_color_ramp_common(self, box, modifier, False)
+
+            elif modifier.type == 'NOISE':
+                self.draw_modifier_color_ramp_common(self, box, modifier, False)
+                row = box.row(align=False)
+                row.prop(modifier, "amplitude")
+                row.prop(modifier, "period")
+                row.prop(modifier, "seed")
+
+            elif modifier.type == 'CREASE_ANGLE':
+                self.draw_modifier_color_ramp_common(self, box, modifier, False)
+                row = box.row(align=True)
+                row.prop(modifier, "angle_min")
+                row.prop(modifier, "angle_max")
+
+            elif modifier.type == 'CURVATURE_3D':
+                self.draw_modifier_color_ramp_common(self, box, modifier, False)
+                row = box.row(align=True)
+                row.prop(modifier, "curvature_min")
+                row.prop(modifier, "curvature_max")
+                freestyle = context.scene.render.layers.active.freestyle_settings
+                if not freestyle.use_smoothness:
+                    message = "Enable Face Smoothness to use this modifier"
+                    self.draw_modifier_box_error(self, col.box(), modifier, message)
+
+
+    def draw_alpha_modifier(self, context, modifier):
+        layout = self.layout
+
+        col = layout.column(align=True)
+        self.draw_modifier_box_header(self, col.box(), modifier)
+        if modifier.expanded:
+            box = col.box()
+            self.draw_modifier_common(self, box, modifier)
+
+            if modifier.type == 'ALONG_STROKE':
+                self.draw_modifier_curve_common(self, box, modifier, False, False)
+
+            elif modifier.type == 'DISTANCE_FROM_OBJECT':
+                box.prop(modifier, "target")
+                self.draw_modifier_curve_common(self, box, modifier, True, False)
+                prop = box.operator("scene.freestyle_fill_range_by_selection")
+                prop.type = 'ALPHA'
+                prop.name = modifier.name
+
+            elif modifier.type == 'DISTANCE_FROM_CAMERA':
+                self.draw_modifier_curve_common(self, box, modifier, True, False)
+                prop = box.operator("scene.freestyle_fill_range_by_selection")
+                prop.type = 'ALPHA'
+                prop.name = modifier.name
+
+            elif modifier.type == 'MATERIAL':
+                box.prop(modifier, "material_attribute", text="")
+                self.draw_modifier_curve_common(self, box, modifier, False, False)
+
+            elif modifier.type == 'TANGENT':
+                self.draw_modifier_curve_common(self, box, modifier, False, False)
+
+            elif modifier.type == 'NOISE':
+                self.draw_modifier_curve_common(self, box, modifier, False, False)
+                row = box.row(align=False)
+                row.prop(modifier, "amplitude")
+                row.prop(modifier, "period")
+                row.prop(modifier, "seed")
+
+            elif modifier.type == 'CREASE_ANGLE':
+                self.draw_modifier_curve_common(self, box, modifier, False, False)
+                row = box.row(align=True)
+                row.prop(modifier, "angle_min")
+                row.prop(modifier, "angle_max")
+
+            elif modifier.type == 'CURVATURE_3D':
+                self.draw_modifier_curve_common(self, box, modifier, False, False)
+                row = box.row(align=True)
+                row.prop(modifier, "curvature_min")
+                row.prop(modifier, "curvature_max")
+                freestyle = context.scene.render.layers.active.freestyle_settings
+                if not freestyle.use_smoothness:
+                    message = "Enable Face Smoothness to use this modifier"
+                    self.draw_modifier_box_error(self, col.box(), modifier, message)
+
+
+    def draw_thickness_modifier(self, context, modifier):
+        layout = self.layout
+
+        col = layout.column(align=True)
+        self.draw_modifier_box_header(self, col.box(), modifier)
+        if modifier.expanded:
+            box = col.box()
+            self.draw_modifier_common(self, box, modifier)
+
+            if modifier.type == 'ALONG_STROKE':
+                self.draw_modifier_curve_common(self, box, modifier, False, True)
+
+            elif modifier.type == 'DISTANCE_FROM_OBJECT':
+                box.prop(modifier, "target")
+                self.draw_modifier_curve_common(self, box, modifier, True, True)
+                prop = box.operator("scene.freestyle_fill_range_by_selection")
+                prop.type = 'THICKNESS'
+                prop.name = modifier.name
+
+            elif modifier.type == 'DISTANCE_FROM_CAMERA':
+                self.draw_modifier_curve_common(self, box, modifier, True, True)
+                prop = box.operator("scene.freestyle_fill_range_by_selection")
+                prop.type = 'THICKNESS'
+                prop.name = modifier.name
+
+            elif modifier.type == 'MATERIAL':
+                box.prop(modifier, "material_attribute", text="")
+                self.draw_modifier_curve_common(self, box, modifier, False, True)
+
+            elif modifier.type == 'CALLIGRAPHY':
+                box.prop(modifier, "orientation")
+                row = box.row(align=True)
+                row.prop(modifier, "thickness_min")
+                row.prop(modifier, "thickness_max")
+
+            elif modifier.type == 'TANGENT':
+                self.draw_modifier_curve_common(self, box, modifier, False, False)
+                self.mapping = 'CURVE'
+                row = box.row(align=True)
+                row.prop(modifier, "thickness_min")
+                row.prop(modifier, "thickness_max")
+
+            elif modifier.type == 'NOISE':
+                row = box.row(align=False)
+                row.prop(modifier, "amplitude")
+                row.prop(modifier, "period")
+                row = box.row(align=False)
+                row.prop(modifier, "seed")
+                row.prop(modifier, "use_asymmetric")
+
+            elif modifier.type == 'CREASE_ANGLE':
+                self.draw_modifier_curve_common(self, box, modifier, False, False)
+                row = box.row(align=True)
+                row.prop(modifier, "thickness_min")
+                row.prop(modifier, "thickness_max")
+                row = box.row(align=True)
+                row.prop(modifier, "angle_min")
+                row.prop(modifier, "angle_max")
+
+            elif modifier.type == 'CURVATURE_3D':
+                self.draw_modifier_curve_common(self, box, modifier, False, False)
+                row = box.row(align=True)
+                row.prop(modifier, "thickness_min")
+                row.prop(modifier, "thickness_max")
+                row = box.row(align=True)
+                row.prop(modifier, "curvature_min")
+                row.prop(modifier, "curvature_max")
+                freestyle = context.scene.render.layers.active.freestyle_settings
+                if not freestyle.use_smoothness:
+                    message = "Enable Face Smoothness to use this modifier"
+                    self.draw_modifier_box_error(self, col.box(), modifier, message)
+
+
+    def draw_geometry_modifier(self, context, modifier):
+        layout = self.layout
+
+        col = layout.column(align=True)
+        self.draw_modifier_box_header(self, col.box(), modifier)
+        if modifier.expanded:
+            box = col.box()
+
+            if modifier.type == 'SAMPLING':
+                box.prop(modifier, "sampling")
+
+            elif modifier.type == 'BEZIER_CURVE':
+                box.prop(modifier, "error")
+
+            elif modifier.type == 'SINUS_DISPLACEMENT':
+                split = box.split()
+                col = split.column()
+                col.prop(modifier, "wavelength")
+                col.prop(modifier, "amplitude")
+                col = split.column()
+                col.prop(modifier, "phase")
+
+            elif modifier.type == 'SPATIAL_NOISE':
+                split = box.split()
+                col = split.column()
+                col.prop(modifier, "amplitude")
+                col.prop(modifier, "scale")
+                col.prop(modifier, "octaves")
+                col = split.column()
+                col.prop(modifier, "smooth")
+                col.prop(modifier, "use_pure_random")
+
+            elif modifier.type == 'PERLIN_NOISE_1D':
+                split = box.split()
+                col = split.column()
+                col.prop(modifier, "frequency")
+                col.prop(modifier, "amplitude")
+                col.prop(modifier, "seed")
+                col = split.column()
+                col.prop(modifier, "octaves")
+                col.prop(modifier, "angle")
+
+            elif modifier.type == 'PERLIN_NOISE_2D':
+                split = box.split()
+                col = split.column()
+                col.prop(modifier, "frequency")
+                col.prop(modifier, "amplitude")
+                col.prop(modifier, "seed")
+                col = split.column()
+                col.prop(modifier, "octaves")
+                col.prop(modifier, "angle")
+
+            elif modifier.type == 'BACKBONE_STRETCHER':
+                box.prop(modifier, "backbone_length")
+
+            elif modifier.type == 'TIP_REMOVER':
+                box.prop(modifier, "tip_length")
+
+            elif modifier.type == 'POLYGONIZATION':
+                box.prop(modifier, "error")
+
+            elif modifier.type == 'GUIDING_LINES':
+                box.prop(modifier, "offset")
+
+            elif modifier.type == 'BLUEPRINT':
+                row = box.row()
+                row.prop(modifier, "shape", expand=True)
+                box.prop(modifier, "rounds")
+                row = box.row()
+                if modifier.shape in {'CIRCLES', 'ELLIPSES'}:
+                    row.prop(modifier, "random_radius")
+                    row.prop(modifier, "random_center")
+                elif modifier.shape == 'SQUARES':
+                    row.prop(modifier, "backbone_length")
+                    row.prop(modifier, "random_backbone")
+
+            elif modifier.type == '2D_OFFSET':
+                row = box.row(align=True)
+                row.prop(modifier, "start")
+                row.prop(modifier, "end")
+                row = box.row(align=True)
+                row.prop(modifier, "x")
+                row.prop(modifier, "y")
+
+            elif modifier.type == '2D_TRANSFORM':
+                box.prop(modifier, "pivot")
+                if modifier.pivot == 'PARAM':
+                    box.prop(modifier, "pivot_u")
+                elif modifier.pivot == 'ABSOLUTE':
+                    row = box.row(align=True)
+                    row.prop(modifier, "pivot_x")
+                    row.prop(modifier, "pivot_y")
+                row = box.row(align=True)
+                row.prop(modifier, "scale_x")
+                row.prop(modifier, "scale_y")
+                box.prop(modifier, "angle")
+
+            elif modifier.type == 'SIMPLIFICATION':
+                box.prop(modifier, "tolerance")
+
+
+    @staticmethod
+    def draw_keyframing_settings(context, layout, ks, ksp):
+        datablock._draw_keyframing_setting(
+                context, layout, ks, ksp, "Needed",
+                "use_insertkey_override_needed", "use_insertkey_needed",
+                userpref_fallback="use_keyframe_insert_needed")
+
+        datablock._draw_keyframing_setting(
+                context, layout, ks, ksp, "Visual",
+                "use_insertkey_override_visual", "use_insertkey_visual",
+                userpref_fallback="use_visual_keying")
+
+        datablock._draw_keyframing_setting(
+                context, layout, ks, ksp, "XYZ to RGB",
+                "use_insertkey_override_xyz_to_rgb", "use_insertkey_xyz_to_rgb")
+
+    @staticmethod
+    def _draw_keyframing_setting(context, layout, ks, ksp, label, toggle_prop, prop, userpref_fallback=None):
+        if ksp:
+            item = ksp
+
+            if getattr(ks, toggle_prop):
+                owner = ks
+                propname = prop
+            else:
+                owner = context.user_preferences.edit
+                if userpref_fallback:
+                    propname = userpref_fallback
+                else:
+                    propname = prop
+        else:
+            item = ks
+
+            owner = context.user_preferences.edit
+            if userpref_fallback:
+                propname = userpref_fallback
+            else:
+                propname = prop
+
+        row = layout.row(align=True)
+        row.prop(item, toggle_prop, text="", icon='STYLUS_PRESSURE', toggle=True)  # XXX: needs dedicated icon
+
+        subrow = row.row()
+        subrow.active = getattr(item, toggle_prop)
+        if subrow.active:
+            subrow.prop(item, prop, text=label)
+        else:
+            subrow.prop(owner, propname, text=label)
 
 
 class namer:

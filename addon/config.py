@@ -297,7 +297,7 @@ defaults = {
         'namer_popup_width': 460,
         'update_check': True,
         'update_display_menu': True,
-        'update_display_panel': True,
+        'update_display_panel': False,
         'datablock': {
             'render': {
                 'label': '',

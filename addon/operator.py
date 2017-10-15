@@ -274,27 +274,11 @@ class operation_move(Operator):
         return {'FINISHED'}
 
 
-class Update:
-    bl_options = {'INTERNAL'}
-
-    @classmethod
-    def poll(cls, context): return True
-    # check for github head
-
-
-class update_check(Update, Operator):
-    bl_idname = 'wm.name_panel_update_check'
-    bl_label = 'Check for update'
-    bl_description = 'Check for update'
-
-
-    def execute(self, context): return {'FINISHED'}
-
-
-class update_info(Update, Operator):
+class update_info(Operator):
     bl_idname = 'wm.name_panel_update_info'
     bl_label = 'Update info'
-    bl_description = 'Latest update information'
+    bl_description = 'Get Latest update information'
+    bl_options = {'INTERNAL'}
 
 
     def check(self, context): return True
@@ -302,9 +286,6 @@ class update_info(Update, Operator):
 
     def draw(self, context):
 
-        # TODO: Check update presents a pop
-
-        # TODO: move to interface
         layout = self.layout
 
         column = layout.column(align=True)
@@ -322,7 +303,7 @@ class update_info(Update, Operator):
 
             row = column.row()
             row.scale_y = 1.5
-            row.operator('wm.name_panel_update', text='Update')
+            row.operator('wm.name_panel_update_addon', text='Update')
 
         elif not update.check.connection():
 
@@ -344,20 +325,11 @@ class update_info(Update, Operator):
     def execute(self, context): return {'FINISHED'}
 
 
-class update(Update, Operator):
-    bl_idname = 'wm.name_panel_update'
-    bl_label = 'Update'
-    bl_description = 'Update'
-
-
-    def execute(self, context): return {'FINISHED'}
-
-
-
-class update_confirm(Update, Operator):
-    bl_idname = 'wm.name_panel_update_info_confirm'
+class update_confirm(Operator):
+    bl_idname = 'wm.name_panel_update_confirm'
     bl_label = ''
     bl_description = ''
+    bl_options = {'INTERNAL'}
 
 
     def check(self, context): return True
@@ -366,7 +338,6 @@ class update_confirm(Update, Operator):
     def draw(self, context):
 
         layout = self.layout
-
 
         layout.separator()
         row = layout.row()

@@ -16,9 +16,9 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 bl_info = {
     'name': 'Name Panel',
     'author': 'Trentin Frederick (proxe)',
-    'version': (1, 7, 470),
+    'version': (1, 7, 472),
     'blender': (2, 68, 0),
-    'location': '3D View \N{Rightwards Arrow} Property Shelf \N{Rightwards Arrow} Name',
+    'location': '3D View \N{Rightwards Arrow} Tool Shelf \N{Rightwards Arrow} Name',
     'description': 'In panel datablock name stack with shortcut and batch name tools.',
     'wiki_url': 'https://cgcookiemarkets.com/all-products/name-panel/?view=docs',
     'tracker_url': 'https://github.com/trentinfrederick/name-panel/issues',
@@ -162,7 +162,7 @@ class preferences(AddonPreferences):
         row.prop(context.scene.NamePanel, 'location', expand=True)
 
         # label
-        box.label(text='Property Panel Location:')
+        box.label(text='Datablock Panel Location:')
 
         # row
         row = box.row()

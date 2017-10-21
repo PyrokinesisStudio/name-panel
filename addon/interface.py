@@ -1,4 +1,5 @@
 import bpy
+import bl_ui
 import rna_keymap_ui
 
 from .utilities import get
@@ -333,7 +334,7 @@ class name_panel:
             row.scale_y = 1.5
             row.operator('wm.url_open', text='Report a bug').url = remote['bug_report']
             row.operator('wm.url_open', text='Thread').url = remote['thread']
-            row.operator('wm.url_open', text='Github').url = remote['github']
+            row.operator('wm.url_open', text='proxeIO').url = remote['proxeIO']
             row.operator('wm.url_open', text='Patreon').url = remote['patreon']
             row.operator('wm.url_open', text='Donate').url = remote['donate']
 
@@ -463,156 +464,198 @@ class datablock:
         #XXX: add pin history navigation
     # TODO: Create a properties pop-up that behaves the same as the properties window place it on the search row, right after filters
     def __init__(self, operator, context):
+        self.override = False
 
-        restore = {'layout': operator.layout}
         layout = operator.layout
+
         option = get.datablock.options(context)
 
         row = layout.row(align=True)
         row.prop(get.datablock.options(context), 'context', text='', expand=True)
-        row.menu('view3d.name_panel_specials', text='', icon='COLLAPSEMENU') # TODO: make specials operator pop-up
+        row.menu('view3d.name_panel_specials', text='', icon='COLLAPSEMENU') # TODO: make datablock pop-up specials menu
 
         box_column = layout.column(align=True)
 
         panels = getattr(option, option.context.lower())
 
-        override = False
+        getattr(self, option.context.lower())(context)
 
-        # render
-        if option.context == 'RENDER':
-            # RENDER_PT_dimensions
-            self._frame_rate_args_prev = None
-            self._preset_class = None
-            RENDER_PT_dimensions = bpy.types.RENDER_PT_dimensions
-            self._draw_framerate_label = bpy.types.RENDER_PT_dimensions._draw_framerate_label
-            self.draw_framerate = bpy.types.RENDER_PT_dimensions.draw_framerate
-        # render layer
-        elif option.context == 'RENDER_LAYER':
-            self.draw_pass_type_buttons = bpy.types.RENDERLAYER_PT_layer_passes.draw_pass_type_buttons
-            self.draw_edge_type_buttons = bpy.types.RENDERLAYER_PT_freestyle_lineset.draw_edge_type_buttons
-            self.draw_modifier_box_header = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_box_header
-            self.draw_modifier_common = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_common
-            self.draw_modifier_box_error = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_box_error
-            self.draw_modifier_color_ramp_common = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_color_ramp_common
-            self.draw_modifier_curve_common = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_curve_common
+        if not self.override: self.draw_panels(context, panels, box_column)
 
-            override = True
 
-            for panel in panels:
-                type = getattr(bpy.types, panel.id)
-                if hasattr(type, 'COMPAT_ENGINES'):
-                    if context.scene.render.engine in type.COMPAT_ENGINES:
-                        if hasattr(type, 'poll'):
-                            if type.poll(context):
-                                if panel.id == 'RENDERLAYER_PT_freestyle_lineset': self.draw_box(context, box_column, panel, type, draw_override=self.freestyle_lineset_draw)
-                                else: self.draw_box(context, box_column, panel, type)
+    def render(self, context):
+        self._frame_rate_args_prev = None
+        self._preset_class = None
+        RENDER_PT_dimensions = bpy.types.RENDER_PT_dimensions
+        self._draw_framerate_label = bpy.types.RENDER_PT_dimensions._draw_framerate_label
+        self.draw_framerate = bpy.types.RENDER_PT_dimensions.draw_framerate
+
+
+    def render_layer(self, context):
+        self.draw_pass_type_buttons = bpy.types.RENDERLAYER_PT_layer_passes.draw_pass_type_buttons
+        self.draw_edge_type_buttons = bpy.types.RENDERLAYER_PT_freestyle_lineset.draw_edge_type_buttons
+        self.draw_modifier_box_header = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_box_header
+        self.draw_modifier_common = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_common
+        self.draw_modifier_box_error = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_box_error
+        self.draw_modifier_color_ramp_common = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_color_ramp_common
+        self.draw_modifier_curve_common = bpy.types.RENDERLAYER_PT_freestyle_linestyle.draw_modifier_curve_common
+
+
+    def scene(self, context): pass
+
+
+    def world(self, context): pass
+
+
+    def object(self, context): pass
+
+
+    def constraint(self, context): pass
+
+
+    def modifier(self, context):
+        self.ARMATURE = bpy.types.DATA_PT_modifiers.ARMATURE
+        self.ARRAY = bpy.types.DATA_PT_modifiers.ARRAY
+        self.BEVEL = bpy.types.DATA_PT_modifiers.BEVEL
+        self.BOOLEAN = bpy.types.DATA_PT_modifiers.BOOLEAN
+        self.BUILD = bpy.types.DATA_PT_modifiers.BUILD
+        self.MESH_CACHE = bpy.types.DATA_PT_modifiers.MESH_CACHE
+        self.MESH_SEQUENCE_CACHE = bpy.types.DATA_PT_modifiers.MESH_SEQUENCE_CACHE
+        self.CAST = bpy.types.DATA_PT_modifiers.CAST
+        self.CLOTH = bpy.types.DATA_PT_modifiers.CLOTH
+        self.COLLISION = bpy.types.DATA_PT_modifiers.COLLISION
+        self.CURVE = bpy.types.DATA_PT_modifiers.CURVE
+        self.DECIMATE = bpy.types.DATA_PT_modifiers.DECIMATE
+        self.DISPLACE = bpy.types.DATA_PT_modifiers.DISPLACE
+        self.DYNAMIC_PAINT = bpy.types.DATA_PT_modifiers.DYNAMIC_PAINT
+        self.EDGE_SPLIT = bpy.types.DATA_PT_modifiers.EDGE_SPLIT
+        self.EXPLODE = bpy.types.DATA_PT_modifiers.EXPLODE
+        self.FLUID_SIMULATION = bpy.types.DATA_PT_modifiers.FLUID_SIMULATION
+        self.HOOK = bpy.types.DATA_PT_modifiers.HOOK
+        self.LAPLACIANDEFORM = bpy.types.DATA_PT_modifiers.LAPLACIANDEFORM
+        self.LAPLACIANSMOOTH = bpy.types.DATA_PT_modifiers.LAPLACIANSMOOTH
+        self.LATTICE = bpy.types.DATA_PT_modifiers.LATTICE
+        self.MASK = bpy.types.DATA_PT_modifiers.MASK
+        self.MESH_DEFORM = bpy.types.DATA_PT_modifiers.MESH_DEFORM
+        self.MIRROR = bpy.types.DATA_PT_modifiers.MIRROR
+        self.MULTIRES = bpy.types.DATA_PT_modifiers.MULTIRES
+        self.OCEAN = bpy.types.DATA_PT_modifiers.OCEAN
+        self.PARTICLE_INSTANCE = bpy.types.DATA_PT_modifiers.PARTICLE_INSTANCE
+        self.PARTICLE_SYSTEM = bpy.types.DATA_PT_modifiers.PARTICLE_SYSTEM
+        self.SCREW = bpy.types.DATA_PT_modifiers.SCREW
+        self.SHRINKWRAP = bpy.types.DATA_PT_modifiers.SHRINKWRAP
+        self.SIMPLE_DEFORM = bpy.types.DATA_PT_modifiers.SIMPLE_DEFORM
+        self.SMOKE = bpy.types.DATA_PT_modifiers.SMOKE
+        self.SMOOTH = bpy.types.DATA_PT_modifiers.SMOOTH
+        self.SOFT_BODY = bpy.types.DATA_PT_modifiers.SOFT_BODY
+        self.SOLIDIFY = bpy.types.DATA_PT_modifiers.SOLIDIFY
+        self.SUBSURF = bpy.types.DATA_PT_modifiers.SUBSURF
+        self.SURFACE = bpy.types.DATA_PT_modifiers.SURFACE
+        self.SURFACE_DEFORM = bpy.types.DATA_PT_modifiers.SURFACE_DEFORM
+        self.UV_PROJECT = bpy.types.DATA_PT_modifiers.UV_PROJECT
+        self.WARP = bpy.types.DATA_PT_modifiers.WARP
+        self.WAVE = bpy.types.DATA_PT_modifiers.WAVE
+        self.REMESH = bpy.types.DATA_PT_modifiers.REMESH
+        self.vertex_weight_mask = bpy.types.DATA_PT_modifiers.vertex_weight_mask
+        self.VERTEX_WEIGHT_EDIT = bpy.types.DATA_PT_modifiers.VERTEX_WEIGHT_EDIT
+        self.VERTEX_WEIGHT_MIX = bpy.types.DATA_PT_modifiers.VERTEX_WEIGHT_MIX
+        self.VERTEX_WEIGHT_PROXIMITY = bpy.types.DATA_PT_modifiers.VERTEX_WEIGHT_PROXIMITY
+        self.SKIN = bpy.types.DATA_PT_modifiers.SKIN
+        self.TRIANGULATE = bpy.types.DATA_PT_modifiers.TRIANGULATE
+        self.UV_WARP = bpy.types.DATA_PT_modifiers.UV_WARP
+        self.WIREFRAME = bpy.types.DATA_PT_modifiers.WIREFRAME
+        self.DATA_TRANSFER = bpy.types.DATA_PT_modifiers.DATA_TRANSFER
+        self.NORMAL_EDIT = bpy.types.DATA_PT_modifiers.NORMAL_EDIT
+        self.CORRECTIVE_SMOOTH = bpy.types.DATA_PT_modifiers.CORRECTIVE_SMOOTH
+
+
+        def modifiers_draw(self, context):
+
+            layout = self.layout
+
+            ob = context.active_object
+
+            layout.operator_menu_enum("object.modifier_add", "type")
+
+            for md in ob.modifiers:
+                box = layout.template_modifier(md)
+                if box:
+                    # match enum type to our functions, avoids a lookup table.
+                    getattr(self, md.type)(self, box, ob, md)
+
+        self.layout = layout.column()
+        modifiers_draw(self, context)
+
+
+    def data(self, context): pass
+
+
+    def bone(self, context): pass
+
+
+    def bone_constraint(self, context): pass
+
+
+    def material(self, context): pass
+
+
+    def texture(self, context): pass
+
+
+    def particles(self, context): pass
+
+
+    def physics(self, context): pass
+
+
+    def draw_panels(self, context, panels, box_column):
+        for panel in panels:
+            type = getattr(bpy.types, panel.id)
+            if hasattr(type, 'COMPAT_ENGINES'):
+                if context.scene.render.engine in type.COMPAT_ENGINES:
+                    if hasattr(type, 'poll'):
+                        if type.poll(context):
+                            draw_header_overrides = [
+                                '',
+                            ]
+                            draw_overrides = [
+                                'RENDERLAYER_PT_freestyle_lineset',
+                                'WORLD_PT_context_world',
+                            ]
+                            self.draw_box(context, box_column, panel, type)
+                    else: self.draw_box(context, box_column, panel, type)
+            elif hasattr(type, 'poll'):
+                if type.poll(context): self.draw_box(context, box_column, panel, type)
+            else: self.draw_box(context, box_column, panel, type)
+
+        for panel in panels:
+            type = getattr(bpy.types, panel.id)
+            if hasattr(type, 'COMPAT_ENGINES'):
+                if context.scene.render.engine in type.COMPAT_ENGINES:
+                    if hasattr(type, 'poll'):
+                        if type.poll(context):
+                            if panel.id == 'RENDERLAYER_PT_freestyle_lineset': self.draw_box(context, box_column, panel, type, draw=self.freestyle_lineset_draw)
+                            else: self.draw_box(context, box_column, panel, type)
+                    else: self.draw_box(context, box_column, panel, type)
+            elif hasattr(type, 'poll'):
+                if type.poll(context): self.draw_box(context, box_column, panel, type)
+            else: self.draw_box(context, box_column, panel, type)
+
+        for panel in panels:
+            type = getattr(bpy.types, panel.id)
+            if hasattr(type, 'COMPAT_ENGINES'):
+                if context.scene.render.engine in type.COMPAT_ENGINES:
+                    if self.poll_context_world(context):
+                        if panel.id == 'WORLD_PT_context_world': self.draw_box(context, box_column, panel, type, draw=self.draw_context_world)
                         else: self.draw_box(context, box_column, panel, type)
-                elif hasattr(type, 'poll'):
-                    if type.poll: self.draw_box(context, box_column, panel, type)
-                else: self.draw_box(context, box_column, panel, type)
-            # RENDERLAYER_PT_freestyle
-            # RENDERLAYER_PT_freestyle_lineset
-            # RENDERLAYER_PT_freestyle_linestyle
-        # worl
-        elif option.context == 'WORLD':
-            override = True
-        # modifier
-        elif option.context == 'CONSTRAINT':
-            override = True
-
-        elif option.context == 'MODIFIER':
-
-            self.ARMATURE = bpy.types.DATA_PT_modifiers.ARMATURE
-            self.ARRAY = bpy.types.DATA_PT_modifiers.ARRAY
-            self.BEVEL = bpy.types.DATA_PT_modifiers.BEVEL
-            self.BOOLEAN = bpy.types.DATA_PT_modifiers.BOOLEAN
-            self.BUILD = bpy.types.DATA_PT_modifiers.BUILD
-            self.MESH_CACHE = bpy.types.DATA_PT_modifiers.MESH_CACHE
-            self.MESH_SEQUENCE_CACHE = bpy.types.DATA_PT_modifiers.MESH_SEQUENCE_CACHE
-            self.CAST = bpy.types.DATA_PT_modifiers.CAST
-            self.CLOTH = bpy.types.DATA_PT_modifiers.CLOTH
-            self.COLLISION = bpy.types.DATA_PT_modifiers.COLLISION
-            self.CURVE = bpy.types.DATA_PT_modifiers.CURVE
-            self.DECIMATE = bpy.types.DATA_PT_modifiers.DECIMATE
-            self.DISPLACE = bpy.types.DATA_PT_modifiers.DISPLACE
-            self.DYNAMIC_PAINT = bpy.types.DATA_PT_modifiers.DYNAMIC_PAINT
-            self.EDGE_SPLIT = bpy.types.DATA_PT_modifiers.EDGE_SPLIT
-            self.EXPLODE = bpy.types.DATA_PT_modifiers.EXPLODE
-            self.FLUID_SIMULATION = bpy.types.DATA_PT_modifiers.FLUID_SIMULATION
-            self.HOOK = bpy.types.DATA_PT_modifiers.HOOK
-            self.LAPLACIANDEFORM = bpy.types.DATA_PT_modifiers.LAPLACIANDEFORM
-            self.LAPLACIANSMOOTH = bpy.types.DATA_PT_modifiers.LAPLACIANSMOOTH
-            self.LATTICE = bpy.types.DATA_PT_modifiers.LATTICE
-            self.MASK = bpy.types.DATA_PT_modifiers.MASK
-            self.MESH_DEFORM = bpy.types.DATA_PT_modifiers.MESH_DEFORM
-            self.MIRROR = bpy.types.DATA_PT_modifiers.MIRROR
-            self.MULTIRES = bpy.types.DATA_PT_modifiers.MULTIRES
-            self.OCEAN = bpy.types.DATA_PT_modifiers.OCEAN
-            self.PARTICLE_INSTANCE = bpy.types.DATA_PT_modifiers.PARTICLE_INSTANCE
-            self.PARTICLE_SYSTEM = bpy.types.DATA_PT_modifiers.PARTICLE_SYSTEM
-            self.SCREW = bpy.types.DATA_PT_modifiers.SCREW
-            self.SHRINKWRAP = bpy.types.DATA_PT_modifiers.SHRINKWRAP
-            self.SIMPLE_DEFORM = bpy.types.DATA_PT_modifiers.SIMPLE_DEFORM
-            self.SMOKE = bpy.types.DATA_PT_modifiers.SMOKE
-            self.SMOOTH = bpy.types.DATA_PT_modifiers.SMOOTH
-            self.SOFT_BODY = bpy.types.DATA_PT_modifiers.SOFT_BODY
-            self.SOLIDIFY = bpy.types.DATA_PT_modifiers.SOLIDIFY
-            self.SUBSURF = bpy.types.DATA_PT_modifiers.SUBSURF
-            self.SURFACE = bpy.types.DATA_PT_modifiers.SURFACE
-            self.SURFACE_DEFORM = bpy.types.DATA_PT_modifiers.SURFACE_DEFORM
-            self.UV_PROJECT = bpy.types.DATA_PT_modifiers.UV_PROJECT
-            self.WARP = bpy.types.DATA_PT_modifiers.WARP
-            self.WAVE = bpy.types.DATA_PT_modifiers.WAVE
-            self.REMESH = bpy.types.DATA_PT_modifiers.REMESH
-            self.vertex_weight_mask = bpy.types.DATA_PT_modifiers.vertex_weight_mask
-            self.VERTEX_WEIGHT_EDIT = bpy.types.DATA_PT_modifiers.VERTEX_WEIGHT_EDIT
-            self.VERTEX_WEIGHT_MIX = bpy.types.DATA_PT_modifiers.VERTEX_WEIGHT_MIX
-            self.VERTEX_WEIGHT_PROXIMITY = bpy.types.DATA_PT_modifiers.VERTEX_WEIGHT_PROXIMITY
-            self.SKIN = bpy.types.DATA_PT_modifiers.SKIN
-            self.TRIANGULATE = bpy.types.DATA_PT_modifiers.TRIANGULATE
-            self.UV_WARP = bpy.types.DATA_PT_modifiers.UV_WARP
-            self.WIREFRAME = bpy.types.DATA_PT_modifiers.WIREFRAME
-            self.DATA_TRANSFER = bpy.types.DATA_PT_modifiers.DATA_TRANSFER
-            self.NORMAL_EDIT = bpy.types.DATA_PT_modifiers.NORMAL_EDIT
-            self.CORRECTIVE_SMOOTH = bpy.types.DATA_PT_modifiers.CORRECTIVE_SMOOTH
-
-            override = True
-
-            def modifiers_draw(self, context):
-
-                layout = self.layout
-
-                ob = context.active_object
-
-                layout.operator_menu_enum("object.modifier_add", "type")
-
-                for md in ob.modifiers:
-                    box = layout.template_modifier(md)
-                    if box:
-                        # match enum type to our functions, avoids a lookup table.
-                        getattr(self, md.type)(self, box, ob, md)
-
-            self.layout = layout.column()
-            modifiers_draw(self, context)
+                    else: self.draw_box(context, box_column, panel, type)
+            elif hasattr(type, 'poll'):
+                if type.poll(context): self.draw_box(context, box_column, panel, type)
+            else: self.draw_box(context, box_column, panel, type)        pass
 
 
-        # TODO: hide headers
-        # context overrides
-        # see how many issues this solves
-        if not override:
-            for panel in panels:
-                type = getattr(bpy.types, panel.id)
-                if hasattr(type, 'COMPAT_ENGINES'):
-                    if context.scene.render.engine in type.COMPAT_ENGINES:
-                        if hasattr(type, 'poll'):
-                            if type.poll(context): self.draw_box(context, box_column, panel, type)
-                        else: self.draw_box(context, box_column, panel, type)
-                elif hasattr(type, 'poll'):
-                    if type.poll: self.draw_box(context, box_column, panel, type)
-                else: self.draw_box(context, box_column, panel, type)
-
-
-    def draw_box(self, context, box_column, panel, type, draw_override=False):
+    # main
+    def draw_box(self, context, box_column, panel, type, draw_header=False, draw=False):
 
         if hasattr(type, 'bl_options'):
             if 'HIDE_HEADER' in getattr(type, 'bl_options'): hidden_header = True
@@ -632,7 +675,8 @@ class datablock:
                 sub = row.row(align=True)
                 sub.scale_x = 0.8
                 self.layout = sub
-                type.draw_header(self, context)
+                if draw_header: draw_header(context)
+                else: type.draw_header(self, context)
 
             row.prop(panel, 'collapsed', text=panel.label, toggle=True, emboss=False) # TODO: Run this as a collapse operator, catch event and emulate panel behavior
 
@@ -644,20 +688,23 @@ class datablock:
                 column = box.column()
 
                 self.layout = column
-                if not draw_override:
-                    type.draw(self, context)
-                else:
-                    draw_override(context)
+                if draw: draw(context)
+                else: type.draw(self, context)
 
         else:
             column = box_column
 
             self.layout = column
-            type.draw(self, context)
+            if draw: draw(context)
+            else: type.draw(self, context)
 
         box_column.separator()
 
 
+    # render
+
+
+    # render layer
     def freestyle_lineset_draw(self, context):
         layout = self.layout
 
@@ -1030,6 +1077,7 @@ class datablock:
                 box.prop(modifier, "tolerance")
 
 
+    # scene
     @staticmethod
     def draw_keyframing_settings(context, layout, ks, ksp):
         datablock._draw_keyframing_setting(
@@ -1045,6 +1093,7 @@ class datablock:
         datablock._draw_keyframing_setting(
                 context, layout, ks, ksp, "XYZ to RGB",
                 "use_insertkey_override_xyz_to_rgb", "use_insertkey_xyz_to_rgb")
+
 
     @staticmethod
     def _draw_keyframing_setting(context, layout, ks, ksp, label, toggle_prop, prop, userpref_fallback=None):
@@ -1078,6 +1127,36 @@ class datablock:
             subrow.prop(item, prop, text=label)
         else:
             subrow.prop(owner, propname, text=label)
+
+
+    # world
+    @staticmethod
+    def poll_context_world(context):
+        return context.scene.world
+
+
+    def draw_context_world(self, context):
+        layout = self.layout
+
+        scene = context.scene
+        world = scene.world
+        texture_count = world and len(world.texture_slots.keys())
+        split = layout.split(percentage=0.85)
+        if scene: split.template_ID(scene, "world", new="world.new")
+        if texture_count: split.label(text=str(texture_count), icon='TEXTURE')
+
+
+    @staticmethod
+    def poll_cycles_world_volume(context):
+        return context.scene.world.node_tree
+
+
+    @staticmethod
+    def poll_cycles_world_mist(context):
+        for layer in context.scene.render.layers:
+            if layer.use_pass_mist:
+                return True
+
 
 
 class namer:

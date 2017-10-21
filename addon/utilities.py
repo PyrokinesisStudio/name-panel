@@ -9,7 +9,6 @@ from bpy.app.handlers import persistent
 
 from .config import default_panels, defaults, remote
 
-
 @persistent
 def keep_session_settings(none):
 
@@ -863,8 +862,11 @@ class get:
                 if context.active_object.type in {'CURVE', 'SURFACE', 'FONT'}: items.append(('DATA', 'Data', '', 'CURVE_DATA', 7))
                 else: items.append(('DATA', 'Data', '', '{}_DATA'.format(context.active_object.type), 7))
                 if context.active_object.type in {'CURVE', 'MESH', 'META', 'SURFACE', 'FONT'}: items.append(('MATERIAL', 'Material', '', 'MATERIAL_DATA', 8))
+                if context.active_object.type == 'ARMATURE':
+                    items.append(('BONE', 'Bone', '', 'BONE_DATA', 9))
+                    items.append(('BONE_CONSTRAINT', 'Bone Constraints', '', 'CONSTRAINT_BONE', 9))
 
-            items.append(('TEXTURE', 'Texture', '', 'TEXTURE_DATA', 9))
+            items.append(('TEXTURE', 'Texture', '', 'TEXTURE_DATA', 11))
 
             if context.active_object:
                 if context.active_object.type == 'MESH': items.append(('PARTICLES', 'Particles', '', 'PARTICLE_DATA', 10))
@@ -880,13 +882,13 @@ class update:
     class check:
 
 
-        def __init__(self, bl_info):
+        def __init__(self, context, bl_info):
 
             current_version = get.version.string(bl_info)
 
             if self.connection():
                 if current_version != self.version(bl_info):
-                    get.preferences(bpy.context).update_ready = True
+                    get.preferences(context).update_ready = True
                     # update
                     pass
                 else:
@@ -920,9 +922,9 @@ class update:
                 return False
 
 
-    def handlers(remove=False):
+    def handlers(context, remove=False):
 
-        if get.preferences(bpy.context).keep_session_settings:
+        if get.preferences(context).keep_session_settings:
             if not remove:
                 bpy.app.handlers.load_pre.append(keep_session_settings)
                 bpy.app.handlers.save_post.append(keep_session_settings)
@@ -942,6 +944,22 @@ class update:
 
         if get.preferences(context).remove_item_panel: bpy.types.VIEW3D_PT_view3d_name.poll = get.item_panel_poll_override
         else: bpy.types.VIEW3D_PT_view3d_name.poll = get.item_panel_poll
+
+
+    def keymap(context, remove=False):
+
+        keymap = context.window_manager.keyconfigs.addon.keymaps.new(name='Window')
+
+        if remove:
+            if 'wm.datablock_settings' in keymap.keymap_items: keymap.keymap_items.remove(keymap.keymap_items['wm.namer'])
+            if 'wm.name' in keymap.keymap_items: keymap.keymap_items.remove(keymap.keymap_items['wm.datablock_settings'])
+        else:
+            if 'wm.datablock_settings' not in keymap.keymap_items:
+                kmi = keymap.keymap_items.new('wm.datablock_settings', 'F7', 'PRESS')
+                kmi.properties.object_name = ''
+            if 'wm.name' not in keymap.keymap_items: keymap.keymap_items.new('wm.namer', 'NONE', 'PRESS')
+
+
 
 
     def selection(operator, context, event):

@@ -16,7 +16,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 bl_info = {
     'name': 'Name Panel',
     'author': 'Trentin Frederick (proxe)',
-    'version': (1, 7, 474),
+    'version': (1, 7, 475),
     'blender': (2, 69, 0),
     'location': '3D View \N{Rightwards Arrow} Tool Shelf \N{Rightwards Arrow} Name',
     'description': 'In panel datablock name stack with shortcut and batch name tools.',
@@ -150,7 +150,7 @@ class preferences(AddonPreferences):
         op.quickBatch = True
 
         # operator; batch name copy
-        row.operator('wm.copy_name_defaults', text='Copy Name')
+        row.operator('wm.copy_name_defaults', text='Transfer Name')
 
         # label
         box.label(text='Name Panel Location:')
@@ -208,7 +208,13 @@ class preferences(AddonPreferences):
         prop.url = 'https://cgcookiemarkets.com/all-products/name-panel/'
 
         # operator; url open
-        prop = split.operator('wm.url_open', text='Blender Artists Thread')
+        prop = split.operator('wm.url_open', text='proxeIO')
+
+        # proxeIO
+        prop.url = 'https://proxeIO.github.io/'
+
+        # operator; url open
+        prop = split.operator('wm.url_open', text='Thread')
 
         # blender artists
         prop.url = 'http://blenderartists.org/forum/showthread.php?272086'

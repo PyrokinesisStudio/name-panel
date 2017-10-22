@@ -275,7 +275,7 @@
 # Modified by scripts.function.preferences.generate.main
 defaults = {
     'name panel': {
-        'location': 'UI',
+        'location': 'TOOLS',
         'pin active object': False,
         'pin active bone': True,
         'hide find': False,
@@ -306,7 +306,7 @@ defaults = {
     },
 
     'properties panel': {
-        'location': 'UI'
+        'location': 'TOOLS'
     },
 
     'shared': {

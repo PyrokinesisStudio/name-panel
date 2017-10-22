@@ -16,7 +16,7 @@ this program. If not, see <http://www.gnu.org/licenses/>.
 bl_info = {
     'name': 'Name Panel',
     'author': 'Trentin Frederick (proxe)',
-    'version': (1, 7, 475),
+    'version': (1, 7, 476),
     'blender': (2, 69, 0),
     'location': '3D View \N{Rightwards Arrow} Tool Shelf \N{Rightwards Arrow} Name',
     'description': 'In panel datablock name stack with shortcut and batch name tools.',

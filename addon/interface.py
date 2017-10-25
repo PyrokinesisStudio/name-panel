@@ -651,7 +651,7 @@ class datablock:
                     else: self.draw_box(context, box_column, panel, type)
             elif hasattr(type, 'poll'):
                 if type.poll(context): self.draw_box(context, box_column, panel, type)
-            else: self.draw_box(context, box_column, panel, type)        pass
+            else: self.draw_box(context, box_column, panel, type)
 
 
     # main

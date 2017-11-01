@@ -65,7 +65,7 @@ class save(Operator):
                 bpy.utils.register_class(name.toolsName)
 
             # has ui name
-            if hasattr(bpy.types, 'VIEW3D_PT_UI_name')    :
+            if hasattr(bpy.types, 'VIEW3D_PT_UI_name'):
                 bpy.utils.unregister_class(name.UIName)
 
         # isnt location tools
